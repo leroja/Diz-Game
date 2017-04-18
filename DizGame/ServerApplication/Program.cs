@@ -1,4 +1,5 @@
-﻿using ServerApplication.ServerLogic;
+﻿using Lidgren.Network;
+using ServerApplication.ServerLogic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,12 @@ namespace ServerApplication
 {
     public class Program
     {
+        //static NetServer server;
         static void Main(string[] args)
         {
-            Server server = new Server();
-            server.StartServer();
-            server.ReadMessages();
+            Server s = new Server();
+            s.StartServer();
+            s.ReadMessages();
         }
 
 
