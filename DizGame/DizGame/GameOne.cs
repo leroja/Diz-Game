@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DizGame.Source.Systems;
+using Lidgren.Network;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,9 +11,15 @@ namespace DizGame
     /// </summary>
     public class GameOne : GameEngine.GameEngine
     {
-        
+        NetworkSystem client;
+
         public GameOne()
         {
+
+            client = new NetworkSystem();
+            client.RunClient();
+            
+
 
         }
 
@@ -23,7 +31,7 @@ namespace DizGame
         /// </summary>
         protected override void Initialize()
         {
-
+            client.DiscoverLocalPeers();
 
             base.Initialize();
         }
@@ -46,6 +54,6 @@ namespace DizGame
 
         }
 
-        
+
     }
 }
