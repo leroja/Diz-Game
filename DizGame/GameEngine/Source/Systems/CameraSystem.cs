@@ -11,6 +11,10 @@ namespace GameEngine.Source.Systems
 {
     public class CameraSystem : IUpdate
     {
+        /// <summary>
+        /// Updates all the cameras View, Projection using corresponding transform component.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             foreach(int entityID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
@@ -24,6 +28,11 @@ namespace GameEngine.Source.Systems
                 }
             }
         }
+        /// <summary>
+        /// Updates the cameras LookAt and View based by CameraType
+        /// </summary>
+        /// <param name="camera"></param>
+        /// <param name="transform"></param>
         private void UpdateCameraAfterType(CameraComponent camera, TransformComponent transform)
         {
             switch(camera.CameraType)
