@@ -52,6 +52,7 @@
     <Compile Include="Source\Components\WorldComponent.cs" />
     <Compile Include="Source\Enums\ButtonStates.cs" />
     <Compile Include="Source\Enums\CameraType.cs" />
+    <Compile Include="Source\Managers\AudioManager.cs" />
     <Compile Include="Source\Enums\MaterialType.cs" />
     <Compile Include="Source\Managers\ComponentManager.cs" />
     <Compile Include="Source\Managers\SystemManager.cs" />
