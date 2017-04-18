@@ -65,6 +65,12 @@
       <Name>GameEngine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Source\Components\" />
+    <Folder Include="Source\Enums\" />
+    <Folder Include="Source\Managers\" />
+    <Folder Include="Source\Systems\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
