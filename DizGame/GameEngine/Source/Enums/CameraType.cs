@@ -8,7 +8,8 @@ namespace GameEngine.Source.Enums
 {
     public enum CameraType
     {
-        chase, pov, staticCam
-
+        Chase,
+        Pov,
+        StaticCam
     };
 }

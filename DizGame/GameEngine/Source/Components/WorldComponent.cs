@@ -8,13 +8,13 @@ using GameEngine.Source.Components.Interface;
 
 namespace GameEngine.Source.Components
 {
-    class WorldComponent : IComponent
+    public class WorldComponent : IComponent
     {
-        public Matrix _world { get; set; }
+        public Matrix World { get; set; }
 
         public WorldComponent(Matrix world)
         {
-            _world = world;
+            World = world;
         }
         
     }
