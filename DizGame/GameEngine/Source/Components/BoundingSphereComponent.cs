@@ -12,11 +12,12 @@ namespace GameEngine.Source.Components
     class BoundingSphereComponent : IComponent
     {
         public BoundingSphere sphere;
-        public BoundingBox box;
+        public bool hasCollided;
         
         public BoundingSphereComponent(BoundingSphere ball)
         {
             sphere = ball;
+            hasCollided = false;
         }
 
     }
