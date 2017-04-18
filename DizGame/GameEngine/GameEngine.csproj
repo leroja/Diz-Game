@@ -45,6 +45,7 @@
     <Compile Include="Source\Components\KeyBoardComponent.cs" />
     <Compile Include="Source\Components\TransformComponent.cs" />
     <Compile Include="Source\Enums\ButtonStates.cs" />
+    <Compile Include="Source\Enums\CameraType.cs" />
     <Compile Include="Source\Managers\ComponentManager.cs" />
     <Compile Include="Source\Managers\SystemManager.cs" />
     <Compile Include="Source\Systems\Abstract classes\IRender.cs" />
