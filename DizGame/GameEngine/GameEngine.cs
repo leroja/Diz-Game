@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameEngine.Source.Managers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -7,15 +8,18 @@ namespace GameEngine
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GameEngine : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public GraphicsDeviceManager Graphics { get; set; }
+        public SpriteBatch SpriteBatch { get; set; }
+        public GraphicsDevice Device { get; set; }
 
-        public Game1()
+        public GameEngine()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            Device = Graphics.GraphicsDevice;
         }
 
         /// <summary>
@@ -26,7 +30,7 @@ namespace GameEngine
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+
 
             base.Initialize();
         }
@@ -37,10 +41,10 @@ namespace GameEngine
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+
         }
 
         /// <summary>
@@ -49,7 +53,7 @@ namespace GameEngine
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
         /// <summary>
@@ -62,7 +66,8 @@ namespace GameEngine
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            SystemManager.Instance.GameTime = gameTime;
+            SystemManager.Instance.RunUpdateSystems();
 
             base.Update(gameTime);
         }
@@ -75,7 +80,8 @@ namespace GameEngine
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            SystemManager.Instance.GameTime = gameTime;
+            SystemManager.Instance.RunRenderSystems();
 
             base.Draw(gameTime);
         }
