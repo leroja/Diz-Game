@@ -13,11 +13,14 @@ namespace GameEngine.Source.Managers
     /// </summary>
     public class ComponentManager
     {
+        // Todo rewrite coments
         private static ComponentManager instance;
 
         private List<int> entityIDs;
         private int curMax;
         private const int step = 10000;
+        private List<int> defaultList;
+        private Dictionary<int, IComponent> defaultDictionary;
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
@@ -26,6 +29,8 @@ namespace GameEngine.Source.Managers
             curMax = step;
             entityIDs = new List<int>();
             entityIDs.AddRange(Enumerable.Range(1, curMax));
+            defaultList = new List<int>();
+            defaultDictionary = new Dictionary<int, IComponent>();
         }
 
 
@@ -232,7 +237,7 @@ namespace GameEngine.Source.Managers
             {
                 return compDic[type].Keys.ToList();
             }
-            return null;
+            return defaultList;
         }
 
         /// <summary>
@@ -286,7 +291,7 @@ namespace GameEngine.Source.Managers
             {
                 return compDic[type]; ;
             }
-            return null;
+            return defaultDictionary;
         }
 
         /// <summary>

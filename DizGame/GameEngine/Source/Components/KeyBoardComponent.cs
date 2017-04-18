@@ -18,6 +18,7 @@ namespace GameEngine.Source.Components
         {
             KeyBoardActions = new Dictionary<String, Keys>();
             State = new Dictionary<String, ButtonStates>();
+            
         }
     }
 }

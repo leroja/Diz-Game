@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using GameEngine.Source.Components.Interface;
+
+namespace GameEngine.Source.Components
+{
+    public class WorldComponent : IComponent
+    {
+        public Matrix World { get; set; }
+
+        public WorldComponent(Matrix world)
+        {
+            World = world;
+        }
+        
+    }
+}
