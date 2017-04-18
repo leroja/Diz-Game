@@ -10,7 +10,7 @@ namespace GameEngine.Source.Components
 {
     class WorldComponent : IComponent
     {
-        Matrix _world { get; set; }
+        public Matrix _world { get; set; }
 
         public WorldComponent(Matrix world)
         {
