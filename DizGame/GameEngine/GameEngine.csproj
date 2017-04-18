@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Source\Components\CameraComponent.cs" />
     <Compile Include="Source\Components\HeightMapComponent.cs" />
+    <Compile Include="Source\Components\Interface\IBoundingVolume.cs" />
     <Compile Include="Source\Components\Interface\IComponent.cs" />
     <Compile Include="Source\Components\KeyBoardComponent.cs" />
     <Compile Include="Source\Components\ModelComponent.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Systems\CameraSystem.cs" />
+    <Compile Include="Source\Systems\CollisionSystem.cs" />
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
     <Compile Include="Source\Systems\ModelSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
