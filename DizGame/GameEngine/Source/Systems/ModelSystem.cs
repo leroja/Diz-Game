@@ -12,10 +12,18 @@ namespace GameEngine.Source.Systems
 {
     public class ModelSystem : IRender
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
             DrawModel();
         }
+        /// <summary>
+        /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo
+        /// applies properties to the effects and then draw the parts.
+        /// </summary>
         private void DrawModel()
         {
             WorldComponent world = (WorldComponent)ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>()[0];
