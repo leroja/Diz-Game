@@ -44,6 +44,7 @@
     <Compile Include="Source\Components\Interface\IComponent.cs" />
     <Compile Include="Source\Components\KeyBoardComponent.cs" />
     <Compile Include="Source\Components\TransformComponent.cs" />
+    <Compile Include="Source\Components\WorldComponent.cs" />
     <Compile Include="Source\Enums\ButtonStates.cs" />
     <Compile Include="Source\Managers\ComponentManager.cs" />
     <Compile Include="Source\Managers\SystemManager.cs" />
