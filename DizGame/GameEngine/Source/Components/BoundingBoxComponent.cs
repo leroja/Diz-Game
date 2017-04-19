@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
-    class BoundingBoxCopmponent : IComponent
+    class BoundingBoxComponent : IComponent
     {
         public BoundingBox box;
 
-        public BoundingBoxCopmponent(BoundingBox bux)
+        public BoundingBoxComponent(BoundingBox bux)
         {
             box = bux;
-            
         }
     }
 }

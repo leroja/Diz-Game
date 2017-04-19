@@ -41,7 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Source\Components\BoundingBoxCopmponent.cs" />
+    <Compile Include="Source\Components\BoundingBoxComponent.cs" />
     <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />
     <Compile Include="Source\Components\HeightMapComponent.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Systems\CameraSystem.cs" />
+    <Compile Include="Source\Systems\CollisionSystem.cs" />
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
     <Compile Include="Source\Systems\ModelSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
