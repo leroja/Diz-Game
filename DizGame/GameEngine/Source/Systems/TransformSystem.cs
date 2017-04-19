@@ -33,7 +33,7 @@ namespace GameEngine.Source.Systems
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation) 
                     * Matrix.CreateTranslation(tfc.Position);
 
-                tfc.Orientation = Quaternion.CreateFromRotationMatrix(tfc.ObjectMatrix); // TODO: vill få fram heading vet ej om detta är korrekt
+                tfc.Orientation *= Quaternion.CreateFromRotationMatrix(tfc.ObjectMatrix); // TODO: vill få fram heading vet ej om detta är korrekt
             }
 
         }

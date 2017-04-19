@@ -41,7 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Source\Components\Physics\RigidbodyComponent.cs" />
+    <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsType.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsProjectilesSystem.cs" />

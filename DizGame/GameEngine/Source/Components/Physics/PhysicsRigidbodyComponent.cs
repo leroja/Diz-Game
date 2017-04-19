@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
-    public class RigidbodyComponent : IComponent
+    public class PhysicsRigidbodyComponent : IComponent
     {
         #region Public Configuration
         /// <summary>
@@ -43,7 +43,7 @@ namespace GameEngine.Source.Components
         public Matrix WorldFrameInvertedInertiaTensor { get; set; }
         #endregion Public Configuration
 
-        public RigidbodyComponent()
+        public PhysicsRigidbodyComponent()
         {
             AngularVelocity = Vector3.Zero;
             AngularMomentum = Vector3.Zero;
