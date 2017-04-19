@@ -206,7 +206,6 @@ namespace GameEngine.Source.Managers
                     }
                 }
             }
-
             return 0;
         }
 

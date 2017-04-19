@@ -13,8 +13,8 @@ namespace GameEngine.Source.Systems
     {
         private Game g;
         private float framecount;
-        private float timeSinceLastUpdate = 0.0f;
-        private float frameCounter = 0.0f;
+        private float timeSinceLastUpdate;
+        private float frameCounter;
 
         public override void Update(GameTime gameTime)
         {
@@ -38,6 +38,8 @@ namespace GameEngine.Source.Systems
         {
             g = game;
             framecount = 0f;
+            timeSinceLastUpdate = 0.0f;
+            frameCounter = 0.0f;
         }
     }
 }
