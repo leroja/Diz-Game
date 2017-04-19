@@ -41,6 +41,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\Physics\Type\Interface\IPhysicsType.cs" />
+    <Compile Include="Source\Physics\Type\Particle.cs" />
+    <Compile Include="Source\Physics\Type\Projectiles.cs" />
+    <Compile Include="Source\Physics\Type\Ragdoll.cs" />
+    <Compile Include="Source\Physics\Type\RigidBody.cs" />
+    <Compile Include="Source\Physics\Type\Soft.cs" />
+    <Compile Include="Source\Physics\Type\Static.cs" />
     <Compile Include="Source\Components\BoundingBoxComponent.cs" />
     <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />

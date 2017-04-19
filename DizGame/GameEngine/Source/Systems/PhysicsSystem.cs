@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
+using GameEngine.Source.Physics.Type;
 
 namespace GameEngine.Source.Systems
 {
@@ -15,40 +16,89 @@ namespace GameEngine.Source.Systems
         private float timeSinceLastUpdate = 0;
         private float updateInterval = 1;
         private float framesPerSecond = 0;
+
+        private RigidBody rigidBody;
+        private Particle particle;
+        private Projectiles projectile;
+        private Ragdoll ragDoll;
+        private Soft soft;
+        private Static _static;
+
+        public PhysicsSystem()
+        {
+            rigidBody = new RigidBody();
+            particle = new Particle();
+            projectile = new Projectiles();
+            ragDoll = new Ragdoll();
+            soft = new Soft();
+            _static = new Static();
+        }
         public override void Update(GameTime gameTime)
         {
             CountFPS(gameTime);
             UpdateMaxAcceleration(gameTime);
-            UpdateAcceleration(gameTime);
-            UpdateVelocity(gameTime);
+            UpdateLinearAcceleration(gameTime);
+            UpdateLinearVelocity(gameTime);
             UpdateReflection(gameTime);
 
-
+            UpdatePhysicComponentByType(gameTime);
         }
-        /// <summary>
-        /// Updates the objects acceleration
-        /// </summary>
-        /// <param name="gameTime"></param>
-        private void UpdateAcceleration(GameTime gameTime)
+        private void UpdatePhysicComponentByType(GameTime gameTime)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                physic.Acceleration = (physic.Velocity / dt);
+                switch(physic.PhysicsType)
+                {
+                    case Enums.PhysicsType.Static:
+                        _static.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Soft:
+                        soft.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Rigid:
+                        rigidBody.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Ragdoll:
+                        ragDoll.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Projectiles:
+                        projectile.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Particle:
+                        particle.Update(physic, dt);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         /// <summary>
-        /// Updates the objects velocity
+        /// Updates the objects linear acceleration
         /// </summary>
         /// <param name="gameTime"></param>
-        private void UpdateVelocity(GameTime gameTime)
+        private void UpdateLinearAcceleration(GameTime gameTime)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                physic.Velocity += physic.Velocity + (physic.Acceleration * dt); 
+                //physic.Acceleration = (physic.Velocity / dt);
+                physic.Acceleration = physic.Forces / physic.Mass;
+            }
+        }
+        /// <summary>
+        /// Updates the objects linear velocity
+        /// </summary>
+        /// <param name="gameTime"></param>
+        private void UpdateLinearVelocity(GameTime gameTime)
+        {
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
+            {
+                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
+                physic.Velocity += physic.Acceleration * dt; 
             }
         }
 
@@ -77,10 +127,7 @@ namespace GameEngine.Source.Systems
             {
                 PhysicsComponent physics = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
                 Vector3 temp = Vector3.Zero;
-                temp.X = (physics.Forces.X / physics.Mass) / framesPerSecond;
-                temp.Y = (physics.Forces.Y / physics.Mass) / framesPerSecond;
-                temp.Z = (physics.Forces.Z / physics.Mass) / framesPerSecond;
-                physics.MaxAcceleration = temp;
+                physics.MaxAcceleration = (physics.Forces / physics.Mass) / framesPerSecond;
             }
         }
         private void CountFPS(GameTime gameTime)
