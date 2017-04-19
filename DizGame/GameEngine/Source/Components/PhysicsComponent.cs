@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Enums;
+﻿using GameEngine.Source.Components;
+using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
 
 namespace GameEngine.Source.Components
