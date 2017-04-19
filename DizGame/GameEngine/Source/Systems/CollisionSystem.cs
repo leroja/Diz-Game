@@ -1,5 +1,4 @@
 ﻿using GameEngine.Source.Components;
-using GameEngine.Source.Components.Interface;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems.Abstract_classes;
 using Microsoft.Xna.Framework;
@@ -44,8 +43,7 @@ namespace GameEngine.Source.Systems
                             ModelComponent mComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(sphereEntities[j]);
                             List<BoundingSphere> spheres1 = mComp1.Model.Meshes.Select(s => s.BoundingSphere).ToList();
                             List<BoundingSphere> spheres2 = mComp2.Model.Meshes.Select(s => s.BoundingSphere).ToList();
-                            Tuple<BoundingSphere, BoundingSphere> tuple;
-                            if (FindFirstHit(spheres1, spheres2, out tuple))
+                            if (FindFirstHit(spheres1, spheres2, out Tuple<BoundingSphere, BoundingSphere> tuple))
                             {
                                 if (tuple != null)
                                     collidedVolumes.Add(tuple);
