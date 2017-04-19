@@ -39,7 +39,7 @@ namespace GameEngine.Source.Components
             Minute = 0;
             Second = 0;
             Millisecond = 0;
-            DefineHour = 1;
+            DefineHour = 20;
         }
 
     }

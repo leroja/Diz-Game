@@ -50,7 +50,6 @@ namespace GameEngine.Source.Systems
                         world.Noon = false;
                         world.Day++;
                     }
-
                     if (world.Notation == WorldComponent.HOURS24)
                         world.Day++;
                 }

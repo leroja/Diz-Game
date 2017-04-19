@@ -15,7 +15,7 @@ namespace GameEngine.Source.Components
         public BoundingBoxCopmponent(BoundingBox bux)
         {
             box = bux;
-            
+
         }
     }
 }
