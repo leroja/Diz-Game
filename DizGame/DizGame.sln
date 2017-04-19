@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DizGame", "DizGame\DizGame.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEngine", "GameEngine\GameEngine.csproj", "{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerApplication", "ServerApplication\ServerApplication.csproj", "{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,14 @@ Global
 		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Release|Any CPU.ActiveCfg = Release|x86
 		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Release|x86.ActiveCfg = Release|x86
 		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Release|x86.Build.0 = Release|x86
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Debug|x86.Build.0 = Debug|Any CPU
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

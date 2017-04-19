@@ -1,4 +1,4 @@
-﻿using GameEngine.Source.Components.Interface;
+﻿using GameEngine.Source.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +13,14 @@ namespace GameEngine.Source.Managers
     /// </summary>
     public class ComponentManager
     {
+        // Todo rewrite comments
         private static ComponentManager instance;
 
         private List<int> entityIDs;
         private int curMax;
         private const int step = 10000;
+        private List<int> defaultList;
+        private Dictionary<int, IComponent> defaultDictionary;
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
@@ -26,6 +29,8 @@ namespace GameEngine.Source.Managers
             curMax = step;
             entityIDs = new List<int>();
             entityIDs.AddRange(Enumerable.Range(1, curMax));
+            defaultList = new List<int>();
+            defaultDictionary = new Dictionary<int, IComponent>();
         }
 
 
@@ -100,46 +105,35 @@ namespace GameEngine.Source.Managers
         public void AddComponentToEntity(int entityID, IComponent component)
         {
             Type type = component.GetType();
-            if (compDic.ContainsKey(type))
-            {
-                try
-                {
-                    compDic[type].Add(entityID, component);
-                }
-                catch (Exception)
-                {
 
-                }
-
-            }
-            else
+            if (!compDic.ContainsKey(type))
             {
                 compDic.Add(type, new Dictionary<int, IComponent>());
+            }
+            try
+            {
                 compDic[type].Add(entityID, component);
             }
-
+            catch (Exception)
+            {
+            }
         }
+
         public void AddAllComponents(int entityID, List<IComponent> componentList)
         {
             foreach (var comp in componentList)
             {
                 Type type = comp.GetType();
-                if (compDic.ContainsKey(type))
-                {
-                    try
-                    {
-                        compDic[type].Add(entityID, comp);
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-
-                }
-                else
+                if (!compDic.ContainsKey(type))
                 {
                     compDic.Add(type, new Dictionary<int, IComponent>());
+                }
+                try
+                {
                     compDic[type].Add(entityID, comp);
+                }
+                catch (Exception)
+                {
                 }
             }
         }
@@ -232,7 +226,7 @@ namespace GameEngine.Source.Managers
             {
                 return compDic[type].Keys.ToList();
             }
-            return null;
+            return defaultList;
         }
 
         /// <summary>
@@ -286,7 +280,7 @@ namespace GameEngine.Source.Managers
             {
                 return compDic[type]; ;
             }
-            return null;
+            return defaultDictionary;
         }
 
         /// <summary>

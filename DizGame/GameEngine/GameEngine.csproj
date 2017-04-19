@@ -41,33 +41,41 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\Components\BoundingBoxComponent.cs" />
+    <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />
     <Compile Include="Source\Components\HeightMapComponent.cs" />
     <Compile Include="Source\Components\Interface\IComponent.cs" />
     <Compile Include="Source\Components\KeyBoardComponent.cs" />
+    <Compile Include="Source\Components\ModelComponent.cs" />
     <Compile Include="Source\Components\TransformComponent.cs" />
     <Compile Include="Source\Components\WorldComponent.cs" />
     <Compile Include="Source\Enums\ButtonStates.cs" />
     <Compile Include="Source\Enums\CameraType.cs" />
+    <Compile Include="Source\Managers\AudioManager.cs" />
+    <Compile Include="Source\Enums\MaterialType.cs" />
     <Compile Include="Source\Managers\ComponentManager.cs" />
+    <Compile Include="Source\Managers\MessageManager.cs" />
     <Compile Include="Source\Managers\SystemManager.cs" />
-    <Compile Include="Source\Objects\HeightMapObject.cs" />
     <Compile Include="Source\Systems\Abstract classes\IRender.cs" />
     <Compile Include="Source\Systems\Abstract classes\ISystem.cs" />
     <Compile Include="Source\Systems\Abstract classes\IUpdate.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Systems\HeightMapSystem.cs" />
+    <Compile Include="Source\Systems\CameraSystem.cs" />
+    <Compile Include="Source\Systems\CollisionSystem.cs" />
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
+    <Compile Include="Source\Systems\ModelSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
+    <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />
+    <Compile Include="Source\Systems\WorldSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +85,6 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

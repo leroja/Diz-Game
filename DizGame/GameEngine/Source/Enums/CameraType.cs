@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Enums
 {
-    public enum CameraType
+    public enum CameraType : int
     {
-        chase, pov, staticCam
-
+        Chase,
+        Pov,
+        StaticCam
     };
 }
