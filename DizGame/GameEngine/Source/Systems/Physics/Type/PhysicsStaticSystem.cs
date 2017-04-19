@@ -1,4 +1,4 @@
-﻿using GameEngine.Source.Physics.Type.Interface;
+﻿using GameEngine.Source.Systems.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Source.Components;
 
-namespace GameEngine.Source.Physics.Type
+namespace GameEngine.Source.Systems
 {
-    public class Ragdoll : IPhysicsType
+    public class PhysicsStaticSystem : IPhysicsType
     {
-        public override void Update(PhysicsComponent physic, float dt)
+        public override void Update(int entityID, float dt)
         {
             throw new NotImplementedException();
         }

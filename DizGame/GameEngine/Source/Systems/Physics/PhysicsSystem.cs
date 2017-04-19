@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using GameEngine.Source.Physics.Type;
+using GameEngine.Source.Systems;
 
 namespace GameEngine.Source.Systems
 {
@@ -17,21 +17,21 @@ namespace GameEngine.Source.Systems
         private float updateInterval = 1;
         private float framesPerSecond = 0;
 
-        private RigidBody rigidBody;
-        private Particle particle;
-        private Projectiles projectile;
-        private Ragdoll ragDoll;
-        private Soft soft;
-        private Static _static;
+        private PhysicsRigidBodySystem rigidBody;
+        private PhysicsParticleSystem particle;
+        private PhysicsProjectilesSystem projectile;
+        private PhysicsRagdollSystem ragDoll;
+        private PhysicsSoftSystem soft;
+        private PhysicsStaticSystem _static;
 
         public PhysicsSystem()
         {
-            rigidBody = new RigidBody();
-            particle = new Particle();
-            projectile = new Projectiles();
-            ragDoll = new Ragdoll();
-            soft = new Soft();
-            _static = new Static();
+            rigidBody = new PhysicsRigidBodySystem();
+            particle = new PhysicsParticleSystem();
+            projectile = new PhysicsProjectilesSystem();
+            ragDoll = new PhysicsRagdollSystem();
+            soft = new PhysicsSoftSystem();
+            _static = new PhysicsStaticSystem();
         }
         public override void Update(GameTime gameTime)
         {
@@ -52,22 +52,22 @@ namespace GameEngine.Source.Systems
                 switch(physic.PhysicsType)
                 {
                     case Enums.PhysicsType.Static:
-                        _static.Update(physic, dt);
+                        _static.Update(entityID, dt);
                         break;
                     case Enums.PhysicsType.Soft:
-                        soft.Update(physic, dt);
+                        soft.Update(entityID, dt);
                         break;
                     case Enums.PhysicsType.Rigid:
-                        rigidBody.Update(physic, dt);
+                        rigidBody.Update(entityID, dt);
                         break;
                     case Enums.PhysicsType.Ragdoll:
-                        ragDoll.Update(physic, dt);
+                        ragDoll.Update(entityID, dt);
                         break;
                     case Enums.PhysicsType.Projectiles:
-                        projectile.Update(physic, dt);
+                        projectile.Update(entityID, dt);
                         break;
                     case Enums.PhysicsType.Particle:
-                        particle.Update(physic, dt);
+                        particle.Update(entityID, dt);
                         break;
                     default:
                         break;

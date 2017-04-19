@@ -41,13 +41,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Source\Physics\Type\Interface\IPhysicsType.cs" />
-    <Compile Include="Source\Physics\Type\Particle.cs" />
-    <Compile Include="Source\Physics\Type\Projectiles.cs" />
-    <Compile Include="Source\Physics\Type\Ragdoll.cs" />
-    <Compile Include="Source\Physics\Type\RigidBody.cs" />
-    <Compile Include="Source\Physics\Type\Soft.cs" />
-    <Compile Include="Source\Physics\Type\Static.cs" />
+    <Compile Include="Source\Components\Physics\RigidbodyComponent.cs" />
+    <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsType.cs" />
+    <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
+    <Compile Include="Source\Systems\Physics\Type\PhysicsProjectilesSystem.cs" />
+    <Compile Include="Source\Systems\Physics\Type\PhysicsRagdollSystem.cs" />
+    <Compile Include="Source\Systems\Physics\Type\PhysicsRigidBodySystem.cs" />
+    <Compile Include="Source\Systems\Physics\Type\PhysicsSoftSystem.cs" />
+    <Compile Include="Source\Systems\Physics\Type\PhysicsStaticSystem.cs" />
     <Compile Include="Source\Components\BoundingBoxComponent.cs" />
     <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="Source\Systems\CollisionSystem.cs" />
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
     <Compile Include="Source\Systems\ModelSystem.cs" />
-    <Compile Include="Source\Systems\PhysicsSystem.cs" />
+    <Compile Include="Source\Systems\Physics\PhysicsSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
     <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />
     <Compile Include="Source\Systems\WorldSystem.cs" />

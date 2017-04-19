@@ -28,6 +28,7 @@ namespace GameEngine.Source.Components
         public Vector3 Forces { get; set; }
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
+        public Quaternion Orientation { get; set; }
         #endregion Public Configuration
 
         public PhysicsComponent()
@@ -40,6 +41,8 @@ namespace GameEngine.Source.Components
 
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;
+
+            Orientation = Quaternion.Identity;
         }
     }
 }
