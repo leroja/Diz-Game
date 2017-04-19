@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameEngine.Source.Components.Interface
+namespace GameEngine.Source.Components
 {
     public interface IComponent
     {

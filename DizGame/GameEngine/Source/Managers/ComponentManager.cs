@@ -1,4 +1,4 @@
-﻿using GameEngine.Source.Components.Interface;
+﻿using GameEngine.Source.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace GameEngine.Source.Managers
     /// </summary>
     public class ComponentManager
     {
-        // Todo rewrite coments
+        // Todo rewrite comments
         private static ComponentManager instance;
 
         private List<int> entityIDs;
@@ -105,46 +105,35 @@ namespace GameEngine.Source.Managers
         public void AddComponentToEntity(int entityID, IComponent component)
         {
             Type type = component.GetType();
-            if (compDic.ContainsKey(type))
-            {
-                try
-                {
-                    compDic[type].Add(entityID, component);
-                }
-                catch (Exception)
-                {
 
-                }
-
-            }
-            else
+            if (!compDic.ContainsKey(type))
             {
                 compDic.Add(type, new Dictionary<int, IComponent>());
+            }
+            try
+            {
                 compDic[type].Add(entityID, component);
             }
-
+            catch (Exception)
+            {
+            }
         }
+
         public void AddAllComponents(int entityID, List<IComponent> componentList)
         {
             foreach (var comp in componentList)
             {
                 Type type = comp.GetType();
-                if (compDic.ContainsKey(type))
-                {
-                    try
-                    {
-                        compDic[type].Add(entityID, comp);
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-
-                }
-                else
+                if (!compDic.ContainsKey(type))
                 {
                     compDic.Add(type, new Dictionary<int, IComponent>());
+                }
+                try
+                {
                     compDic[type].Add(entityID, comp);
+                }
+                catch (Exception)
+                {
                 }
             }
         }
