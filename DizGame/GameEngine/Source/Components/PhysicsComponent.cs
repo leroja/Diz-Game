@@ -1,4 +1,4 @@
-﻿using GameEngine.Source.Components.Interface;
+﻿using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
 using System;
