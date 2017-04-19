@@ -1,4 +1,4 @@
-﻿using GameEngine.Source.Components.Interface;
+﻿using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Components
