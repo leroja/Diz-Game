@@ -10,25 +10,11 @@ namespace GameEngine.Source.Components
 {
     class BoundingBoxComponent : IComponent
     {
-        private BoundingBox box;
+        public BoundingBox box;
 
         public BoundingBoxComponent(BoundingBox bux)
         {
             box = bux;
-            
-        }
-
-        public BoundingBox BoundingVolume
-        {
-            get
-            {
-                return box;
-            }
-
-            set
-            {
-                box = value;
-            }
         }
     }
 }

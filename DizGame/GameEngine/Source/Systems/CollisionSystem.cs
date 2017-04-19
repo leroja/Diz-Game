@@ -1,6 +1,7 @@
 ﻿using GameEngine.Source.Components;
 using GameEngine.Source.Components.Interface;
 using GameEngine.Source.Managers;
+using GameEngine.Source.Systems.Abstract_classes;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,12 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
-    class CollisionSystem
+    class CollisionSystem : IUpdate
     {
+        /// <summary>
+        /// Checks all entities with boundingspherecomponent if they collide and sets those components'
+        /// hasCollided variables to true if they collide.
+        /// </summary>
         public void CollisionDetection()
         {
             List<int> sphereEntities = ComponentManager.Instance.GetAllEntitiesWithComponentType<BoundingSphereComponent>();
@@ -42,7 +47,23 @@ namespace GameEngine.Source.Systems
                 }
             }
         }
-        public bool FindFirstHit(List<BoundingSphere> spheres1, List<BoundingSphere> spheres2)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public override void Update(GameTime gameTime)
+        {
+            
+        }
+
+        /// <summary>
+        /// Goes through every boundingsphere in 
+        /// </summary>
+        /// <param name="spheres1"></param>
+        /// <param name="spheres2"></param>
+        /// <returns> true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
+        private bool FindFirstHit(List<BoundingSphere> spheres1, List<BoundingSphere> spheres2)
         {
             BoundingSphere s1 = spheres1.FirstOrDefault();
             BoundingSphere s2 = spheres2.FirstOrDefault();
