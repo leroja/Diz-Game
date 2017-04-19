@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.Components.Interface;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Components
 {
@@ -7,14 +6,14 @@ namespace GameEngine.Source.Components
     {
 
 
-        public int terrainWidth { get; set; }
-        public int terrainHeight { get; set; }
+        public int TerrainWidth { get; set; }
+        public int TerrainHeight { get; set; }
 
-        public VertexPositionNormalTexture[] vertices { get; set; }
-        public VertexBuffer vertexBuffer { get; set; }
+        public VertexPositionNormalTexture[] Vertices { get; set; }
+        public VertexBuffer VertexBuffer { get; set; }
 
-        public IndexBuffer indexBuffer { get; set; }
-        public int[] indices { get; set; }
+        public IndexBuffer IndexBuffer { get; set; }
+        public int[] Indices { get; set; }
 
     }
 }

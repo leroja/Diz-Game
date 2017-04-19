@@ -54,6 +54,7 @@
     <Compile Include="Source\Enums\CameraType.cs" />
     <Compile Include="Source\Managers\AudioManager.cs" />
     <Compile Include="Source\Managers\ComponentManager.cs" />
+    <Compile Include="Source\Managers\MessageManager.cs" />
     <Compile Include="Source\Managers\SystemManager.cs" />
     <Compile Include="Source\Systems\Abstract classes\IRender.cs" />
     <Compile Include="Source\Systems\Abstract classes\ISystem.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
     <Compile Include="Source\Systems\ModelSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
+    <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />
     <Compile Include="Source\Systems\WorldSystem.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameEngine.Source.Managers;
+using GameEngine.Source.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -24,7 +26,7 @@ namespace DizGame
         protected override void Initialize()
         {
 
-
+            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this, Graphics));
             base.Initialize();
         }
 
