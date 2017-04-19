@@ -35,8 +35,7 @@ namespace DizGame
         {
             client.DiscoverLocalPeers();
 
-
-            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this, Graphics));
+            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             base.Initialize();
         }
 

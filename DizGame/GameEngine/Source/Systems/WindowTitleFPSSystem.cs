@@ -15,7 +15,6 @@ namespace GameEngine.Source.Systems
         private float framecount;
         private float timeSinceLastUpdate = 0.0f;
         private float frameCounter = 0.0f;
-        private GraphicsDeviceManager graphicsMan;
 
         public override void Update(GameTime gameTime)
         {
@@ -35,27 +34,10 @@ namespace GameEngine.Source.Systems
             }
         }
 
-        public WindowTitleFPSSystem(Game game, GraphicsDeviceManager graphicsMan)
+        public WindowTitleFPSSystem(Game game)
         {
             g = game;
             framecount = 0f;
-            this.graphicsMan = graphicsMan;
-            graphicsMan.SynchronizeWithVerticalRetrace = false;
-            g.IsFixedTimeStep = false;
-        }
-
-        public void ChangeFPS()
-        {
-            if (graphicsMan.SynchronizeWithVerticalRetrace == false)
-            {
-                graphicsMan.SynchronizeWithVerticalRetrace = true;
-                g.IsFixedTimeStep = true;
-            }
-            else
-            {
-                graphicsMan.SynchronizeWithVerticalRetrace = false;
-                g.IsFixedTimeStep = false;
-            }
         }
     }
 }
