@@ -6,6 +6,9 @@ namespace GameEngine.Source.Components
 {
     public class PhysicsComponent : IComponent
     {
+        #region Public Constants
+        public const float DEFAULT_GRAVITY = 9.80665f;
+        #endregion Public Constants
         #region Public Configuration
         /// <summary>
         /// Defines mass in kilogram ex 1f = 1kg;
@@ -36,7 +39,7 @@ namespace GameEngine.Source.Components
             Acceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
 
-            Forces += 9.81f * Mass * Vector3.Down;
+            Forces += DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
 
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;
