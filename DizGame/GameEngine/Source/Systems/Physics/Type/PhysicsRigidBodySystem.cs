@@ -9,29 +9,32 @@ namespace GameEngine.Source.Systems
     {
         public override void Update(int entityID, float dt)
         {
+            // Creates and send this throught instead of creating globas that takes memory
             PhysicsComponent physics = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
             RigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<RigidbodyComponent>(entityID);
+            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+
             if (rigidBody == null)
                 ComponentManager.AddComponentToEntity(entityID, new RigidbodyComponent());
             rigidBody = ComponentManager.GetEntityComponent<RigidbodyComponent>(entityID);
 
-            rigidBody.BodyToLocal = Matrix.CreateFromQuaternion(physics.Orientation);
+            rigidBody.BodyToLocal = Matrix.CreateFromQuaternion(transform.Orientation);
             rigidBody.LocalToBody = Matrix.Invert(rigidBody.BodyToLocal);
-            IntegrateStateVariables(physics, rigidBody, dt);
+            IntegrateStateVariables(transform, rigidBody, dt);
         }
-        private void IntegrateStateVariables(PhysicsComponent physics, RigidbodyComponent rigidbody, float dt)
+        private void IntegrateStateVariables(TransformComponent transform, RigidbodyComponent rigidbody, float dt)
         {
             // Linear position, velocity and acceleration is computed in the Pointmass base class.
             // Remains to do here:
             // Orientation
-            Matrix A = Matrix.CreateFromQuaternion(physics.Orientation);
+            Matrix A = Matrix.CreateFromQuaternion(transform.Orientation);
             A += Matrix.Multiply(Tilde(rigidbody.AngularVelocity), dt) * A;
-            physics.Orientation = Quaternion.CreateFromRotationMatrix(A);
-            physics.Orientation.Normalize();
+            transform.Orientation = Quaternion.CreateFromRotationMatrix(A);
+            transform.Orientation.Normalize();
             // Angular Momentum
             rigidbody.AngularMomentum += dt * rigidbody.TotalBodyTorque;
             // Update the world frame inverted inertia tensor
-            CalculateWorldFrameInvertedInertiaTensor(physics.Orientation, rigidbody);
+            CalculateWorldFrameInvertedInertiaTensor(transform.Orientation, rigidbody);
             // Update the angular velocity
             CalculateAngularVelocity(rigidbody);
         }

@@ -33,21 +33,46 @@ namespace GameEngine.Source.Systems
             soft = new PhysicsSoftSystem();
             _static = new PhysicsStaticSystem();
         }
+        /// <summary>
+        /// Updates all the necessary part for the physicsystem
+        /// using one loop
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             CountFPS(gameTime);
-            UpdateMaxAcceleration(gameTime);
-            UpdateLinearAcceleration(gameTime);
-            UpdateLinearVelocity(gameTime);
-            UpdateReflection(gameTime);
-
-            UpdatePhysicComponentByType(gameTime);
-        }
-        private void UpdatePhysicComponentByType(GameTime gameTime)
-        {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
+                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
+
+                UpdatePosition(entityID, dt);
+
+                UpdateMaxAcceleration(physic);
+                UpdateLinearAcceleration(physic, dt);
+                UpdateLinearVelocity(physic, dt);
+                UpdateReflection(physic, dt);
+
+                UpdatePhysicComponentByType(entityID, dt);
+            }
+        }
+        /// <summary>
+        /// Updates the object position using its velocity * dt
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="dt"></param>
+        private void UpdatePosition(int entityID, float dt)
+        {
+            ComponentManager.GetEntityComponent<TransformComponent>(entityID).Position
+                += ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity * dt;
+        }
+        /// <summary>
+        /// Udates the corresponding object by physictype
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="dt"></param>
+        private void UpdatePhysicComponentByType(int entityID, float dt)
+        {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
                 switch(physic.PhysicsType)
                 {
@@ -71,43 +96,35 @@ namespace GameEngine.Source.Systems
                         break;
                     default:
                         break;
-                }
             }
         }
         /// <summary>
         /// Updates the objects linear acceleration
         /// </summary>
-        /// <param name="gameTime"></param>
-        private void UpdateLinearAcceleration(GameTime gameTime)
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        private void UpdateLinearAcceleration(PhysicsComponent physic, float dt)
         {
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
-            {
-                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                //physic.Acceleration = (physic.Velocity / dt);
-                physic.Acceleration = physic.Forces / physic.Mass;
-            }
+            //physic.Acceleration = (physic.Velocity / dt);
+            physic.Acceleration = physic.Forces / physic.Mass;
         }
         /// <summary>
         /// Updates the objects linear velocity
         /// </summary>
-        /// <param name="gameTime"></param>
-        private void UpdateLinearVelocity(GameTime gameTime)
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        private void UpdateLinearVelocity(PhysicsComponent physic, float dt)
         {
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
-            {
-                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                physic.Velocity += physic.Acceleration * dt; 
-            }
+            physic.Velocity += physic.Acceleration * dt;
         }
 
         //TODO: UpdateReflection
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>
-        /// <param name="gameTime"></param>
-        private void UpdateReflection(GameTime gameTime)
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        private void UpdateReflection(PhysicsComponent physic, float dt)
         {
             // ratioa = Mb / (Ma + Mb)                  (Mass)
             // ratiob = Ma / (Ma + Mb)                  (Mass)
@@ -116,20 +133,19 @@ namespace GameEngine.Source.Systems
             // Va - = I * 1/Ma                          (Velo = I / mass)          
             // Vb + = I * 1/Mb                          (Velo = I / mass)
         }
-
         /// <summary>
         /// Updates maxacceleration in Meters per second each second 
         /// divided by FPS to give meters per second each frame.
         /// </summary>
-        private void UpdateMaxAcceleration(GameTime gameTime)
+        /// <param name="physic"></param>
+        private void UpdateMaxAcceleration(PhysicsComponent physic)
         {
-            foreach(int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
-            {
-                PhysicsComponent physics = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                Vector3 temp = Vector3.Zero;
-                physics.MaxAcceleration = (physics.Forces / physics.Mass) / framesPerSecond;
-            }
+                physic.MaxAcceleration = (physic.Forces / physic.Mass) / framesPerSecond;
         }
+        /// <summary>
+        /// Counts the frames per second
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void CountFPS(GameTime gameTime)
         {
             frameCount++;

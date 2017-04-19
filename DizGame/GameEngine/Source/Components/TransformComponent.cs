@@ -16,6 +16,7 @@ namespace GameEngine.Source.Components
         public Vector3 Rotation { get; set; }
 
         public Quaternion QuaternionRotation { get; set; }
+        public Quaternion Orientation { get; set; }
         public Vector3 Forward { get; set; }
 
         public Vector3 Scale { get; set; }
@@ -28,6 +29,7 @@ namespace GameEngine.Source.Components
             this.Position = position;
             this.Scale = scale;
             this.QuaternionRotation = Quaternion.Identity;
+            this.Orientation = Quaternion.Identity;
         }
     }
 }

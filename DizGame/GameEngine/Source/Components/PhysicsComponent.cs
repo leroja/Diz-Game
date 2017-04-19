@@ -16,7 +16,6 @@ namespace GameEngine.Source.Components
         /// Defines velocity in meters per second in a given direction
         /// </summary>
         public Vector3 Velocity { get; set; }
-        public Vector3 Heading { get; set; }
         /// <summary>
         /// Defines maxacceleration in Meters per second each second 
         /// divided by FPS to give meters per second each frame.
@@ -28,21 +27,19 @@ namespace GameEngine.Source.Components
         public Vector3 Forces { get; set; }
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
-        public Quaternion Orientation { get; set; }
         #endregion Public Configuration
 
         public PhysicsComponent()
         {
-            Mass = 0;
+            Mass = 1;
 
             Acceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
-            Heading = Vector3.Zero;
+
+            Forces += 9.81f * Mass * Vector3.Down;
 
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;
-
-            Orientation = Quaternion.Identity;
         }
     }
 }
