@@ -54,6 +54,19 @@ namespace DizGame
 
         }
 
+        //protected override void Update(GameTime gameTime)
+        //{
+        //    client.ReadMessages();
+        //    for(var i = 1; i < 10000; i++)
+        //    {
+        //        if(i % 4 == 0)
+        //        {
+        //            client.SendMessage("What's my name?");
+        //        }
+        //    }
+            
+        //}
+
 
     }
 }

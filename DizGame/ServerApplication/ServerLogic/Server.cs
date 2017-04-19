@@ -73,9 +73,15 @@ namespace ServerApplication.ServerLogic
                             break;
                         case NetIncomingMessageType.Data:
                             {
-                                Console.WriteLine("I got smth!");
+                                Console.WriteLine("Server got message!");
                                 var data = message.ReadString();
                                 Console.WriteLine(data);
+
+                                NetOutgoingMessage somemsg = server.CreateMessage("Damn!");
+
+                                // Might wanna use different delivery method
+                                server.SendMessage(somemsg, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+                                server.FlushSendQueue();
 
                                 if (data == "exit")
                                 {
