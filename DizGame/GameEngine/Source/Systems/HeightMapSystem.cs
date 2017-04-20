@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using GameEngine.Source.Components.Interface;
+
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Objects;
