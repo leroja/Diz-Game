@@ -1,5 +1,7 @@
 ﻿using DizGame.Source.Systems;
 using Lidgren.Network;
+using GameEngine.Source.Managers;
+using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -33,6 +35,7 @@ namespace DizGame
         {
             client.DiscoverLocalPeers();
 
+            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             base.Initialize();
         }
 

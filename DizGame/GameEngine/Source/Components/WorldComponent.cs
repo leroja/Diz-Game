@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using GameEngine.Source.Components.Interface;
 
 namespace GameEngine.Source.Components
 {
@@ -39,7 +38,7 @@ namespace GameEngine.Source.Components
             Minute = 0;
             Second = 0;
             Millisecond = 0;
-            DefineHour = 1;
+            DefineHour = 20;
         }
 
     }

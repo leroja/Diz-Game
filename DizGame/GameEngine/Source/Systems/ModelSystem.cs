@@ -18,18 +18,21 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            DrawModel();
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            {
+                DrawModel(entityID);
+            }
         }
         /// <summary>
         /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo
         /// applies properties to the effects and then draw the parts.
         /// </summary>
-        private void DrawModel()
+        /// <param name="entityID"></param>
+        private void DrawModel(int entityID)
         {
             WorldComponent world = (WorldComponent)ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>()[0];
            
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-            {
+
                 ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
                 CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
@@ -40,20 +43,19 @@ namespace GameEngine.Source.Systems
                 model.Model.CopyAbsoluteBoneTransformsTo(model.MeshWorldMatrices);
                 foreach (ModelMesh mesh in model.Model.Meshes)
                 {
-                    foreach (BasicEffect effect in mesh.Effects)
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
+
+                    effect.View = camera.View;
+                    effect.Projection = camera.Projection;
+
+                    effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
+                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                     {
-                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
-
-                        effect.View = camera.View;
-                        effect.Projection = camera.Projection;
-
-                        effect.EnableDefaultLighting();
-                        effect.PreferPerPixelLighting = true;
-                        foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                        {
-                            pass.Apply();
-                            mesh.Draw();
-                        }
+                        pass.Apply();
+                        mesh.Draw();
                     }
                 }
             }
