@@ -4,6 +4,7 @@ using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,16 +25,23 @@ namespace DizGame
         /// </summary>
         public void CreateSexyWomanSoldier()
         {
+            
             int entityID = ComponentManager.Instance.CreateID();
             Model sonya = Content.Load<Model>("sonya/Sonya");
 
+            KeyBoardComponent keys = new KeyBoardComponent();
+            keys.KeyBoardActions.Add("Forward", Keys.Up);
+            keys.KeyBoardActions.Add("Backwards", Keys.Down);
+            keys.KeyBoardActions.Add("Right", Keys.Right);
+            keys.KeyBoardActions.Add("Left", Keys.Left);
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,0,0), new Vector3(0.07f,0.07f,0.07f)),
+                new TransformComponent(new Vector3(0,0,-20), new Vector3(1,1,1)),
                 new ModelComponent(sonya),
                 new WorldComponent(Matrix.Identity),
-                new CameraComponent(CameraType.Chase)
+                new CameraComponent(CameraType.Chase),
+                keys,
             };
 
             //TODO: need to add keyboard components and such to assign controllers to the model.

@@ -46,8 +46,8 @@ namespace GameEngine.Source.Systems
             if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
                 defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
 
-            if (defaultCam.CameraFrustrum.Intersects(model.BoundingSphere))
-            {
+            //if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
+            //{
 
                 if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                     model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
@@ -71,7 +71,7 @@ namespace GameEngine.Source.Systems
                         }
                     }
                 }
-            }
+            //}
         }
     }
 }
