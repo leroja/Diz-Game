@@ -22,7 +22,8 @@ namespace GameEngine.Source.Systems
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
                if(camera != null || transform != null)
                 {
-                    UpdateCameraAfterType(camera, transform);
+                    //TODO: Take a look at this, some kind of bugg model disappears when adding the camera the ypdates does not seam to work correctly.
+                    //UpdateCameraAfterType(camera, transform);
                     camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
                     camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
                 }

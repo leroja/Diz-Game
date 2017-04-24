@@ -37,8 +37,8 @@ namespace GameEngine.Source.Systems
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
                 CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
 
-            if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
-            {
+            //if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
+            //{
 
                 if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                     model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
@@ -62,7 +62,7 @@ namespace GameEngine.Source.Systems
                         }
                     }
                 }
-            }
+            //}
         }
     }
 }
