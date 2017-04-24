@@ -19,5 +19,15 @@ namespace GameEngine.Source.Components
             State = new Dictionary<String, ButtonStates>();
             
         }
+
+        public void AddActionAndKey(string action, Keys Key)
+        {
+            KeyBoardActions.Add(action, Key);
+        }
+
+        public ButtonStates GetState(string action)
+        {
+            return State[action];
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace DizGame
         /// <summary>
         /// Method for creating one of the many (maybe) player models. 
         /// </summary>
-        public void createSexyWomanSoldier()
+        public void CreateSexyWomanSoldier()
         {
             int entityID = ComponentManager.Instance.CreateID();
             Model sonya = Content.Load<Model>("sonya/Sonya");
@@ -39,6 +39,17 @@ namespace DizGame
             //TODO: need to add keyboard components and such to assign controllers to the model.
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
+        }
+
+        public void CreateBullet(Model model)
+        {
+            int BulletEntity = ComponentManager.Instance.CreateID();
+
+            List<IComponent> componentList = new List<IComponent>()
+            {
+
+            };
+            
         }
     }
 }

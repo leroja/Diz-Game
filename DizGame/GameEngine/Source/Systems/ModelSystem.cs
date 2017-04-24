@@ -11,12 +11,22 @@ namespace GameEngine.Source.Systems
 {
     public class ModelSystem : IRender
     {
+        WorldComponent world;
+        CameraComponent defaultCam;
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
+            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+            world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+            //Check for all entities with a camera
+            List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
+            //pick one
+            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
             {
                 DrawModel(entityID);
@@ -29,15 +39,14 @@ namespace GameEngine.Source.Systems
         /// <param name="entityID"></param>
         private void DrawModel(int entityID)
         {
-            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
-            WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
-           
 
-                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
-                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-                CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
+            ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
+            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
 
-            if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
+            if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
+                defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
+
+            if (defaultCam.CameraFrustrum.Intersects(model.BoundingSphere))
             {
 
                 if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
@@ -50,8 +59,8 @@ namespace GameEngine.Source.Systems
                     {
                         effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
 
-                        effect.View = camera.View;
-                        effect.Projection = camera.Projection;
+                        effect.View = defaultCam.View;
+                        effect.Projection = defaultCam.Projection;
 
                         effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;

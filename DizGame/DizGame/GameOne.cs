@@ -35,7 +35,7 @@ namespace DizGame
         {
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content);
-            entf.createSexyWomanSoldier();
+            entf.CreateSexyWomanSoldier();
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());
