@@ -20,7 +20,7 @@ namespace DizGame
 
             client = new NetworkSystem();
             client.RunClient();
-            
+            Content.RootDirectory = "Content";
 
 
         }
@@ -34,8 +34,14 @@ namespace DizGame
         protected override void Initialize()
         {
             client.DiscoverLocalPeers();
+            EntityFactory entf = new EntityFactory(Content);
+            entf.createSexyWomanSoldier();
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
+            SystemManager.Instance.AddSystem(new ModelSystem());
+            SystemManager.Instance.AddSystem(new TransformSystem());
+
+
             base.Initialize();
         }
 

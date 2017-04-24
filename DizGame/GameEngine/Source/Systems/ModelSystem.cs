@@ -29,11 +29,13 @@ namespace GameEngine.Source.Systems
         /// <param name="entityID"></param>
         private void DrawModel(int entityID)
         {
-            WorldComponent world = (WorldComponent)ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>()[0];
+            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+            WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+           
 
-            ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
-            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-            CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
+                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
+                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+                CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
 
             if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
             {

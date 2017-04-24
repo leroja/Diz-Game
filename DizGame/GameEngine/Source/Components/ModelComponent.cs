@@ -16,5 +16,10 @@ namespace GameEngine.Source.Components
         public BoundingSphere BoundingSphere { get; set; }
         public bool IsStatic { get; set; }
         #endregion Public Properties
+
+        public ModelComponent(Model model)
+        {
+            Model = model;
+        }
     }
 }
