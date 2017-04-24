@@ -13,7 +13,7 @@ namespace GameEngine
     {
         public GraphicsDeviceManager Graphics { get; set; }
         public SpriteBatch SpriteBatch { get; set; }
-        public GraphicsDevice Device { get; set; }
+        public static GraphicsDevice Device { get; set; } 
 
         public GameEngine()
         {
