@@ -47,6 +47,8 @@ namespace DizGame
             //TODO: need to add keyboard components and such to assign controllers to the model.
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
+
+            //ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {new TransformComponent(new Vector3(0, 0, 40), Vector3.One), new CameraComponent(CameraType.StaticCam) });
         }
 
         public void CreateBullet(Model model)

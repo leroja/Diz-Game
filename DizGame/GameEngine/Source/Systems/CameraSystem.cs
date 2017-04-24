@@ -22,9 +22,10 @@ namespace GameEngine.Source.Systems
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
                if(camera != null || transform != null)
                 {
-                    //TODO: Take a look at this, some kind of bugg model disappears when adding the camera the ypdates does not seam to work correctly.
-                    //UpdateCameraAfterType(camera, transform);
+                    //TODO: Take a look at this, static cam takes alot of fps
+                    UpdateCameraAfterType(camera, transform);
                     camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
+                    // TODO skapa ett frustrum som är lite större än det verkliga "camera.View * camera.Projection"
                     camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
                 }
             }
@@ -48,9 +49,10 @@ namespace GameEngine.Source.Systems
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.Chase:
-                    Vector3 transformedOffset = Vector3.Transform(camera.Offset, Matrix.CreateFromQuaternion(transform.QuaternionRotation));
+                    var rot = Matrix.CreateFromQuaternion(transform.QuaternionRotation);
+                    Vector3 transformedOffset = Vector3.Transform(camera.Offset, rot);
                     Vector3 camPos = transform.Position + transformedOffset;
-                    Vector3 up = Vector3.Transform(Vector3.Up, Matrix.CreateFromQuaternion(transform.QuaternionRotation));
+                    Vector3 up = Vector3.Transform(Vector3.Up, rot);
                     camera.View = Matrix.CreateLookAt(camPos, transform.Position, up);
                     break;
                 default:

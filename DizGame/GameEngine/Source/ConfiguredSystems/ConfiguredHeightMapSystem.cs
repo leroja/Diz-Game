@@ -38,6 +38,7 @@ namespace GameEngine.Source.ConfiguredSystems
 
             HeightMapObject hmobj1 = new HeightMapObject()
             {
+                // det ska inte finnas något i Content Mappen i enginen
                 scaleFactor = 1.0f,
                 terrainMapName = "Content/HeightMaps/heightmap.png",
             };
