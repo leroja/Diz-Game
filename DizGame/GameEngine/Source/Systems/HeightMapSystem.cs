@@ -77,8 +77,8 @@ namespace GameEngine.Source.Systems
             cmp.indices = new int[indexCount];
 
             //to be set when we have decided where and when...
-            //vertexBuffer = new VertexBuffer(gd, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
-            //indexBuffer = new IndexBuffer(gd, typeof(int), indexCount, BufferUsage.None);
+            cmp.vertexBuffer = new VertexBuffer(GameEngine.Device, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
+            cmp.indexBuffer = new IndexBuffer(GameEngine.Device, typeof(int), indexCount, BufferUsage.None);
         }
 
         private void SetUpVertices()

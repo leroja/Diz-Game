@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
+    <Compile Include="Source\ConfigureSystems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
     <Compile Include="Source\Systems\HeightMapSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsType.cs" />
