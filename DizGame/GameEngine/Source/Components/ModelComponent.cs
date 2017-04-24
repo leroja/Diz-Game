@@ -14,5 +14,10 @@ namespace GameEngine.Source.Components
         public Model Model { get; set; }
         public Matrix[] MeshWorldMatrices { get; set; }
         #endregion Public Properties
+
+        public ModelComponent(Model model)
+        {
+            Model = model;
+        }
     }
 }

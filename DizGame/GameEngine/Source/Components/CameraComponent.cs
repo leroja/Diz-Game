@@ -38,8 +38,9 @@ namespace GameEngine.Source.Components
        public CameraType CameraType { get; set; }
 
         #endregion Public Propterties
-        public CameraComponent()
+        public CameraComponent(CameraType type)
         {
+
             FieldOfView = DEFAULT_FOV;
             AspectRatio = DEFAULT_ARATIO;
             NearPlane = DEFAULT_ZNEAR;
@@ -49,7 +50,12 @@ namespace GameEngine.Source.Components
             Projection = Matrix.Identity;
 
             LookAt = Vector3.Zero;
-            Offset = DEFAULT_STATIC;
+            if(type == CameraType.Chase)
+                Offset = DEFAULT_CHASE;
+            if (type == CameraType.Pov)
+                Offset = DEFAULT_POV;
+            else
+                Offset = DEFAULT_STATIC;
         }
     }
 }
