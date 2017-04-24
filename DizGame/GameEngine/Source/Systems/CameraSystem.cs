@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.Systems.Abstract_classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +24,7 @@ namespace GameEngine.Source.Systems
                 {
                     UpdateCameraAfterType(camera, transform);
                     camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
+                    camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
                 }
             }
         }

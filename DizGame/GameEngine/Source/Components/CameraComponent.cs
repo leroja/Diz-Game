@@ -35,6 +35,8 @@ namespace GameEngine.Source.Components
         public Vector3 LookAt { get; set; }
         public Vector3 Offset { get; set; }
 
+        public BoundingFrustum CameraFrustrum { get; set; }
+
        public CameraType CameraType { get; set; }
 
         #endregion Public Propterties

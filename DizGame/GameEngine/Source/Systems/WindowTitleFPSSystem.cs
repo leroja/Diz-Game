@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.Systems.Abstract_classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// A basic system that writes the current FPS in the window title of the game
+    /// </summary>
     public class WindowTitleFPSSystem : IUpdate
     {
         private Game g;

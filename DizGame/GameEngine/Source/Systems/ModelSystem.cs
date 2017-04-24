@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.Systems.Abstract_classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,11 +30,13 @@ namespace GameEngine.Source.Systems
         private void DrawModel(int entityID)
         {
             WorldComponent world = (WorldComponent)ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>()[0];
-           
 
-                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
-                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-                CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
+            ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
+            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+            CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
+
+            if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
+            {
 
                 if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                     model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
@@ -43,19 +44,20 @@ namespace GameEngine.Source.Systems
                 model.Model.CopyAbsoluteBoneTransformsTo(model.MeshWorldMatrices);
                 foreach (ModelMesh mesh in model.Model.Meshes)
                 {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
-
-                    effect.View = camera.View;
-                    effect.Projection = camera.Projection;
-
-                    effect.EnableDefaultLighting();
-                    effect.PreferPerPixelLighting = true;
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                    foreach (BasicEffect effect in mesh.Effects)
                     {
-                        pass.Apply();
-                        mesh.Draw();
+                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
+
+                        effect.View = camera.View;
+                        effect.Projection = camera.Projection;
+
+                        effect.EnableDefaultLighting();
+                        effect.PreferPerPixelLighting = true;
+                        foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                        {
+                            pass.Apply();
+                            mesh.Draw();
+                        }
                     }
                 }
             }

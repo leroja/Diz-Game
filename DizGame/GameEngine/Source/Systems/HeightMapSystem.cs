@@ -1,4 +1,4 @@
-﻿using GameEngine.Source.Systems.Abstract_classes;
+﻿using GameEngine.Source.Systems;
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -61,14 +61,14 @@ namespace GameEngine.Source.Systems
                     scaleFactor = hmobj.scaleFactor
                 };
 
-                initBuffers(cmp);
+                InitBuffers(cmp);
 
                 hmobjects[index].entityId = entityId;
                 ComponentManager.Instance.AddComponentToEntity(entityId, cmp);
             }
         }
 
-        private void initBuffers(HeightMapComponent cmp)
+        private void InitBuffers(HeightMapComponent cmp)
         {
             int vertexCount = cmp.terrainWidth * cmp.terrainHeight;
             int indexCount = (cmp.terrainWidth - 1) * (cmp.terrainHeight - 1) * 6;

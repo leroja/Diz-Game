@@ -1,5 +1,4 @@
 ﻿using System;
-using GameEngine.Source.Systems.Abstract_classes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +16,7 @@ namespace GameEngine.Source.Systems
         public KeyboardState CurState { get; set; }
 
         /// <summary>
-        /// 
+        /// Updates the action states of all the keyboard components
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
@@ -46,7 +45,7 @@ namespace GameEngine.Source.Systems
         /// updates the states of all the Keyboard actions in a keyboard Component
         /// </summary>
         /// <param name="keyboardComp"></param>
-        public void UpdateActionStates(KeyBoardComponent keyboardComp)
+        private void UpdateActionStates(KeyBoardComponent keyboardComp)
         {
 
             foreach (string action in keyboardComp.KeyBoardActions.Keys)
