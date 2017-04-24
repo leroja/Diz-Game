@@ -58,7 +58,8 @@ namespace GameEngine.Source.Systems
                     terrainMapName = hmobj.terrainMapName,
                     terrainHeight = hmobj.terrainHeight,
                     terrainWidth = hmobj.terrainWidth,
-                    scaleFactor = hmobj.scaleFactor
+                    scaleFactor = hmobj.scaleFactor,
+                     
                 };
 
                 initBuffers(cmp);
@@ -77,8 +78,8 @@ namespace GameEngine.Source.Systems
             cmp.indices = new int[indexCount];
 
             //to be set when we have decided where and when...
-            cmp.vertexBuffer = new VertexBuffer(GameEngine.Device, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
-            cmp.indexBuffer = new IndexBuffer(GameEngine.Device, typeof(int), indexCount, BufferUsage.None);
+            //cmp.vertexBuffer = new VertexBuffer(GameEngine.Device, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
+            //cmp.indexBuffer = new IndexBuffer(GameEngine.Device, typeof(int), indexCount, BufferUsage.None);
         }
 
         private void SetUpVertices()
@@ -119,7 +120,7 @@ namespace GameEngine.Source.Systems
             Vector3 v1 = Vector3.Zero;
             Vector3 v2 = Vector3.Zero;
 
-            foreach (HeightMapComponent cmp in heightmapComponents)
+            foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
                 for (int y = 0; y < cmp.terrainHeight - 1; y++)
                 {
                     for (int x = 0; x < cmp.terrainWidth - 1; x++)

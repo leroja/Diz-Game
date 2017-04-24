@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
-    <Compile Include="Source\ConfigureSystems\ConfiguredHeightMapSystem.cs" />
+    <Compile Include="Source\ConfiguredSystems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
     <Compile Include="Source\Systems\HeightMapSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsType.cs" />
@@ -90,15 +90,20 @@
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\HeightMaps\heightmap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
