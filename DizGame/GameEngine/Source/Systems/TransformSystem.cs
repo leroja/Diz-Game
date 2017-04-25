@@ -22,16 +22,30 @@ namespace GameEngine.Source.Systems
             foreach (var entity in mc)
             {
                 TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
-                var rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, tfc.Rotation.X, tfc.Rotation.Z);
-
-                tfc.QuaternionRotation *= rotationQuaternion;
-                tfc.Forward = Vector3.Transform(Vector3.Forward, tfc.QuaternionRotation);
-                var up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
-                var right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
-
-                tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale) * Matrix.CreateFromQuaternion(tfc.QuaternionRotation) * Matrix.CreateTranslation(tfc.Position);
+                CalculateTransformComponent(tfc);
             }
+            Dictionary<int, IComponent> animationEntities = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<AnimationComponent>();
 
+            foreach (var ent in animationEntities)
+            {
+                AnimationComponent ac = ComponentManager.GetEntityComponent<AnimationComponent>(ent.Key);
+                foreach (var tfc in ac.AnimationTransforms)
+                {
+                    CalculateTransformComponent(tfc.Value);
+                }
+            }
+        }
+        private void CalculateTransformComponent(TransformComponent tfc)
+        {
+            
+            var rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, tfc.Rotation.X, tfc.Rotation.Z);
+
+            tfc.QuaternionRotation *= rotationQuaternion;
+            tfc.Forward = Vector3.Transform(Vector3.Forward, tfc.QuaternionRotation);
+            var up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
+            var right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
+
+            tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale) * Matrix.CreateFromQuaternion(tfc.QuaternionRotation) * Matrix.CreateTranslation(tfc.Position);
         }
     }
 }

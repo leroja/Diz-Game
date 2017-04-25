@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\Components\AnimationComponent.cs" />
     <Compile Include="Source\Components\BoundingBoxComponent.cs" />
     <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Source\Components\ModelComponent.cs" />
     <Compile Include="Source\Components\TransformComponent.cs" />
     <Compile Include="Source\Components\WorldComponent.cs" />
+    <Compile Include="Source\Enums\AnimationState.cs" />
     <Compile Include="Source\Enums\ButtonStates.cs" />
     <Compile Include="Source\Enums\CameraType.cs" />
     <Compile Include="Source\Managers\AudioManager.cs" />
