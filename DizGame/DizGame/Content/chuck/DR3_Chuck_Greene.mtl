@@ -1,0 +1,231 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 10.01.2015 00:05:34
+
+newmtl Material__26
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_boot_cm.tga
+	map_Kd cast_04_boot_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__27
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_torso_cm.tga
+	map_Kd cast_04_torso_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__28
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_eye_cm.tga
+	map_Kd cast_04_eye_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__29
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_hand_cm.tga
+	map_Kd cast_04_hand_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__30
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_head_cm.tga
+	map_Kd cast_04_head_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__31
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_jacket_cm.tga
+	map_Kd cast_04_jacket_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__32
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_knife_shirt_cm.tga
+	map_Kd cast_04_knife_shirt_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__33
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_pants_cm.tga
+	map_Kd cast_04_pants_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__34
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka default_tongue_cm.tga
+	map_Kd default_tongue_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__35
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka default_teeth_cm.tga
+	map_Kd default_teeth_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__36
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_hair_cm.tga
+	map_Kd cast_04_hair_cm.tga
+	map_d cast_04_hair_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__37
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_newhair_cm.tga
+	map_Kd cast_04_newhair_cm.tga
+	map_d cast_04_newhair_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__38
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_patches00_cm.tga
+	map_Kd cast_04_patches00_cm.tga
+	map_d cast_04_patches00_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__39
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka cast_04_zipper_cm.tga
+	map_Kd cast_04_zipper_cm.tga
+	map_d cast_04_zipper_cm.tga
+	map_bump Normal_Bump_Normal_Bump.tga
+
+newmtl Material__40
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.588000 0.588000 0.588000
+	Kd 0.588000 0.588000 0.588000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka default_eyelash_cm.tga
+	map_Kd default_eyelash_cm.tga
+	map_d default_eyelash_cm.tga

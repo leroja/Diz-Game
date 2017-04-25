@@ -13,6 +13,13 @@ namespace GameEngine.Source.Components
         #region Public Properties
         public Model Model { get; set; }
         public Matrix[] MeshWorldMatrices { get; set; }
+        public BoundingSphere BoundingSphere { get; set; }
+        public bool IsStatic { get; set; }
         #endregion Public Properties
+
+        public ModelComponent(Model model)
+        {
+            Model = model;
+        }
     }
 }

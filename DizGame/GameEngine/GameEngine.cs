@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Managers;
+﻿using GameEngine.Source.ConfiguredSystems;
+using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +14,7 @@ namespace GameEngine
     {
         public GraphicsDeviceManager Graphics { get; set; }
         public SpriteBatch SpriteBatch { get; set; }
-        public GraphicsDevice Device { get; set; }
+        public GraphicsDevice Device { get; set; } 
 
         public GameEngine()
         {
@@ -35,9 +36,11 @@ namespace GameEngine
         /// </summary>
         protected override void Initialize()
         {
-            
-
             base.Initialize();
+            Device = Graphics.GraphicsDevice;
+            //This system is not fully tested yet -so uncomment the line below at your risk.
+            //ConfiguredHeightMapSystem cfgHeightmapSystem = new ConfiguredHeightMapSystem(Device);
+
         }
 
         /// <summary>
@@ -46,9 +49,7 @@ namespace GameEngine
         /// </summary>
         protected override void LoadContent()
         {
-
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-
 
         }
 

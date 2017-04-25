@@ -20,7 +20,7 @@ namespace DizGame
 
             client = new NetworkSystem();
             client.RunClient();
-            
+            Content.RootDirectory = "Content";
 
 
         }
@@ -34,8 +34,21 @@ namespace DizGame
         protected override void Initialize()
         {
             client.DiscoverLocalPeers();
+            EntityFactory entf = new EntityFactory(Content);
+            //entf.CreateDefaultCamera();
+            entf.CreateChuckGreen();
+            entf.CreateKitana();
+            Model bullet = Content.Load<Model>("bullet");
+            //entf.CreateBullet(bullet, new Vector3(10,10,10), new );
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
+            SystemManager.Instance.AddSystem(new ModelSystem());
+            SystemManager.Instance.AddSystem(new TransformSystem());
+            SystemManager.Instance.AddSystem(new KeyBoardSystem());
+            SystemManager.Instance.AddSystem(new MovingSystem());
+            SystemManager.Instance.AddSystem(new CameraSystem());
+
+
             base.Initialize();
         }
 
@@ -56,6 +69,19 @@ namespace DizGame
         {
 
         }
+
+        //protected override void Update(GameTime gameTime)
+        //{
+        //    client.ReadMessages();
+        //    for(var i = 1; i < 10000; i++)
+        //    {
+        //        if(i % 4 == 0)
+        //        {
+        //            client.SendMessage("What's my name?");
+        //        }
+        //    }
+            
+        //}
 
 
     }

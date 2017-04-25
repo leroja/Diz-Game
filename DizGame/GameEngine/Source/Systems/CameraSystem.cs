@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.Systems.Abstract_classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,8 +22,11 @@ namespace GameEngine.Source.Systems
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
                if(camera != null || transform != null)
                 {
+                    //TODO: Take a look at this, static cam takes alot of fps
                     UpdateCameraAfterType(camera, transform);
                     camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
+                    // TODO skapa ett frustrum som är lite större än det verkliga "camera.View * camera.Projection"
+                    camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
                 }
             }
         }
@@ -43,13 +45,14 @@ namespace GameEngine.Source.Systems
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.StaticCam:
-                    camera.LookAt = transform.Position;
+                    //camera.LookAt = transform.Position;
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.Chase:
-                    Vector3 transformedOffset = Vector3.Transform(camera.Offset, Matrix.CreateFromQuaternion(transform.QuaternionRotation));
+                    var rot = Matrix.CreateFromQuaternion(transform.QuaternionRotation);
+                    Vector3 transformedOffset = Vector3.Transform(camera.Offset, rot);
                     Vector3 camPos = transform.Position + transformedOffset;
-                    Vector3 up = Vector3.Transform(Vector3.Up, Matrix.CreateFromQuaternion(transform.QuaternionRotation));
+                    Vector3 up = Vector3.Transform(Vector3.Up, rot);
                     camera.View = Matrix.CreateLookAt(camPos, transform.Position, up);
                     break;
                 default:

@@ -277,7 +277,7 @@ namespace GameEngine.Source.Managers
 
             if (compDic.ContainsKey(type))
             {
-                return compDic[type]; ;
+                return compDic[type]; 
             }
             return defaultDictionary;
         }

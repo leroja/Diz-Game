@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameEngine.Source.Systems.Abstract_classes
+namespace GameEngine.Source.Systems
 {
     public abstract class IUpdate : ISystem
     {

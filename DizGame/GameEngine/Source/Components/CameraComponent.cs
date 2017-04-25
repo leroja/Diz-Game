@@ -18,7 +18,7 @@ namespace GameEngine.Source.Components
         #endregion Public Constants
 
         #region CameraOffsets
-        public readonly static Vector3 DEFAULT_CHASE = new Vector3(0, 4, 8);
+        public readonly static Vector3 DEFAULT_CHASE = new Vector3(0, 25, 20);
         public readonly static Vector3 DEFAULT_POV = new Vector3(0, 2, 0);
         public readonly static Vector3 DEFAULT_STATIC = Vector3.Zero;
         #endregion CameraOffsets
@@ -35,11 +35,14 @@ namespace GameEngine.Source.Components
         public Vector3 LookAt { get; set; }
         public Vector3 Offset { get; set; }
 
+        public BoundingFrustum CameraFrustrum { get; set; }
+
        public CameraType CameraType { get; set; }
 
         #endregion Public Propterties
-        public CameraComponent()
+        public CameraComponent(CameraType type)
         {
+
             FieldOfView = DEFAULT_FOV;
             AspectRatio = DEFAULT_ARATIO;
             NearPlane = DEFAULT_ZNEAR;
@@ -47,9 +50,17 @@ namespace GameEngine.Source.Components
 
             View = Matrix.Identity;
             Projection = Matrix.Identity;
+            this.CameraType = type;
 
             LookAt = Vector3.Zero;
-            Offset = DEFAULT_STATIC;
+            if (type == CameraType.Chase)
+                Offset = DEFAULT_CHASE;
+            else if (type == CameraType.Pov)
+                Offset = DEFAULT_POV;
+            else
+            {
+                Offset = DEFAULT_STATIC;
+            }
         }
     }
 }

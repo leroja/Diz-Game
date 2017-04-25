@@ -66,6 +66,52 @@ namespace DizGame.Source.Systems
             // Might wanna use different delivery method
             client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
             client.FlushSendQueue();
+                        
+        }
+
+        /// <summary>
+        /// Method for reading incoming messages from the server, if there is any.
+        /// Unknown message types results in a printed message with the messagetype.
+        /// </summary>
+        public void ReadMessages()
+        {
+            NetIncomingMessage message;
+            
+
+            //TODO: add functionallity for the different messagetypes, some information might be needed to be broadcasted to other clients
+            
+            while ((message = client.ReadMessage()) != null)
+            {
+                switch (message.MessageType)
+                {
+                    case NetIncomingMessageType.DiscoveryRequest:
+                        //
+                        // Server received a discovery request from a client; send a discovery response (with no extra data attached)
+                        //
+                        client.SendDiscoveryResponse(null, message.SenderEndPoint);
+                        break;
+                    case NetIncomingMessageType.Data:
+                        {
+                            Console.WriteLine("Client got a message!");
+                            var data = message.ReadString();
+                            Console.WriteLine(data);
+
+                           
+                            break;
+                        }
+                    case NetIncomingMessageType.DebugMessage:
+                        Console.WriteLine(message.ReadString());
+                        break;
+                    case NetIncomingMessageType.StatusChanged:
+                        Console.WriteLine(message.ReadString());
+                        break;
+                    default:
+                        Console.WriteLine("Unhandled message type: {message.MessageType}");
+                        break;
+                }
+                client.Recycle(message);
+            }
+            
 
             
         }
