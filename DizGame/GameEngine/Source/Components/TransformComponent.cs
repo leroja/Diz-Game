@@ -26,6 +26,7 @@ namespace GameEngine.Source.Components
 
         public Matrix ObjectMatrix { get; set; }
 
+        public Matrix RotationMatrix { get; set; }
 
         public TransformComponent(Vector3 position, Vector3 scale)
         {
@@ -34,6 +35,16 @@ namespace GameEngine.Source.Components
             Dirrection = Vector3.Zero;
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;
+            this.RotationMatrix = Matrix.Identity;
+        }
+
+        public TransformComponent(Vector3 position, Vector3 scale, Matrix rotationMatrix)
+        {
+            this.Position = position;
+            this.Scale = scale;
+            this.QuaternionRotation = Quaternion.Identity;
+            this.Orientation = Quaternion.Identity;
+            this.RotationMatrix = rotationMatrix;
         }
     }
 }
