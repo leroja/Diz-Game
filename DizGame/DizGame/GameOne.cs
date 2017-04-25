@@ -35,7 +35,9 @@ namespace DizGame
         {
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content);
-            entf.CreateSexyWomanSoldier();
+            //entf.CreateDefaultCamera();
+            entf.CreateChuckGreen();
+            entf.CreateKitana();
             Model bullet = Content.Load<Model>("bullet");
             //entf.CreateBullet(bullet, new Vector3(10,10,10), new );
 
