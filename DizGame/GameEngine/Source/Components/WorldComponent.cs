@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Components
 {
@@ -27,6 +28,10 @@ namespace GameEngine.Source.Components
         /// Defines the hour by ingame seconds
         /// </summary>
         public int DefineHour { get; set; }
+        public AirTemperatur Temperatur { get; set; }
+        public Vector3 Wind { get; set; }
+        public Vector3 Gravity { get; set; }
+
         #endregion Public Properties
 
         public WorldComponent(Matrix world)
@@ -39,6 +44,9 @@ namespace GameEngine.Source.Components
             Second = 0;
             Millisecond = 0;
             DefineHour = 20;
+            Temperatur = AirTemperatur.Plus20;
+            Wind = Vector3.Zero;
+            Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
         }
 
     }

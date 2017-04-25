@@ -20,22 +20,58 @@ namespace DizGame.Source.Systems
             {
                 KeyBoardComponent key = ComponentManager.GetEntityComponent<KeyBoardComponent>(entity.Key);
                 TransformComponent trans = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
+                PhysicsComponent phys = ComponentManager.GetEntityComponent<PhysicsComponent>(entity.Key);
+
+                Vector3 move = Vector3.Zero;
 
                 if (key.State["Forward"] == ButtonStates.Hold)
                 {
-                    trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (phys != null)
+                        move += Vector3.Forward + new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    else
+                        trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                    trans.Dirrection = Vector3.Forward;
                 }
                 if (key.State["Backwards"] == ButtonStates.Hold)
                 {
-                    trans.Position -= trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (phys != null)
+                        move += Vector3.Backward + new Vector3(0, 0, (phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    else
+                        trans.Position -= trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                    trans.Dirrection = Vector3.Backward;
                 }
                 if (key.State["Left"] == ButtonStates.Hold)
                 {
-                    trans.Position -= trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (phys != null)
+                        move += Vector3.Left + new Vector3(-(phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0);
+                    else
+                        trans.Position -= trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                    trans.Dirrection = Vector3.Left;
                 }
                 if (key.State["Right"] == ButtonStates.Hold)
                 {
-                    trans.Position += trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (phys != null)
+                        move += Vector3.Right + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0);
+                    else
+                        trans.Position += trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                    trans.Dirrection = Vector3.Right;
+                }
+                if (key.State["Up"] == ButtonStates.Hold)
+                {
+                    if (phys != null)
+                        move += Vector3.Up + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
+                    trans.Dirrection = Vector3.Up;
+                }
+                if (phys != null)
+                {
+                    phys.Forces += move;
+                    if (move == Vector3.Zero)
+                    {
+                        phys.IsMoving = false;
+                        phys.IsFalling = true;
+                    }
+                    else
+                        phys.IsMoving = true;
                 }
 
             }

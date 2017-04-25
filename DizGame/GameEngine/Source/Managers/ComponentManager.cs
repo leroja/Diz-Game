@@ -104,6 +104,7 @@ namespace GameEngine.Source.Managers
         /// <param name="component"></param>
         public void AddComponentToEntity(int entityID, IComponent component)
         {
+            component.ID = entityID;
             Type type = component.GetType();
 
             if (!compDic.ContainsKey(type))
@@ -123,6 +124,7 @@ namespace GameEngine.Source.Managers
         {
             foreach (var comp in componentList)
             {
+                comp.ID = entityID;
                 Type type = comp.GetType();
                 if (!compDic.ContainsKey(type))
                 {

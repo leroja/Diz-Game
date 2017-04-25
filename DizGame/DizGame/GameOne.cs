@@ -45,6 +45,8 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
+            SystemManager.Instance.AddSystem(new PhysicsSystem());
+            SystemManager.Instance.AddSystem(new EnvironmentSystem());
 
 
             base.Initialize();

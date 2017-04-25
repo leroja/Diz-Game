@@ -43,9 +43,11 @@
   <ItemGroup>
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
     <Compile Include="Source\ConfiguredSystems\ConfiguredHeightMapSystem.cs" />
+    <Compile Include="Source\Enums\Air.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
+    <Compile Include="Source\Systems\EnvironmentSystem.cs" />
     <Compile Include="Source\Systems\HeightMapSystem.cs" />
-    <Compile Include="Source\Systems\ModelBoudingSphereSystem.cs" />
+    <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsType.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsProjectilesSystem.cs" />

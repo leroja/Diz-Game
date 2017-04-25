@@ -9,7 +9,7 @@ using GameEngine.Source.Systems;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsSystem : IUpdate
+    public class PhysicsSystem : IUpdate, IObserver<List<Tuple<BoundingSphereComponent, BoundingSphereComponent>>>
     {
         private float frameCount = 0;
         private float timeSinceLastUpdate = 0;
@@ -50,9 +50,12 @@ namespace GameEngine.Source.Systems
                 UpdateMaxAcceleration(physic);
                 UpdateLinearAcceleration(physic, dt);
                 UpdateLinearVelocity(physic, dt);
-                UpdateReflection(physic, dt);
 
                 UpdatePhysicComponentByType(entityID, dt);
+                //Console.WriteLine("Forces: " + physic.Forces);
+                Console.WriteLine("Velocity: " + physic.Velocity);
+                if (!physic.IsMoving)
+                    UpdateLinearDeceleration(physic, dt);
             }
         }
         /// <summary>
@@ -104,7 +107,6 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         private void UpdateLinearAcceleration(PhysicsComponent physic, float dt)
         {
-            //physic.Acceleration = (physic.Velocity / dt);
             physic.Acceleration = physic.Forces / physic.Mass;
         }
         /// <summary>
@@ -116,21 +118,42 @@ namespace GameEngine.Source.Systems
         {
             physic.Velocity += physic.Acceleration * dt;
         }
+        private void UpdateLinearDeceleration(PhysicsComponent physic, float dt)
+        {
+            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+            WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
 
-        //TODO: UpdateReflection
+            Vector3 f = physic.Velocity;
+            if (physic.Velocity != Vector3.Zero)
+                f -= (physic.Velocity - physic.InitialVelocity) / dt;
+            if (f.X < 0)
+                f.X = 0;
+            if (f.Z < 0)
+                f.Z = 0;
+            if(physic.IsFalling)
+            {
+                physic.Forces = new Vector3(physic.Forces.X, world.Gravity.Y, physic.Forces.Z);
+            }
+            physic.Velocity = new Vector3(f.X, physic.Velocity.Y, f.X);
+        }
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdateReflection(PhysicsComponent physic, float dt)
+        private void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
         {
-            // ratioa = Mb / (Ma + Mb)                  (Mass)
-            // ratiob = Ma / (Ma + Mb)                  (Mass)
-            // Vr = Va - Vb                             (Va,Vb = Velocity)
-            // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)     (e = coefficients) (N = surfaceNormal) (Vr = Velocity) (Ma,Mb = Mass)
-            // Va - = I * 1/Ma                          (Velo = I / mass)          
-            // Vb + = I * 1/Mb                          (Velo = I / mass)
+           int N = 1; //dunno
+           int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
+
+
+            float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
+            float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
+            Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
+            Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
+
+            target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
+            hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
         }
         /// <summary>
         /// Updates maxacceleration in Meters per second each second 
@@ -156,6 +179,22 @@ namespace GameEngine.Source.Systems
                 frameCount = 0;
                 timeSinceLastUpdate -= updateInterval;
             }
+        }
+
+        public void OnNext(List<Tuple<BoundingSphereComponent, BoundingSphereComponent>> value)
+        {
+            foreach (var val in value)
+                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.ID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.ID));
+        }
+
+        public void OnError(Exception error)
+        {
+            //TODO: OnError
+        }
+
+        public void OnCompleted()
+        {
+            //TODO: OnCompleted
         }
     }
 }

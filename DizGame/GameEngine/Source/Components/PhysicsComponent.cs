@@ -8,6 +8,9 @@ namespace GameEngine.Source.Components
     {
         #region Public Constants
         public const float DEFAULT_GRAVITY = 9.80665f;
+        public const float DEFAULT_BICEPSFORCE = 500; // in Newton(in kilogram 50kg)
+        public const float DEFAULT_LEGFORCE = 3000;  //  in NewTon(in kilogram 3000kg)
+        public const float DEFAULT_WALKFORCE = 1000; 
         #endregion Public Constants
         #region Public Configuration
         /// <summary>
@@ -23,6 +26,7 @@ namespace GameEngine.Source.Components
         /// Defines maxacceleration in Meters per second each second 
         /// divided by FPS to give meters per second each frame.
         /// </summary>
+        public Vector3 InitialVelocity { get; set; }
         public Vector3 MaxAcceleration { get; set; }
         /// <summary>
         /// Maximum force in X,Y,Z in newtones (kilogram meter per second each second).
@@ -30,6 +34,11 @@ namespace GameEngine.Source.Components
         public Vector3 Forces { get; set; }
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
+        public DragType DragType { get; set; }
+        public float ReferenceArea { get; set; }
+
+        public bool IsMoving { get; set; } //TODO: Skall inte ligga här
+        public bool IsFalling { get; set; } //TODO: Skall inte ligga här
         #endregion Public Configuration
 
         public PhysicsComponent()
@@ -38,11 +47,16 @@ namespace GameEngine.Source.Components
 
             Acceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
+            InitialVelocity = Vector3.Zero;
 
             Forces += DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
-
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;
+            DragType = DragType.Default;
+            ReferenceArea = MathHelper.Pi * 10;
+
+            IsMoving = false;
+            IsFalling = false;
         }
     }
 }
