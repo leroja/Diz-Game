@@ -12,7 +12,7 @@ namespace GameEngine.Source.Systems
     /// Recalculates the models bounding Spheres if it is necessary.
     /// If the model is static it is not needed to recalculte the bounding sphere
     /// </summary>
-    public class ModelBoundingSphereSystem : IUpdate
+    public class ModelBoudingSphereSystem : IUpdate
     {
         public override void Update(GameTime gameTime)
         {
