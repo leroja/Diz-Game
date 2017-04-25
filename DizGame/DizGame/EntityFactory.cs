@@ -48,7 +48,13 @@ namespace DizGame
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
-            //ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {new TransformComponent(new Vector3(0, 0, 40), Vector3.One), new CameraComponent(CameraType.StaticCam) });
+            //ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
+            //    new TransformComponent(new Vector3(0, 0, 40), Vector3.One),
+            //    new CameraComponent(CameraType.StaticCam)
+            //    {
+            //        LookAt = new Vector3(10, 10, 10)
+            //    }
+            //});
         }
 
         public void CreateBullet(Model model, Vector3 pos, Vector3 rotation, Vector3 scale)

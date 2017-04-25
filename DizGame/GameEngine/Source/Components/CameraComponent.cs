@@ -58,7 +58,9 @@ namespace GameEngine.Source.Components
             else if (type == CameraType.Pov)
                 Offset = DEFAULT_POV;
             else
+            {
                 Offset = DEFAULT_STATIC;
+            }
         }
     }
 }
