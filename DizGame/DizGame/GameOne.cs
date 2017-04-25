@@ -23,6 +23,11 @@ namespace DizGame
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
 
+            // test
+            Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;
+
+            //Graphics.IsFullScreen = true;
         }
 
         /// <summary>
@@ -33,13 +38,18 @@ namespace DizGame
         /// </summary>
         protected override void Initialize()
         {
+            
+
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content);
-            //entf.CreateDefaultCamera();
+            
+            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 5, -20));
             entf.CreateChuckGreen();
-            entf.CreateKitana();
+            var id = entf.CreateKitana();
             Model bullet = Content.Load<Model>("bullet/bullet");
-            //entf.CreateBullet(bullet, new Vector3(10,10,10), new );
+             entf.CreateBullet(bullet, new Vector3(5, 0, 20), Vector3.Zero, new Vector3(0.1f, .1f, 0.1f));
+
+            entf.AddChaseCamToEntity(id, new Vector3(0, 15, 30));
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());

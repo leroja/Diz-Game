@@ -73,6 +73,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="bullet.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameEngine\GameEngine.csproj">
@@ -81,6 +82,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\bullet\" />
     <Folder Include="Source\Enums\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>

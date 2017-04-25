@@ -32,6 +32,7 @@ namespace DizGame
             keys.KeyBoardActions.Add("Backwards", Keys.S);
             keys.KeyBoardActions.Add("Right", Keys.D);
             keys.KeyBoardActions.Add("Left", Keys.A);
+            keys.KeyBoardActions.Add("Up", Keys.Space);
 
 
             List<IComponent> components = new List<IComponent>
@@ -39,7 +40,7 @@ namespace DizGame
                 new TransformComponent(new Vector3(0,0,20), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(chuck),
                 new WorldComponent(Matrix.Identity),
-                new CameraComponent(CameraType.Chase),
+                //new CameraComponent(CameraType.Chase),
                 keys,
             };
 
@@ -48,7 +49,7 @@ namespace DizGame
 
         }
 
-        public void CreateKitana()
+        public int CreateKitana()
         {
             int entityID = ComponentManager.Instance.CreateID();
             Model kitana = Content.Load<Model>("Kitana/Kitana");
@@ -75,10 +76,16 @@ namespace DizGame
                 //},
                 //new CameraComponent(CameraType.Chase),
                 keys,
+                new BulletComponent(),
+                new MouseComponent(){
+                    //MouseSensitivity = 1.9f
+                },
             };
 
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
+
+            return entityID;
         }
 
         public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
@@ -92,9 +99,18 @@ namespace DizGame
             });
         }
 
+        public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
+        {
+            CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
+            {
+                Offset = Offset
+            };
+            ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
+        }
+
         // roation är inte riktigt det jag vill, oriantaion är nog mer det jag vill ha
         // plus att den model jag har laddat in är en hel patron, inte en kula som jag vill ha
-        public void CreateBullet(Model model, Vector3 pos, Vector3 rotation, Vector3 scale)
+        public int CreateBullet(Model model, Vector3 pos, Vector3 rotation, Vector3 scale)
         {
             int BulletEntity = ComponentManager.Instance.CreateID();
 
@@ -110,15 +126,17 @@ namespace DizGame
                 new MouseComponent(){
                     //MouseSensitivity = 1.9f
                 },
-                new BulletComponent(),
-                new CameraComponent(CameraType.Chase)
-                {
-                    Offset = new Vector3(0,0,10)
-                    //Offset = new Vector3(0,5,15)
-                },
+                //new BulletComponent(),
+                //new CameraComponent(CameraType.Chase)
+                //{
+                //    Offset = new Vector3(0,0,15)
+                //    //Offset = new Vector3(0,5,15)
+                //},
             };
 
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
+
+            return BulletEntity;
         }
     }
 }

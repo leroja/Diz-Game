@@ -24,10 +24,33 @@ namespace DizGame.Source.Systems
 
                 //System.Console.WriteLine(mouseComp.MouseDeltaPosition);
 
-                
 
-                transformComp.Rotation = /*transformComp.Rotation +*/ new Vector3(-mouseComp.MouseDeltaPosition.Y, -mouseComp.MouseDeltaPosition.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+                //transformComp.Rotation = /*transformComp.Rotation +*/ new Vector3(-mouseComp.MouseDeltaPosition.Y, -mouseComp.MouseDeltaPosition.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                var rot = transformComp.Rotation;
+                rot.X = 0;
+                rot.Y = 0;
+                rot.Z = 0;
+
+                if (mouseComp.MouseDeltaPosition.X > 0)
+                {
+                    rot.X += 0.01f;
+                }
+                if (mouseComp.MouseDeltaPosition.X < 0)
+                {
+                    rot.X -= 0.01f;
+                }
+                if (mouseComp.MouseDeltaPosition.Y > 0)
+                {
+                    rot.Y += 0.01f;
+                }
+                if (mouseComp.MouseDeltaPosition.Y < 0)
+                {
+                    rot.Y -= 0.01f;
+                }
+
+                transformComp.Rotation = rot;
             }
         }
     }
