@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 namespace GameEngine.Source.Managers
 {
     /// <summary>
-    /// handles storage of entities and their components
-    /// also handles the creation of new entites and removal of them
+    /// Handles storage of entities and their components
     /// </summary>
     public class ComponentManager
     {
-        // Todo rewrite comments
+        // TODO rewrite comments
         private static ComponentManager instance;
 
         private List<int> entityIDs;
@@ -46,32 +45,11 @@ namespace GameEngine.Source.Managers
             }
         }
 
-        public int CopyEnitity(List<IComponent> list)
-        {
-            int id = CreateID();
-
-            foreach (var item in list)
-            {
-                AddComponentToEntity(id, item);
-            }
-            return id;
-        }
-
-        public void Clear()
-        {
-            foreach (var a in entityIDs)
-            {
-                RemoveEntity(a);
-                RecycleID(a);
-            }
-        }
-
-
         /// <summary>
         /// 
         /// </summary>
         /// <returns>
-        /// 
+        /// A new Id 
         /// </returns>
         public int CreateID()
         {
@@ -87,8 +65,8 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// returns the id to the pool so it can be used again
-        /// As a Game developer u also have to remove the the entity from the ComponentManager
+        /// Returns the id to the pool so it can be used again
+        /// As a Game developer you also have to remove the the entity from the ComponentManager
         /// </summary>
         /// <param name="id"></param>
         public void RecycleID(int id)
@@ -119,6 +97,11 @@ namespace GameEngine.Source.Managers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="componentList"></param>
         public void AddAllComponents(int entityID, List<IComponent> componentList)
         {
             foreach (var comp in componentList)
@@ -139,7 +122,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// removes the component from the entity
+        /// Removes the component from the entity
         /// </summary>
         /// <param name="entity"> The entity that has the component </param>
         /// <param name="component"> The component to be removed </param>
@@ -155,18 +138,17 @@ namespace GameEngine.Source.Managers
                 }
             }
         }
-
-
+        
 
         /// <summary>
-        /// returns a component if the Entity has one "linked" to it
+        /// Returns a component if the Entity has one "linked" to it
         /// </summary>
         /// <typeparam name="T">
         /// The type of the requested component
         /// </typeparam>
         /// <param name="entity"></param>
         /// <returns>
-        /// a component of the requested type if there is one
+        /// A component of the requested type if there is one
         /// else it returns null
         /// </returns>
         public T GetEntityComponent<T>(int entityID) where T : IComponent
@@ -184,12 +166,12 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// returns an entity if there is an entity linked to the specific component
+        /// Returns an entityId if there is an entity linked to the specific component
         /// </summary>
         /// <typeparam name="T"> The type of compent </typeparam>
         /// <param name="component"> The specific component </param>
         /// <returns>
-        /// an entity if one is found
+        /// An entityId if one is found
         /// else it returns null
         /// </returns>
         public int GetEntityIDByComponent<T>(IComponent component) where T : IComponent
@@ -210,8 +192,8 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// return a list of all entites that "has" specific component
-        /// or null if the component is not in the dictionary
+        /// Return a list of all entityIds that "has" specific component
+        /// or an empty list if the component is not in the dictionary
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>
@@ -230,7 +212,7 @@ namespace GameEngine.Source.Managers
 
         /// <summary>
         /// Removes an Entity from dictionary
-        /// as a game Dev you also have to recycle the id
+        /// As a game Dev you also have to recycle the id
         /// </summary>
         /// <param name="entity"> The entity to be removed </param>
         public void RemoveEntity(int entityID)
@@ -247,7 +229,7 @@ namespace GameEngine.Source.Managers
         /// </summary>
         /// <param name="Id"> The Id of the entity  </param>
         /// <returns>
-        /// A list of the entity's all components
+        /// Returns a list containing all components attached to the entity.
         /// </returns>
         public List<IComponent> GetAllEntityComponents(int Id)
         {
@@ -264,7 +246,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// return a dictionary with all entites that "has" specific type of component & 
+        /// Returns a dictionary with all entites that "has" the specific type of component & 
         /// and the components of that type
         /// </summary>
         /// <typeparam name="T"> The type of component </typeparam>
@@ -286,9 +268,9 @@ namespace GameEngine.Source.Managers
         /// Checks whether an entity has a particular type of component
         /// </summary>
         /// <typeparam name="T"> The type of component </typeparam>
-        /// <param name="ent"> The id of the enetity </param>
+        /// <param name="ent"> The id of the entity </param>
         /// <returns>
-        /// true if the entity has a component of that type else false
+        /// True if the entity has a component of that type else false
         /// </returns>
         public bool CheckIfEntityHasComponent<T>(int ent) where T : IComponent
         {

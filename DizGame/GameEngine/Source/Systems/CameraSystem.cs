@@ -22,7 +22,6 @@ namespace GameEngine.Source.Systems
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
                if(camera != null || transform != null)
                 {
-                    //TODO: Take a look at this, static cam takes alot of fps
                     UpdateCameraAfterType(camera, transform);
                     camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
                     // TODO skapa ett frustrum som är lite större än det verkliga "camera.View * camera.Projection"

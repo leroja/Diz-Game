@@ -21,7 +21,7 @@ namespace DizGame
             client = new NetworkSystem();
             client.RunClient();
             Content.RootDirectory = "Content";
-
+            this.IsMouseVisible = true;
 
         }
 
@@ -36,8 +36,10 @@ namespace DizGame
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content);
             entf.CreateSexyWomanSoldier();
-            Model bullet = Content.Load<Model>("bullet");
-            //entf.CreateBullet(bullet, new Vector3(10,10,10), new );
+            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 5, -20));
+            Model bullet = Content.Load<Model>("bullet/bullet");
+            entf.CreateBullet(bullet, new Vector3(-0, 0, -20), Vector3.Zero, new Vector3(0.1f, .1f, 0.1f));
+            
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());
@@ -45,9 +47,14 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
+            SystemManager.Instance.AddSystem(new MouseSystem());
+
+            SystemManager.Instance.AddSystem(new BulletSystem());
 
 
             base.Initialize();
+
+            Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
         }
 
         /// <summary>
@@ -68,6 +75,12 @@ namespace DizGame
 
         }
 
+        protected override void Update(GameTime gameTime)
+        {
+            //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
+            base.Update(gameTime);
+        }
+
         //protected override void Update(GameTime gameTime)
         //{
         //    client.ReadMessages();
@@ -78,7 +91,7 @@ namespace DizGame
         //            client.SendMessage("What's my name?");
         //        }
         //    }
-            
+
         //}
 
 

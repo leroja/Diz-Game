@@ -25,7 +25,6 @@ namespace GameEngine
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            Device = Graphics.GraphicsDevice;
         }
 
         /// <summary>
@@ -40,6 +39,7 @@ namespace GameEngine
             //ConfiguredHeightMapSystem.Instance.ThisFunctionDoesNothing();
 
             base.Initialize();
+            Device = Graphics.GraphicsDevice;
         }
 
         /// <summary>

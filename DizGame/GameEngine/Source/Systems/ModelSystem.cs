@@ -11,7 +11,7 @@ namespace GameEngine.Source.Systems
 {
     public class ModelSystem : IRender
     {
-        WorldComponent world;
+        //WorldComponent world;
         CameraComponent defaultCam;
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace GameEngine.Source.Systems
         public override void Draw(GameTime gameTime)
         {
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
-            world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+            //world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             //pick one
@@ -57,7 +57,7 @@ namespace GameEngine.Source.Systems
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
+                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix /** world.World*/;
 
                         effect.View = defaultCam.View;
                         effect.Projection = defaultCam.Projection;
