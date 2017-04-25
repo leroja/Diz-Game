@@ -20,7 +20,7 @@ namespace GameEngine.Source.Components
         public int[] indices { get; set; }
 
         //to be set for other systems to get height data from map.
-        //public int[,] heightData { get; set; }
+        public float[,] heightData { get; set; }
 
         public HeightMapComponent()
         {

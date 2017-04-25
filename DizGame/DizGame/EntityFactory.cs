@@ -21,14 +21,37 @@ namespace DizGame
         {
             this.Content = Content;
         }
-        /// <summary>
-        /// Method for creating one of the many (maybe) player models. 
-        /// </summary>
-        public void CreateSexyWomanSoldier()
+       
+        public void CreateChuckGreen()
         {
-            
             int entityID = ComponentManager.Instance.CreateID();
-            Model sonya = Content.Load<Model>("sonya/Sonya");
+            Model chuck = Content.Load<Model>("chuck/DR3_Chuck_Greene");
+
+            KeyBoardComponent keys = new KeyBoardComponent();
+            keys.KeyBoardActions.Add("Forward", Keys.W);
+            keys.KeyBoardActions.Add("Backwards", Keys.S);
+            keys.KeyBoardActions.Add("Right", Keys.D);
+            keys.KeyBoardActions.Add("Left", Keys.A);
+
+
+            List<IComponent> components = new List<IComponent>
+            {
+                new TransformComponent(new Vector3(0,0,20), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new ModelComponent(chuck),
+                new WorldComponent(Matrix.Identity),
+                new CameraComponent(CameraType.Chase),
+                keys,
+            };
+
+            
+            ComponentManager.Instance.AddAllComponents(entityID, components);
+
+        }
+
+        public void CreateKitana()
+        {
+            int entityID = ComponentManager.Instance.CreateID();
+            Model kitana = Content.Load<Model>("Kitana/Kitana");
 
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.KeyBoardActions.Add("Forward", Keys.Up);
@@ -36,16 +59,16 @@ namespace DizGame
             keys.KeyBoardActions.Add("Right", Keys.Right);
             keys.KeyBoardActions.Add("Left", Keys.Left);
 
+
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,0,-20), new Vector3(1,1,1)),
-                new ModelComponent(sonya),
+                new TransformComponent(new Vector3(5,0,20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new ModelComponent(kitana),
                 new WorldComponent(Matrix.Identity),
                 //new CameraComponent(CameraType.Chase),
                 keys,
             };
 
-            //TODO: need to add keyboard components and such to assign controllers to the model.
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
         }

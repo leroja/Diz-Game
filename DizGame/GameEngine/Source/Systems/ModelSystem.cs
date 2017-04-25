@@ -25,12 +25,16 @@ namespace GameEngine.Source.Systems
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             //pick one
-            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
-
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            if(entitiesWithCamera.Count > 0)
             {
-                DrawModel(entityID);
+                defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+
+                foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+                {
+                    DrawModel(entityID);
+                }
             }
+                
         }
         /// <summary>
         /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo

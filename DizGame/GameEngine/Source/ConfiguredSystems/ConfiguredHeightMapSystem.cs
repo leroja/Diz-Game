@@ -8,20 +8,23 @@ using GameEngine;
 using GameEngine.Source.Objects;
 using GameEngine.Source.Managers;
 using System.Drawing;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.ConfiguredSystems
 {
     public class ConfiguredHeightMapSystem
     {
-        public static readonly ConfiguredHeightMapSystem Instance = new ConfiguredHeightMapSystem();
 
-        private HeightMapSystem  hmSystem { get; set; }
+        public static HeightMapSystem  heightMapSystem { get; private set; }
+        private GraphicsDevice gd;
 
-        private ConfiguredHeightMapSystem()
+        public ConfiguredHeightMapSystem(GraphicsDevice gd)
         {
+            this.gd = gd;
+
             List<HeightMapObject> hmobj = generateHeighMapObjects();
 
-            hmSystem = new HeightMapSystem(ref hmobj);
+            heightMapSystem = new HeightMapSystem(gd, ref hmobj);
 
         }
 

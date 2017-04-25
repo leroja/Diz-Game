@@ -35,11 +35,11 @@ namespace DizGame
         {
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content);
-            entf.CreateSexyWomanSoldier();
-            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 5, -20));
-            Model bullet = Content.Load<Model>("bullet/bullet");
-            entf.CreateBullet(bullet, new Vector3(-0, 0, -20), Vector3.Zero, new Vector3(0.1f, .1f, 0.1f));
-            
+            //entf.CreateDefaultCamera();
+            entf.CreateChuckGreen();
+            entf.CreateKitana();
+            Model bullet = Content.Load<Model>("bullet");
+            //entf.CreateBullet(bullet, new Vector3(10,10,10), new );
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());

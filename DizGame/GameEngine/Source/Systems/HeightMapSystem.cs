@@ -15,9 +15,11 @@ namespace GameEngine.Source.Systems
 
         private List<IComponent> heightmapComponents;
         private List<HeightMapObject> hmobjects;
+        private GraphicsDevice gd;
 
-        public HeightMapSystem(ref List<HeightMapObject> hmobjects)
+        public HeightMapSystem(GraphicsDevice gd, ref List<HeightMapObject> hmobjects)
         {
+            this.gd = gd;
             this.hmobjects = hmobjects;
             heightmapComponents = new List<IComponent>();
 
@@ -25,23 +27,25 @@ namespace GameEngine.Source.Systems
 
             CreateHeightmapComponents();
 
+            InitBuffers();
+
             SetUpVertices();
             SetUpIndices();
 
             SetUpNormals();
 
-            //SetData();
+            SetData();
         }
 
         //To be used when we have decided where and when...
-        //private void SetData()
-        //{
-        //    foreach (HeightMapComponent cmp in heightmapComponents)
-        //    {
-        //        cmp.vertexBuffer.SetData<VertexPositionNormalTexture>(cmp.vertices);
-        //        cmp.indexBuffer.SetData<int>(cmp.indices);
-        //    }
-        //}
+        private void SetData()
+        {
+            foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
+            {
+                cmp.vertexBuffer.SetData<VertexPositionNormalTexture>(cmp.vertices);
+                cmp.indexBuffer.SetData<int>(cmp.indices);
+            }
+        }
 
 
         private void CreateHeightmapComponents()
@@ -59,27 +63,29 @@ namespace GameEngine.Source.Systems
                     terrainHeight = hmobj.terrainHeight,
                     terrainWidth = hmobj.terrainWidth,
                     scaleFactor = hmobj.scaleFactor,
-                     
+                     heightData = hmobj.heightData,
                 };
-
-                InitBuffers(cmp);
 
                 hmobjects[index].entityId = entityId;
                 ComponentManager.Instance.AddComponentToEntity(entityId, cmp);
             }
         }
 
-        private void InitBuffers(HeightMapComponent cmp)
+        
+        private void InitBuffers()
         {
-            int vertexCount = cmp.terrainWidth * cmp.terrainHeight;
-            int indexCount = (cmp.terrainWidth - 1) * (cmp.terrainHeight - 1) * 6;
+            foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
+            {
+                int vertexCount = cmp.terrainWidth * cmp.terrainHeight;
+                int indexCount = (cmp.terrainWidth - 1) * (cmp.terrainHeight - 1) * 6;
 
-            cmp.vertices = new VertexPositionNormalTexture[vertexCount];
-            cmp.indices = new int[indexCount];
+                cmp.vertices = new VertexPositionNormalTexture[vertexCount];
+                cmp.indices = new int[indexCount];
 
-            //to be set when we have decided where and when...
-            //cmp.vertexBuffer = new VertexBuffer(GameEngine.Device, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
-            //cmp.indexBuffer = new IndexBuffer(GameEngine.Device, typeof(int), indexCount, BufferUsage.None);
+                //to be set when we have decided where and when...
+                cmp.vertexBuffer = new VertexBuffer(gd, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
+                cmp.indexBuffer = new IndexBuffer(gd, typeof(int), indexCount, BufferUsage.None);
+            }
         }
 
         private void SetUpVertices()
@@ -178,7 +184,7 @@ namespace GameEngine.Source.Systems
             throw new NotImplementedException();
         }
 
-        //To be set and tested before use.
+        ////To be set and tested before use.
         //private void LoadHeightData()
         //{
         //    foreach (HeightMapComponent cmp in heightmapComponents)
