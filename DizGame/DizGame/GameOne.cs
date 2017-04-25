@@ -38,7 +38,7 @@ namespace DizGame
             //entf.CreateDefaultCamera();
             entf.CreateChuckGreen();
             entf.CreateKitana();
-            Model bullet = Content.Load<Model>("bullet");
+            Model bullet = Content.Load<Model>("bullet/bullet");
             //entf.CreateBullet(bullet, new Vector3(10,10,10), new );
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
