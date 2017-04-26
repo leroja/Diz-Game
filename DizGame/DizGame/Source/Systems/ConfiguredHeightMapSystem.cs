@@ -16,16 +16,16 @@ namespace DizGame.Source.ConfiguredSystems
     public class ConfiguredHeightMapSystem : IRender
     {
 
-        public static HeightMapSystem heightMapSystem { get; private set; }
+        public static HeightMapSystem HeightMapSystem { get; private set; }
         private Game game;
 
         public ConfiguredHeightMapSystem(Game game)
         {
             this.game = game;
 
-            List<HeightMapObject> hmobj = generateHeighMapObjects();
+            List<HeightMapObject> hmobj = GenerateHeighMapObjects;
 
-            heightMapSystem = new HeightMapSystem(game, ref hmobj);
+            HeightMapSystem = new HeightMapSystem(game, ref hmobj);
 
         }
 
@@ -34,35 +34,38 @@ namespace DizGame.Source.ConfiguredSystems
 
         }
 
-        private List<HeightMapObject> generateHeighMapObjects()
+        private List<HeightMapObject> GenerateHeighMapObjects
         {
-            List<HeightMapObject> hmobjs = new List<HeightMapObject>();
-
-
-            Vector3 hmPos1 = new Vector3(-500, -400, 500);
-            Vector3 hmScale1 = new Vector3(0.1f);
-            TransformComponent transform = new TransformComponent(hmPos1, hmScale1);
-
-            HeightMapObject hmobj1 = new HeightMapObject()
+            get
             {
-
-                //scaleFactor = 0.01f,
-                terrainMapName = "Content/HeightMaps/heightmap.png",
-                transform = transform,
-            };
+                List<HeightMapObject> hmobjs = new List<HeightMapObject>();
 
 
+                Vector3 hmPos1 = new Vector3(-500, -400, 500);
+                Vector3 hmScale1 = new Vector3(0.1f);
+                TransformComponent transform = new TransformComponent(hmPos1, hmScale1);
+
+                HeightMapObject hmobj1 = new HeightMapObject()
+                {
+
+                    //scaleFactor = 0.01f,
+                    terrainMapName = "Content/HeightMaps/heightmap.png",
+                    transform = transform,
+                };
 
 
 
-            hmobjs.Add(hmobj1);
 
-            initialiseHeightMapObject(hmobjs);
 
-            return hmobjs;
+                hmobjs.Add(hmobj1);
+
+                InitialiseHeightMapObject(hmobjs);
+
+                return hmobjs;
+            }
         }
 
-        private void initialiseHeightMapObject(List<HeightMapObject> hmobjs)
+        private void InitialiseHeightMapObject(List<HeightMapObject> hmobjs)
         {
 
             foreach (HeightMapObject hmobj in hmobjs)
@@ -101,7 +104,7 @@ namespace DizGame.Source.ConfiguredSystems
 
         public override void Draw(GameTime gameTime)
         {
-            heightMapSystem.Draw(gameTime);
+            HeightMapSystem.Draw(gameTime);
         }
     }
 }

@@ -51,9 +51,11 @@ namespace GameEngine.Source.Systems
 
             effect = new BasicEffect(game.GraphicsDevice);
 
-            RasterizerState rState = new RasterizerState();
-            rState.CullMode = CullMode.None;
-            rState.FillMode = FillMode.Solid;
+            RasterizerState rState = new RasterizerState()
+            {
+                CullMode = CullMode.None,
+                FillMode = FillMode.Solid
+            };
             game.GraphicsDevice.BlendState = BlendState.Opaque;
             game.GraphicsDevice.RasterizerState = rState;
         }
@@ -201,7 +203,7 @@ namespace GameEngine.Source.Systems
             }
         }
 
-        private void setEffectParameters()
+        private void SetEffectParameters()
         {
             effect.World = world.World; 
             effect.View = defaultCam.View;
@@ -214,7 +216,7 @@ namespace GameEngine.Source.Systems
             effect.Texture = texture;
         }
 
-        private void setTransformParameters(TransformComponent transform)
+        private void SetTransformParameters(TransformComponent transform)
         {
             effect.World = world.World
                          * Matrix.CreateTranslation(transform.Position)
@@ -223,11 +225,11 @@ namespace GameEngine.Source.Systems
 
         public override void Draw(GameTime gameTime)
         {
-            setEffectParameters();
+            SetEffectParameters();
 
             foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
             {
-                setTransformParameters(ComponentManager.GetEntityComponent<TransformComponent>(cmp.ID));
+                SetTransformParameters(ComponentManager.GetEntityComponent<TransformComponent>(cmp.ID));
 
                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                 {

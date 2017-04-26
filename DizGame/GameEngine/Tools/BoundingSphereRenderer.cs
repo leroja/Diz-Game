@@ -25,7 +25,7 @@ namespace GameEngine.Tools
         private IndexBuffer _indexBuffer;
         private VertexPositionNormalTexture[] _vertices;
 
-        private Matrix[] modelBoneTransforms;
+        //private Matrix[] modelBoneTransforms;
 
         public BoundingSphereRenderer(Game game)
         {

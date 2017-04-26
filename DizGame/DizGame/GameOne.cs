@@ -46,11 +46,11 @@ namespace DizGame
             
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
             entf.CreateChuckGreen();
-            //var id = entf.CreateKitana();
+            var id = entf.CreateKitana();
             //Model bullet = Content.Load<Model>("bullet/Bullet");
             //var id = entf.CreateBullet("Bullet", new Vector3(0, 0, -20), Vector3.Zero, new Vector3(.3f, .3f, .3f));
 
-            //entf.AddChaseCamToEntity(id, new Vector3(0, 10, 15));
+            entf.AddChaseCamToEntity(id, new Vector3(0, 10, 15));
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());
