@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\Components\MouseComponent.cs" />
+    <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
     <Compile Include="Source\ConfiguredSystems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\Enums\Air.cs" />
