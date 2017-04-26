@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.ConfiguredSystems;
-using GameEngine.Source.Managers;
+﻿using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
