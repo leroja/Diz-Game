@@ -5,6 +5,7 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using DizGame.Source.ConfiguredSystems;
 
 namespace DizGame
 {
@@ -63,6 +64,8 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
 
+
+            SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
 
             base.Initialize();
 
