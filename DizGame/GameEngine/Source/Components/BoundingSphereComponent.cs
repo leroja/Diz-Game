@@ -8,15 +8,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Components
 {
-    class BoundingSphereComponent : IComponent
+    public class BoundingSphereComponent : IComponent
     {
-        public BoundingSphere sphere;
-        public bool hasCollided;
+        public BoundingSphere Sphere { get; set; }
+        public bool HasCollided { get; set; }
         
         public BoundingSphereComponent(BoundingSphere ball)
         {
-            sphere = ball;
-            hasCollided = false;
+            Sphere = ball;
+            HasCollided = false;
         }
 
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Source.Components;
 
 namespace GameEngine.Source.Objects
 {
@@ -16,7 +17,9 @@ namespace GameEngine.Source.Objects
         public int terrainHeight { get; set; }
         public string terrainMapName { get; set; }
 
-        public float scaleFactor { get; set; }
+        private float scaleFactor { get; set; }
+
+        public TransformComponent transform { get; set; }
 
         /// <summary>
         /// heightData a 2D-dimesional array is given by the user to build a heightmap from.

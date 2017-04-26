@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.ConfiguredSystems;
-using GameEngine.Source.Managers;
+﻿using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,7 +24,6 @@ namespace GameEngine
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            Device = Graphics.GraphicsDevice;
         }
 
         /// <summary>
@@ -36,11 +34,11 @@ namespace GameEngine
         /// </summary>
         protected override void Initialize()
         {
+            //This system is not fully tested yet - so uncomment the line below at your risk.
+            //ConfiguredHeightMapSystem.Instance.ThisFunctionDoesNothing();
+
             base.Initialize();
             Device = Graphics.GraphicsDevice;
-            //This system is not fully tested yet -so uncomment the line below at your risk.
-            //ConfiguredHeightMapSystem cfgHeightmapSystem = new ConfiguredHeightMapSystem(Device);
-
         }
 
         /// <summary>

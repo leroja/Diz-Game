@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,24 +7,25 @@ using GameEngine.Source.Systems;
 using GameEngine;
 using GameEngine.Source.Objects;
 using GameEngine.Source.Managers;
-using System.Drawing;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using GameEngine.Source.Components;
 
-namespace GameEngine.Source.ConfiguredSystems
+namespace DizGame.Source.ConfiguredSystems
 {
-    public class ConfiguredHeightMapSystem
+    public class ConfiguredHeightMapSystem : IRender
     {
 
-        public static HeightMapSystem  heightMapSystem { get; private set; }
-        private GraphicsDevice gd;
+        public static HeightMapSystem heightMapSystem { get; private set; }
+        private Game game;
 
-        public ConfiguredHeightMapSystem(GraphicsDevice gd)
+        public ConfiguredHeightMapSystem(Game game)
         {
-            this.gd = gd;
+            this.game = game;
 
             List<HeightMapObject> hmobj = generateHeighMapObjects();
 
-            heightMapSystem = new HeightMapSystem(gd, ref hmobj);
+            heightMapSystem = new HeightMapSystem(game, ref hmobj);
 
         }
 
@@ -38,13 +39,19 @@ namespace GameEngine.Source.ConfiguredSystems
             List<HeightMapObject> hmobjs = new List<HeightMapObject>();
 
 
+            Vector3 hmPos1 = new Vector3(-500, -400, 500);
+            Vector3 hmScale1 = new Vector3(0.1f);
+            TransformComponent transform = new TransformComponent(hmPos1, hmScale1);
 
             HeightMapObject hmobj1 = new HeightMapObject()
             {
-                // det ska inte finnas något i Content Mappen i enginen
-                scaleFactor = 1.0f,
+
+                //scaleFactor = 0.01f,
                 terrainMapName = "Content/HeightMaps/heightmap.png",
+                transform = transform,
             };
+
+
 
 
 
@@ -90,6 +97,11 @@ namespace GameEngine.Source.ConfiguredSystems
             //texture = Texture2D.FromStream(gd, new StreamReader(textureFileName).BaseStream);
             //texture.Name = textureFileName;
 
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            heightMapSystem.Draw(gameTime);
         }
     }
 }

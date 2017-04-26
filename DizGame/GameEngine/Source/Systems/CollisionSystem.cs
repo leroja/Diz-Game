@@ -55,7 +55,7 @@ namespace GameEngine.Source.Systems
                 for (int j = 1; j < sphereEntities.Count; i++)
                 {
                     BoundingSphereComponent sphereComp2 = ComponentManager.Instance.GetEntityComponent<BoundingSphereComponent>(sphereEntities[j]);
-                    if (sphereComp1.sphere.Intersects(sphereComp2.sphere))
+                    if (sphereComp1.Sphere.Intersects(sphereComp2.Sphere))
                     {
                         if (ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(sphereEntities[i]) && ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(sphereEntities[j]))
                         {

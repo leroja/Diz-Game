@@ -49,6 +49,10 @@
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Components\BulletComponent.cs" />
+    <Compile Include="Source\Components\PlayerComponent.cs" />
+    <Compile Include="Source\Systems\BulletSystem.cs" />
+    <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
   </ItemGroup>
@@ -61,6 +65,7 @@
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +75,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="bullet.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">
@@ -82,7 +88,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Source\Components\" />
+    <Folder Include="Content\bullet\" />
+    <Folder Include="Content\HeightMaps\" />
     <Folder Include="Source\Enums\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>

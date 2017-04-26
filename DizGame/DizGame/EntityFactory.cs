@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Components;
+﻿using DizGame.Source.Components;
+using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
@@ -30,6 +31,7 @@ namespace DizGame
             keys.KeyBoardActions.Add("Backwards", Keys.S);
             keys.KeyBoardActions.Add("Right", Keys.D);
             keys.KeyBoardActions.Add("Left", Keys.A);
+            keys.KeyBoardActions.Add("Up", Keys.Space);
 
 
             List<IComponent> components = new List<IComponent>
@@ -37,7 +39,7 @@ namespace DizGame
                 new TransformComponent(new Vector3(0,0,20), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(chuck),
                 new WorldComponent(Matrix.Identity),
-                new CameraComponent(CameraType.Chase),
+                //new CameraComponent(CameraType.Chase),
                 keys,
             };
 
@@ -46,7 +48,7 @@ namespace DizGame
 
         }
 
-        public void CreateKitana()
+        public int CreateKitana()
         {
             int entityID = ComponentManager.Instance.CreateID();
             Model kitana = Content.Load<Model>("Kitana/Kitana");
@@ -56,6 +58,7 @@ namespace DizGame
             keys.KeyBoardActions.Add("Backwards", Keys.Down);
             keys.KeyBoardActions.Add("Right", Keys.Right);
             keys.KeyBoardActions.Add("Left", Keys.Left);
+            keys.KeyBoardActions.Add("Up", Keys.Space);
 
 
             List<IComponent> components = new List<IComponent>
@@ -64,14 +67,49 @@ namespace DizGame
                 new ModelComponent(kitana),
                 new WorldComponent(Matrix.Identity),
                 //new CameraComponent(CameraType.Chase),
+                //new PhysicsComponent()
+                //{
+                //    Mass = 60,
+                //    PhysicsType = PhysicsType.Rigid,
+                //    MaterialType = MaterialType.Skin
+                //},
+                //new CameraComponent(CameraType.Chase),
                 keys,
+                new BulletComponent(),
+                new MouseComponent(){
+                    //MouseSensitivity = 1.9f
+                },
             };
 
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
+            return entityID;
         }
-        public void CreateBullet(Model model, Vector3 pos, Vector3 rotation, Vector3 scale)
+
+        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
+        {
+            ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
+                new TransformComponent(CameraPosition, Vector3.One),
+                new CameraComponent(CameraType.StaticCam)
+                {
+                    LookAt = lookAt
+                }
+            });
+        }
+
+        public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
+        {
+            CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
+            {
+                Offset = Offset
+            };
+            ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
+        }
+
+        // roation är inte riktigt det jag vill, oriantaion är nog mer det jag vill ha
+        // plus att den model jag har laddat in är en hel patron, inte en kula som jag vill ha
+        public int CreateBullet(Model model, Vector3 pos, Vector3 rotation, Vector3 scale)
         {
             int BulletEntity = ComponentManager.Instance.CreateID();
 
@@ -81,20 +119,23 @@ namespace DizGame
                 {
                     Rotation = rotation
                 },
-                new  ModelComponent(model)
-            };
-            
-        }
+                new  ModelComponent(model),
 
-        public void CreateDefaultCamera()
-        {
-            ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
-                new TransformComponent(new Vector3(0, 0, 40), Vector3.One),
-                new CameraComponent(CameraType.StaticCam)
-                {
-                    LookAt = new Vector3(10, 10, 10)
-                }
-            });
+                //temp
+                new MouseComponent(){
+                    //MouseSensitivity = 1.9f
+                },
+                //new BulletComponent(),
+                //new CameraComponent(CameraType.Chase)
+                //{
+                //    Offset = new Vector3(0,0,15)
+                //    //Offset = new Vector3(0,5,15)
+                //},
+            };
+
+            ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
+
+            return BulletEntity;
         }
     }
 }
