@@ -72,6 +72,10 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContentProject\ContentProject.csproj">
+      <Project>{2020d833-ad3f-446e-9609-b751490b0800}</Project>
+      <Name>ContentProject</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameEngine\GameEngine.csproj">
       <Project>{beb5aa74-8cd7-4ded-86d9-693fa6e9aaf0}</Project>
       <Name>GameEngine</Name>

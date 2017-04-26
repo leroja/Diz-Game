@@ -5,6 +5,7 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using GameEngine.Tools;
 
 namespace DizGame
 {
@@ -20,7 +21,7 @@ namespace DizGame
 
             client = new NetworkSystem();
             client.RunClient();
-            Content.RootDirectory = "Content";
+            Content.RootDirectory = "..\\DizGame\\ContentProject\\Content";
 
 
         }
@@ -47,8 +48,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-
-
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(this));
             base.Initialize();
         }
 
