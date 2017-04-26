@@ -17,11 +17,28 @@ namespace DizGame
     public class EntityFactory
     {
         private ContentManager Content;
+        private Dictionary<string, Model> ModelDic;
         public EntityFactory(ContentManager Content)
         {
+            CreateWorldComp();
             this.Content = Content;
+            ModelDic = new Dictionary<string, Model>
+            {
+                { "Bullet", Content.Load<Model>("Bullet/Bullet") },
+                { "Cartridge", Content.Load<Model>("Bullet/Cartridge") }
+            };
         }
        
+        public void CreateWorldComp()
+        {
+            var worldEntId = ComponentManager.Instance.CreateID();
+            var compList = new List<IComponent>() {
+                new WorldComponent(Matrix.Identity)
+            };
+
+            ComponentManager.Instance.AddAllComponents(worldEntId, compList);
+        }
+
         public void CreateChuckGreen()
         {
             int entityID = ComponentManager.Instance.CreateID();
@@ -37,10 +54,8 @@ namespace DizGame
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,0,20), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new TransformComponent(new Vector3(0,0,-20), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(chuck),
-                new WorldComponent(Matrix.Identity),
-                //new CameraComponent(CameraType.Chase),
                 keys,
             };
 
@@ -64,10 +79,8 @@ namespace DizGame
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(5,0,20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new TransformComponent(new Vector3(5,0,-20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(kitana),
-                new WorldComponent(Matrix.Identity),
-                //new CameraComponent(CameraType.Chase),
                 //new PhysicsComponent()
                 //{
                 //    Mass = 60,
@@ -109,11 +122,11 @@ namespace DizGame
         }
 
         // roation är inte riktigt det jag vill, oriantaion är nog mer det jag vill ha
-        // plus att den model jag har laddat in är en hel patron, inte en kula som jag vill ha
-        public int CreateBullet(Model model, Vector3 pos, Vector3 rotation, Vector3 scale)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 rotation, Vector3 scale)
         {
             int BulletEntity = ComponentManager.Instance.CreateID();
 
+            Model model = ModelDic[modelName];
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
@@ -126,12 +139,7 @@ namespace DizGame
                 new MouseComponent(){
                     //MouseSensitivity = 1.9f
                 },
-                //new BulletComponent(),
-                //new CameraComponent(CameraType.Chase)
-                //{
-                //    Offset = new Vector3(0,0,15)
-                //    //Offset = new Vector3(0,5,15)
-                //},
+                new BulletComponent(),
             };
 
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);

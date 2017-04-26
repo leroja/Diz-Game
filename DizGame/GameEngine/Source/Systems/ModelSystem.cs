@@ -20,21 +20,17 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+            //List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
             //world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             //pick one
-            if(entitiesWithCamera.Count > 0)
-            {
-                defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
 
-                foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-                {
-                    DrawModel(entityID);
-                }
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            {
+                DrawModel(entityID);
             }
-                
         }
         /// <summary>
         /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo
@@ -47,8 +43,8 @@ namespace GameEngine.Source.Systems
             ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
             TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
 
-            if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
-                defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
+            //if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
+            //    defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
 
             //if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
             //{
@@ -67,7 +63,7 @@ namespace GameEngine.Source.Systems
                         effect.Projection = defaultCam.Projection;
 
                         effect.EnableDefaultLighting();
-                        effect.PreferPerPixelLighting = true;
+                        //effect.PreferPerPixelLighting = true;
                         foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                         {
                             pass.Apply();

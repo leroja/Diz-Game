@@ -14,7 +14,7 @@ namespace DizGame.Source.Systems
     {
         public override void Update(GameTime gameTime)
         {
-            Dictionary<int,IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
+            Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
 
             foreach(var entity in EntityDict)
             {
