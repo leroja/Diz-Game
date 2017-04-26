@@ -11,23 +11,13 @@ namespace GameEngine.Source.Components
     // inte nära klar
     class ParticleComponent : IComponent
     {
-        public Texture2D texture;
-
-        public Vector3 position;
-
-        public float timecreated;
-
-        public float lifetime;
-
-        public int maximumParticales;
-
-        public Vector3 Accelaration;
-
-        public Vector3 particalGravity;
-
-
-
-
+        public Texture2D Texture { get; set; }
+        public Vector3 Position { get; set; }
+        public float Timecreated { get; set; }
+        public float Lifetime { get; set; }
+        public int MaximumParticales { get; set; }
+        public Vector3 Accelaration { get; set; }
+        public Vector3 ParticleGravity { get; set; }
 
     }
 }
