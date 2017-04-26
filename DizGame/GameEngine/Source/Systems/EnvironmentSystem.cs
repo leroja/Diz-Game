@@ -18,7 +18,13 @@ namespace GameEngine.Source.Systems
                 UpdateDrag(entityID, gameTime);
             }
         }
-        public void UpdateDrag(int entityID, GameTime gameTime)
+        /// <summary>
+        /// Calculates the physic objects DragForce
+        /// using the worlds parameters
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="gameTime"></param>
+        private void UpdateDrag(int entityID, GameTime gameTime)
         {
             PhysicsComponent phy = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
             TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
@@ -29,12 +35,22 @@ namespace GameEngine.Source.Systems
             float Cd = (float)phy.DragType;                                                 // drag coefficent eg 0.25 to 0.45 for car
             Vector3 V = -transform.Dirrection;                                              // V unit vector indicating the direction of the velocity (negativ to indicate drag opposite the velocity)
             float A = phy.ReferenceArea;                                                    // reference area
-            Vector3 v = phy.Velocity - world.Wind;                                          // speed of the object relativ to the fluid???
+            Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                                          // speed of the object relativ to the fluid???
 
             Vector3 Fd = 0.5f * p * Vector3Pow(v, 2) * A * Cd;                              // 1/2pv^2ACdV = force of drag
 
-            //TODO: Anväda Dragforce (Fd) funktionen är helt korrekt men använder inte Fd atm.
+            //TODO: Använda Dragforce (Fd) funktionen är helt korrekt men använder inte Fd atm.
         }
+        private void UpdateWind()
+        {
+
+        }
+        /// <summary>
+        /// Funktion to power an Vector3
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="scalar"></param>
+        /// <returns></returns>
         private Vector3 Vector3Pow(Vector3 v1, float scalar)
         {
             return new Vector3((float)Math.Pow(v1.X, scalar), (float)Math.Pow(v1.Y, scalar), (float)Math.Pow(v1.Z, scalar));

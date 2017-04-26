@@ -33,4 +33,10 @@ namespace GameEngine.Source.Enums
         /// </summary>
         Soft
     }
+    public enum GravityType
+    {
+        None,
+        World,
+        Self
+    }
 }

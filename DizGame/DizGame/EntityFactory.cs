@@ -67,7 +67,7 @@ namespace DizGame
                 new TransformComponent(new Vector3(5,0,20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(kitana),
                 new WorldComponent(Matrix.Identity),
-                //new CameraComponent(CameraType.Chase),
+                new CameraComponent(CameraType.Chase),
                 //new PhysicsComponent()
                 //{
                 //    Mass = 60,

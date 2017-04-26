@@ -26,6 +26,10 @@ namespace GameEngine.Source.Enums
         Plus30 = 30,
         Plus35 = 35
     }
+    /// <summary>
+    /// Returns an long represending the chosen objects
+    /// drag value.
+    /// </summary>
     public enum DragType : long
     {
         Default = (long)1,

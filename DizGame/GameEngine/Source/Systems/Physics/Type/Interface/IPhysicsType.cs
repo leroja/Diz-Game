@@ -9,6 +9,6 @@ namespace GameEngine.Source.Systems.Interface
 {
     public abstract class IPhysicsType : ISystem
     {
-        public abstract void Update(int entityID, float dt);
+        public abstract void Update(PhysicsComponent physic, float dt);
     }
 }

@@ -35,8 +35,9 @@ namespace GameEngine.Source.Components
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
         public DragType DragType { get; set; }
+        public GravityType GravityType { get; set; }
         public float ReferenceArea { get; set; }
-
+        public float Gravity { get; set; }
         public bool IsMoving { get; set; } //TODO: Skall inte ligga här
         public bool IsFalling { get; set; } //TODO: Skall inte ligga här
         #endregion Public Configuration
@@ -49,12 +50,14 @@ namespace GameEngine.Source.Components
             Velocity = Vector3.Zero;
             InitialVelocity = Vector3.Zero;
 
-            Forces += DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
+            Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;
             DragType = DragType.Default;
+            GravityType = GravityType.World;
             ReferenceArea = MathHelper.Pi * 10;
 
+            Gravity = DEFAULT_GRAVITY;
             IsMoving = false;
             IsFalling = false;
         }

@@ -101,12 +101,9 @@ namespace GameEngine.Source.Managers
         /// </summary>
         public void RunUpdateSystems()
         {
-            if (updateSystems.Count > 0)
+            foreach (IUpdate system in updateSystems)
             {
-                foreach (IUpdate system in updateSystems)
-                {
-                    system.Update(GameTime);
-                }
+                system.Update(GameTime);
             }
         }
 
@@ -115,12 +112,9 @@ namespace GameEngine.Source.Managers
         /// </summary>
         public void RunRenderSystems()
         {
-            if (renderSystems.Count > 0)
+            foreach (IRender system in renderSystems)
             {
-                foreach (IRender system in renderSystems)
-                {
-                    system.Draw(GameTime);
-                }
+                system.Draw(GameTime);
             }
         }
     }

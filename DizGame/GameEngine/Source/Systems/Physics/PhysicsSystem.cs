@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
+using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
@@ -31,6 +32,7 @@ namespace GameEngine.Source.Systems
             ragDoll = new PhysicsRagdollSystem();
             soft = new PhysicsSoftSystem();
             _static = new PhysicsStaticSystem();
+
         }
         /// <summary>
         /// Updates all the necessary part for the physicsystem
@@ -45,59 +47,28 @@ namespace GameEngine.Source.Systems
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
 
-                UpdatePosition(entityID, dt);
+                UpdateGravity(physic);
+
+                UpdatePhysicComponentByType(physic, dt);
 
                 UpdateMaxAcceleration(physic);
                 UpdateLinearAcceleration(physic, dt);
                 UpdateLinearVelocity(physic, dt);
 
-                UpdatePhysicComponentByType(entityID, dt);
+                TEMPFLOOR(ComponentManager.GetEntityComponent<TransformComponent>(entityID));
+
                 //Console.WriteLine("Forces: " + physic.Forces);
                 Console.WriteLine("Velocity: " + physic.Velocity);
                 if (!physic.IsMoving)
                     UpdateLinearDeceleration(physic, dt);
             }
         }
-        /// <summary>
-        /// Updates the object position using its velocity * dt
-        /// </summary>
-        /// <param name="entityID"></param>
-        /// <param name="dt"></param>
-        private void UpdatePosition(int entityID, float dt)
+        //TODO: TEMPFLOOR DELETE
+        private void TEMPFLOOR(TransformComponent transform)
         {
-            ComponentManager.GetEntityComponent<TransformComponent>(entityID).Position
-                += ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity * dt;
-        }
-        /// <summary>
-        /// Udates the corresponding object by physictype
-        /// </summary>
-        /// <param name="entityID"></param>
-        /// <param name="dt"></param>
-        private void UpdatePhysicComponentByType(int entityID, float dt)
-        {
-                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                switch(physic.PhysicsType)
-                {
-                    case Enums.PhysicsType.Static:
-                        _static.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Soft:
-                        soft.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Rigid:
-                        rigidBody.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Ragdoll:
-                        ragDoll.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Projectiles:
-                        projectile.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Particle:
-                        particle.Update(entityID, dt);
-                        break;
-                    default:
-                        break;
+            if(transform.Position.Y <= -5)
+            {
+                transform.Position = new Vector3(transform.Position.X, 0, transform.Position.Z);
             }
         }
         /// <summary>
@@ -118,23 +89,82 @@ namespace GameEngine.Source.Systems
         {
             physic.Velocity += physic.Acceleration * dt;
         }
+        /// <summary>
+        /// Updates the gravity depending on physics gravity type
+        /// </summary>
+        /// <param name="physic"></param>
+        private void UpdateGravity(PhysicsComponent physic)
+        {
+            switch(physic.GravityType)
+            {
+                case GravityType.None:
+                    physic.Forces = new Vector3(physic.Forces.X, 0, physic.Forces.Z);
+                    break;
+                case GravityType.Self:
+                    physic.Forces = new Vector3(physic.Forces.X, physic.Gravity, physic.Forces.Z);
+                    break;
+                case GravityType.World:
+                    List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+                    WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+                    physic.Forces = new Vector3(physic.Forces.X, world.Gravity.Y, physic.Forces.Z);
+                    break;
+            }
+                
+        }
+        /// <summary>
+        /// Udates the corresponding object by physictype
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="dt"></param>
+        private void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
+        {
+                switch(physic.PhysicsType)
+                {
+                    case Enums.PhysicsType.Static:
+                        _static.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Soft:
+                        soft.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Rigid:
+                        rigidBody.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Ragdoll:
+                        ragDoll.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Projectiles:
+                        projectile.Update(physic, dt);
+                        break;
+                    case Enums.PhysicsType.Particle:
+                        particle.Update(physic, dt);
+                        break;
+                    default:
+                        break;
+            }
+        }
+        
+        /// <summary>
+        /// Calculates the physic objects Deaceleration
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
         private void UpdateLinearDeceleration(PhysicsComponent physic, float dt)
         {
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
 
             Vector3 f = physic.Velocity;
-            if (physic.Velocity != Vector3.Zero)
-                f -= (physic.Velocity - physic.InitialVelocity) / dt;
-            if (f.X < 0)
-                f.X = 0;
-            if (f.Z < 0)
-                f.Z = 0;
-            if(physic.IsFalling)
+            if (physic.IsFalling)
             {
-                physic.Forces = new Vector3(physic.Forces.X, world.Gravity.Y, physic.Forces.Z);
+                physic.Forces = new Vector3(physic.Forces.X, physic.Forces.Y, physic.Forces.Z);
             }
-            physic.Velocity = new Vector3(f.X, physic.Velocity.Y, f.X);
+            else
+            {
+             f -= (physic.Velocity - physic.InitialVelocity) / dt;
+                
+
+                physic.Velocity = new Vector3(f.X, physic.Velocity.Y, f.X);
+            }
         }
         /// <summary>
         /// Updates the objects heading depending on collision
@@ -180,18 +210,27 @@ namespace GameEngine.Source.Systems
                 timeSinceLastUpdate -= updateInterval;
             }
         }
-
+        /// <summary>
+        /// Observer funktion, Updates the reflection on two objects 
+        /// on collision (retrieves data from collision system)
+        /// </summary>
+        /// <param name="value"></param>
         public void OnNext(List<Tuple<BoundingSphereComponent, BoundingSphereComponent>> value)
         {
             foreach (var val in value)
                 UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.ID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.ID));
         }
-
+        /// <summary>
+        /// Does nothing atm
+        /// </summary>
+        /// <param name="error"></param>
         public void OnError(Exception error)
         {
             //TODO: OnError
         }
-
+        /// <summary>
+        /// Does nothing atm
+        /// </summary>
         public void OnCompleted()
         {
             //TODO: OnCompleted
