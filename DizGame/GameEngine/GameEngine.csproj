@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Source\Components\MouseComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
-    <Compile Include="Source\ConfiguredSystems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\Enums\Air.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
@@ -99,6 +98,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\HeightMaps\grass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\HeightMaps\heightmap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
