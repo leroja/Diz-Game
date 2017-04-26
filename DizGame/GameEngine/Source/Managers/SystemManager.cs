@@ -84,7 +84,6 @@ namespace GameEngine.Source.Managers
             {
 
                 sys = updateSystems.Find(x => x.ToString().Contains(system));
-
                 return (sys);
             }
             if (type.Equals(typeof(IRender)))

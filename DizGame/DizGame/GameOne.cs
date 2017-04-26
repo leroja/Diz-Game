@@ -5,6 +5,7 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using DizGame.Source.ConfiguredSystems;
 
 namespace DizGame
 {
@@ -43,13 +44,13 @@ namespace DizGame
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content);
             
-            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 5, -20));
+            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
             entf.CreateChuckGreen();
-            var id = entf.CreateKitana();
-            Model bullet = Content.Load<Model>("bullet/bullet");
-             entf.CreateBullet(bullet, new Vector3(5, 0, 20), Vector3.Zero, new Vector3(0.1f, .1f, 0.1f));
+            //var id = entf.CreateKitana();
+            //Model bullet = Content.Load<Model>("bullet/Bullet");
+            //var id = entf.CreateBullet("Bullet", new Vector3(0, 0, -20), Vector3.Zero, new Vector3(.3f, .3f, .3f));
 
-            entf.AddChaseCamToEntity(id, new Vector3(0, 15, 30));
+            //entf.AddChaseCamToEntity(id, new Vector3(0, 10, 15));
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());
@@ -60,13 +61,15 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
-
             SystemManager.Instance.AddSystem(new BulletSystem());
+            SystemManager.Instance.AddSystem(new PlayerSystem());
 
+
+            SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
 
             base.Initialize();
 
-            Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
+            //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
         }
 
         /// <summary>

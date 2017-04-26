@@ -26,12 +26,12 @@ namespace GameEngine.Source.Systems
 
             List<int> entities = ComponentManager.GetAllEntitiesWithComponentType<MouseComponent>();
 
-                foreach (var item in entities)
-                {
-                    MouseComponent mouse = ComponentManager.GetEntityComponent<MouseComponent>(item);
-                    UpdateActionStates(mouse);
-                    UpdateMousePositions(mouse);
-                }
+            foreach (var item in entities)
+            {
+                MouseComponent mouse = ComponentManager.GetEntityComponent<MouseComponent>(item);
+                UpdateActionStates(mouse);
+                UpdateMousePositions(mouse);
+            }
         }
 
         private void UpdateMousePositions(MouseComponent mouseComp)

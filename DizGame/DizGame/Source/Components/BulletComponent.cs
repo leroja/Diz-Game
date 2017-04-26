@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Components
 {
-    // temporär
+    // TODO temporär, ta bort sen
     public class BulletComponent : IComponent
     {
 
