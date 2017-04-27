@@ -32,8 +32,7 @@ namespace DizGame
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
                 { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
                 { "Chuck", Content.Load<Model>("chuck/DR3_Chuck_Greene") },
-                { "Kitana", Content.Load<Model>("Kitana/Kitana") }
-                { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
+                { "Kitana", Content.Load<Model>("Kitana/Kitana") },
                 { "House_Wood", Content.Load<Model>("House/Farmhouse/medievalHouse1") } ,
                 { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") }
             };
