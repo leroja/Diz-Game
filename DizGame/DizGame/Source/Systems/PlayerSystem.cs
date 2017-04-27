@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
+using GameEngine.Source.Enums;
 
 namespace DizGame.Source.Systems
 {
     public class PlayerSystem : IUpdate
     {
+        private EntityFactory entFactory;
+
+        public PlayerSystem(EntityFactory entFac)
+        {
+            this.entFactory = entFac;
+        }
         public override void Update(GameTime gameTime)
         {
             var PlayerEntityIds = ComponentManager.GetAllEntitiesWithComponentType<PlayerComponent>();
@@ -23,25 +30,33 @@ namespace DizGame.Source.Systems
                 var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(playerId);
 
                 var rot = transformComp.Rotation;
-                rot.X = 0;
-                rot.Y = 0;
-                rot.Z = 0;
+                //rot.X = 0;
+                //rot.Y = 0;
+                //rot.Z = 0;
 
                 if (mouseComp.MouseDeltaPosition.X > 0)
                 {
-                    rot.Y += 0.01f;
+                    rot.Y -= 0.01f;
                 }
                 if (mouseComp.MouseDeltaPosition.X < 0)
                 {
-                    rot.Y -= 0.01f;
+                    rot.Y += 0.01f;
                 }
-                if (mouseComp.MouseDeltaPosition.Y > 0)
+                //if (mouseComp.MouseDeltaPosition.Y > 0)
+                //{
+                //    rot.Z += 0.05f;
+                //}
+                //if (mouseComp.MouseDeltaPosition.Y < 0)
+                //{
+                //    rot.Z -= 0.05f;
+                //}
+                transformComp.Rotation = rot;
+
+                if (mouseComp.GetState("Fire") == ButtonStates.Pressed)
                 {
-                    rot.Z += 0.05f;
-                }
-                if (mouseComp.MouseDeltaPosition.Y < 0)
-                {
-                    rot.Z -= 0.05f;
+                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), 100);
+                    Console.WriteLine(transformComp.Forward);
+                    Console.WriteLine(transformComp.QuaternionRotation);
                 }
             }
         }

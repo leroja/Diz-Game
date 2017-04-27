@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using DizGame.Source.ConfiguredSystems;
+using GameEngine.Source.Factories;
+using GameEngine.Source.Components;
+using System.Collections.Generic;
 
 namespace DizGame
 {
@@ -39,18 +42,20 @@ namespace DizGame
         /// </summary>
         protected override void Initialize()
         {
-            
+            Device = Graphics.GraphicsDevice;
 
             client.DiscoverLocalPeers();
-            EntityFactory entf = new EntityFactory(Content);
-            
-            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
-            entf.CreateChuckGreen();
-            var id = entf.CreateKitana();
-            //Model bullet = Content.Load<Model>("bullet/Bullet");
+            EntityFactory entf = new EntityFactory(Content, Device);
+
+            var idC = entf.CreateChuckGreen();
+            //var idK = entf.CreateKitana();
             //var id = entf.CreateBullet("Bullet", new Vector3(0, 0, -20), Vector3.Zero, new Vector3(.3f, .3f, .3f));
 
-            entf.AddChaseCamToEntity(id, new Vector3(0, 10, 15));
+            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 20, 25));
+
+            entf.CreateHeightMap("canyonHeightMap", "BetterGrass");
+            //entf.CreateHeightMap("heightmap", "BetterGrass");
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());
@@ -62,10 +67,12 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
-            SystemManager.Instance.AddSystem(new PlayerSystem());
+            SystemManager.Instance.AddSystem(new PlayerSystem(entf));
+
+            SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
 
 
-            SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
+            //SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
 
             base.Initialize();
 

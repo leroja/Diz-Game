@@ -38,7 +38,6 @@ namespace GameEngine
             //ConfiguredHeightMapSystem.Instance.ThisFunctionDoesNothing();
 
             base.Initialize();
-            Device = Graphics.GraphicsDevice;
         }
 
         /// <summary>

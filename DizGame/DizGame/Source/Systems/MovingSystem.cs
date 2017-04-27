@@ -29,7 +29,7 @@ namespace DizGame.Source.Systems
                     if (phys != null)
                         move += Vector3.Forward; //+ new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
-                        trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                        trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = Vector3.Forward;
                 }
                 if (key.State["Backwards"] == ButtonStates.Hold)
