@@ -19,6 +19,16 @@ namespace GameEngine.Source.Components
         public float Mass { get; set; }
         public Vector3 Acceleration { get; set; }
         /// <summary>
+        /// Defines maxacceleration in Meters per second each second 
+        /// divided by FPS to give meters per second each frame.
+        /// </summary>
+        public Vector3 MaxAcceleration { get; set; }
+        /// <summary>
+        /// Used to calculate an higher accuracy of velocity,
+        /// position using Euler method.
+        /// </summary>
+        public Vector3 LastAcceleration { get; set; }
+        /// <summary>
         /// Defines velocity in meters per second in a given direction
         /// </summary>
         public Vector3 Velocity { get; set; }
@@ -31,35 +41,36 @@ namespace GameEngine.Source.Components
         /// Defines the physic objects max velocity
         /// </summary>
         public Vector3 MaxVelocity { get; set; }
-        /// <summary>
-        /// Defines maxacceleration in Meters per second each second 
-        /// divided by FPS to give meters per second each frame.
-        /// </summary>
-        public Vector3 MaxAcceleration { get; set; }
+
         /// <summary>
         /// Maximum force in X,Y,Z in newtones (kilogram meter per second each second).
         /// </summary>
         public Vector3 Forces { get; set; }
-        public Vector3 Distance { get; set; }
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
         public DragType DragType { get; set; }
         public GravityType GravityType { get; set; }
         public float ReferenceArea { get; set; }
         public float Gravity { get; set; }
+        public float Density { get; set; }
+        public float Volume { get; set; }
+        public float Bounciness { get; set; }
         public bool IsMoving { get; set; } //TODO: Skall inte ligga här
         public bool IsFalling { get; set; } //TODO: Skall inte ligga här
         #endregion Public Configuration
 
         public PhysicsComponent()
         {
-            Mass = 1;
+            Density = 1f;
+            Volume = 1f;
+            Mass = Density * Volume;
+            Bounciness = 1;
 
             Acceleration = Vector3.Zero;
+            MaxVelocity = Vector3.Zero;
+            LastAcceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
             InitialVelocity = Vector3.Zero;
-            MaxVelocity = Vector3.Zero;
-            Distance = Vector3.Zero;
 
             Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
             PhysicsType = PhysicsType.Static;

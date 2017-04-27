@@ -2,6 +2,7 @@
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
+using System;
 
 namespace GameEngine.Source.Systems
 {
@@ -13,7 +14,7 @@ namespace GameEngine.Source.Systems
             PhysicsRigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(physic.ID);
             TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID);
 
-            UpdateLinearPosition(physic, dt);
+            UpdatePosition(physic, dt);
 
             if (rigidBody == null)
                 ComponentManager.AddComponentToEntity(physic.ID, new PhysicsRigidbodyComponent());
@@ -28,15 +29,20 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="entityID"></param>
         /// <param name="dt"></param>
-        private void UpdateLinearPosition(PhysicsComponent physic, float dt)
+        private void UpdatePosition(PhysicsComponent physic, float dt)
         {
-            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-            //    += ComponentManager.GetEntityComponent<PhysicsComponent>(physic.ID).Velocity * dt;
+            if (physic.LastAcceleration == Vector3.Zero)
+                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+                    += physic.Velocity * dt;
+            else
+                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+                    += physic.Velocity * dt + (0.5f * physic.LastAcceleration * (float)Math.Pow(dt, 2));
 
-            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-            //    += ComponentManager.GetEntityComponent<PhysicsComponent>(physic.ID).Velocity * dt + (0.5f * physic.Acceleration * dt * dt);
-            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-                += physic.Distance;
+            Vector3 rotation = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Rotation;
+            if (rotation.Length() != 0)
+                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Orientation
+                    *= Quaternion.CreateFromAxisAngle(
+                        ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Rotation * (1 / rotation.Length()), rotation.Length() * dt);
         }
         private void IntegrateStateVariables(TransformComponent transform, PhysicsRigidbodyComponent rigidbody, float dt)
         {

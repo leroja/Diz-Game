@@ -46,7 +46,7 @@
     <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
     <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
-    <Compile Include="Source\Enums\Air.cs" />
+    <Compile Include="Source\Enums\Element.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />

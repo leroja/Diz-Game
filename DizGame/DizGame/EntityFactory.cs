@@ -104,7 +104,8 @@ namespace DizGame
                 new ModelComponent(kitana),
                 //new PhysicsComponent()
                 //{
-                //    Mass = 60f,
+                //    Volume = 22.5f,
+                //    Density = 2.66f,
                 //    PhysicsType = PhysicsType.Rigid,
                 //    MaterialType = MaterialType.Skin,
                 //    GravityType = GravityType.World,
