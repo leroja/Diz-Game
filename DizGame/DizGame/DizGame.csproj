@@ -76,6 +76,8 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Content\House\WoodHouse\Cyprys_House.mtl" />
+    <None Include="Content\House\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">
@@ -90,6 +92,7 @@
   <ItemGroup>
     <Folder Include="Content\bullet\" />
     <Folder Include="Content\HeightMaps\" />
+    <Folder Include="Content\House\Farmhouse\" />
     <Folder Include="Source\Enums\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>

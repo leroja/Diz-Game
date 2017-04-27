@@ -25,7 +25,9 @@ namespace DizGame
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
-                { "Cartridge", Content.Load<Model>("Bullet/Cartridge") }
+                { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
+                { "House_Wood", Content.Load<Model>("House/Farmhouse/medievalHouse1") } ,
+                { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") }
             };
         }
        
@@ -99,6 +101,33 @@ namespace DizGame
 
             return entityID;
         }
+
+        public int createHouse(string nameOfModel, Vector3 position)
+        {
+            Vector3 scale = new Vector3();
+            Model house = ModelDic[nameOfModel];
+            if(nameOfModel == "House_Wood")
+            {
+                scale = new Vector3(0.04f, 0.04f, 0.04f);
+            }
+            else
+            {
+                scale = new Vector3(4f, 4f, 4f);
+            }
+            int entityID = ComponentManager.Instance.CreateID();
+
+            List<IComponent> components = new List<IComponent>
+            {
+            new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new ModelComponent(house),
+                };
+            ComponentManager.Instance.AddAllComponents(entityID, components);
+
+            return entityID;
+
+        }
+
+        
 
         public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
         {
