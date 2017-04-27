@@ -49,8 +49,13 @@
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Components\BulletComponent.cs" />
+    <Compile Include="Source\Components\PlayerComponent.cs" />
+    <Compile Include="Source\Systems\BulletSystem.cs" />
+    <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
+    <Compile Include="Source\Systems\PlayerSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
@@ -61,6 +66,7 @@
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -72,13 +78,18 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContentProject\ContentProject.csproj">
+      <Project>{2020d833-ad3f-446e-9609-b751490b0800}</Project>
+      <Name>ContentProject</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameEngine\GameEngine.csproj">
       <Project>{beb5aa74-8cd7-4ded-86d9-693fa6e9aaf0}</Project>
       <Name>GameEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Source\Components\" />
+    <Folder Include="Content\bullet\" />
+    <Folder Include="Content\HeightMaps\" />
     <Folder Include="Source\Enums\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>

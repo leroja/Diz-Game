@@ -7,20 +7,36 @@ namespace GameEngine.Source.Systems
 {
     public class PhysicsRigidBodySystem : IPhysicsType
     {
-        public override void Update(int entityID, float dt)
+        public override void Update(PhysicsComponent physic, float dt)
         {
             // Creates and send this throught instead of creating globas that takes memory
-            PhysicsComponent physics = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-            PhysicsRigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(entityID);
-            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+            PhysicsRigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(physic.ID);
+            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID);
+
+            UpdateLinearPosition(physic, dt);
 
             if (rigidBody == null)
-                ComponentManager.AddComponentToEntity(entityID, new PhysicsRigidbodyComponent());
-            rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(entityID);
+                ComponentManager.AddComponentToEntity(physic.ID, new PhysicsRigidbodyComponent());
+            rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(physic.ID);
 
             rigidBody.BodyToLocal = Matrix.CreateFromQuaternion(transform.Orientation);
             rigidBody.LocalToBody = Matrix.Invert(rigidBody.BodyToLocal);
             IntegrateStateVariables(transform, rigidBody, dt);
+        }
+        /// <summary>
+        /// Updates the object position using its velocity * dt
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="dt"></param>
+        private void UpdateLinearPosition(PhysicsComponent physic, float dt)
+        {
+            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //    += ComponentManager.GetEntityComponent<PhysicsComponent>(physic.ID).Velocity * dt;
+
+            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //    += ComponentManager.GetEntityComponent<PhysicsComponent>(physic.ID).Velocity * dt + (0.5f * physic.Acceleration * dt * dt);
+            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+                += physic.Distance;
         }
         private void IntegrateStateVariables(TransformComponent transform, PhysicsRigidbodyComponent rigidbody, float dt)
         {

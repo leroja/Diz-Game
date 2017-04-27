@@ -10,8 +10,9 @@ namespace GameEngine.Source.Systems
 {
     public class PhysicsSoftSystem : IPhysicsType
     {
-        public override void Update(int entityID, float dt)
+        public override void Update(PhysicsComponent physic, float dt)
         {
+            //TODO: SoftSystem
             throw new NotImplementedException();
         }
     }

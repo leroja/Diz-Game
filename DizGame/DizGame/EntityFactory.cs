@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Components;
+﻿using DizGame.Source.Components;
+using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
@@ -16,29 +17,44 @@ namespace DizGame
     public class EntityFactory
     {
         private ContentManager Content;
+        private Dictionary<string, Model> ModelDic;
         public EntityFactory(ContentManager Content)
         {
+            CreateWorldComp();
             this.Content = Content;
+            ModelDic = new Dictionary<string, Model>
+            {
+                { "Bullet", Content.Load<Model>("Bullet/Bullet") },
+                { "Cartridge", Content.Load<Model>("Bullet/Cartridge") }
+            };
         }
        
+        public void CreateWorldComp()
+        {
+            var worldEntId = ComponentManager.Instance.CreateID();
+            var compList = new List<IComponent>() {
+                new WorldComponent(Matrix.Identity)
+            };
+
+            ComponentManager.Instance.AddAllComponents(worldEntId, compList);
+        }
+
         public void CreateChuckGreen()
         {
             int entityID = ComponentManager.Instance.CreateID();
             Model chuck = Content.Load<Model>("chuck/DR3_Chuck_Greene");
-
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.KeyBoardActions.Add("Forward", Keys.W);
             keys.KeyBoardActions.Add("Backwards", Keys.S);
             keys.KeyBoardActions.Add("Right", Keys.D);
             keys.KeyBoardActions.Add("Left", Keys.A);
+            keys.KeyBoardActions.Add("Up", Keys.Space);
 
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,0,20), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new TransformComponent(new Vector3(0,0,-20), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(chuck),
-                new WorldComponent(Matrix.Identity),
-                new CameraComponent(CameraType.Chase),
                 keys,
             };
 
@@ -47,7 +63,7 @@ namespace DizGame
 
         }
 
-        public void CreateKitana()
+        public int CreateKitana()
         {
             int entityID = ComponentManager.Instance.CreateID();
             Model kitana = Content.Load<Model>("Kitana/Kitana");
@@ -57,45 +73,79 @@ namespace DizGame
             keys.KeyBoardActions.Add("Backwards", Keys.Down);
             keys.KeyBoardActions.Add("Right", Keys.Right);
             keys.KeyBoardActions.Add("Left", Keys.Left);
+            keys.KeyBoardActions.Add("Up", Keys.Space);
 
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(5,0,20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new TransformComponent(new Vector3(5,0,-20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(kitana),
-                new WorldComponent(Matrix.Identity),
+                //new PhysicsComponent()
+                //{
+                //    Mass = 60f,
+                //    PhysicsType = PhysicsType.Rigid,
+                //    MaterialType = MaterialType.Skin,
+                //    GravityType = GravityType.World,
+                //    DragType = DragType.ManUpright
+                //},
                 //new CameraComponent(CameraType.Chase),
                 keys,
+                //new BulletComponent(),
+                //new MouseComponent(){
+                    //MouseSensitivity = 1.9f
+                //},
             };
 
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
+            return entityID;
         }
-        public void CreateBullet(Model model, Vector3 pos, Vector3 rotation, Vector3 scale)
+
+        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
+        {
+            ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
+                new TransformComponent(CameraPosition, Vector3.One),
+                new CameraComponent(CameraType.StaticCam)
+                {
+                    LookAt = lookAt
+                }
+            });
+        }
+
+        public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
+        {
+            CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
+            {
+                Offset = Offset
+            };
+            ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
+        }
+
+        // roation är inte riktigt det jag vill, oriantaion är nog mer det jag vill ha
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 rotation, Vector3 scale)
         {
             int BulletEntity = ComponentManager.Instance.CreateID();
 
+            Model model = ModelDic[modelName];
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
                 {
                     Rotation = rotation
                 },
-                new  ModelComponent(model)
-            };
-            
-        }
+                new  ModelComponent(model),
 
-        public void CreateDefaultCamera()
-        {
-            ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
-                new TransformComponent(new Vector3(0, 0, 40), Vector3.One),
-                new CameraComponent(CameraType.StaticCam)
-                {
-                    LookAt = new Vector3(10, 10, 10)
-                }
-            });
+                //temp
+                new MouseComponent(){
+                    //MouseSensitivity = 1.9f
+                },
+                new BulletComponent(),
+            };
+
+            ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
+
+            return BulletEntity;
         }
     }
 }

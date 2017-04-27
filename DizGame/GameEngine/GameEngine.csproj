@@ -41,11 +41,16 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\Components\MouseComponent.cs" />
+    <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
+    <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
-    <Compile Include="Source\ConfiguredSystems\ConfiguredHeightMapSystem.cs" />
+    <Compile Include="Source\Enums\Air.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
+    <Compile Include="Source\Systems\EnvironmentSystem.cs" />
     <Compile Include="Source\Systems\HeightMapSystem.cs" />
-    <Compile Include="Source\Systems\ModelBoudingSphereSystem.cs" />
+    <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
+    <Compile Include="Source\Systems\MouseSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsType.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsProjectilesSystem.cs" />
@@ -85,6 +90,7 @@
     <Compile Include="Source\Systems\TransformSystem.cs" />
     <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />
     <Compile Include="Source\Systems\WorldSystem.cs" />
+    <Compile Include="Tools\BoundingSphereRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -95,6 +101,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\HeightMaps\grass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\HeightMaps\heightmap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

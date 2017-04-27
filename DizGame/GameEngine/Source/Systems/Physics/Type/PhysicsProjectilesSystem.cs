@@ -5,14 +5,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Source.Components;
+using Microsoft.Xna.Framework;
 
 namespace GameEngine.Source.Systems
 {
     public class PhysicsProjectilesSystem : IPhysicsType
     {
-        public override void Update(int entityID, float dt)
+        public override void Update(PhysicsComponent physic, float dt)
         {
-            throw new NotImplementedException();
+            //TODO: ProjectilesSystem
+            PhysicsProjectileComponent projectile = ComponentManager.GetEntityComponent<PhysicsProjectileComponent>(physic.ID);
+            if (projectile == null)
+                ComponentManager.AddComponentToEntity(physic.ID, new PhysicsProjectileComponent());
+            projectile = ComponentManager.GetEntityComponent<PhysicsProjectileComponent>(physic.ID);
+
+            UpdateArcPosition(physic, dt);
+        }
+        /// <summary>
+        /// Updates the projectiles position in an arc
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="dt"></param>
+        private void UpdateArcPosition(PhysicsComponent physic, float dt)
+        {
+            PhysicsProjectileComponent projectile = ComponentManager.GetEntityComponent<PhysicsProjectileComponent>(physic.ID);
+            projectile.TotalTimePassed += (dt / 4.096f);
+
+
+            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+                += physic.Velocity * dt * projectile.TotalTimePassed * projectile.TotalTimePassed;
+
+            //Vector3 pos = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position;
+
+            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position =
+            //    new Vector3(pos.X,
+            //    pos.Y - 0.5f * physic.Forces.Y * projectile.TotalTimePassed * projectile.TotalTimePassed, pos.Z);
         }
     }
 }

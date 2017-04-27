@@ -11,17 +11,38 @@ namespace GameEngine.Source.Systems
 {
     class CollisionSystem : IUpdate, IObservable<List<Tuple<BoundingSphere, BoundingSphere>>>
     {
+        //Holds all the observers for this class
         List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> observers;
-        /// <summary>
-        /// Checks all entities with boundingspherecomponent if they collide and sets those components'
-        /// hasCollided variables to true if they collide.
-        /// </summary>
-        /// 
-        CollisionSystem()
+
+        partial class Unsubscriber : IDisposable
+        {
+            private List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> _observers;
+            private IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> _observer;
+
+            public Unsubscriber(List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> observers,
+                IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> observer)
+            {
+                this._observers = observers;
+                this._observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observer != null && _observers.Contains(_observer))
+                    _observers.Remove(_observer);
+            }
+        }
+
+        //Constructor
+        public CollisionSystem()
         {
             observers = new List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>>();
         }
 
+        /// <summary>
+        /// Checks all entities with boundingspherecomponent if they collide and sets those components'
+        /// hasCollided variables to true if they collide.
+        /// </summary>
         public void CollisionDetection()
         {
             List<int> sphereEntities = ComponentManager.Instance.GetAllEntitiesWithComponentType<BoundingSphereComponent>();
@@ -34,7 +55,7 @@ namespace GameEngine.Source.Systems
                 for (int j = 1; j < sphereEntities.Count; i++)
                 {
                     BoundingSphereComponent sphereComp2 = ComponentManager.Instance.GetEntityComponent<BoundingSphereComponent>(sphereEntities[j]);
-                    if (sphereComp1.sphere.Intersects(sphereComp2.sphere))
+                    if (sphereComp1.Sphere.Intersects(sphereComp2.Sphere))
                     {
                         if (ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(sphereEntities[i]) && ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(sphereEntities[j]))
                         {
@@ -70,27 +91,6 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        private class Unsubscriber : IDisposable
-        {
-            private List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> _observers;
-            private IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> _observer;
-
-            public Unsubscriber(List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> observers,
-                IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> observer)
-            {
-                this._observers = observers;
-                this._observer = observer;
-            }
-
-            public void Dispose()
-            {
-                if (_observer != null && _observers.Contains(_observer))
-                    _observers.Remove(_observer);
-            }
-        }
-        /// <summary>
         /// Goes through every boundingsphere in 
         /// </summary>
         /// <param name="spheres1"></param>
@@ -124,7 +124,7 @@ namespace GameEngine.Source.Systems
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            CollisionDetection();
         }
     }
 }

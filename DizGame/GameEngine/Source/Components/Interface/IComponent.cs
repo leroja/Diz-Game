@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
-    public interface IComponent
+    public abstract class IComponent
     {
-
+        public int ID { get; set; }
     }
 }

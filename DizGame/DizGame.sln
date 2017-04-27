@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DizGame", "DizGame\DizGame.csproj", "{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEngine", "GameEngine\GameEngine.csproj", "{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerApplication", "ServerApplication\ServerApplication.csproj", "{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentProject", "ContentProject\ContentProject.csproj", "{2020D833-AD3F-446E-9609-B751490B0800}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,12 +20,14 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}.Debug|Any CPU.Build.0 = Debug|x86
 		{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}.Debug|x86.ActiveCfg = Debug|x86
 		{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}.Debug|x86.Build.0 = Debug|x86
 		{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}.Release|Any CPU.ActiveCfg = Release|x86
 		{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}.Release|x86.ActiveCfg = Release|x86
 		{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}.Release|x86.Build.0 = Release|x86
 		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Debug|Any CPU.Build.0 = Debug|x86
 		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Debug|x86.ActiveCfg = Debug|x86
 		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Debug|x86.Build.0 = Debug|x86
 		{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}.Release|Any CPU.ActiveCfg = Release|x86
@@ -37,6 +41,14 @@ Global
 		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Release|x86.ActiveCfg = Release|Any CPU
 		{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}.Release|x86.Build.0 = Release|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Debug|x86.Build.0 = Debug|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Release|x86.ActiveCfg = Release|Any CPU
+		{2020D833-AD3F-446E-9609-B751490B0800}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
