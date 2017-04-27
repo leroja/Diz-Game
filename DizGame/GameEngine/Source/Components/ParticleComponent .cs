@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 namespace GameEngine.Source.Components
 {
     // inte nära klar
-    class ParticleComponent : IComponent
+    //TODO: Göra klart
+    public class ParticleComponent : IComponent
     {
         public Texture2D Texture { get; set; }
         public Vector3 Position { get; set; }
         public float Timecreated { get; set; }
         public float Lifetime { get; set; }
-        public int MaximumParticales { get; set; }
-        public Vector3 Accelaration { get; set; }
+        public int MaximumParticles { get; set; }
+        public Vector3 Acceleration { get; set; }
         public Vector3 ParticleGravity { get; set; }
 
     }

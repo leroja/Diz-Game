@@ -23,15 +23,24 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 Velocity { get; set; }
         /// <summary>
+        /// Defines the Initial velocity the object started with
+        /// eg. used for projectiles (gun) etc.
+        /// </summary>
+        public Vector3 InitialVelocity { get; set; }
+        /// <summary>
+        /// Defines the physic objects max velocity
+        /// </summary>
+        public Vector3 MaxVelocity { get; set; }
+        /// <summary>
         /// Defines maxacceleration in Meters per second each second 
         /// divided by FPS to give meters per second each frame.
         /// </summary>
-        public Vector3 InitialVelocity { get; set; }
         public Vector3 MaxAcceleration { get; set; }
         /// <summary>
         /// Maximum force in X,Y,Z in newtones (kilogram meter per second each second).
         /// </summary>
         public Vector3 Forces { get; set; }
+        public Vector3 Distance { get; set; }
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
         public DragType DragType { get; set; }
@@ -49,12 +58,14 @@ namespace GameEngine.Source.Components
             Acceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
             InitialVelocity = Vector3.Zero;
+            MaxVelocity = Vector3.Zero;
+            Distance = Vector3.Zero;
 
             Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;
             DragType = DragType.Default;
-            GravityType = GravityType.World;
+            GravityType = GravityType.None;
             ReferenceArea = MathHelper.Pi * 10;
 
             Gravity = DEFAULT_GRAVITY;

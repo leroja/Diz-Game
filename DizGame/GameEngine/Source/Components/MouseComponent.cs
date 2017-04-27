@@ -26,7 +26,25 @@ namespace GameEngine.Source.Components
                 { "RightButton", ButtonStates.Not_Pressed }
             };
             MouseSensitivity = 1f;
+            MouseActionBinding = new Dictionary<string, string>();
         }
 
+        /// <summary>
+        /// 
+        /// 
+        /// available keys:
+        ///     RightButton, LeftButton, MiddleButton
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="button"></param>
+        public void AddActionToButton(string action, string button)
+        {
+            MouseActionBinding.Add(action, button);
+        }
+
+        public ButtonStates GetState(string action)
+        {
+            return MouseActionState[MouseActionBinding[action]];
+        }
     }
 }

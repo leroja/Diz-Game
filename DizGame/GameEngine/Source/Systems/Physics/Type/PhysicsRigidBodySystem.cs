@@ -30,8 +30,13 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         private void UpdateLinearPosition(PhysicsComponent physic, float dt)
         {
+            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //    += ComponentManager.GetEntityComponent<PhysicsComponent>(physic.ID).Velocity * dt;
+
+            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //    += ComponentManager.GetEntityComponent<PhysicsComponent>(physic.ID).Velocity * dt + (0.5f * physic.Acceleration * dt * dt);
             ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-                += ComponentManager.GetEntityComponent<PhysicsComponent>(physic.ID).Velocity * dt;
+                += physic.Distance;
         }
         private void IntegrateStateVariables(TransformComponent transform, PhysicsRigidbodyComponent rigidbody, float dt)
         {
