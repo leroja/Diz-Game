@@ -34,12 +34,13 @@ namespace GameEngine.Source.Systems
             float p = AirCoefficients.GetAirSoundSpeedAndDensity(world.Temperatur).Item2;   // density of the fluid
             float Cd = (float)phy.DragType;                                                 // drag coefficent eg 0.25 to 0.45 for car
             Vector3 V = -transform.Dirrection;                                              // V unit vector indicating the direction of the velocity (negativ to indicate drag opposite the velocity)
-            float A = phy.ReferenceArea;                                                    // reference area
-            Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                                          // speed of the object relativ to the fluid???
+            float A = phy.ReferenceArea / 10000;                                            // reference area, divided by 10000 to compensate for the 1px = 1cm relation
+            Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                   // speed of the object relativ to the fluid???
 
-            Vector3 Fd = 0.5f * p * Vector3Pow(v, 2) * A * Cd;                              // 1/2pv^2ACdV = force of drag
+            Vector3 Fd = -1 * 0.5f * p * Vector3Pow(v, 2) * A * Cd;                              // 1/2pv^2ACdV = force of drag
 
             //TODO: Använda Dragforce (Fd) funktionen är helt korrekt men använder inte Fd atm.
+            phy.Forces += Fd;
         }
         private void UpdateWind()
         {

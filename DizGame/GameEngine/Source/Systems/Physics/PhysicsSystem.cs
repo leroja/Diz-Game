@@ -47,13 +47,15 @@ namespace GameEngine.Source.Systems
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
 
+
                 UpdateGravity(physic);
+                UpdateDistance(physic, dt);
 
                 UpdatePhysicComponentByType(physic, dt);
 
                 UpdateMaxAcceleration(physic);
-                UpdateLinearAcceleration(physic, dt);
-                UpdateLinearVelocity(physic, dt);
+                UpdateAcceleration(physic, dt);
+                UpdateVelocity(physic, dt);
 
                 TEMPFLOOR(ComponentManager.GetEntityComponent<TransformComponent>(entityID));
 
@@ -66,9 +68,17 @@ namespace GameEngine.Source.Systems
         //TODO: TEMPFLOOR DELETE
         private void TEMPFLOOR(TransformComponent transform)
         {
-            if(transform.Position.Y <= -5)
+            if (transform.Position.Y <= -15)
             {
                 transform.Position = new Vector3(transform.Position.X, 0, transform.Position.Z);
+                ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity = new Vector3(
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity.X,
+                    0,
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity.Z);
+                ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces = new Vector3(
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces.X,
+                    0,
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces.Z);
             }
         }
         /// <summary>
@@ -76,18 +86,44 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdateLinearAcceleration(PhysicsComponent physic, float dt)
+        private void UpdateAcceleration(PhysicsComponent physic, float dt)
         {
-            physic.Acceleration = physic.Forces / physic.Mass;
+            Vector3 new_ay = physic.Forces / physic.Mass;
+            Vector3 avg_ay = 0.5f * new_ay;
+            physic.Acceleration = avg_ay;
         }
         /// <summary>
         /// Updates the objects linear velocity
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdateLinearVelocity(PhysicsComponent physic, float dt)
+        private void UpdateVelocity(PhysicsComponent physic, float dt)
         {
-            physic.Velocity += physic.Acceleration * dt;
+            physic.Velocity += physic.InitialVelocity + (physic.Acceleration * dt);
+
+        }
+        /// <summary>
+        /// Updates the physic objects travled distance
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        private void UpdateDistance(PhysicsComponent physic, float dt)
+        {
+            physic.Distance = (physic.Velocity - physic.InitialVelocity * dt)
+                + (0.5f * physic.Acceleration * dt * dt);
+        }
+        /// <summary>
+        /// Updates the forces
+        /// </summary>
+        /// <param name="physic"></param>
+        private void UpdateForce(PhysicsComponent physic)
+        {
+            float X, Y, Z;
+            X = (physic.Mass * physic.Acceleration.X);
+            Y = (physic.Mass * physic.Acceleration.Y);
+            Z = (physic.Mass * physic.Acceleration.Z);
+
+            physic.Forces = new Vector3(X, Y, Z);
         }
         /// <summary>
         /// Updates the gravity depending on physics gravity type
@@ -98,15 +134,15 @@ namespace GameEngine.Source.Systems
             switch(physic.GravityType)
             {
                 case GravityType.None:
-                    physic.Forces = new Vector3(physic.Forces.X, 0, physic.Forces.Z);
+                    physic.Forces += new Vector3(physic.Forces.X, 0, physic.Forces.Z);
                     break;
                 case GravityType.Self:
-                    physic.Forces = new Vector3(physic.Forces.X, physic.Gravity, physic.Forces.Z);
+                    physic.Forces += new Vector3(physic.Forces.X, physic.Gravity, physic.Forces.Z);
                     break;
                 case GravityType.World:
                     List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
                     WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
-                    physic.Forces = new Vector3(physic.Forces.X, world.Gravity.Y, physic.Forces.Z);
+                    physic.Forces += new Vector3(physic.Forces.X, world.Gravity.Y, physic.Forces.Z);
                     break;
             }
                 
@@ -142,7 +178,6 @@ namespace GameEngine.Source.Systems
                         break;
             }
         }
-        
         /// <summary>
         /// Calculates the physic objects Deaceleration
         /// </summary>
@@ -150,6 +185,7 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         private void UpdateLinearDeceleration(PhysicsComponent physic, float dt)
         {
+            //TODO: Få denna skiten att fungera
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
 

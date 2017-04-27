@@ -84,14 +84,15 @@ namespace DizGame
                 //{
                 //    Mass = 60,
                 //    PhysicsType = PhysicsType.Rigid,
-                //    MaterialType = MaterialType.Skin
+                //    MaterialType = MaterialType.Skin,
+                //    GravityType = GravityType.World
                 //},
                 //new CameraComponent(CameraType.Chase),
                 keys,
-                new BulletComponent(),
-                new MouseComponent(){
+                //new BulletComponent(),
+                //new MouseComponent(){
                     //MouseSensitivity = 1.9f
-                },
+                //},
             };
 
 
