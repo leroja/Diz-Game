@@ -47,7 +47,7 @@ namespace GameEngine.Source.Systems
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
 
-
+                UpdateForce(physic);
                 UpdateGravity(physic);
                 UpdateDistance(physic, dt);
 

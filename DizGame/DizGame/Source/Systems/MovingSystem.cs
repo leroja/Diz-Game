@@ -65,6 +65,7 @@ namespace DizGame.Source.Systems
                 if (phys != null)
                 {
                     move.Y += phys.Forces.Y;
+                    trans.Dirrection = Vector3.Down;
                     phys.Forces = move;
                     if (move == Vector3.Zero)
                     {
