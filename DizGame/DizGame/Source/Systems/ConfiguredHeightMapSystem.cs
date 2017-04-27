@@ -49,8 +49,8 @@ namespace DizGame.Source.ConfiguredSystems
                 {
 
                     //scaleFactor = 0.01f,
-                    terrainMapName = "Content/HeightMaps/heightmap.png",
-                    transform = transform,
+                    TerrainMapName = "Content/HeightMaps/heightmap.png",
+                    Transform = transform,
                 };
 
 
@@ -70,9 +70,9 @@ namespace DizGame.Source.ConfiguredSystems
 
             foreach (HeightMapObject hmobj in hmobjs)
             {
-                Bitmap bmpHeightdata = new Bitmap(hmobj.terrainMapName);
-                hmobj.terrainHeight = bmpHeightdata.Height;
-                hmobj.terrainWidth = bmpHeightdata.Width;
+                Bitmap bmpHeightdata = new Bitmap(hmobj.TerrainMapName);
+                hmobj.TerrainHeight = bmpHeightdata.Height;
+                hmobj.TerrainWidth = bmpHeightdata.Width;
 
                 //vertexCount = terrainWidth * terrainHeight;
                 //indexCount = (terrainWidth - 1) * (terrainHeight - 1) * 6;
@@ -80,14 +80,14 @@ namespace DizGame.Source.ConfiguredSystems
                 //vertices = new VertexPositionNormalTexture[vertexCount];
                 //indices = new int[indexCount];
 
-                hmobj.heightData = new float[hmobj.terrainWidth, hmobj.terrainHeight];
+                hmobj.HeightData = new float[hmobj.TerrainWidth, hmobj.TerrainHeight];
 
-                for (int x = 0; x < hmobj.terrainWidth; x++)
+                for (int x = 0; x < hmobj.TerrainWidth; x++)
                 {
-                    for (int y = 0; y < hmobj.terrainHeight; y++)
+                    for (int y = 0; y < hmobj.TerrainHeight; y++)
                     {
                         System.Drawing.Color color = bmpHeightdata.GetPixel(x, y);
-                        hmobj.heightData[x, y] = ((color.R + color.G + color.B) / 3);
+                        hmobj.HeightData[x, y] = ((color.R + color.G + color.B) / 3);
                     }
                 }
 

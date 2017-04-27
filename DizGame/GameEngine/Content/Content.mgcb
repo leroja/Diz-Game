@@ -13,3 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin HeightMaps/grass.png
+/copy:HeightMaps/grass.png
+
+#begin HeightMaps/heightmap.png
+/copy:HeightMaps/heightmap.png
+

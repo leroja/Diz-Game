@@ -66,9 +66,9 @@ namespace GameEngine.Source.Systems
             foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
             {
 
-                cmp.vertexBuffer.SetData<VertexPositionNormalTexture>(cmp.vertices);
+                cmp.VertexBuffer.SetData<VertexPositionNormalTexture>(cmp.Vertices);
 
-                cmp.indexBuffer.SetData<int>(cmp.indices);
+                cmp.IndexBuffer.SetData<int>(cmp.Indices);
             }
         }
 
@@ -84,18 +84,18 @@ namespace GameEngine.Source.Systems
 
                 HeightMapComponent cmp = new HeightMapComponent()
                 {
-                    terrainMapName = hmobj.terrainMapName,
-                    terrainHeight = hmobj.terrainHeight,
-                    terrainWidth = hmobj.terrainWidth,
+                    TerrainMapName = hmobj.TerrainMapName,
+                    TerrainHeight = hmobj.TerrainHeight,
+                    TerrainWidth = hmobj.TerrainWidth,
                     //scaleFactor = hmobj.scaleFactor,
-                    heightData = hmobj.heightData,
+                    HeightData = hmobj.HeightData,
                 };
 
-                hmobjects[index++].entityId = entityId;
+                hmobjects[index++].EntityId = entityId;
 
                 ComponentManager.Instance.AddComponentToEntity(entityId, cmp);
 
-                ComponentManager.AddComponentToEntity(entityId, hmobj.transform);
+                ComponentManager.AddComponentToEntity(entityId, hmobj.Transform);
             }
         }
 
@@ -104,14 +104,14 @@ namespace GameEngine.Source.Systems
         {
             foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
             {
-                int vertexCount = cmp.terrainWidth * cmp.terrainHeight;
-                int indexCount = (cmp.terrainWidth - 1) * (cmp.terrainHeight - 1) * 6;
+                int vertexCount = cmp.TerrainWidth * cmp.TerrainHeight;
+                int indexCount = (cmp.TerrainWidth - 1) * (cmp.TerrainHeight - 1) * 6;
 
-                cmp.vertices = new VertexPositionNormalTexture[vertexCount];
-                cmp.indices = new int[indexCount];
+                cmp.Vertices = new VertexPositionNormalTexture[vertexCount];
+                cmp.Indices = new int[indexCount];
 
-                cmp.vertexBuffer = new VertexBuffer(game.GraphicsDevice, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
-                cmp.indexBuffer = new IndexBuffer(game.GraphicsDevice, typeof(int), indexCount, BufferUsage.None);
+                cmp.VertexBuffer = new VertexBuffer(game.GraphicsDevice, typeof(VertexPositionNormalTexture), vertexCount, BufferUsage.None);
+                cmp.IndexBuffer = new IndexBuffer(game.GraphicsDevice, typeof(int), indexCount, BufferUsage.None);
             }
         }
 
@@ -123,20 +123,20 @@ namespace GameEngine.Source.Systems
 
             foreach (HeightMapComponent cmp in ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
             {
-                for (int x = 0; x < cmp.terrainWidth; x++)
+                for (int x = 0; x < cmp.TerrainWidth; x++)
                 {
-                    for (int y = 0; y < cmp.terrainHeight; y++)
+                    for (int y = 0; y < cmp.TerrainHeight; y++)
                     {
-                        index = x + y * cmp.terrainWidth;
+                        index = x + y * cmp.TerrainWidth;
 
-                        cmp.vertices[index].Position =
-                            new Vector3(x, cmp.heightData[x, y], -y);
+                        cmp.Vertices[index].Position =
+                            new Vector3(x, cmp.HeightData[x, y], -y);
 
                         //cmp.vertices[index].Position = Vector3.Transform(cmp.vertices[index].Position,
                         //                                                 Matrix.CreateScale(1f));
 
-                        cmp.vertices[index].Normal = new Vector3(rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f);
-                        cmp.vertices[index].TextureCoordinate = new Vector2(1, 1);
+                        cmp.Vertices[index].Normal = new Vector3(rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f);
+                        cmp.Vertices[index].TextureCoordinate = new Vector2(1, 1);
                     }
                 }
 
@@ -151,22 +151,22 @@ namespace GameEngine.Source.Systems
             Vector3 v2 = Vector3.Zero;
 
             foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
-                for (int y = 0; y < cmp.terrainHeight - 1; y++)
+                for (int y = 0; y < cmp.TerrainHeight - 1; y++)
                 {
-                    for (int x = 0; x < cmp.terrainWidth - 1; x++)
+                    for (int x = 0; x < cmp.TerrainWidth - 1; x++)
                     {
-                        int lowerLeft = x + y * cmp.terrainWidth;
-                        int lowerRight = (x + 1) + y * cmp.terrainWidth;
-                        int topLeft = x + (y + 1) * cmp.terrainWidth;
-                        int topRight = (x + 1) + (y + 1) * cmp.terrainWidth;
+                        int lowerLeft = x + y * cmp.TerrainWidth;
+                        int lowerRight = (x + 1) + y * cmp.TerrainWidth;
+                        int topLeft = x + (y + 1) * cmp.TerrainWidth;
+                        int topRight = (x + 1) + (y + 1) * cmp.TerrainWidth;
 
-                        v1 = Vector3.Cross(cmp.vertices[topLeft].Position, cmp.vertices[lowerLeft].Position);
+                        v1 = Vector3.Cross(cmp.Vertices[topLeft].Position, cmp.Vertices[lowerLeft].Position);
 
 
-                        v2 = Vector3.Cross(cmp.vertices[topRight].Position, cmp.vertices[lowerRight].Position);
+                        v2 = Vector3.Cross(cmp.Vertices[topRight].Position, cmp.Vertices[lowerRight].Position);
 
-                        cmp.vertices[lowerLeft].Normal = Vector3.Normalize(Vector3.Add(v1, cmp.vertices[lowerRight].Normal));
-                        cmp.vertices[topRight].Normal = Vector3.Normalize(Vector3.Add(v2, cmp.vertices[lowerLeft].Normal));
+                        cmp.Vertices[lowerLeft].Normal = Vector3.Normalize(Vector3.Add(v1, cmp.Vertices[lowerRight].Normal));
+                        cmp.Vertices[topRight].Normal = Vector3.Normalize(Vector3.Add(v2, cmp.Vertices[lowerLeft].Normal));
 
                     }
                 }
@@ -180,22 +180,22 @@ namespace GameEngine.Source.Systems
 
             foreach (HeightMapComponent cmp in ComponentManager.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
             {
-                for (int y = 0; y < cmp.terrainHeight - 1; y++)
+                for (int y = 0; y < cmp.TerrainHeight - 1; y++)
                 {
-                    for (int x = 0; x < cmp.terrainWidth - 1; x++)
+                    for (int x = 0; x < cmp.TerrainWidth - 1; x++)
                     {
-                        int lowerLeft = x + y * cmp.terrainWidth;
-                        int lowerRight = (x + 1) + y * cmp.terrainWidth;
-                        int topLeft = x + (y + 1) * cmp.terrainWidth;
-                        int topRight = (x + 1) + (y + 1) * cmp.terrainWidth;
+                        int lowerLeft = x + y * cmp.TerrainWidth;
+                        int lowerRight = (x + 1) + y * cmp.TerrainWidth;
+                        int topLeft = x + (y + 1) * cmp.TerrainWidth;
+                        int topRight = (x + 1) + (y + 1) * cmp.TerrainWidth;
 
-                        cmp.indices[counter++] = topLeft;
-                        cmp.indices[counter++] = lowerRight;
-                        cmp.indices[counter++] = lowerLeft;
+                        cmp.Indices[counter++] = topLeft;
+                        cmp.Indices[counter++] = lowerRight;
+                        cmp.Indices[counter++] = lowerLeft;
 
-                        cmp.indices[counter++] = topLeft;
-                        cmp.indices[counter++] = topRight;
-                        cmp.indices[counter++] = lowerRight;
+                        cmp.Indices[counter++] = topLeft;
+                        cmp.Indices[counter++] = topRight;
+                        cmp.Indices[counter++] = lowerRight;
                     }
                 }
 
@@ -231,14 +231,14 @@ namespace GameEngine.Source.Systems
             {
                 SetTransformParameters(ComponentManager.GetEntityComponent<TransformComponent>(cmp.ID));
 
+                game.GraphicsDevice.SetVertexBuffer(cmp.VertexBuffer);
+                game.GraphicsDevice.Indices = cmp.IndexBuffer;
+
                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
-
-                    game.GraphicsDevice.SetVertexBuffer(cmp.vertexBuffer);
-                    game.GraphicsDevice.Indices = cmp.indexBuffer;
-
-                    game.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, cmp.indexBuffer.IndexCount / 3);
+                    
+                    game.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, cmp.IndexBuffer.IndexCount / 3);
                 }
             }
         }

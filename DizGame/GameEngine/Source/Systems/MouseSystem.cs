@@ -63,8 +63,8 @@ namespace GameEngine.Source.Systems
         {
 
             UpdateBtn(mouseComponent, CurState.RightButton, PrevState.RightButton, "RightButton");
-            UpdateBtn(mouseComponent, CurState.LeftButton, PrevState.RightButton, "LeftButton");
-            UpdateBtn(mouseComponent, CurState.MiddleButton, PrevState.RightButton, "MiddleButton");
+            UpdateBtn(mouseComponent, CurState.LeftButton, PrevState.LeftButton, "LeftButton");
+            UpdateBtn(mouseComponent, CurState.MiddleButton, PrevState.MiddleButton, "MiddleButton");
         }
 
         /// <summary>
@@ -76,17 +76,18 @@ namespace GameEngine.Source.Systems
         /// <param name="button"></param>
         private void UpdateBtn(MouseComponent mouse, ButtonState curState, ButtonState prevState, string button)
         {
-            if (curState == ButtonState.Pressed && prevState != ButtonState.Pressed)
-            {
-                mouse.MouseActionState[button] = ButtonStates.Pressed;
-            }
-            else if (curState == ButtonState.Pressed && prevState == ButtonState.Pressed)
+            
+            if (curState == ButtonState.Pressed && prevState == ButtonState.Pressed)
             {
                 mouse.MouseActionState[button] = ButtonStates.Hold;
             }
             else if (curState != ButtonState.Pressed && prevState == ButtonState.Pressed)
             {
                 mouse.MouseActionState[button] = ButtonStates.Released;
+            }
+            else if (curState == ButtonState.Pressed && prevState != ButtonState.Pressed)
+            {
+                mouse.MouseActionState[button] = ButtonStates.Pressed;
             }
             else
             {

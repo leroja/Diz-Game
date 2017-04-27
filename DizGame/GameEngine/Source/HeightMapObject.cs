@@ -13,23 +13,23 @@ namespace GameEngine.Source.Objects
     /// </summary>
     public class HeightMapObject
     {
-        public int terrainWidth { get; set; }
-        public int terrainHeight { get; set; }
-        public string terrainMapName { get; set; }
+        public int TerrainWidth { get; set; }
+        public int TerrainHeight { get; set; }
+        public string TerrainMapName { get; set; }
 
-        private float scaleFactor { get; set; }
+        private float ScaleFactor { get; set; }
 
-        public TransformComponent transform { get; set; }
+        public TransformComponent Transform { get; set; }
 
         /// <summary>
         /// heightData a 2D-dimesional array is given by the user to build a heightmap from.
         /// </summary>
-        public float[,] heightData { get; set; }
+        public float[,] HeightData { get; set; }
 
         /// <summary>
         /// entityId will contain the entity id after the system has built a heightmap. 
         /// </summary>
-        public int entityId { get; set; }
+        public int EntityId { get; set; }
 
     }
 }
