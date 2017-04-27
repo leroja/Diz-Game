@@ -102,9 +102,11 @@ namespace DizGame
                 new ModelComponent(kitana),
                 //new PhysicsComponent()
                 //{
-                //    Mass = 60,
+                //    Mass = 60f,
                 //    PhysicsType = PhysicsType.Rigid,
-                //    MaterialType = MaterialType.Skin
+                //    MaterialType = MaterialType.Skin,
+                //    GravityType = GravityType.World,
+                //    DragType = DragType.ManUpright
                 //},
                 keys,
             };

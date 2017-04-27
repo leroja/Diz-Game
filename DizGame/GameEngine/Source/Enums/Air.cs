@@ -33,6 +33,7 @@ namespace GameEngine.Source.Enums
     public enum DragType : long
     {
         Default = (long)1,
+        DraggyAsFuck = (long)1000,
         Sphere = (long)0.47,
         Half_Sphere = (long)0.42,
         Cone = (long)0.50,
