@@ -77,7 +77,17 @@ namespace DizGame
                 keys,
                 mouse,
                 new PlayerComponent(),
+                //                new PhysicsComponent()
+                //{
+                //    Volume = 22.5f,
+                //    Density = 2.66f,
+                //    PhysicsType = PhysicsType.Rigid,
+                //    MaterialType = MaterialType.Skin,
+                //    GravityType = GravityType.World,
+                //    DragType = DragType.ManUpright
+                //                },
             };
+
 
             
             ComponentManager.Instance.AddAllComponents(entityID, components);
@@ -103,15 +113,15 @@ namespace DizGame
             {
                 new TransformComponent(new Vector3(5,0,-20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 new ModelComponent(kitana),
-                //new PhysicsComponent()
-                //{
-                //    Volume = 22.5f,
-                //    Density = 2.66f,
-                //    PhysicsType = PhysicsType.Rigid,
-                //    MaterialType = MaterialType.Skin,
-                //    GravityType = GravityType.World,
-                //    DragType = DragType.ManUpright
-                //},
+                new PhysicsComponent()
+                {
+                    Volume = 22.5f,
+                    Density = 2.66f,
+                    PhysicsType = PhysicsType.Rigid,
+                    MaterialType = MaterialType.Skin,
+                    GravityType = GravityType.World,
+                    DragType = DragType.ManUpright
+                },
                 keys,
             };
 

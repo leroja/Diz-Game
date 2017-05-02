@@ -23,42 +23,42 @@ namespace DizGame.Source.Systems
         {
             var PlayerEntityIds = ComponentManager.GetAllEntitiesWithComponentType<PlayerComponent>();
 
-            foreach (var playerId in PlayerEntityIds)
-            {
-                var playerComp = ComponentManager.GetEntityComponent<PlayerComponent>(playerId);
-                var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(playerId);
-                var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(playerId);
+            //foreach (var playerId in PlayerEntityIds)
+            //{
+            //    var playerComp = ComponentManager.GetEntityComponent<PlayerComponent>(playerId);
+            //    var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(playerId);
+            //    var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(playerId);
 
-                var rot = transformComp.Rotation;
-                //rot.X = 0;
-                //rot.Y = 0;
-                //rot.Z = 0;
+            //    var rot = transformComp.Rotation;
+            //    //rot.X = 0;
+            //    //rot.Y = 0;
+            //    //rot.Z = 0;
 
-                //if (mouseComp.MouseDeltaPosition.X > 0)
-                //{
-                //    rot.Y -= 0.01f;
-                //}
-                //if (mouseComp.MouseDeltaPosition.X < 0)
-                //{
-                //    rot.Y += 0.01f;
-                //}
-                //if (mouseComp.MouseDeltaPosition.Y > 0)
-                //{
-                //    rot.Z += 0.05f;
-                //}
-                //if (mouseComp.MouseDeltaPosition.Y < 0)
-                //{
-                //    rot.Z -= 0.05f;
-                //}
-                transformComp.Rotation = rot;
+            //    if (mouseComp.MouseDeltaPosition.X > 0)
+            //    {
+            //        rot.Y -= 0.01f;
+            //    }
+            //    if (mouseComp.MouseDeltaPosition.X < 0)
+            //    {
+            //        rot.Y += 0.01f;
+            //    }
+            //    //if (mouseComp.MouseDeltaPosition.Y > 0)
+            //    //{
+            //    //    rot.Z += 0.05f;
+            //    //}
+            //    //if (mouseComp.MouseDeltaPosition.Y < 0)
+            //    //{
+            //    //    rot.Z -= 0.05f;
+            //    //}
+            //    transformComp.Rotation = rot;
 
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed)
-                {
-                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), 100);
-                    Console.WriteLine(transformComp.Forward);
-                    Console.WriteLine(transformComp.QuaternionRotation);
-                }
-            }
+            //    if (mouseComp.GetState("Fire") == ButtonStates.Pressed)
+            //    {
+            //        entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), 100);
+            //        Console.WriteLine(transformComp.Forward);
+            //        Console.WriteLine(transformComp.QuaternionRotation);
+            //    }
+            //}
         }
     }
 }
