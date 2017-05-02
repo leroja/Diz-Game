@@ -67,10 +67,30 @@ namespace DizGame.Source.Systems
                     move.Y = phys.Forces.Y;
                     trans.Dirrection = Vector3.Down;
                     phys.Forces = move;
-                    Console.WriteLine("Move: " + phys.Acceleration);
+                    //Console.WriteLine("Move: " + phys.Acceleration);
                 }
+                float he = BASICGETHEIGTH(trans.Position);
+                if (he != trans.Position.Y)
+                    trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
 
             }
+        }
+        private float BASICGETHEIGTH(Vector3 position)
+        {
+            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            if (temp.Count != 0)
+            {
+                HeightmapComponentTexture hmap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(temp.First());
+
+                int roundX = (int)Math.Round(position.X); int roundY = (int)Math.Round(position.Z);
+                if (roundX >= hmap.HeightMapData.Length - 1 || roundY >= hmap.HeightMapData.Length)
+                {
+                    return 0;
+                }
+                if (roundY <= 0 && roundX >= 0)
+                    return hmap.HeightMapData[roundX, -roundY];
+            }
+                return 0;
         }
     }
 }
