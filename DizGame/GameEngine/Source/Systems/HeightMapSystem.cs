@@ -8,6 +8,7 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Objects;
 using System.Linq;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -118,29 +119,29 @@ namespace GameEngine.Source.Systems
 
         private void SetUpVertices()
         {
-            Random rnd = new Random();
-            int index = 0;
 
             foreach (HeightMapComponent cmp in ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values)
+                Parallel.For(0, cmp.TerrainWidth, setupVeticesTerrainHeight);
+
+        }
+
+        private void setupVeticesTerrainHeight(int x)
+        {
+            HeightMapComponent cmp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<HeightMapComponent>().Values.Cast<HeightMapComponent>().ElementAt(0);
+            Random rnd = new Random();
+            int index = 0;
+            for (int y = 0; y < cmp.TerrainHeight; y++)
             {
-                for (int x = 0; x < cmp.TerrainWidth; x++)
-                {
-                    for (int y = 0; y < cmp.TerrainHeight; y++)
-                    {
-                        index = x + y * cmp.TerrainWidth;
+                index = x + y * cmp.TerrainWidth;
 
-                        cmp.Vertices[index].Position =
-                            new Vector3(x, cmp.HeightData[x, y], -y);
+                cmp.Vertices[index].Position =
+                    new Vector3(x, cmp.HeightData[x, y], -y);
 
-                        //cmp.vertices[index].Position = Vector3.Transform(cmp.vertices[index].Position,
-                        //                                                 Matrix.CreateScale(1f));
+                //cmp.vertices[index].Position = Vector3.Transform(cmp.vertices[index].Position,
+                //                                                 Matrix.CreateScale(1f));
 
-                        cmp.Vertices[index].Normal = new Vector3(rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f);
-                        cmp.Vertices[index].TextureCoordinate = new Vector2(1, 1);
-                    }
-                }
-
-                index = 0;
+                cmp.Vertices[index].Normal = new Vector3(rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f, rnd.Next(0, 101) / 100f);
+                cmp.Vertices[index].TextureCoordinate = new Vector2(1, 1);
             }
         }
 
