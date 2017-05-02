@@ -28,8 +28,15 @@ namespace GameEngine.Source.Components
         /// Defines the hour by ingame seconds
         /// </summary>
         public int DefineHour { get; set; }
-        public AirTemperatur Temperatur { get; set; }
+        /// <summary>
+        /// Enum used to defines the world current temperatur
+        /// </summary>
+        public AirTemperature Temperatur { get; set; }
         public Vector3 Gravity { get; set; }
+        /// <summary>
+        /// Dictionary -> Key = DensityType which contains and Value = List<vector3> used as positions
+        /// </summary>
+        public Dictionary<DensityType,List<Vector3>> WorldFluids { get; set; }
 
         #endregion Public Properties
 
@@ -43,8 +50,12 @@ namespace GameEngine.Source.Components
             Second = 0;
             Millisecond = 0;
             DefineHour = 20;
-            Temperatur = AirTemperatur.Plus20;
+            Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
+            WorldFluids = new Dictionary<DensityType, List<Vector3>>();
+            WorldFluids.Add(DensityType.Air, new List<Vector3>());
+            WorldFluids.Add(DensityType.Water_Heavy, new List<Vector3>());
+            WorldFluids.Add(DensityType.Automobile_Oils, new List<Vector3>());
         }
 
     }

@@ -53,6 +53,7 @@
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
+    <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
@@ -76,6 +77,11 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Content\House\Farmhouse\MedievalHouse1.obj" />
+    <None Include="Content\House\Tree\lowpolytree.mtl" />
+    <None Include="Content\House\Tree\lowpolytree.obj" />
+    <None Include="Content\House\WoodHouse\Cyprys_House.mtl" />
+    <None Include="Content\House\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">

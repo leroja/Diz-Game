@@ -11,7 +11,7 @@ namespace GameEngine.Source.Systems
 {
     public class ModelSystem : IRender
     {
-        //WorldComponent world;
+        WorldComponent world;
         CameraComponent defaultCam;
 
         /// <summary>
@@ -20,8 +20,8 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            //List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
-            //world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+            world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             //pick one
@@ -46,8 +46,8 @@ namespace GameEngine.Source.Systems
             //if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
             //    defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
 
-            //if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
-            //{
+           if (defaultCam.CameraFrustrum.Intersects(model.BoundingSphere))
+            {
 
                 if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                     model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
@@ -57,13 +57,13 @@ namespace GameEngine.Source.Systems
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix /** world.World*/;
+                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
 
                         effect.View = defaultCam.View;
                         effect.Projection = defaultCam.Projection;
 
-                        effect.EnableDefaultLighting();
-                        //effect.PreferPerPixelLighting = true;
+                        //effect.EnableDefaultLighting();
+                        effect.PreferPerPixelLighting = true;
                         foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                         {
                             pass.Apply();
@@ -71,7 +71,7 @@ namespace GameEngine.Source.Systems
                         }
                     }
                 }
-            //}
+            }
         }
     }
 }

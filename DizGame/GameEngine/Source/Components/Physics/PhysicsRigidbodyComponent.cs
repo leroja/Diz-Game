@@ -41,10 +41,15 @@ namespace GameEngine.Source.Components
         public Matrix BodyFrameInertiaTensor { get; set; }
         public Matrix BodyFrameInvertedInertiaTensor { get; set; }
         public Matrix WorldFrameInvertedInertiaTensor { get; set; }
+        public bool Frozen { get; set; }
+        public bool Moved { get; set; }
         #endregion Public Configuration
 
         public PhysicsRigidbodyComponent()
         {
+            Frozen = false;
+            Moved = false;
+
             AngularVelocity = Vector3.Zero;
             AngularMomentum = Vector3.Zero;
             TotalBodyTorque = Vector3.Zero;

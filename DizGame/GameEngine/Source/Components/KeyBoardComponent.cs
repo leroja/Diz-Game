@@ -10,13 +10,13 @@ namespace GameEngine.Source.Components
 {
     public class KeyBoardComponent : IComponent
     {
-        public Dictionary<String, Keys> KeyBoardActions { get; set; }
-        public Dictionary<String, ButtonStates> State { get; set; }
+        public Dictionary<string, Keys> KeyBoardActions { get; set; }
+        public Dictionary<string, ButtonStates> State { get; set; }
 
         public KeyBoardComponent()
         {
-            KeyBoardActions = new Dictionary<String, Keys>();
-            State = new Dictionary<String, ButtonStates>();
+            KeyBoardActions = new Dictionary<string, Keys>();
+            State = new Dictionary<string, ButtonStates>();
             
         }
 
