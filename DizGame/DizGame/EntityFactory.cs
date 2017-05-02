@@ -1,4 +1,5 @@
-﻿using DizGame.Source.Components;
+﻿
+using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
@@ -292,6 +293,7 @@ namespace DizGame
         // roation är inte riktigt det jag vill, oriantaion är nog mer det jag vill ha
         public int CreateBullet(string modelName, Vector3 pos, Quaternion rotation, Vector3 scale, float MaxRange)
         {
+            pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
             //var mat = Matrix.CreateFromQuaternion(rotation);
 
@@ -313,11 +315,47 @@ namespace DizGame
                     StartPos = pos,
                     MaxRange = MaxRange,
                 },
+                new PhysicsComponent()
+                {
+                    MaterialType = MaterialType.Metal,
+                    Bounciness = .1f,
+                    Density = .308f,
+                    Volume = 0.008f,
+                    DragType = DragType.Bullet,
+                    IsInAir = true,
+                    GravityType = GravityType.World,
+                    ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
+                    PhysicsType = PhysicsType.Projectiles,
+                    //InitialVelocity = new Vector3(rotation.X,rotation.Y,rotation.Z) * 100,
+                },
             };
 
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
 
             return BulletEntity;
+        }
+
+        public void TestingTheAnimationsWithWolf()
+        {
+            
+            Model model = Content.Load<Model>("Test2/Wolf_With_Baked_Action_Animations_For_Export");
+            int entityID = ComponentManager.Instance.CreateID();
+            AnimationComponent anm = new AnimationComponent(entityID);
+
+            List<IComponent> componentList = new List<IComponent>()
+            {
+                //Add transformcomponent when ready to test
+                new TransformComponent(new Vector3(0,0,-20), new Vector3(1f,1f,1f)),
+
+
+                new ModelComponent(model),
+                anm,
+            };
+            ComponentManager.Instance.AddAllComponents(entityID, componentList);
+
+            anm.CreateAnimationData();
+
+
         }
 
         public void CreateHeightMap(string heightmap, string heightTexture)
