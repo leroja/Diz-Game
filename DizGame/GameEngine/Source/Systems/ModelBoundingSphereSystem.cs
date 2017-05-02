@@ -20,7 +20,7 @@ namespace GameEngine.Source.Systems
             foreach (var modelEnt in ids)
             {
                 var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
-                if (!modelComp.IsStatic || modelComp.BoundingSphere == null)
+                if (!modelComp.IsStatic || modelComp.BoundingSphere.Radius == 0)
                 {
                     var sphere = GetModelBoundingSphere(modelComp, modelEnt);
                     modelComp.BoundingSphere = sphere;

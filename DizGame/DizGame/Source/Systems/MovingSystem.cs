@@ -29,6 +29,7 @@ namespace DizGame.Source.Systems
                     if (phys != null)
                         move += Vector3.Forward * + phys.Mass*10; //+ new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
+                        Console.WriteLine(trans.Position);
                         trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = Vector3.Forward;
                 }
@@ -37,7 +38,7 @@ namespace DizGame.Source.Systems
                     if (phys != null)
                         move += Vector3.Backward * +phys.Mass*10;// + new Vector3(0, 0, (phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
-                        trans.Position -= trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                        trans.Position -= trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = Vector3.Backward;
                 }
                 if (key.State["Left"] == ButtonStates.Hold)
@@ -45,7 +46,7 @@ namespace DizGame.Source.Systems
                     if (phys != null)
                         move += Vector3.Left * +phys.Mass*10;// + new Vector3(-(phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
-                        trans.Position -= trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                        trans.Position -= trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = Vector3.Left;
                 }
                 if (key.State["Right"] == ButtonStates.Hold)
@@ -53,7 +54,7 @@ namespace DizGame.Source.Systems
                     if (phys != null)
                         move += Vector3.Right * +phys.Mass*10;// + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
-                        trans.Position += trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 2;
+                        trans.Position += trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = Vector3.Right;
                 }
                 if (key.State["Up"] == ButtonStates.Hold)

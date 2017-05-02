@@ -1,4 +1,5 @@
-﻿using DizGame.Source.Components;
+﻿
+using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
@@ -34,7 +35,8 @@ namespace DizGame
                 { "Chuck", Content.Load<Model>("chuck/DR3_Chuck_Greene") },
                 { "Kitana", Content.Load<Model>("Kitana/Kitana") },
                 { "House_Wood", Content.Load<Model>("House/Farmhouse/medievalHouse1") } ,
-                { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") }
+                { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") } ,
+                { "Tree", Content.Load<Model>("House/Tree/lowpolytree") }
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -129,11 +131,17 @@ namespace DizGame
 
             return entityID;
         }
-
+        /// <summary>
+        /// Creates a house of given model
+        /// </summary>
+        /// <param name="nameOfModel">name of the model</param>
+        /// <param name="position">position on house</param>
+        /// <returns></returns>
         public int createHouse(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
             Model house = ModelDic[nameOfModel];
+            
             if(nameOfModel == "House_Wood")
             {
                 scale = new Vector3(0.04f, 0.04f, 0.04f);
@@ -143,11 +151,14 @@ namespace DizGame
                 scale = new Vector3(4f, 4f, 4f);
             }
             int entityID = ComponentManager.Instance.CreateID();
-
+            ModelComponent mod = new ModelComponent(house);
+            mod.IsStatic = true;
+            
             List<IComponent> components = new List<IComponent>
             {
             new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
-                new ModelComponent(house),
+                mod
+                
                 };
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
@@ -155,7 +166,108 @@ namespace DizGame
 
         }
 
+        public void createStaticObject(string nameOfModel, Vector3 position)
+        {
+            Vector3 scale = new Vector3();
+            Model model = ModelDic[nameOfModel];
+
+            switch (nameOfModel)
+            {
+                case "stone":
+
+                    break;
+                case "Tree":
+                    scale = new Vector3(10,10,10);
+                    break;
+            }
+            int entityID = ComponentManager.Instance.CreateID();
+            ModelComponent comp = new ModelComponent(model);
+            comp.IsStatic = true;
+            List<IComponent> components = new List<IComponent>
+            {
+            new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                comp
+                };
+            ComponentManager.Instance.AddAllComponents(entityID, components);
+        }
         
+        public void makeMap(int numberOfPlayers,int numberOfStaticObjects)
+        {
+           List<Vector3> posisions = new List<Vector3>();
+            List<Vector3> unablePositions = new List<Vector3>();
+           var a =  ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            posisions = getModelPositions(numberOfPlayers);
+           for (int i = 0; i < numberOfPlayers; i ++)
+            {
+                if (!unablePositions.Contains(posisions[i]))
+                {
+                    var mod = i % 2;
+                    if (mod == 0)
+                    {
+                        createHouse("House_Wood", posisions[i]);
+                        unablePositions.Add(posisions[i]);
+                    }
+                    else
+                    {
+                        createHouse("House_Stone", posisions[i]);
+                        unablePositions.Add(posisions[i]);
+                    }
+                }
+                else
+                {
+                    i--;
+                }
+            }
+           posisions = getModelPositions(numberOfStaticObjects);
+           for (int j = 0; j < numberOfStaticObjects; j++)
+            {
+                if (!unablePositions.Contains(posisions[j]))
+                {
+                    var modul = j % 2;
+                    switch (modul){
+                        case 0:
+                            createStaticObject("Tree", posisions[j]);
+                            break;
+                        case 1:
+
+                            break; ;
+
+                    }
+                }
+            }
+            
+        }
+        
+        public List<Vector3> getModelPositions(int numberOfPositions)
+        {
+            List<Vector3> pos = new List<Vector3>();
+            Random r = new Random();
+            int mapWidht; ;
+            int mapHeight;
+            List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
+            mapWidht = heigt.Width;
+            mapHeight = heigt.Height;
+            for (int i = 0; i < numberOfPositions; i++)
+            {
+                var pot = new Vector3(r.Next(mapWidht-100), 0,r.Next(mapHeight-100));
+                pot.Y = heigt.HeightMapData[(int)pot.X,(int)pot.Z];
+                if(pot.X < 100 )
+                {
+                    pot.X = pot.X + 100;
+                }
+                if (pot.Z < -100)
+                {
+                    pot.Z = pot.Z - 100;
+                }
+
+                pot.Z = -pot.Z;
+                pos.Add(pot);
+            }
+            return pos;
+        }
+
+            
 
         public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
         {
@@ -220,6 +332,29 @@ namespace DizGame
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
 
             return BulletEntity;
+        }
+
+        public void TestingTheAnimationsWithWolf()
+        {
+            
+            Model model = Content.Load<Model>("Test2/Wolf_With_Baked_Action_Animations_For_Export");
+            int entityID = ComponentManager.Instance.CreateID();
+            AnimationComponent anm = new AnimationComponent(entityID);
+
+            List<IComponent> componentList = new List<IComponent>()
+            {
+                //Add transformcomponent when ready to test
+                new TransformComponent(new Vector3(0,0,-20), new Vector3(1f,1f,1f)),
+
+
+                new ModelComponent(model),
+                anm,
+            };
+            ComponentManager.Instance.AddAllComponents(entityID, componentList);
+
+            anm.CreateAnimationData();
+
+
         }
 
         public void CreateHeightMap(string heightmap, string heightTexture)

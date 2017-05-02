@@ -78,6 +78,8 @@
     <None Include="app.config" />
     <None Include="app.manifest" />
     <None Include="Content\House\Farmhouse\MedievalHouse1.obj" />
+    <None Include="Content\House\Tree\lowpolytree.mtl" />
+    <None Include="Content\House\Tree\lowpolytree.obj" />
     <None Include="Content\House\WoodHouse\Cyprys_House.mtl" />
     <None Include="Content\House\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>

@@ -20,6 +20,7 @@ namespace GameEngine.Source.Components
         public ModelComponent(Model model)
         {
             Model = model;
+            
         }
     }
 }
