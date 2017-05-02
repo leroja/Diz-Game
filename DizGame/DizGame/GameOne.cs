@@ -53,18 +53,21 @@ namespace DizGame
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
             // House_Wood or House_Stone
+            
             //ntf.createHouse("House_Stone", new Vector3(5, 0, -20));
             var id = entf.CreateKitana();
             //Model bullet = Content.Load<Model>("bullet/Bullet");
             //var id = entf.CreateBullet("Bullet", new Vector3(0, 0, -20), Vector3.Zero, new Vector3(.3f, .3f, .3f));
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 20, 25));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 70, 50));
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass");
+            entf.makeMap(2,100);
             //entf.CreateHeightMap("heightmap", "BetterGrass");
-
+            SystemManager.Instance.AddSystem(new TransformSystem());
+            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new ModelSystem());
-            SystemManager.Instance.AddSystem(new TransformSystem());
+            
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());

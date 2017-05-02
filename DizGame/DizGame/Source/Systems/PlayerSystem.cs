@@ -34,14 +34,14 @@ namespace DizGame.Source.Systems
                 //rot.Y = 0;
                 //rot.Z = 0;
 
-                if (mouseComp.MouseDeltaPosition.X > 0)
-                {
-                    rot.Y -= 0.01f;
-                }
-                if (mouseComp.MouseDeltaPosition.X < 0)
-                {
-                    rot.Y += 0.01f;
-                }
+                //if (mouseComp.MouseDeltaPosition.X > 0)
+                //{
+                //    rot.Y -= 0.01f;
+                //}
+                //if (mouseComp.MouseDeltaPosition.X < 0)
+                //{
+                //    rot.Y += 0.01f;
+                //}
                 //if (mouseComp.MouseDeltaPosition.Y > 0)
                 //{
                 //    rot.Z += 0.05f;

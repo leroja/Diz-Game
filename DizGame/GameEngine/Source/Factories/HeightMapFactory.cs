@@ -64,6 +64,8 @@ namespace GameEngine.Source.Factories
             SetVerticesTexture();
             SetIndices();
             CalculateNormals();
+            comp.Height = Height;
+            comp.Width = Width;
             comp.HeightMapData = heightMapData;
 
             SetUpHeightMapChunks(ref comp);
