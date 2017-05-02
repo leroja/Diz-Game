@@ -52,7 +52,7 @@ namespace DizGame.Source.Systems
                 //}
                 transformComp.Rotation = rot;
 
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed)
+                if (mouseComp.GetState("Fire") == ButtonStates.Hold)
                 {
                     entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), 100);
                     Console.WriteLine(transformComp.Forward);
