@@ -56,7 +56,7 @@ namespace GameEngine.Source.Systems
                 else
                     UpdateNonEulerOrder(physic, dt);
 
-                TEMPFLOOR(ComponentManager.GetEntityComponent<TransformComponent>(entityID));
+                //TEMPFLOOR(ComponentManager.GetEntityComponent<TransformComponent>(entityID));
                 //Console.WriteLine("Forces: " + physic.Forces);
                 //Console.WriteLine("Velocity: " + physic.Velocity);
             }

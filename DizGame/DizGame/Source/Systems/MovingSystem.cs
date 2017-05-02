@@ -71,7 +71,11 @@ namespace DizGame.Source.Systems
                 }
                 float he = BASICGETHEIGTH(trans.Position);
                 if (he != trans.Position.Y)
+                {
                     trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
+                    if (phys != null)
+                        TempFloor(entity.Key);
+                }
 
             }
         }
@@ -91,6 +95,23 @@ namespace DizGame.Source.Systems
                     return hmap.HeightMapData[roundX, -roundY];
             }
                 return 0;
+        }
+        private void TempFloor(int entityID)
+        {
+            ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity = new Vector3(
+                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.X,
+                0,
+                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.Z);
+
+            ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces = new Vector3(
+                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.X,
+                0,
+                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.Z);
+
+            ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration = new Vector3(
+                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.X,
+                0,
+                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.Z);
         }
     }
 }
