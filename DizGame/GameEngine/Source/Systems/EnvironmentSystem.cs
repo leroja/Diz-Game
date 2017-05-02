@@ -21,6 +21,7 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Calculates the physic objects DragForce
         /// using the worlds parameters
+        /// which gives and kg-m^2/s^2
         /// </summary>
         /// <param name="entityID"></param>
         /// <param name="gameTime"></param>
@@ -38,16 +39,50 @@ namespace GameEngine.Source.Systems
                 p = AirCoefficients.GetAirSoundSpeedAndDensity(world.Temperatur).Item2;
             else
                 p = (float)fluid;
+            //p = (float)DensityType.Water_Pure;
 
-            float Cd = (float)phy.DragType;                                                 // drag coefficent eg 0.25 to 0.45 for car
-            Vector3 V = -transform.Dirrection;                                              // V unit vector indicating the direction of the velocity (negativ to indicate drag opposite the velocity)
-            float A = phy.ReferenceArea;                                                    // reference area
-            Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                   // speed of the object relativ to the fluid???
+            float Cd = (float)phy.DragType;                                                     // drag coefficent eg 0.25 to 0.45 for car
+            Vector3 V = transform.Dirrection;                                                   // V unit vector indicating the direction of the velocity (negativ to indicate drag opposite the velocity)
+            float A = phy.ReferenceArea;                                                        // reference area
+            Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                       // speed of the object relativ to the fluid???
 
-            Vector3 Fd = -1 * 0.5f * p * Vector3Pow(v, 2) * A * Cd * -V;                              // 1/2pv^2ACdV = force of drag
-            Console.WriteLine("DragF: " + Fd.Y + "Force: " + phy.Forces.Y);
-            //TODO: Använda Dragforce (Fd) funktionen är helt korrekt men använder inte Fd atm.
-            phy.Forces += Fd;
+            //Vector3 Fd = -0.5f * p * Vector3Pow(v, 2) * A * Cd * V;                             // 1/2pv^2ACdV = force of drag
+            Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
+            Fd.X = (float)Math.Sqrt(Fd.X);
+            Fd.Y = (float)Math.Sqrt(Fd.Y);
+            Fd.Z = (float)Math.Sqrt(Fd.Z);
+            //Fd = Fd / (Cd * p * A);
+            //Console.WriteLine("DragF: " + Fd.Y + "Force: " + phy.Forces.Y + " Veclocity: " + v);
+
+            CheckAndSetTerminalVelocity(phy, Fd);
+            UpdateDownwardAcceleration(phy, Fd);
+            //UpdateVelocity(phy, Cd, p, A);
+            phy.Forces = Fd - phy.Weight;
+            
+        }
+        private void UpdateDownwardAcceleration(PhysicsComponent physic, Vector3 Drag)
+        {
+            Vector3 temp = (physic.Weight - Drag) / physic.Mass;
+            temp.X = physic.Acceleration.X;
+            temp.Z = physic.Acceleration.Z;
+            physic.Acceleration = temp;
+        }
+        private void TerminalVelocity(PhysicsComponent physic, float Cd, float p, float A)
+        {
+            Vector3 temp = physic.Weight;
+            temp.X = (float)Math.Sqrt((2 * physic.Weight.X) / (Cd * p * A));
+            temp.Y = (float)Math.Sqrt((2 * physic.Weight.Y) / (Cd * p * A));
+            temp.Z = (float)Math.Sqrt((2 * physic.Weight.Z) / (Cd * p * A));
+            physic.Velocity = temp;
+        }
+        private void CheckAndSetTerminalVelocity(PhysicsComponent physic, Vector3 dragForce)
+        {
+            if (dragForce.X == physic.Mass)
+                physic.Acceleration = new Vector3(0, physic.Acceleration.Y, physic.Acceleration.Z);
+            if (dragForce.Y == physic.Mass)
+                physic.Acceleration = new Vector3(physic.Acceleration.X, 0, physic.Acceleration.Z);
+            if (dragForce.Z == physic.Mass)
+                physic.Acceleration = new Vector3(physic.Acceleration.X, physic.Acceleration.Y, 0);
         }
         private void UpdateWind()
         {
