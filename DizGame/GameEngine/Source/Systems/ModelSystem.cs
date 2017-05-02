@@ -46,8 +46,8 @@ namespace GameEngine.Source.Systems
             //if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
             //    defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
 
-            //if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
-            //{
+           if (defaultCam.CameraFrustrum.Intersects(model.BoundingSphere))
+            {
 
                 if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                     model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
@@ -62,7 +62,7 @@ namespace GameEngine.Source.Systems
                         effect.View = defaultCam.View;
                         effect.Projection = defaultCam.Projection;
 
-                        effect.EnableDefaultLighting();
+                        //effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;
                         foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                         {
@@ -71,7 +71,7 @@ namespace GameEngine.Source.Systems
                         }
                     }
                 }
-            //}
+            }
         }
     }
 }

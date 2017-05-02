@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DizGame", "DizGame\DizGame.csproj", "{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerApplication", "ServerApplication\ServerApplication.csproj", "{4D3289C4-6679-494B-B7FD-3A1B9CB21EF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentProject", "ContentProject\ContentProject.csproj", "{2020D833-AD3F-446E-9609-B751490B0800}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationContentClasses", "AnimationContentClasses\AnimationContentClasses.csproj", "{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,14 @@ Global
 		{2020D833-AD3F-446E-9609-B751490B0800}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2020D833-AD3F-446E-9609-B751490B0800}.Release|x86.ActiveCfg = Release|Any CPU
 		{2020D833-AD3F-446E-9609-B751490B0800}.Release|x86.Build.0 = Release|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Debug|x86.Build.0 = Debug|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Release|x86.ActiveCfg = Release|Any CPU
+		{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

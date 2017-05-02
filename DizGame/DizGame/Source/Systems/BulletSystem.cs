@@ -56,8 +56,8 @@ namespace DizGame.Source.Systems
                 {
                     toDelete.Add(id);
                 }
-
-                transformComp.Position += transformComp.Forward *(float)10 *(float)gameTime.ElapsedGameTime.TotalSeconds;
+                
+                transformComp.Position += transformComp.Forward *(float)100 *(float)gameTime.ElapsedGameTime.TotalSeconds;
                 //transformComp.Rotation = Vector3.Zero;
 
                 //transformComp.Rotation = rot;
