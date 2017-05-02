@@ -35,7 +35,8 @@ namespace DizGame
                 { "Kitana", Content.Load<Model>("Kitana/Kitana") },
                 { "House_Wood", Content.Load<Model>("House/Farmhouse/medievalHouse1") } ,
                 { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") } ,
-                { "Tree", Content.Load<Model>("House/Tree/lowpolytree") }
+                { "Tree", Content.Load<Model>("House/Tree/lowpolytree") },
+                { "Rock", Content.Load<Model>("House/Rock/Rock") }
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -172,11 +173,11 @@ namespace DizGame
 
             switch (nameOfModel)
             {
-                case "stone":
-
+                case "Rock":
+                    scale = new Vector3(5, 5, 5);
                     break;
                 case "Tree":
-                    scale = new Vector3(10,10,10);
+                    scale = new Vector3(5,5,5);
                     break;
             }
             int entityID = ComponentManager.Instance.CreateID();
@@ -228,7 +229,7 @@ namespace DizGame
                             createStaticObject("Tree", posisions[j]);
                             break;
                         case 1:
-
+                            createStaticObject("Rock", posisions[j]);
                             break; ;
 
                     }
