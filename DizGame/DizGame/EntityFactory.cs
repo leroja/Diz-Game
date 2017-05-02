@@ -1,4 +1,5 @@
-﻿using DizGame.Source.Components;
+﻿
+using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Managers;
@@ -146,6 +147,29 @@ namespace DizGame
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
 
             return BulletEntity;
+        }
+
+        public void TestingTheAnimationsWithWolf()
+        {
+            
+            Model model = Content.Load<Model>("Test2/Wolf_With_Baked_Action_Animations_For_Export");
+            int entityID = ComponentManager.Instance.CreateID();
+            AnimationComponent anm = new AnimationComponent(entityID);
+
+            List<IComponent> componentList = new List<IComponent>()
+            {
+                //Add transformcomponent when ready to test
+                new TransformComponent(new Vector3(0,0,-20), new Vector3(1f,1f,1f)),
+
+
+                new ModelComponent(model),
+                anm,
+            };
+            ComponentManager.Instance.AddAllComponents(entityID, componentList);
+
+            anm.CreateAnimationData();
+
+
         }
     }
 }

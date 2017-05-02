@@ -50,6 +50,8 @@ namespace DizGame
             //Model bullet = Content.Load<Model>("bullet/Bullet");
             //var id = entf.CreateBullet("Bullet", new Vector3(0, 0, -20), Vector3.Zero, new Vector3(.3f, .3f, .3f));
 
+            entf.TestingTheAnimationsWithWolf();
+
             entf.AddChaseCamToEntity(id, new Vector3(0, 10, 15));
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
@@ -63,6 +65,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
+            SystemManager.Instance.AddSystem(new AnimationSystem());
 
 
             SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));

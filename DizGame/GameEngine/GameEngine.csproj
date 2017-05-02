@@ -41,12 +41,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\Components\AnimationComponent.cs" />
     <Compile Include="Source\Components\MouseComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
     <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
     <Compile Include="Source\Enums\Air.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
+    <Compile Include="Source\Systems\AnimationSystem.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
     <Compile Include="Source\Systems\HeightMapSystem.cs" />
     <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
@@ -113,7 +115,12 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
+      <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
+      <Name>AnimationContentClasses</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
