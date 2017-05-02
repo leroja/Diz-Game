@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Source.Components;
+using GameEngine.Source.Managers;
+using System.Collections;
+using GameEngine.Source.Enums;
 
 namespace ServerApplication.ServerLogic
 {
@@ -12,6 +16,10 @@ namespace ServerApplication.ServerLogic
         private NetServer server;
         private List<NetPeer> clients;
         private int portnumber;
+
+        //private hmm keeps states of history for smoothing and prediction.
+        
+        private NetOutgoingMessage broadcastMessage;
 
         /// <summary>
         /// Default constructor for the server, default portnumber is set to 1337.
@@ -46,6 +54,7 @@ namespace ServerApplication.ServerLogic
                 Console.WriteLine("Server not started...");
             }
             clients = new List<NetPeer>();
+
         }
 
         /// <summary>
@@ -63,6 +72,7 @@ namespace ServerApplication.ServerLogic
             {
                 while ((message = server.ReadMessage()) != null)
                 {
+
                     switch (message.MessageType)
                     {
                         case NetIncomingMessageType.DiscoveryRequest:
@@ -71,6 +81,7 @@ namespace ServerApplication.ServerLogic
                             //
                             server.SendDiscoveryResponse(null, message.SenderEndPoint);
                             break;
+
                         case NetIncomingMessageType.Data:
                             {
                                 Console.WriteLine("Server got message!");
@@ -90,15 +101,18 @@ namespace ServerApplication.ServerLogic
 
                                 break;
                             }
+
                         case NetIncomingMessageType.DebugMessage:
                             Console.WriteLine(message.ReadString());
                             break;
+
                         case NetIncomingMessageType.StatusChanged:
                             Console.WriteLine(message.SenderConnection.Status);
                             if (message.SenderConnection.Status == NetConnectionStatus.Connected)
                             {
                                 clients.Add(message.SenderConnection.Peer);
                                 Console.WriteLine("{0} has connected.", message.SenderConnection.Peer.Configuration.LocalAddress);
+
                             }
                             if (message.SenderConnection.Status == NetConnectionStatus.Disconnected)
                             {
@@ -106,6 +120,7 @@ namespace ServerApplication.ServerLogic
                                 Console.WriteLine("{0} has disconnected.", message.SenderConnection.Peer.Configuration.LocalAddress);
                             }
                             break;
+
                         default:
                             Console.WriteLine("Unhandled message type: {message.MessageType}");
                             break;
@@ -116,6 +131,79 @@ namespace ServerApplication.ServerLogic
 
             Console.WriteLine("Shutdown package \"exit\" received. Press any key to finish shutdown");
             Console.ReadKey();
+        }
+
+
+        /// <summary>
+        /// Write messages to all connected clients updating physics state (from KeyBoardComponent) and
+        /// health, ammo, weapon.
+        /// Client state contains:
+        /// *time
+        /// *entityID
+        /// *keyBoardStates for every movable controlled entity.
+        /// *to be cont.
+        /// *Should be moved to client side though.
+        /// </summary>
+        private void WriteClientsState()
+        {
+            
+            broadcastMessage = server.CreateMessage();
+            broadcastMessage.WriteTime(true);
+
+            WriteKeyBoardStates();
+
+
+            foreach (NetPeer peer in clients)
+                server.SendMessage(broadcastMessage, peer.Connections, NetDeliveryMethod.ReliableOrdered, 0);
+        }
+
+
+        private void WriteKeyBoardStates()
+        {
+            List<int> entities;
+            KeyBoardComponent kbdComponent;
+
+            entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<KeyBoardComponent>();
+
+            foreach (int entityID in entities)
+            {
+                kbdComponent = ComponentManager.Instance.GetEntityComponent<KeyBoardComponent>(entityID);
+
+                broadcastMessage.WriteVariableInt32(entityID);
+
+                foreach(string move in kbdComponent.State.Keys)
+                {
+                    if (kbdComponent.State[move] == ButtonStates.Pressed)
+                        broadcastMessage.WriteAllFields(move);
+                }
+                    
+            }
+        }
+
+        /// <summary>
+        /// This function shall see how long a client hasnt sent a message.
+        /// Maybe the client disconnected or the network is lagging.
+        /// </summary>
+        private void CheckClientsIfConnected()
+        {
+            //server.Statistics.ReceivedBytes
+        }
+
+        /// <summary>
+        /// This function shall predict the clients state - if it has not been sending a message for some
+        /// amount of time.
+        /// </summary>
+        private void PredictClientsState()
+        {
+        }
+
+        /// <summary>
+        /// This function shall smoothe the movements of the client until the client is back
+        /// and have sent a new state.
+        /// </summary>
+        private void SmootheClientState()
+        {
+
         }
 
     }
