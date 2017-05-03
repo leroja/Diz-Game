@@ -35,8 +35,8 @@ namespace DizGame.Source.Systems
                 var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(playerId);
                 var testComp = ComponentManager.GetEntityComponent<TestComponent>(playerId);
 
-                UpdateInput(ref mouseComp, ref testComp);
-                RotateSmoothly(testComp.SmoothedMouseMovement.X, testComp.SmoothedMouseMovement.Y, ref testComp, ref transformComp);
+                //UpdateInput(ref mouseComp, ref testComp);
+                //RotateSmoothly(testComp.SmoothedMouseMovement.X, testComp.SmoothedMouseMovement.Y, ref testComp, ref transformComp);
 
                 var rot = transformComp.Rotation;
                 //rot.X = 0;

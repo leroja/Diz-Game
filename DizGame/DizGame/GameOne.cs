@@ -60,20 +60,19 @@ namespace DizGame
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content, Device);
 
-            var idC = entf.CreateChuckGreen();
-            var idK = entf.CreateKitana();
+            var idC = entf.CreateDude();
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
             entf.AddChaseCamToEntity(idC, new Vector3(0, 20, 25));
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass");
-            entf.makeMap(2,1000);
+            entf.MakeMap(2,1000);
             //entf.CreateHeightMap("heightmap", "BetterGrass");
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             entf.TestingTheAnimationsWithWolf();
 
-            entf.AddChaseCamToEntity(id, new Vector3(0, 10, 15));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 70, 50));
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new TransformSystem());
@@ -89,7 +88,6 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new PlayerSystem(entf));
 
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
-            SystemManager.Instance.AddSystem(new PlayerSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
 
 

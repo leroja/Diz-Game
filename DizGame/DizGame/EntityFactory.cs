@@ -32,12 +32,11 @@ namespace DizGame
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
                 { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
-                { "Chuck", Content.Load<Model>("chuck/DR3_Chuck_Greene") },
-                { "Kitana", Content.Load<Model>("Kitana/Kitana") },
                 { "House_Wood", Content.Load<Model>("House/Farmhouse/medievalHouse1") } ,
                 { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") } ,
                 { "Tree", Content.Load<Model>("House/Tree/lowpolytree") },
-                { "Rock", Content.Load<Model>("House/Rock/Rock") }
+                { "Rock", Content.Load<Model>("House/Rock/Rock") },
+                { "Dude", Content.Load<Model>("Dude/dude")}
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -58,10 +57,10 @@ namespace DizGame
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
         }
 
-        public int CreateChuckGreen()
+        public int CreateDude()
         {
             int entityID = ComponentManager.Instance.CreateID();
-            Model chuck = ModelDic["Chuck"];
+            Model chuck = ModelDic["Dude"];
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.KeyBoardActions.Add("Forward", Keys.W);
             keys.KeyBoardActions.Add("Backwards", Keys.S);
@@ -99,40 +98,6 @@ namespace DizGame
 
         }
 
-        public int CreateKitana()
-        {
-            int entityID = ComponentManager.Instance.CreateID();
-            Model kitana = ModelDic["Kitana"];
-
-            KeyBoardComponent keys = new KeyBoardComponent();
-            keys.KeyBoardActions.Add("Forward", Keys.Up);
-            keys.KeyBoardActions.Add("Backwards", Keys.Down);
-            keys.KeyBoardActions.Add("Right", Keys.Right);
-            keys.KeyBoardActions.Add("Left", Keys.Left);
-            keys.KeyBoardActions.Add("Up", Keys.Space);
-
-
-            List<IComponent> components = new List<IComponent>
-            {
-                new TransformComponent(new Vector3(5,0,-20), new Vector3(0.05f,0.05f,0.05f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
-                new ModelComponent(kitana),
-                new PhysicsComponent()
-                {
-                    Volume = 22.5f,
-                    Density = 2.66f,
-                    PhysicsType = PhysicsType.Rigid,
-                    MaterialType = MaterialType.Skin,
-                    GravityType = GravityType.World,
-                    DragType = DragType.ManUpright
-                },
-                keys,
-            };
-
-
-            ComponentManager.Instance.AddAllComponents(entityID, components);
-
-            return entityID;
-        }
         /// <summary>
         /// Creates a house of given model
         /// </summary>
@@ -153,9 +118,10 @@ namespace DizGame
                 scale = new Vector3(4f, 4f, 4f);
             }
             int entityID = ComponentManager.Instance.CreateID();
-            ModelComponent mod = new ModelComponent(house);
-            mod.IsStatic = true;
-            
+            ModelComponent mod = new ModelComponent(house)
+            {
+                IsStatic = true
+            };
             List<IComponent> components = new List<IComponent>
             {
             new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
@@ -168,7 +134,7 @@ namespace DizGame
 
         }
 
-        public void createStaticObject(string nameOfModel, Vector3 position)
+        public void CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
             Model model = ModelDic[nameOfModel];
@@ -183,8 +149,10 @@ namespace DizGame
                     break;
             }
             int entityID = ComponentManager.Instance.CreateID();
-            ModelComponent comp = new ModelComponent(model);
-            comp.IsStatic = true;
+            ModelComponent comp = new ModelComponent(model)
+            {
+                IsStatic = true
+            };
             List<IComponent> components = new List<IComponent>
             {
             new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
@@ -193,12 +161,12 @@ namespace DizGame
             ComponentManager.Instance.AddAllComponents(entityID, components);
         }
         
-        public void makeMap(int numberOfPlayers,int numberOfStaticObjects)
+        public void MakeMap(int numberOfPlayers,int numberOfStaticObjects)
         {
            List<Vector3> posisions = new List<Vector3>();
             List<Vector3> unablePositions = new List<Vector3>();
            var a =  ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            posisions = getModelPositions(numberOfPlayers);
+            posisions = GetModelPositions(numberOfPlayers);
            for (int i = 0; i < numberOfPlayers; i ++)
             {
                 if (!unablePositions.Contains(posisions[i]))
@@ -206,12 +174,12 @@ namespace DizGame
                     var mod = i % 2;
                     if (mod == 0)
                     {
-                        createHouse("House_Wood", posisions[i]);
+                        CreateHouse("House_Wood", posisions[i]);
                         unablePositions.Add(posisions[i]);
                     }
                     else
                     {
-                        createHouse("House_Stone", posisions[i]);
+                        CreateHouse("House_Stone", posisions[i]);
                         unablePositions.Add(posisions[i]);
                     }
                 }
@@ -220,7 +188,7 @@ namespace DizGame
                     i--;
                 }
             }
-           posisions = getModelPositions(numberOfStaticObjects);
+           posisions = GetModelPositions(numberOfStaticObjects);
            for (int j = 0; j < numberOfStaticObjects; j++)
             {
                 if (!unablePositions.Contains(posisions[j]))
@@ -228,10 +196,10 @@ namespace DizGame
                     var modul = j % 2;
                     switch (modul){
                         case 0:
-                            createStaticObject("Tree", posisions[j]);
+                            CreateStaticObject("Tree", posisions[j]);
                             break;
                         case 1:
-                            createStaticObject("Rock", posisions[j]);
+                            CreateStaticObject("Rock", posisions[j]);
                             break; ;
 
                     }
@@ -240,7 +208,7 @@ namespace DizGame
             
         }
         
-        public List<Vector3> getModelPositions(int numberOfPositions)
+        public List<Vector3> GetModelPositions(int numberOfPositions)
         {
             List<Vector3> pos = new List<Vector3>();
             Random r = new Random();
@@ -334,7 +302,7 @@ namespace DizGame
         public void TestingTheAnimationsWithWolf()
         {
             
-            Model model = Content.Load<Model>("Test2/Wolf_With_Baked_Action_Animations_For_Export");
+            Model model = Content.Load<Model>("Wolf/Wolf");
             int entityID = ComponentManager.Instance.CreateID();
             AnimationComponent anm = new AnimationComponent(entityID);
 
