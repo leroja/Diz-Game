@@ -6,11 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
+using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsProjectilesSystem : IPhysicsType
+    public class PhysicsProjectilesSystem : PhysicsSystem
     {
+        public override PhysicsType PhysicsType { get; set; }
+        public PhysicsProjectilesSystem()
+        {
+            PhysicsType = PhysicsType.Projectiles;
+        }
         public override void Update(PhysicsComponent physic, float dt)
         {
             //TODO: ProjectilesSystem

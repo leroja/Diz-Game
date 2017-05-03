@@ -7,18 +7,17 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
 using GameEngine.Source.Enums;
+using GameEngine.Source.Systems.Interface;
 
 namespace GameEngine.Source.Systems
 {
     //TODO: Fixa så alla siffror är korrekta efter metric.
-    public class PhysicsSystem : IUpdate, IObserver<List<Tuple<BoundingSphereComponent, BoundingSphereComponent>>>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<BoundingSphereComponent, BoundingSphereComponent>>>
     {
         private float frameCount = 0;
         private float timeSinceLastUpdate = 0;
         private float updateInterval = 1;
         private float framesPerSecond = 0;
-
-        private bool usingEuler;
 
         private PhysicsRigidBodySystem rigidBody;
         private PhysicsParticleSystem particle;
@@ -27,9 +26,22 @@ namespace GameEngine.Source.Systems
         private PhysicsSoftSystem soft;
         private PhysicsStaticSystem _static;
 
-        public PhysicsSystem(bool usingEuler)
+        private List<IPhysics> physicSystems;
+
+        public virtual PhysicsType PhysicsType { get; set; }
+
+        public PhysicsSystem()
         {
-            this.usingEuler = usingEuler;
+            PhysicsType = PhysicsType.None;
+            physicSystems = new List<IPhysics>
+            {
+                new PhysicsRigidBodySystem(),
+                new PhysicsParticleSystem(),
+                new PhysicsProjectilesSystem(),
+                new PhysicsRagdollSystem(),
+                new PhysicsSoftSystem(),
+                new PhysicsStaticSystem()
+        };
             rigidBody = new PhysicsRigidBodySystem();
             particle = new PhysicsParticleSystem();
             projectile = new PhysicsProjectilesSystem();
@@ -51,7 +63,7 @@ namespace GameEngine.Source.Systems
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
 
-                if (usingEuler)
+                if (physic.Euler)
                     UpdateEulerOrder(physic, dt);
                 else
                     UpdateNonEulerOrder(physic, dt);
@@ -60,6 +72,13 @@ namespace GameEngine.Source.Systems
                 //Console.WriteLine("Forces: " + physic.Forces);
                 //Console.WriteLine("Velocity: " + physic.Velocity);
             }
+        }
+
+        public virtual void Update(PhysicsComponent physic, float dt)
+        {
+            foreach (var system in physicSystems)
+                if(physic.PhysicsType == system.PhysicsType)
+                    system.Update(physic, dt);
         }
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity
@@ -70,7 +89,6 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         private void UpdateEulerOrder(PhysicsComponent physic, float dt)
         {
-
             UpdateMaxAcceleration(physic);
             UpdateMass(physic);
             UpdateGravity(physic, dt);
@@ -80,7 +98,7 @@ namespace GameEngine.Source.Systems
             UpdatePhysicComponentByType(physic, dt);
             UpdateVelocity(physic, dt);
 
-            UpdateLinearDeceleration(physic, dt);
+            UpdateDeceleration(physic);
         }
         /// <summary>
         /// Using Non Euler order does work but with less accuracy
@@ -100,7 +118,7 @@ namespace GameEngine.Source.Systems
             UpdateVelocity(physic, dt);
             UpdatePhysicComponentByType(physic, dt);
 
-            UpdateLinearDeceleration(physic, dt);
+            UpdateDeceleration(physic);
         }
         //TODO: TEMPFLOOR DELETE
         private void TEMPFLOOR(TransformComponent transform)
@@ -135,7 +153,7 @@ namespace GameEngine.Source.Systems
         /// Updates the mass using density * volume
         /// </summary>
         /// <param name="physic"></param>
-        private void UpdateMass(PhysicsComponent physic)
+        public virtual void UpdateMass(PhysicsComponent physic)
         {
             physic.Mass = (physic.Density * physic.Volume);
         }
@@ -144,7 +162,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="gravity"></param>
-        private void UpdateWeight(PhysicsComponent physic, float gravity)
+        public virtual void UpdateWeight(PhysicsComponent physic, float gravity)
         {
             physic.Weight = -Vector3.Down * (physic.Mass * gravity);
         }
@@ -171,8 +189,7 @@ namespace GameEngine.Source.Systems
         /// Calculates the physic objects Deaceleration
         /// </summary>
         /// <param name="physic"></param>
-        /// <param name="dt"></param>
-        private void UpdateLinearDeceleration(PhysicsComponent physic, float dt)
+        public virtual void UpdateDeceleration(PhysicsComponent physic)
         {
             if (!physic.IsInAir)
             {
@@ -191,7 +208,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdateVelocity(PhysicsComponent physic, float dt)
+        public virtual void UpdateVelocity(PhysicsComponent physic, float dt)
         {
             physic.Velocity += physic.InitialVelocity + (physic.Acceleration * dt);
             //Console.WriteLine(physic.Velocity);
@@ -200,7 +217,7 @@ namespace GameEngine.Source.Systems
         /// Updates the forces
         /// </summary>
         /// <param name="physic"></param>
-        private void UpdateForce(PhysicsComponent physic)
+        public virtual void UpdateForce(PhysicsComponent physic)
         {
             //Console.WriteLine("For1': " + physic.Forces);
             //physic.Forces =  physic.Mass * physic.Acceleration;
@@ -217,7 +234,7 @@ namespace GameEngine.Source.Systems
         /// A = F/M
         /// </summary>
         /// <param name="physic"></param>
-        private void UpdateAcceleration(PhysicsComponent physic)
+        public virtual void UpdateAcceleration(PhysicsComponent physic)
         {
             float X, Y, Z;
             X = (physic.Forces.X / physic.Mass);
@@ -232,7 +249,7 @@ namespace GameEngine.Source.Systems
         /// Updates the gravity depending on physics gravity type
         /// </summary>
         /// <param name="physic"></param>
-        private void UpdateGravity(PhysicsComponent physic, float dt)
+        public virtual void UpdateGravity(PhysicsComponent physic, float dt)
         {
             switch(physic.GravityType)
             {
@@ -258,7 +275,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="entityID"></param>
         /// <param name="dt"></param>
-        private void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
+        public virtual void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
         {
                 switch(physic.PhysicsType)
                 {
@@ -290,7 +307,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
+        public virtual void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
         {
            int N = 1; //dunno
            int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
@@ -309,7 +326,7 @@ namespace GameEngine.Source.Systems
         /// divided by FPS to give meters per second each frame.
         /// </summary>
         /// <param name="physic"></param>
-        private void UpdateMaxAcceleration(PhysicsComponent physic)
+        public virtual void UpdateMaxAcceleration(PhysicsComponent physic)
         {
                 physic.MaxAcceleration = (physic.Forces / physic.Mass) / framesPerSecond;
         }
