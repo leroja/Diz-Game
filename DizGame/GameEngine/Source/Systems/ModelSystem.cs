@@ -61,7 +61,7 @@ namespace GameEngine.Source.Systems
                         effect.View = defaultCam.View;
                         effect.Projection = defaultCam.Projection;
 
-                        effect.EnableDefaultLighting();
+                        //effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;
                         foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                         {

@@ -50,11 +50,6 @@ namespace GameEngine.Source.Systems
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                UpdateMass(physic);
-                UpdateForce(physic);
-                UpdateGravity(physic, dt);
-
-                UpdateMaxAcceleration(physic);
 
                 if (usingEuler)
                     UpdateEulerOrder(physic, dt);
@@ -62,55 +57,96 @@ namespace GameEngine.Source.Systems
                     UpdateNonEulerOrder(physic, dt);
 
                 //TEMPFLOOR(ComponentManager.GetEntityComponent<TransformComponent>(entityID));
-
-                    //Console.WriteLine("Forces: " + physic.Forces);
-                    //Console.WriteLine("Velocity: " + physic.Velocity);
-                    //if (!physic.IsMoving)
-                    //    UpdateLinearDeceleration(physic, dt);
+                //Console.WriteLine("Forces: " + physic.Forces);
+                //Console.WriteLine("Velocity: " + physic.Velocity);
             }
         }
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity
-        /// will provide better accuracy
+        /// will provide better accuracy but only when
+        /// acceleration is constant
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
         private void UpdateEulerOrder(PhysicsComponent physic, float dt)
         {
+
+            UpdateMaxAcceleration(physic);
+            UpdateMass(physic);
+            UpdateGravity(physic, dt);
+            UpdateForce(physic);
+
             UpdateEulerAcceleration(physic);
             UpdatePhysicComponentByType(physic, dt);
             UpdateVelocity(physic, dt);
+
+            UpdateLinearDeceleration(physic, dt);
         }
         /// <summary>
         /// Using Non Euler order does work but with less accuracy
+        /// except when acceleration is not constant
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
         private void UpdateNonEulerOrder(PhysicsComponent physic, float dt)
         {
             UpdateAcceleration(physic);
+            UpdateMaxAcceleration(physic);
+            UpdateMass(physic);
+            UpdateGravity(physic, dt);
+            UpdateForce(physic);
+
+            //UpdateAcceleration(physic);
             UpdateVelocity(physic, dt);
             UpdatePhysicComponentByType(physic, dt);
+
+            UpdateLinearDeceleration(physic, dt);
         }
         //TODO: TEMPFLOOR DELETE
         private void TEMPFLOOR(TransformComponent transform)
         {
-            if (transform.Position.Y <= -15)
+            if (transform.Position.Y <= 2)
             {
-                transform.Position = new Vector3(transform.Position.X, 0, transform.Position.Z);
+                transform.Position = new Vector3(transform.Position.X, 40, transform.Position.Z);
+
                 ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity = new Vector3(
                     ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity.X,
                     0,
                     ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity.Z);
+
                 ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces = new Vector3(
                     ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces.X,
                     0,
                     ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces.Z);
+
+                ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Acceleration = new Vector3(
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Acceleration.X,
+                    0,
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Acceleration.Z);
+
+                if (ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).IsInAir)
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).IsInAir = false;
+                else
+                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).IsInAir = true;
             }
+
         }
+        /// <summary>
+        /// Updates the mass using density * volume
+        /// </summary>
+        /// <param name="physic"></param>
         private void UpdateMass(PhysicsComponent physic)
         {
-            physic.Mass = (physic.Density * physic.Volume) / 100; //TODO: sätta massan till rätt
+            physic.Mass = (physic.Density * physic.Volume);
+        }
+        /// <summary>
+        /// Updates the objects weigth W = m * g
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="gravity"></param>
+        private void UpdateWeight(PhysicsComponent physic, float gravity)
+        {
+            physic.Weight = -Vector3.Down * (physic.Mass * gravity);
         }
         /// <summary>
         /// Updates the objects Euler acceleration
@@ -130,24 +166,35 @@ namespace GameEngine.Source.Systems
             //Vector3 avg_ay = 0.5f * new_ay;
             //physic.Acceleration = avg_ay;
         }
+
         /// <summary>
-        /// Updates the Acceleration using formula 
-        /// A = F/M
+        /// Calculates the physic objects Deaceleration
         /// </summary>
         /// <param name="physic"></param>
-        private void UpdateAcceleration(PhysicsComponent physic)
+        /// <param name="dt"></param>
+        private void UpdateLinearDeceleration(PhysicsComponent physic, float dt)
         {
-            physic.Acceleration = physic.Forces / physic.Mass;
+            if (!physic.IsInAir)
+            {
+                if (physic.Forces.X == 0)
+                    physic.Velocity = new Vector3(0, physic.Velocity.Y, physic.Velocity.Z);
+                if (physic.Forces.Y == 0)
+                    physic.Velocity = new Vector3(physic.Velocity.X, 0, physic.Velocity.Z);
+                if (physic.Forces.Z == 0)
+                    physic.Velocity = new Vector3(physic.Velocity.X, physic.Velocity.Y, 0);
+            }
         }
         /// <summary>
         /// Updates the objects linear velocity
+        /// using its initialVelocity if any 
+        /// using m/s
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
         private void UpdateVelocity(PhysicsComponent physic, float dt)
         {
             physic.Velocity += physic.InitialVelocity + (physic.Acceleration * dt);
-
+            //Console.WriteLine(physic.Velocity);
         }
         /// <summary>
         /// Updates the forces
@@ -155,12 +202,31 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         private void UpdateForce(PhysicsComponent physic)
         {
+            //Console.WriteLine("For1': " + physic.Forces);
+            //physic.Forces =  physic.Mass * physic.Acceleration;
             float X, Y, Z;
             X = (physic.Mass * physic.Acceleration.X);
             Y = (physic.Mass * physic.Acceleration.Y);
             Z = (physic.Mass * physic.Acceleration.Z);
 
             physic.Forces = new Vector3(X, Y, Z);
+            //Console.WriteLine("For': " + physic.Forces);
+        }
+        /// <summary>
+        /// Updates the Acceleration using formula 
+        /// A = F/M
+        /// </summary>
+        /// <param name="physic"></param>
+        private void UpdateAcceleration(PhysicsComponent physic)
+        {
+            float X, Y, Z;
+            X = (physic.Forces.X / physic.Mass);
+            //Y = (physic.Forces.Y / physic.Mass);
+            Z = (physic.Forces.Z / physic.Mass);
+
+            physic.Acceleration = new Vector3(X, physic.Acceleration.Y, Z);
+
+            //physic.Acceleration = (physic.Forces / physic.Mass);
         }
         /// <summary>
         /// Updates the gravity depending on physics gravity type
@@ -171,15 +237,18 @@ namespace GameEngine.Source.Systems
             switch(physic.GravityType)
             {
                 case GravityType.None:
-                    physic.Forces += new Vector3(physic.Forces.X, 0, physic.Forces.Z) * dt;
+                    physic.Forces += new Vector3(physic.Forces.X, 0, physic.Forces.Z);
+                    UpdateWeight(physic, 0);
                     break;
                 case GravityType.Self:
-                    physic.Forces += new Vector3(physic.Forces.X, physic.Gravity, physic.Forces.Z) * dt;
+                    physic.Forces += Vector3.Down * physic.Gravity;
+                    UpdateWeight(physic, physic.Gravity);
                     break;
                 case GravityType.World:
                     List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
                     WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
-                    physic.Forces += new Vector3(physic.Forces.X, world.Gravity.Y, physic.Forces.Z) * dt;
+                    physic.Forces += world.Gravity;
+                    UpdateWeight(physic, world.Gravity.Y);
                     break;
             }
                 
@@ -215,30 +284,7 @@ namespace GameEngine.Source.Systems
                         break;
             }
         }
-        /// <summary>
-        /// Calculates the physic objects Deaceleration
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="dt"></param>
-        private void UpdateLinearDeceleration(PhysicsComponent physic, float dt)
-        {
-            //TODO: Få denna skiten att fungera
-            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
-            WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
 
-            Vector3 f = physic.Velocity;
-            if (physic.IsFalling)
-            {
-                physic.Forces = new Vector3(physic.Forces.X, physic.Forces.Y, physic.Forces.Z);
-            }
-            else
-            {
-             f -= (physic.Velocity - physic.InitialVelocity) / dt;
-                
-
-                physic.Velocity = new Vector3(f.X, physic.Velocity.Y, f.X);
-            }
-        }
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>

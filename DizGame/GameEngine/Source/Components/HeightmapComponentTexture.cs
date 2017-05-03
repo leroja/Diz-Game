@@ -20,6 +20,9 @@ namespace GameEngine.Source.Components
         public float[,] HeightMapData { get; set; }
         public List<HeightMapChunk> HeightMapChunks { get; set; }
 
+        public int Width { get; set; }
+        public int Height { get; set; }
+
         public HeightmapComponentTexture()
         {
             HeightMapChunks = new List<HeightMapChunk>();

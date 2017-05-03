@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,14 @@ using System.Xml.Serialization;
 namespace ContentProject
 {
     [ContentProcessor(DisplayName = "Model Processor - MonoGame.Extended")]
-    class ModelProcessor : ContentProcessor<Model, Model>
+    class ModelProcessorBounding : ContentProcessor<Model, Model>
     {
         public override Model Process(Model input, ContentProcessorContext context)
         {
+            
+            
             AddboundingSphereToModel(input.Meshes);
+
             return input;
         }
 
