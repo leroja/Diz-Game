@@ -19,19 +19,24 @@ namespace DizGame
     {
         NetworkSystem client;
 
+        private static Game instance;
+
         public GameOne()
         {
-
+            instance = this;
             client = new NetworkSystem();
             client.RunClient();
-            Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
 
-            // test
-            Graphics.PreferredBackBufferWidth = 1280;
-            Graphics.PreferredBackBufferHeight = 720;
+            
+        }
 
-            //Graphics.IsFullScreen = true;
+        public static Game Instance
+        {
+            get
+            {
+                return instance;
+            }
         }
 
         /// <summary>
@@ -43,28 +48,31 @@ namespace DizGame
         protected override void Initialize()
         {
             Device = Graphics.GraphicsDevice;
+            // test
+            //Graphics.PreferredBackBufferWidth = 1280;
+            //Graphics.PreferredBackBufferHeight = 720;
+            Graphics.PreferredBackBufferHeight = Device.DisplayMode.Height / 2;
+            Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
+            Graphics.ApplyChanges();
+
+            //Graphics.IsFullScreen = true;
 
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content, Device);
 
             var idC = entf.CreateChuckGreen();
-            //var idK = entf.CreateKitana();
-            //var id = entf.CreateBullet("Bullet", new Vector3(0, 0, -20), Vector3.Zero, new Vector3(.3f, .3f, .3f));
+            var idK = entf.CreateKitana();
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
-            // House_Wood or House_Stone
-            //ntf.createHouse("House_Stone", new Vector3(5, 0, -20));
-            var id = entf.CreateKitana();
-            //Model bullet = Content.Load<Model>("bullet/Bullet");
-            //var id = entf.CreateBullet("Bullet", new Vector3(0, 0, -20), Vector3.Zero, new Vector3(.3f, .3f, .3f));
             entf.AddChaseCamToEntity(idC, new Vector3(0, 20, 25));
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass");
             //entf.CreateHeightMap("heightmap", "BetterGrass");
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
-            SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new TransformSystem());
+            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
+            SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
@@ -80,8 +88,6 @@ namespace DizGame
             //SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
 
             base.Initialize();
-
-            //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
         }
 
         /// <summary>
@@ -105,6 +111,9 @@ namespace DizGame
         protected override void Update(GameTime gameTime)
         {
             //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
             base.Update(gameTime);
         }
 

@@ -34,9 +34,6 @@ namespace GameEngine
         /// </summary>
         protected override void Initialize()
         {
-            //This system is not fully tested yet - so uncomment the line below at your risk.
-            //ConfiguredHeightMapSystem.Instance.ThisFunctionDoesNothing();
-
             base.Initialize();
         }
 
@@ -66,9 +63,7 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
+            
             SystemManager.Instance.GameTime = gameTime;
             SystemManager.Instance.RunUpdateSystems();
 

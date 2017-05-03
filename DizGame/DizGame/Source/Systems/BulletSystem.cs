@@ -10,7 +10,6 @@ using GameEngine.Source.Components;
 
 namespace DizGame.Source.Systems
 {
-    // TODO temporär, ta bort sen
     public class BulletSystem : IUpdate
     {
         private List<int> toDelete = new List<int>();
@@ -18,37 +17,13 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var compIds = ComponentManager.GetAllEntitiesWithComponentType<BulletComponent>();
-            //System.Console.WriteLine(compIds.Count);
+            
             foreach (var id in compIds)
             {
                 var bulletComponent = ComponentManager.GetEntityComponent<BulletComponent>(id);
                 var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(id);
                 var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(id);
 
-
-                //transformComp.Rotation = /*transformComp.Rotation +*/ new Vector3(-mouseComp.MouseDeltaPosition.Y, -mouseComp.MouseDeltaPosition.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                //var rot = transformComp.Rotation;
-                //rot.X = 0;
-                //rot.Y = 0;
-                //rot.Z = 0;
-
-                //if (mouseComp.MouseDeltaPosition.X > 0)
-                //{
-                //    rot.Y += 0.01f;
-                //}
-                //if (mouseComp.MouseDeltaPosition.X < 0)
-                //{
-                //    rot.Y -= 0.01f;
-                //}
-                //if (mouseComp.MouseDeltaPosition.Y > 0)
-                //{
-                //    rot.Z += 0.05f;
-                //}
-                //if (mouseComp.MouseDeltaPosition.Y < 0)
-                //{
-                //    rot.Z -= 0.05f;
-                //}
                 var curPos = transformComp.Position;
 
                 var curRange = Vector3.Distance(transformComp.Position, bulletComponent.StartPos);
@@ -57,10 +32,8 @@ namespace DizGame.Source.Systems
                     toDelete.Add(id);
                 }
 
+                // Todo, temp
                 transformComp.Position += transformComp.Forward *(float)10 *(float)gameTime.ElapsedGameTime.TotalSeconds;
-                //transformComp.Rotation = Vector3.Zero;
-
-                //transformComp.Rotation = rot;
             }
 
             foreach (var id in toDelete)

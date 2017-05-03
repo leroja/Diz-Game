@@ -71,11 +71,12 @@ namespace DizGame
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,45,0), new Vector3(0.135f,0.135f,0.135f), Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new TransformComponent(new Vector3(0,45,0), new Vector3(0.135f,0.135f,0.135f)),
                 new ModelComponent(chuck),
                 keys,
                 mouse,
                 new PlayerComponent(),
+                new TestComponent(),
             };
 
             
@@ -120,7 +121,7 @@ namespace DizGame
             return entityID;
         }
 
-        public int createHouse(string nameOfModel, Vector3 position)
+        public int CreateHouse(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
             Model house = ModelDic[nameOfModel];
@@ -166,27 +167,22 @@ namespace DizGame
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
-
-        // roation är inte riktigt det jag vill, oriantaion är nog mer det jag vill ha
-        public int CreateBullet(string modelName, Vector3 pos, Quaternion rotation, Vector3 scale, float MaxRange)
+        
+        // Todo lägg till fysik component, projectile
+        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, float MaxRange)
         {
             int BulletEntity = ComponentManager.Instance.CreateID();
-            //var mat = Matrix.CreateFromQuaternion(rotation);
 
             Model model = ModelDic[modelName];
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
                 {
-                    QuaternionRotation = rotation
-                    //Rotation = rotation
+                    QuaternionRotation = Orientation
                 },
                 new  ModelComponent(model),
 
-                //temp
-                new MouseComponent(){
-                    //MouseSensitivity = 1.9f
-                },
+                
                 new BulletComponent(){
                     StartPos = pos,
                     MaxRange = MaxRange,

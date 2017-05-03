@@ -38,13 +38,14 @@ namespace GameEngine.Source.Systems
         {
             mouseComp.X = CurState.X;
             mouseComp.Y = CurState.Y;
-            mouseComp.MouseDeltaPosition = GetMouseDeltaPosition();
+            //mouseComp.MouseDeltaPosition = GetMouseDeltaPosition();
         }
 
-        private Vector2 GetMouseDeltaPosition()
-        {
-            return (CurState.Position - PrevState.Position).ToVector2();
-        }
+        //private Vector2 GetMouseDeltaPosition()
+        //{
+            //istället för prev pos använd mitten av skärmen om man resetar mussen position, t.ex till mittenav skärmen
+        //    return (CurState.Position - PrevState.Position).ToVector2();
+        //}
 
         /// <summary>
         /// updates the previous & current State of the Mouse

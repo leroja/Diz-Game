@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Components
 {
-    // TODO temporär, ta bort sen
     public class BulletComponent : IComponent
     {
         public float MaxRange { get; set; }
         public Vector3 StartPos { get; set; }
+        public float Damage { get; set; }
     }
 }

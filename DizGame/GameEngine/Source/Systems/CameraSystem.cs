@@ -20,13 +20,10 @@ namespace GameEngine.Source.Systems
             {
                 CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-                //if(camera != null || transform != null)
-                //{
-                    UpdateCameraAfterType(camera, transform);
-                    camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
-                    // TODO skapa ett frustrum som är lite större än det verkliga "camera.View * camera.Projection"
-                    camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
-                //}
+                
+                UpdateCameraAfterType(camera, transform);
+                camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
+                camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
             }
         }
         /// <summary>
