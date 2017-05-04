@@ -42,7 +42,6 @@ namespace DizGame
             Texture2dDic = new Dictionary<string, Texture2D>() {
                 {"BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
                 {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
-                {"test", Content.Load<Texture2D>("HeightMapStuff/test") },
                 {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") }
             };
         }
