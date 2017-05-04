@@ -49,6 +49,10 @@ namespace GameEngine.Source.Components
         /// 1N = 1kg-m/s^2
         /// </summary>
         public Vector3 Forces { get; set; }
+        /// <summary>
+        /// Set 1 if true
+        /// </summary>
+        public Vector3 TerminalVelocity { get; set; }
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
         public DragType DragType { get; set; }
@@ -72,11 +76,6 @@ namespace GameEngine.Source.Components
         public float Volume { get; set; }
         public float Bounciness { get; set; }
         public bool IsInAir { get; set; }
-        /// <summary>
-        /// If using Euler calculation, true if 
-        /// acceleration always is constant else false.
-        /// </summary>
-        public bool Euler { get; set; }
         #endregion Public Configuration
         public PhysicsComponent()
         {
@@ -85,14 +84,14 @@ namespace GameEngine.Source.Components
             Mass = Density * Volume;
             Bounciness = 1;
 
-            IsInAir = true;
-            Euler = false;
+            IsInAir = false;
 
             Acceleration = Vector3.Zero;
             MaxVelocity = Vector3.Zero;
             LastAcceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
             InitialVelocity = Vector3.Zero;
+            TerminalVelocity = Vector3.Zero;
 
             Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
             Weight = Mass * Vector3.One;

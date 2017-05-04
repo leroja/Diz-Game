@@ -19,3 +19,10 @@
 #begin HeightMaps/heightmap.png
 /copy:HeightMaps/heightmap.png
 
+#begin Fonts/font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/font.spritefont
+

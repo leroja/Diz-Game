@@ -138,11 +138,19 @@ namespace ServerApplication.ServerLogic
         /// Write messages to all connected clients updating physics state (from KeyBoardComponent) and
         /// health, ammo, weapon.
         /// Client state contains:
+        /// physics state:
         /// *time
         /// *entityID
+        /// How many keyboardstates that will be sent.
         /// *keyBoardStates for every movable controlled entity.
         /// *to be cont.
         /// *Should be moved to client side though.
+        /// 
+        /// Rest of state:
+        /// entityID
+        /// health
+        /// ammo
+        /// weapon.
         /// </summary>
         private void WriteClientsState()
         {
@@ -157,7 +165,9 @@ namespace ServerApplication.ServerLogic
                 server.SendMessage(broadcastMessage, peer.Connections, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
-
+        /// <summary>
+        /// This function writes all keyboardstates that has a key pressed to message.
+        /// </summary>
         private void WriteKeyBoardStates()
         {
             List<int> entities;

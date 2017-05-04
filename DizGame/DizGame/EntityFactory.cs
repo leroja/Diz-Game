@@ -42,11 +42,13 @@ namespace DizGame
             Texture2dDic = new Dictionary<string, Texture2D>() {
                 {"BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
                 {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
-                {"test", Content.Load<Texture2D>("HeightMapStuff/test") },
                 {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") }
             };
         }
        
+        /// <summary>
+        /// 
+        /// </summary>
         public void CreateWorldComp()
         {
             var worldEntId = ComponentManager.Instance.CreateID();
@@ -62,31 +64,36 @@ namespace DizGame
             int entityID = ComponentManager.Instance.CreateID();
             Model chuck = ModelDic["Dude"];
             KeyBoardComponent keys = new KeyBoardComponent();
-            keys.KeyBoardActions.Add("Forward", Keys.W);
-            keys.KeyBoardActions.Add("Backwards", Keys.S);
-            keys.KeyBoardActions.Add("Right", Keys.D);
-            keys.KeyBoardActions.Add("Left", Keys.A);
-            keys.KeyBoardActions.Add("Up", Keys.Space);
+            keys.AddActionAndKey("Forward", Keys.W);
+            keys.AddActionAndKey("Backwards", Keys.S);
+            keys.AddActionAndKey("Right", Keys.D);
+            keys.AddActionAndKey("Left", Keys.A);
+            keys.AddActionAndKey("Up", Keys.Space);
+
+            // temp
+            keys.AddActionAndKey("RotateY", Keys.E);
+            keys.AddActionAndKey("RotateNegY", Keys.Q);
+            // /temp
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,45,0), new Vector3(0.135f,0.135f,0.135f)),
+                new TransformComponent(new Vector3(0,45,0), new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(chuck),
                 keys,
                 mouse,
                 new PlayerComponent(),
-                //                new PhysicsComponent()
-                //{
-                //    Volume = 22.5f,
-                //    Density = 2.66f,
-                //    PhysicsType = PhysicsType.Rigid,
-                //    MaterialType = MaterialType.Skin,
-                //    GravityType = GravityType.World,
-                //    DragType = DragType.ManUpright
-                //                },
+                new PhysicsComponent()
+                {
+                    Volume = 22.5f,
+                    Density = 2.66f,
+                    PhysicsType = PhysicsType.Rigid,
+                    MaterialType = MaterialType.Skin,
+                    GravityType = GravityType.World,
+                    DragType = DragType.ManUpright
+                },
                 new TestComponent(),
             };
 
@@ -134,6 +141,11 @@ namespace DizGame
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nameOfModel"></param>
+        /// <param name="position"></param>
         public void CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
@@ -157,30 +169,34 @@ namespace DizGame
             {
             new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
                 comp
-                };
+            };
             ComponentManager.Instance.AddAllComponents(entityID, components);
         }
-        
-        public void MakeMap(int numberOfPlayers,int numberOfStaticObjects)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numberOfPlayers"></param>
+        /// <param name="numberOfStaticObjects"></param>
+        public void MakeMap(int numberOfPlayers, int numberOfStaticObjects)
         {
-           List<Vector3> posisions = new List<Vector3>();
+            List<Vector3> positions = new List<Vector3>();
             List<Vector3> unablePositions = new List<Vector3>();
-           var a =  ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            posisions = GetModelPositions(numberOfPlayers);
-           for (int i = 0; i < numberOfPlayers; i ++)
+            var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            positions = GetModelPositions(numberOfPlayers);
+            for (int i = 0; i < numberOfPlayers; i++)
             {
-                if (!unablePositions.Contains(posisions[i]))
+                if (!unablePositions.Contains(positions[i]))
                 {
-                    var mod = i % 2;
-                    if (mod == 0)
+                    if (i % 2 == 0)
                     {
-                        CreateHouse("House_Wood", posisions[i]);
-                        unablePositions.Add(posisions[i]);
+                        CreateHouse("House_Wood", positions[i]);
+                        unablePositions.Add(positions[i]);
                     }
                     else
                     {
-                        CreateHouse("House_Stone", posisions[i]);
-                        unablePositions.Add(posisions[i]);
+                        CreateHouse("House_Stone", positions[i]);
+                        unablePositions.Add(positions[i]);
                     }
                 }
                 else
@@ -188,31 +204,35 @@ namespace DizGame
                     i--;
                 }
             }
-           posisions = GetModelPositions(numberOfStaticObjects);
-           for (int j = 0; j < numberOfStaticObjects; j++)
+            positions = GetModelPositions(numberOfStaticObjects);
+            for (int j = 0; j < numberOfStaticObjects; j++)
             {
-                if (!unablePositions.Contains(posisions[j]))
+                if (!unablePositions.Contains(positions[j]))
                 {
                     var modul = j % 2;
-                    switch (modul){
+                    switch (modul)
+                    {
                         case 0:
-                            CreateStaticObject("Tree", posisions[j]);
+                            CreateStaticObject("Tree", positions[j]);
                             break;
                         case 1:
-                            CreateStaticObject("Rock", posisions[j]);
-                            break; ;
-
+                            CreateStaticObject("Rock", positions[j]);
+                            break;
                     }
                 }
             }
-            
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numberOfPositions"></param>
+        /// <returns></returns>
         public List<Vector3> GetModelPositions(int numberOfPositions)
         {
-            List<Vector3> pos = new List<Vector3>();
+            List<Vector3> positions = new List<Vector3>();
             Random r = new Random();
-            int mapWidht; ;
+            int mapWidht;
             int mapHeight;
             List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
@@ -222,7 +242,7 @@ namespace DizGame
             {
                 var pot = new Vector3(r.Next(mapWidht-100), 0,r.Next(mapHeight-100));
                 pot.Y = heigt.HeightMapData[(int)pot.X,(int)pot.Z];
-                if(pot.X < 100 )
+                if (pot.X < 100)
                 {
                     pot.X = pot.X + 100;
                 }
@@ -232,13 +252,16 @@ namespace DizGame
                 }
 
                 pot.Z = -pot.Z;
-                pos.Add(pot);
+                positions.Add(pot);
             }
-            return pos;
+            return positions;
         }
-
-            
-
+                    
+        /// <summary>
+        /// Creates a static camera on the specified position and that is looking att the specified lookat
+        /// </summary>
+        /// <param name="CameraPosition"> Position of the camera </param>
+        /// <param name="lookAt"> A position that the camera should look at </param>
         public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
         {
             ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
@@ -250,6 +273,20 @@ namespace DizGame
             });
         }
 
+        // Todo
+        /// <summary>
+        /// 
+        /// </summary>
+        public void RemoveCam()
+        {
+
+        }
+
+        /// <summary>
+        /// Adds an chase Camera to an entity
+        /// </summary>
+        /// <param name="EntityId"> The ID of the enitt that the camera should follow </param>
+        /// <param name="Offset"> How far behind the camera should be </param>
         public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
         {
             CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
@@ -259,8 +296,19 @@ namespace DizGame
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
         
-        // Todo lägg till fysik component, projectile
-        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, float MaxRange)
+        // todo write comment
+        /// <summary>
+        /// Creates an bullet .... 
+        /// </summary>
+        /// <param name="modelName"></param>
+        /// <param name="pos"></param>
+        /// <param name="Orientation"></param>
+        /// <param name="scale"></param>
+        /// <param name="forward"></param>
+        /// <param name="MaxRange"></param>
+        /// <param name="initialVelocity"></param>
+        /// <returns> The enityId of the bullet in case someone would need it sometime </returns>
+        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -273,7 +321,6 @@ namespace DizGame
                     QuaternionRotation = Orientation
                 },
                 new  ModelComponent(model),
-
                 
                 new BulletComponent(){
                     StartPos = pos,
@@ -290,7 +337,7 @@ namespace DizGame
                     GravityType = GravityType.World,
                     ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
                     PhysicsType = PhysicsType.Projectiles,
-                    //InitialVelocity = new Vector3(rotation.X,rotation.Y,rotation.Z) * 100,
+                    InitialVelocity = Matrix.CreateFromQuaternion(Orientation).Forward * initialVelocity,
                 },
             };
 
@@ -318,10 +365,17 @@ namespace DizGame
           
         }
 
-        public void CreateHeightMap(string heightmap, string heightTexture)
+        // todo finish comment
+        /// <summary>
+        /// Creates an Height based on the specified heightMap
+        /// </summary>
+        /// <param name="heightmap"> Name of the heightMap texture that shall be used to build the hieghtMap </param>
+        /// <param name="heightTexture"> ... </param>
+        /// <param name="numberOfChunksPerSide"> .... eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
+        public void CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
         {
             int HeightmapEnt = ComponentManager.Instance.CreateID();
-            var hmp = hmFactory.CreateTexturedHeightMap(Texture2dDic[heightmap], Texture2dDic[heightTexture], 10);
+            var hmp = hmFactory.CreateTexturedHeightMap(Texture2dDic[heightmap], Texture2dDic[heightTexture], numberOfChunksPerSide);
             List<IComponent> HeightmapCompList = new List<IComponent>
             {
                 hmp,

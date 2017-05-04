@@ -54,8 +54,8 @@ namespace DizGame
             Graphics.PreferredBackBufferHeight = Device.DisplayMode.Height / 2;
             Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
             Graphics.ApplyChanges();
-
             //Graphics.IsFullScreen = true;
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content, Device);
@@ -65,12 +65,30 @@ namespace DizGame
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
             entf.AddChaseCamToEntity(idC, new Vector3(0, 20, 25));
 
-            entf.CreateHeightMap("canyonHeightMap", "BetterGrass");
+            entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
             entf.MakeMap(2,1000);
+           
+
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 100, 75));
+
+            InitializeSystems(entf);
+            
+            base.Initialize();
+        }
+
+        /// <summary>
+        /// Initializes the systems and adds them to the system manager
+        /// </summary>
+        /// <param name="entf"></param>
+        private void InitializeSystems(EntityFactory entf)
+        {
+            SystemManager.Instance.AddSystem(new WorldSystem(this));
             //entf.CreateHeightMap("heightmap", "BetterGrass");
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
 
+            SystemManager.Instance.AddSystem(new TransformSystem());
+            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
@@ -78,7 +96,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-            //SystemManager.Instance.AddSystem(new PhysicsSystem());
+            SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
@@ -87,10 +105,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
             SystemManager.Instance.AddSystem(new AnimationSystem());
 
-
-            //SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
-
-            base.Initialize();
+            SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
         }
 
         /// <summary>
@@ -99,7 +114,6 @@ namespace DizGame
         /// </summary>
         protected override void LoadContent()
         {
-
         }
 
         /// <summary>
