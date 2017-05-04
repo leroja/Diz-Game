@@ -54,7 +54,6 @@ namespace DizGame
             Graphics.PreferredBackBufferHeight = Device.DisplayMode.Height / 2;
             Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
             Graphics.ApplyChanges();
-
             //Graphics.IsFullScreen = true;
 
             client.DiscoverLocalPeers();
@@ -65,15 +64,25 @@ namespace DizGame
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
             entf.AddChaseCamToEntity(idC, new Vector3(0, 20, 25));
 
-            entf.CreateHeightMap("canyonHeightMap", "BetterGrass");
+            entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
             entf.MakeMap(2,1000);
-            //entf.CreateHeightMap("heightmap", "BetterGrass");
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             entf.TestingTheAnimationsWithWolf();
 
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 70, 50));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 100, 75));
 
+            InitializeSystems(entf);
+
+            base.Initialize();
+        }
+
+        /// <summary>
+        /// Initializes the systems and adds them to the system manager
+        /// </summary>
+        /// <param name="entf"></param>
+        private void InitializeSystems(EntityFactory entf)
+        {
+            SystemManager.Instance.AddSystem(new TransformSystem());
+            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
@@ -89,11 +98,6 @@ namespace DizGame
 
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
             SystemManager.Instance.AddSystem(new AnimationSystem());
-
-
-            //SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
-
-            base.Initialize();
         }
 
         /// <summary>

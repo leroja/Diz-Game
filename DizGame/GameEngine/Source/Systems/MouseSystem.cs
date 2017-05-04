@@ -34,19 +34,16 @@ namespace GameEngine.Source.Systems
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mouseComp"></param>
         private void UpdateMousePositions(MouseComponent mouseComp)
         {
             mouseComp.X = CurState.X;
             mouseComp.Y = CurState.Y;
-            //mouseComp.MouseDeltaPosition = GetMouseDeltaPosition();
         }
-
-        //private Vector2 GetMouseDeltaPosition()
-        //{
-            //istället för prev pos använd mitten av skärmen om man resetar mussen position, t.ex till mittenav skärmen
-        //    return (CurState.Position - PrevState.Position).ToVector2();
-        //}
-
+        
         /// <summary>
         /// updates the previous & current State of the Mouse
         /// </summary>
@@ -57,7 +54,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// updates the states of left, right & middle click
+        /// Updates the states of left-, right- & middle mouse buttons
         /// </summary>
         /// <param name="mouseComponent"></param>
         public void UpdateActionStates(MouseComponent mouseComponent)

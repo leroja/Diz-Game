@@ -33,7 +33,7 @@ namespace DizGame.Source.Systems
                 }
 
                 // Todo, temp
-                transformComp.Position += transformComp.Forward *(float)10 *(float)gameTime.ElapsedGameTime.TotalSeconds;
+                //transformComp.Position += transformComp.Forward *(float)10 *(float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
             foreach (var id in toDelete)
