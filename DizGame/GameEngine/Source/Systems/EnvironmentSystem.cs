@@ -48,9 +48,10 @@ namespace GameEngine.Source.Systems
 
             //Vector3 Fd = -0.5f * p * Vector3Pow(v, 2) * A * Cd * V;                             // 1/2pv^2ACdV = force of drag
             Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
-            Fd.X = (float)Math.Sqrt(Fd.X);
-            Fd.Y = (float)Math.Sqrt(Fd.Y);
-            Fd.Z = (float)Math.Sqrt(Fd.Z);
+            //Console.WriteLine("Before: " + Fd);
+            //Fd.X = (float)Math.Sqrt(Fd.X);
+            //Fd.Y = (float)Math.Sqrt(Fd.Y);
+            //Fd.Z = (float)Math.Sqrt(Fd.Z);
             //Fd = Fd / (Cd * p * A);
             //Console.WriteLine("DragF: " + Fd.Y + "Force: " + phy.Forces.Y + " Veclocity: " + v);
 
@@ -58,7 +59,8 @@ namespace GameEngine.Source.Systems
             UpdateDownwardAcceleration(phy, Fd);
             //UpdateVelocity(phy, Cd, p, A);
             phy.Forces = Fd - phy.Weight;
-            //Console.WriteLine(Fd);
+            Console.WriteLine("After: " + Fd);
+            //Console.WriteLine(phy.Velocity);
             
         }
         private void UpdateDownwardAcceleration(PhysicsComponent physic, Vector3 Drag)
@@ -78,12 +80,20 @@ namespace GameEngine.Source.Systems
         }
         private void CheckAndSetTerminalVelocity(PhysicsComponent physic, Vector3 dragForce)
         {
-            if (dragForce.X == physic.Mass)
-                physic.Acceleration = new Vector3(0, physic.Acceleration.Y, physic.Acceleration.Z);
-            if (dragForce.Y == physic.Mass)
-                physic.Acceleration = new Vector3(physic.Acceleration.X, 0, physic.Acceleration.Z);
-            if (dragForce.Z == physic.Mass)
-                physic.Acceleration = new Vector3(physic.Acceleration.X, physic.Acceleration.Y, 0);
+            if (dragForce.X >= physic.Mass)
+                physic.TerminalVelocity = new Vector3(1, physic.TerminalVelocity.Y, physic.TerminalVelocity.Z);
+            else
+                physic.TerminalVelocity = new Vector3(0, physic.TerminalVelocity.Y, physic.TerminalVelocity.Z);
+
+            if (dragForce.Y >= physic.Mass)
+                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, 1, physic.TerminalVelocity.Z);
+            else
+                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, 0, physic.TerminalVelocity.Z);
+
+            if (dragForce.Z >= physic.Mass)
+                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, physic.TerminalVelocity.Y, 1);
+            else
+                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, physic.TerminalVelocity.Y, 0);
         }
         private void UpdateWind()
         {

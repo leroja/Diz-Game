@@ -24,7 +24,6 @@ namespace DizGame.Source.Systems
                 PhysicsComponent phys = ComponentManager.GetEntityComponent<PhysicsComponent>(entity.Key);
 
                 Vector3 move = Vector3.Zero;
-
                 if (key.State["Forward"] == ButtonStates.Hold)
                 {
                     if (phys != null)
@@ -72,7 +71,7 @@ namespace DizGame.Source.Systems
                 if (phys != null)
                 {
                     move.Y += phys.Forces.Y;
-                    trans.Dirrection += Vector3.Down;
+                    trans.Dirrection = new Vector3(trans.Dirrection.X, Vector3.Down.Y, trans.Dirrection.Z);
                     phys.Forces = move;
                     //Console.WriteLine("Move: " + phys.Acceleration);
 

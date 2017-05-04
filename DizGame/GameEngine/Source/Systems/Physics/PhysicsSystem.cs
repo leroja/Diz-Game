@@ -121,7 +121,9 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         public virtual void UpdateEulerAcceleration(PhysicsComponent physic)
         {
-            // Creating more vectors than necessary for an understanding of what is what.  
+            // Creating more vectors than necessary for an understanding of what is what.
+            UpdateAccelerationIfTerminal(physic);
+            UpdateForceIfTerminal(physic);
             physic.LastAcceleration = physic.Acceleration;
             Vector3 new_acceleration = physic.Forces / physic.Mass;
             Vector3 avg_acceleration = (physic.LastAcceleration + new_acceleration) / 2;
@@ -130,7 +132,28 @@ namespace GameEngine.Source.Systems
             //Vector3 avg_ay = 0.5f * new_ay;
             //physic.Acceleration = avg_ay;
         }
-
+        private void UpdateAccelerationIfTerminal(PhysicsComponent physic)
+        {
+            float X = physic.Acceleration.X, Y = physic.Acceleration.Y, Z = physic.Acceleration.Z;
+            if (physic.TerminalVelocity.X == 1)
+                X = 0;
+            if (physic.TerminalVelocity.Y == 1)
+                Y = 0;
+            if (physic.TerminalVelocity.Z == 1)
+                Z = 0;
+            physic.Acceleration = new Vector3(X, Y, Z);
+        }
+        private void UpdateForceIfTerminal(PhysicsComponent physic)
+        {
+            float X = physic.Forces.X, Y = physic.Forces.Y, Z = physic.Forces.Z;
+            if (physic.TerminalVelocity.X == 1)
+                X = 0;
+            if (physic.TerminalVelocity.Y == 1)
+                Y = 0;
+            if (physic.TerminalVelocity.Z == 1)
+                Z = 0;
+            physic.Forces = new Vector3(X, Y, Z);
+        }
         /// <summary>
         /// Calculates the physic objects Deaceleration
         /// </summary>
@@ -182,10 +205,12 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateAcceleration(PhysicsComponent physic)
         {
+            UpdateAccelerationIfTerminal(physic);
+            UpdateForceIfTerminal(physic);
             float X, Y, Z;
             X = (physic.Forces.X / physic.Mass);
             //Y = (physic.Forces.Y / physic.Mass);
-            Z = (physic.Forces.Z / physic.Mass);
+                Z = (physic.Forces.Z / physic.Mass);
 
             physic.Acceleration = new Vector3(X, physic.Acceleration.Y, Z);
 
