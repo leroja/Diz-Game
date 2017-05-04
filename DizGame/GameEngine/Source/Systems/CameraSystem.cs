@@ -41,7 +41,6 @@ namespace GameEngine.Source.Systems
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.StaticCam:
-                    //camera.LookAt = transform.Position;
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.Chase:
