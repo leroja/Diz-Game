@@ -257,13 +257,12 @@ namespace DizGame
             }
             return positions;
         }
-
-            
+                    
         /// <summary>
-        /// 
+        /// Creates a static camera on the specified position and that is looking att the specified lookat
         /// </summary>
-        /// <param name="CameraPosition"></param>
-        /// <param name="lookAt"></param>
+        /// <param name="CameraPosition"> Position of the camera </param>
+        /// <param name="lookAt"> A position that the camera should look at </param>
         public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
         {
             ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
@@ -275,6 +274,7 @@ namespace DizGame
             });
         }
 
+        // Todo
         /// <summary>
         /// 
         /// </summary>
@@ -284,10 +284,10 @@ namespace DizGame
         }
 
         /// <summary>
-        /// 
+        /// Adds an chase Camera to an entity
         /// </summary>
-        /// <param name="EntityId"></param>
-        /// <param name="Offset"></param>
+        /// <param name="EntityId"> The ID of the enitt that the camera should follow </param>
+        /// <param name="Offset"> How far behind the camera should be </param>
         public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
         {
             CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
@@ -297,8 +297,9 @@ namespace DizGame
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
         
+        // todo write comment
         /// <summary>
-        /// 
+        /// Creates an bullet .... 
         /// </summary>
         /// <param name="modelName"></param>
         /// <param name="pos"></param>
@@ -307,7 +308,7 @@ namespace DizGame
         /// <param name="forward"></param>
         /// <param name="MaxRange"></param>
         /// <param name="initialVelocity"></param>
-        /// <returns></returns>
+        /// <returns> The enityId of the bullet in case someone would need it sometime </returns>
         public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
@@ -367,11 +368,13 @@ namespace DizGame
             anm.CreateAnimationData();
         }
 
+        // todo finish comment
         /// <summary>
-        /// 
+        /// Creates an Height based on the specified heightMap
         /// </summary>
-        /// <param name="heightmap"></param>
-        /// <param name="heightTexture"></param>
+        /// <param name="heightmap"> Name of the heightMap texture that shall be used to build the hieghtMap </param>
+        /// <param name="heightTexture"> ... </param>
+        /// <param name="numberOfChunksPerSide"> .... eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
         public void CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
         {
             int HeightmapEnt = ComponentManager.Instance.CreateID();
