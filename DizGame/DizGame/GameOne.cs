@@ -90,7 +90,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem(false));
+            SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());

@@ -9,6 +9,10 @@ namespace GameEngine.Source.Enums
     public enum PhysicsType : int
     {
         /// <summary>
+        /// None
+        /// </summary>
+        None,
+        /// <summary>
         /// "Immovable entity"
         /// </summary>
         Static,

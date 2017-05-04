@@ -3,11 +3,17 @@ using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using System;
+using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsRigidBodySystem : IPhysicsType
+    public class PhysicsRigidBodySystem : PhysicsSystem
     {
+        public override PhysicsType PhysicsType { get; set; }
+        public PhysicsRigidBodySystem()
+        {
+            PhysicsType = PhysicsType.Rigid;
+        }
         public override void Update(PhysicsComponent physic, float dt)
         {
             // Creates and send this throught instead of creating globas that takes memory

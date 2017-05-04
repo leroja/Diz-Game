@@ -44,6 +44,7 @@
     <Compile Include="Source\Components\AnimationComponent.cs" />
     <Compile Include="Source\Components\HeightmapComponentTexture.cs" />
     <Compile Include="Source\Components\MouseComponent.cs" />
+    <Compile Include="Source\Components\Physics\PhysicsParticleComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
     <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Source\Systems\HeightmapSystemTexture.cs" />
     <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
-    <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsType.cs" />
+    <Compile Include="Source\Systems\Physics\Type\Interface\IPhysics.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsProjectilesSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsRagdollSystem.cs" />

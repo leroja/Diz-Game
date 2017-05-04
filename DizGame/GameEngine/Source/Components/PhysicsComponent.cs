@@ -14,10 +14,6 @@ namespace GameEngine.Source.Components
         #endregion Public Constants
         #region Public Configuration
         /// <summary>
-        /// Defines mass in kilogram ex 1f = 1kg;
-        /// </summary>
-        public float Mass { get; set; }
-        /// <summary>
         /// Acceleration in meter per second squared (m/s^2)
         /// </summary>
         public Vector3 Acceleration { get; set; }
@@ -58,6 +54,10 @@ namespace GameEngine.Source.Components
         public DragType DragType { get; set; }
         public GravityType GravityType { get; set; }
         /// <summary>
+        /// Defines mass in kilogram ex 1f = 1kg;
+        /// </summary>
+        public float Mass { get; set; }
+        /// <summary>
         /// ReferenceArea should be set as m^2
         /// </summary>
         public float ReferenceArea { get; set; }
@@ -72,6 +72,11 @@ namespace GameEngine.Source.Components
         public float Volume { get; set; }
         public float Bounciness { get; set; }
         public bool IsInAir { get; set; }
+        /// <summary>
+        /// If using Euler calculation, true if 
+        /// acceleration always is constant else false.
+        /// </summary>
+        public bool Euler { get; set; }
         #endregion Public Configuration
         public PhysicsComponent()
         {
@@ -81,6 +86,7 @@ namespace GameEngine.Source.Components
             Bounciness = 1;
 
             IsInAir = true;
+            Euler = false;
 
             Acceleration = Vector3.Zero;
             MaxVelocity = Vector3.Zero;
