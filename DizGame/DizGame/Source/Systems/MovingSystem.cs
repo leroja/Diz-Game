@@ -89,6 +89,7 @@ namespace DizGame.Source.Systems
                 //Console.WriteLine(phys.Velocity);
             }
         }
+
         private float BASICGETHEIGTH(Vector3 position)
         {
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
@@ -106,6 +107,7 @@ namespace DizGame.Source.Systems
             }
                 return 0;
         }
+
         private void TempFloor(int entityID)
         {
             ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity = new Vector3(

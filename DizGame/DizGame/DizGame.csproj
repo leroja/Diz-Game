@@ -72,12 +72,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
+    <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
+    <Content Include="Content\HeightMapStuff\grass.png" />
+    <Content Include="Content\HeightMapStuff\heightmap.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Content\Dude\dude.fbx" />
+    <None Include="Content\Dude\head.tga" />
+    <None Include="Content\Dude\headN.tga" />
+    <None Include="Content\Dude\headS.tga" />
+    <None Include="Content\Dude\jacket.tga" />
+    <None Include="Content\Dude\jacketN.tga" />
+    <None Include="Content\Dude\jacketS.tga" />
+    <None Include="Content\Dude\pants.tga" />
+    <None Include="Content\Dude\pantsN.tga" />
+    <None Include="Content\Dude\pantsS.tga" />
+    <None Include="Content\Dude\upBodyC.tga" />
+    <None Include="Content\Dude\upBodyC2.tga" />
+    <None Include="Content\Dude\upbodyN.tga" />
+    <None Include="Content\Dude\upBodyS.tga" />
     <None Include="Content\House\Farmhouse\MedievalHouse1.obj" />
     <None Include="Content\House\Rock\Rock.mtl" />
     <None Include="Content\House\Rock\Rock.obj" />
