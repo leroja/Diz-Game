@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using DizGame.Source.ConfiguredSystems;
+using GameEngine.Tools;
 
 namespace DizGame
 {
@@ -48,7 +49,7 @@ namespace DizGame
             entf.CreateChuckGreen();
             var id = entf.CreateKitana();
             Model bullet = Content.Load<Model>("bullet/bullet");
-             entf.CreateBullet(bullet, new Vector3(5, 0, 20), Vector3.Zero, new Vector3(0.1f, .1f, 0.1f));
+            entf.CreateBullet(bullet, new Vector3(5, 0, 20), Vector3.Zero, new Vector3(0.1f, .1f, 0.1f));
 
             entf.AddChaseCamToEntity(id, new Vector3(0, 15, 30));
 
@@ -61,9 +62,8 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
-
             SystemManager.Instance.AddSystem(new BulletSystem());
-
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(this));
 
             SystemManager.Instance.AddSystem(new ConfiguredHeightMapSystem(this));
 

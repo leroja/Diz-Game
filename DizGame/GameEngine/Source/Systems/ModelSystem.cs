@@ -59,7 +59,8 @@ namespace GameEngine.Source.Systems
                 model.Model.CopyAbsoluteBoneTransformsTo(model.MeshWorldMatrices);
                 foreach (ModelMesh mesh in model.Model.Meshes)
                 {
-                    foreach (BasicEffect effect in mesh.Effects)
+                mesh.BoundingSphere = new BoundingSphere(Vector3.Transform(mesh.BoundingSphere.Center, model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix), mesh.BoundingSphere.Radius);
+                foreach (BasicEffect effect in mesh.Effects)
                     {
                         effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix /** world.World*/;
 

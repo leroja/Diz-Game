@@ -26,6 +26,7 @@ namespace DizGame
         {
             int entityID = ComponentManager.Instance.CreateID();
             Model chuck = Content.Load<Model>("chuck/DR3_Chuck_Greene");
+            chuck.Tag = "chuck";
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.KeyBoardActions.Add("Forward", Keys.W);
             keys.KeyBoardActions.Add("Backwards", Keys.S);
@@ -52,7 +53,7 @@ namespace DizGame
         {
             int entityID = ComponentManager.Instance.CreateID();
             Model kitana = Content.Load<Model>("Kitana/Kitana");
-
+            kitana.Tag = "kitana";
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.KeyBoardActions.Add("Forward", Keys.Up);
             keys.KeyBoardActions.Add("Backwards", Keys.Down);

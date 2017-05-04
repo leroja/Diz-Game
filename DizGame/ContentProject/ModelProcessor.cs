@@ -12,28 +12,22 @@ using System.Xml.Serialization;
 namespace ContentProject
 {
     [ContentProcessor(DisplayName = "Model Processor - MonoGame.Extended")]
-    class ModelProcessor : ContentProcessor<Model, Model>
+    class ModelProcessor : ContentProcessor<Model, TempModel>
     {
-        public override Model Process(Model input, ContentProcessorContext context)
+        public override TempModel Process(Model input, ContentProcessorContext context)
         {
-            AddboundingSphereToModel(input.Meshes);
-            return input;
+            AddboundingSphereToModel(input, out TempModel tempModel);
+            return tempModel;
         }
 
-        private void AddboundingSphereToModel(ModelMeshCollection mc)
+        private void AddboundingSphereToModel(Model model, out TempModel tempModel)
         {
-            List<Vector3> verticePositions = new List<Vector3>();
-            foreach (ModelMesh mm in mc)
+            List<BoundingSphere> spheres = new List<BoundingSphere>();
+            foreach (ModelBone mb in model.Bones)
             {
-                foreach(ModelMeshPart mp in mm.MeshParts)
-                {
-                    Vector3[] temp = new Vector3[mp.NumVertices];
-                    mp.VertexBuffer.GetData<Vector3>(temp);
-                    verticePositions.AddRange(temp);
-                }
-                BoundingSphere sphere = BoundingSphere.CreateFromPoints(verticePositions);
-                mm.BoundingSphere = sphere;
+                Vector3 pos = Vector3.Transform(Vector3.One, mb.Transform);
             }
+            tempModel = new TempModel(model, spheres);
         }
     }
 }
