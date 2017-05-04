@@ -86,15 +86,15 @@ namespace DizGame
                 keys,
                 mouse,
                 new PlayerComponent(),
-                //new PhysicsComponent()
-                //{
-                //    Volume = 22.5f,
-                //    Density = 2.66f,
-                //    PhysicsType = PhysicsType.Rigid,
-                //    MaterialType = MaterialType.Skin,
-                //    GravityType = GravityType.World,
-                //    DragType = DragType.ManUpright
-                //},
+                new PhysicsComponent()
+                {
+                    Volume = 22.5f,
+                    Density = 2.66f,
+                    PhysicsType = PhysicsType.Rigid,
+                    MaterialType = MaterialType.Skin,
+                    GravityType = GravityType.World,
+                    DragType = DragType.ManUpright
+                },
                 new TestComponent(),
             };
 

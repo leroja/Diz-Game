@@ -14,6 +14,7 @@ namespace DizGame.Source.Systems
     {
         public override void Update(GameTime gameTime)
         {
+            bool justSetAir = false;
             Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
 
             foreach(var entity in EntityDict)
@@ -29,7 +30,7 @@ namespace DizGame.Source.Systems
                     if (phys != null)
                         move += Vector3.Forward * + phys.Mass*10; //+ new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
-                        Console.WriteLine(trans.Position);
+                        //Console.WriteLine(trans.Position);
                         trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = Vector3.Forward;
                 }
@@ -60,24 +61,32 @@ namespace DizGame.Source.Systems
                 if (key.State["Up"] == ButtonStates.Hold)
                 {
                     if (phys != null)
-                        move += Vector3.Up * 8.91f * 10;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
+                    {
+                        justSetAir = true;
+                        phys.IsInAir = true;
+                        move += -Vector3.Up * 8.91f * 10;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
+                    }
                     trans.Dirrection = Vector3.Up;
                 }
                 if (phys != null)
                 {
-                    move.Y = phys.Forces.Y;
-                    trans.Dirrection = Vector3.Down;
+                    move.Y += phys.Forces.Y;
+                    trans.Dirrection += Vector3.Down;
+
                     phys.Forces = move;
                     //Console.WriteLine("Move: " + phys.Acceleration);
                 }
                 float he = BASICGETHEIGTH(trans.Position);
-                if (he != trans.Position.Y)
+                if (he != trans.Position.Y && !phys.IsInAir)
                 {
                     trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                     if (phys != null)
                         TempFloor(entity.Key);
+                    //Console.WriteLine(phys.Forces);
                 }
-
+                if (he == trans.Position.Y && !justSetAir)
+                    phys.IsInAir = false;
+                //Console.WriteLine(phys.Velocity);
             }
         }
         private float BASICGETHEIGTH(Vector3 position)

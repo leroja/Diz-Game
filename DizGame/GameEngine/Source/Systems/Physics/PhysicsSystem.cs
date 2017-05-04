@@ -19,36 +19,19 @@ namespace GameEngine.Source.Systems
         private float updateInterval = 1;
         private float framesPerSecond = 0;
 
-        private PhysicsRigidBodySystem rigidBody;
-        private PhysicsParticleSystem particle;
-        private PhysicsProjectilesSystem projectile;
-        private PhysicsRagdollSystem ragDoll;
-        private PhysicsSoftSystem soft;
-        private PhysicsStaticSystem _static;
-
-        private List<IPhysics> physicSystems;
-
-        public virtual PhysicsType PhysicsType { get; set; }
+        private List<IPhysicsTypeSystem> physicSystems;
 
         public PhysicsSystem()
         {
-            PhysicsType = PhysicsType.None;
-            physicSystems = new List<IPhysics>
+            physicSystems = new List<IPhysicsTypeSystem>
             {
-                new PhysicsRigidBodySystem(),
-                new PhysicsParticleSystem(),
-                new PhysicsProjectilesSystem(),
-                new PhysicsRagdollSystem(),
-                new PhysicsSoftSystem(),
-                new PhysicsStaticSystem()
+                new PhysicsRigidBodySystem(this),
+                new PhysicsParticleSystem(this),
+                new PhysicsProjectilesSystem(this),
+                new PhysicsRagdollSystem(this),
+                new PhysicsSoftSystem(this),
+                new PhysicsStaticSystem(this)
         };
-            rigidBody = new PhysicsRigidBodySystem();
-            particle = new PhysicsParticleSystem();
-            projectile = new PhysicsProjectilesSystem();
-            ragDoll = new PhysicsRagdollSystem();
-            soft = new PhysicsSoftSystem();
-            _static = new PhysicsStaticSystem();
-
         }
         /// <summary>
         /// Updates all the necessary part for the physicsystem
@@ -62,23 +45,8 @@ namespace GameEngine.Source.Systems
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-
-                if (physic.Euler)
-                    UpdateEulerOrder(physic, dt);
-                else
-                    UpdateNonEulerOrder(physic, dt);
-
-                //TEMPFLOOR(ComponentManager.GetEntityComponent<TransformComponent>(entityID));
-                //Console.WriteLine("Forces: " + physic.Forces);
-                //Console.WriteLine("Velocity: " + physic.Velocity);
+                physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
             }
-        }
-
-        public virtual void Update(PhysicsComponent physic, float dt)
-        {
-            foreach (var system in physicSystems)
-                if(physic.PhysicsType == system.PhysicsType)
-                    system.Update(physic, dt);
         }
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity
@@ -95,14 +63,15 @@ namespace GameEngine.Source.Systems
             UpdateForce(physic);
 
             UpdateEulerAcceleration(physic);
-            UpdatePhysicComponentByType(physic, dt);
+
+            //UpdatePhysicComponentByType(physic, dt);
+
             UpdateVelocity(physic, dt);
 
             UpdateDeceleration(physic);
         }
         /// <summary>
-        /// Using Non Euler order does work but with less accuracy
-        /// except when acceleration is not constant
+        /// Using Non Euler order does work but with less accurac        /// except when acceleration is not constant
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
@@ -113,41 +82,10 @@ namespace GameEngine.Source.Systems
             UpdateMass(physic);
             UpdateGravity(physic, dt);
             UpdateForce(physic);
-
-            //UpdateAcceleration(physic);
             UpdateVelocity(physic, dt);
-            UpdatePhysicComponentByType(physic, dt);
+            //UpdatePhysicComponentByType(physic, dt);
 
             UpdateDeceleration(physic);
-        }
-        //TODO: TEMPFLOOR DELETE
-        private void TEMPFLOOR(TransformComponent transform)
-        {
-            if (transform.Position.Y <= 2)
-            {
-                transform.Position = new Vector3(transform.Position.X, 40, transform.Position.Z);
-
-                ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity = new Vector3(
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity.X,
-                    0,
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Velocity.Z);
-
-                ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces = new Vector3(
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces.X,
-                    0,
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Forces.Z);
-
-                ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Acceleration = new Vector3(
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Acceleration.X,
-                    0,
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).Acceleration.Z);
-
-                if (ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).IsInAir)
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).IsInAir = false;
-                else
-                    ComponentManager.GetEntityComponent<PhysicsComponent>(transform.ID).IsInAir = true;
-            }
-
         }
         /// <summary>
         /// Updates the mass using density * volume
@@ -173,7 +111,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdateEulerAcceleration(PhysicsComponent physic)
+        public virtual void UpdateEulerAcceleration(PhysicsComponent physic)
         {
             // Creating more vectors than necessary for an understanding of what is what.  
             physic.LastAcceleration = physic.Acceleration;
@@ -275,32 +213,32 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="entityID"></param>
         /// <param name="dt"></param>
-        public virtual void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
-        {
-                switch(physic.PhysicsType)
-                {
-                    case Enums.PhysicsType.Static:
-                        _static.Update(physic, dt);
-                        break;
-                    case Enums.PhysicsType.Soft:
-                        soft.Update(physic, dt);
-                        break;
-                    case Enums.PhysicsType.Rigid:
-                        rigidBody.Update(physic, dt);
-                        break;
-                    case Enums.PhysicsType.Ragdoll:
-                        ragDoll.Update(physic, dt);
-                        break;
-                    case Enums.PhysicsType.Projectiles:
-                        projectile.Update(physic, dt);
-                        break;
-                    case Enums.PhysicsType.Particle:
-                        particle.Update(physic, dt);
-                        break;
-                    default:
-                        break;
-            }
-        }
+        //public virtual void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
+        //{
+        //        switch(physic.PhysicsType)
+        //        {
+        //            case Enums.PhysicsType.Static:
+        //                _static.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Soft:
+        //                soft.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Rigid:
+        //                rigidBody.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Ragdoll:
+        //                ragDoll.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Projectiles:
+        //                projectile.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Particle:
+        //                particle.Update(physic, dt);
+        //                break;
+        //            default:
+        //                break;
+        //    }
+        //}
 
         /// <summary>
         /// Updates the objects heading depending on collision

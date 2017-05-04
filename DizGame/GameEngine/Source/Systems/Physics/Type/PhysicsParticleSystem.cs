@@ -10,30 +10,30 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsParticleSystem : PhysicsSystem
+    public class PhysicsParticleSystem : IPhysicsTypeSystem
     {
-        public override PhysicsType PhysicsType { get; set; }
-        public PhysicsParticleSystem()
+        public PhysicsParticleSystem(IPhysics physicsSystem) : base(physicsSystem)
         {
             PhysicsType = PhysicsType.Particle;
         }
+        /// <summary>
+        /// Updates the particle using Euler method because,
+        /// particles using constant acceleration
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
         public override void Update(PhysicsComponent physic, float dt)
         {
+            PhysicsSystem.UpdateMass(physic);
+            PhysicsSystem.UpdateGravity(physic, dt);
+            PhysicsSystem.UpdateForce(physic);
+            PhysicsSystem.UpdateEulerAcceleration(physic);
             //TODO: ParticleSystem
-            throw new NotImplementedException();
-        }
+            // Code here:
 
-        public override void UpdateAcceleration(PhysicsComponent physic)
-        {
-            physic.LastAcceleration = physic.Acceleration;
-            Vector3 new_acceleration = physic.Forces / physic.Mass;
-            Vector3 avg_acceleration = (physic.LastAcceleration + new_acceleration) / 2;
-            physic.Acceleration = avg_acceleration;
-        }
-
-        public override void UpdateVelocity(PhysicsComponent physic, float dt)
-        {
-            physic.Velocity += (physic.Acceleration + physic.Forces / physic.Mass) * dt;
+            //
+            PhysicsSystem.UpdateVelocity(physic, dt);
+            PhysicsSystem.UpdateDeceleration(physic);
         }
     }
 }
