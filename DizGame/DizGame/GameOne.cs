@@ -66,7 +66,9 @@ namespace DizGame
             entf.AddChaseCamToEntity(idC, new Vector3(0, 100, 75));
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
-            
+
+            entf.MakeMap(2, 1000);
+
             InitializeSystems(entf);
             
             base.Initialize();
