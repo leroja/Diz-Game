@@ -42,7 +42,7 @@ namespace GameEngine.Source.Components
 
         public WorldComponent(Matrix world)
         {
-            this.World = world;
+            World = world;
             Noon = true;
             Notation = HOURS24;
             Hour = 12;
@@ -52,10 +52,12 @@ namespace GameEngine.Source.Components
             DefineHour = 1; // TODO: Definera en timme i sekunder
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
-            WorldFluids = new Dictionary<DensityType, List<Vector3>>();
-            WorldFluids.Add(DensityType.Air, new List<Vector3>());
-            WorldFluids.Add(DensityType.Water_Heavy, new List<Vector3>());
-            WorldFluids.Add(DensityType.Automobile_Oils, new List<Vector3>());
+            WorldFluids = new Dictionary<DensityType, List<Vector3>>
+            {
+                { DensityType.Air, new List<Vector3>() },
+                { DensityType.Water_Heavy, new List<Vector3>() },
+                { DensityType.Automobile_Oils, new List<Vector3>() }
+            };
         }
 
     }

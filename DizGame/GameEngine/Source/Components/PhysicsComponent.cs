@@ -62,6 +62,10 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float Mass { get; set; }
         /// <summary>
+        /// Invermass 1/M
+        /// </summary>
+        public float InverseMass { get; set; }
+        /// <summary>
         /// ReferenceArea should be set as m^2
         /// </summary>
         public float ReferenceArea { get; set; }
@@ -83,6 +87,10 @@ namespace GameEngine.Source.Components
             Volume = 1f;
             Mass = Density * Volume;
             Bounciness = 1;
+            if (Mass == 0)
+                InverseMass = 0;
+            else
+                InverseMass = 1 / Mass;
 
             IsInAir = false;
 

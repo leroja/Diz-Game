@@ -44,12 +44,11 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         private void UpdatePosition(PhysicsComponent physic, float dt)
         {
-            if (physic.LastAcceleration == Vector3.Zero)
-                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //        += physic.Velocity * dt + physic.Acceleration * dt * dt * 0.5f;
+
+            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
                     += physic.Velocity * dt;
-            else
-                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-                    += physic.Velocity * dt + (0.5f * physic.LastAcceleration * (float)Math.Pow(dt, 2));
 
             Vector3 rotation = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Rotation;
             if (rotation.Length() != 0)

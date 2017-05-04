@@ -102,6 +102,10 @@ namespace GameEngine.Source.Systems
         public virtual void UpdateMass(PhysicsComponent physic)
         {
             physic.Mass = (physic.Density * physic.Volume);
+            if (physic.Mass == 0)
+                physic.InverseMass = 0;
+            else
+                physic.InverseMass = 1 / physic.Mass;
         }
         /// <summary>
         /// Updates the objects weigth W = m * g
@@ -110,7 +114,7 @@ namespace GameEngine.Source.Systems
         /// <param name="gravity"></param>
         public virtual void UpdateWeight(PhysicsComponent physic, float gravity)
         {
-            physic.Weight = -Vector3.Down * (physic.Mass * gravity);
+            physic.Weight = Vector3.Down * (physic.Mass * gravity);
         }
         /// <summary>
         /// Updates the objects Euler acceleration
@@ -212,8 +216,8 @@ namespace GameEngine.Source.Systems
             //Y = (physic.Forces.Y / physic.Mass);
                 Z = (physic.Forces.Z / physic.Mass);
 
-            physic.Acceleration = new Vector3(X, physic.Acceleration.Y, Z);
-
+            //physic.Acceleration = new Vector3(X, physic.Acceleration.Y, Z);
+            physic.Acceleration = physic.Forces / physic.Mass;
             //physic.Acceleration = (physic.Forces / physic.Mass);
         }
         /// <summary>
