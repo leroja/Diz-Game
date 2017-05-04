@@ -70,9 +70,6 @@ namespace DizGame
             //entf.CreateHeightMap("heightmap", "BetterGrass");
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            entf.TestingTheAnimationsWithWolf();
-
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 70, 50));
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new TransformSystem());
@@ -81,7 +78,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem());
+            //SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
