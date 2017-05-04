@@ -33,6 +33,14 @@ namespace GameEngine.Source.Systems
                 new PhysicsStaticSystem(this)
         };
         }
+        public void AddIPhysicsTypeSystem(IPhysicsTypeSystem system)
+        {
+            physicSystems.Add(system);
+        }
+        public void RemoveIPhysicsTypeSystem(IPhysicsTypeSystem system)
+        {
+            physicSystems.Remove(system);
+        }
         /// <summary>
         /// Updates all the necessary part for the physicsystem
         /// using one loop
