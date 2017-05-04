@@ -44,12 +44,12 @@ namespace GameEngine.Source.Components
         {
             this.World = world;
             Noon = true;
-            Notation = HOURS12;
+            Notation = HOURS24;
             Hour = 12;
             Minute = 0;
             Second = 0;
             Millisecond = 0;
-            DefineHour = 20;
+            DefineHour = 1; // TODO: Definera en timme i sekunder
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
             WorldFluids = new Dictionary<DensityType, List<Vector3>>();

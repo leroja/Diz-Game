@@ -55,6 +55,7 @@ namespace DizGame
             Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
             Graphics.ApplyChanges();
             //Graphics.IsFullScreen = true;
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             client.DiscoverLocalPeers();
             EntityFactory entf = new EntityFactory(Content, Device);
@@ -71,7 +72,7 @@ namespace DizGame
             entf.AddChaseCamToEntity(idC, new Vector3(0, 100, 75));
 
             InitializeSystems(entf);
-
+            
             base.Initialize();
         }
 
@@ -81,6 +82,8 @@ namespace DizGame
         /// <param name="entf"></param>
         private void InitializeSystems(EntityFactory entf)
         {
+            SystemManager.Instance.AddSystem(new WorldSystem(this));
+
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
@@ -98,6 +101,8 @@ namespace DizGame
 
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
             SystemManager.Instance.AddSystem(new AnimationSystem());
+
+            SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
         }
 
         /// <summary>
@@ -106,7 +111,6 @@ namespace DizGame
         /// </summary>
         protected override void LoadContent()
         {
-
         }
 
         /// <summary>

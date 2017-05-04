@@ -59,7 +59,7 @@ namespace GameEngine.Source.Systems
             UpdateDownwardAcceleration(phy, Fd);
             //UpdateVelocity(phy, Cd, p, A);
             phy.Forces = Fd - phy.Weight;
-            Console.WriteLine("After: " + Fd);
+            //Console.WriteLine("After: " + Fd);
             //Console.WriteLine(phy.Velocity);
             
         }
