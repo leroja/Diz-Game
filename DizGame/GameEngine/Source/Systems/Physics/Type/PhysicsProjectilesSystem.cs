@@ -10,15 +10,21 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsProjectilesSystem : PhysicsSystem
+    public class PhysicsProjectilesSystem : IPhysicsTypeSystem
     {
-        public override PhysicsType PhysicsType { get; set; }
-        public PhysicsProjectilesSystem()
+        public PhysicsProjectilesSystem(IPhysics physicsSystem) : base(physicsSystem)
         {
             PhysicsType = PhysicsType.Projectiles;
         }
         public override void Update(PhysicsComponent physic, float dt)
         {
+            PhysicsSystem.UpdateAcceleration(physic);
+            PhysicsSystem.UpdateMass(physic);
+            PhysicsSystem.UpdateGravity(physic, dt);
+            PhysicsSystem.UpdateForce(physic);
+            PhysicsSystem.UpdateVelocity(physic, dt);
+
+            
             //TODO: ProjectilesSystem
             PhysicsProjectileComponent projectile = ComponentManager.GetEntityComponent<PhysicsProjectileComponent>(physic.ID);
             if (projectile == null)
@@ -26,6 +32,7 @@ namespace GameEngine.Source.Systems
             projectile = ComponentManager.GetEntityComponent<PhysicsProjectileComponent>(physic.ID);
 
             UpdateArcPosition(physic, dt);
+            PhysicsSystem.UpdateDeceleration(physic);
         }
         /// <summary>
         /// Updates the projectiles position in an arc

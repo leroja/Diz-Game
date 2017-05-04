@@ -12,8 +12,15 @@ namespace DizGame.Source.Systems
 {
     public class BulletSystem : IUpdate
     {
+        /// <summary>
+        /// A list containing the ids of the bullets that shall be removed because they have exceeded their max range
+        /// </summary>
         private List<int> toDelete = new List<int>();
 
+        /// <summary>
+        /// Currently this system only checks if any of the bullets have exceeded their max range
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var compIds = ComponentManager.GetAllEntitiesWithComponentType<BulletComponent>();

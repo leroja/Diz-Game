@@ -23,22 +23,24 @@ namespace GameEngine.Source.Factories
         private int fractions_per_side;
         private int chunk_width;
         private int chunk_height;
-
-        //private BasicEffect Effect;
+        
         private int[] Indices;
         
         private float[,] heightMapData;
-
-        //private VertexBuffer VertexBuffer;
-        //private IndexBuffer IndexBuffer;
         
-
         public HeightMapFactory(GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="heightMap"></param>
+        /// <param name="heightMapTexture"></param>
+        /// <param name="fractions_per_side"></param>
+        /// <returns></returns>
         public HeightmapComponentTexture CreateTexturedHeightMap(Texture2D heightMap, Texture2D heightMapTexture, int fractions_per_side)
         {
             HeightmapComponentTexture heightMapComponent = new HeightmapComponentTexture();
@@ -53,7 +55,10 @@ namespace GameEngine.Source.Factories
             return heightMapComponent;
         }
         
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="comp"></param>
         private void SetHeightMapData(ref HeightmapComponentTexture comp)
         {
             Width = heightMap.Width;
@@ -71,6 +76,9 @@ namespace GameEngine.Source.Factories
             SetUpHeightMapChunks(ref comp);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void SetHeights()
         {
             Color[] greyValues = new Color[Width * Height];
@@ -85,6 +93,9 @@ namespace GameEngine.Source.Factories
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void SetIndices()
         {
             Indices = new int[(Width - 1) * (Height - 1) * 6];
@@ -108,7 +119,10 @@ namespace GameEngine.Source.Factories
                 }
             }
         }
-                
+               
+        /// <summary>
+        /// 
+        /// </summary>
         private void SetVerticesTexture()
         {
             VerticesTexture = new VertexPositionNormalTexture[Width * Height];
@@ -123,6 +137,9 @@ namespace GameEngine.Source.Factories
             }
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         private void CalculateNormals()
         {
             for (int i = 0; i < VerticesTexture.Length; i++)
@@ -146,6 +163,10 @@ namespace GameEngine.Source.Factories
                 VerticesTexture[i].Normal.Normalize();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="heightMapComp"></param>
         private void SetUpHeightMapChunks(ref HeightmapComponentTexture heightMapComp)
         {
             for (int x = 0; x < Width - chunk_width; x += chunk_width)
@@ -167,6 +188,11 @@ namespace GameEngine.Source.Factories
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <returns></returns>
         private VertexPositionNormalTexture[] GetVertexTextureNormals(Rectangle rect)
         {
             VertexPositionNormalTexture[] terrainVerts = new VertexPositionNormalTexture[rect.Width * rect.Height];
@@ -181,6 +207,15 @@ namespace GameEngine.Source.Factories
             return terrainVerts;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="terrainMap"></param>
+        /// <param name="terrainRect"></param>
+        /// <param name="offsetPosition"></param>
+        /// <param name="vertexNormals"></param>
+        /// <param name="texture"></param>
+        /// <returns></returns>
         private HeightMapChunk CreateHeightMapChunk(Texture2D terrainMap, Rectangle terrainRect, Vector3 offsetPosition, VertexPositionNormalTexture[] vertexNormals, Texture2D texture)
         {
             var chunk = new HeightMapChunk()
@@ -218,6 +253,11 @@ namespace GameEngine.Source.Factories
             return chunk;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vertexNormals"></param>
+        /// <param name="vertices"></param>
         private void CopyNormals(VertexPositionNormalTexture[] vertexNormals, VertexPositionNormalTexture[] vertices)
         {
             for (int i = 0; i < vertices.Length; ++i)
@@ -226,6 +266,12 @@ namespace GameEngine.Source.Factories
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="terrainMap"></param>
+        /// <param name="terrainRect"></param>
+        /// <returns></returns>
         private float[,] CreateHightmap(Texture2D terrainMap, Rectangle terrainRect)
         {
             var width = terrainMap.Width;
@@ -245,6 +291,11 @@ namespace GameEngine.Source.Factories
             return heightInfo;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="terrainRect"></param>
+        /// <returns></returns>
         private int[] InitIndices(Rectangle terrainRect)
         {
             var width = terrainRect.Width;
@@ -273,6 +324,12 @@ namespace GameEngine.Source.Factories
             return indices;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="heightInfo"></param>
+        /// <param name="terrainRect"></param>
+        /// <returns></returns>
         private VertexPositionNormalTexture[] InitTerrainVertices(float[,] heightInfo, Rectangle terrainRect)
         {
             var width = terrainRect.Width;
@@ -291,6 +348,12 @@ namespace GameEngine.Source.Factories
             return terrainVerts;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chunk"></param>
+        /// <param name="indices"></param>
+        /// <param name="vertices"></param>
         private void PrepareBuffers(ref HeightMapChunk chunk, int[] indices, VertexPositionNormalTexture[] vertices)
         {
             chunk.IndexBuffer = new IndexBuffer(graphicsDevice, typeof(int), indices.Length, BufferUsage.WriteOnly);
@@ -300,6 +363,11 @@ namespace GameEngine.Source.Factories
             chunk.VertexBuffer.SetData(vertices);
         }
 
+        /// <summary>
+        /// Creates a BoundingSphere based on the positions in the vertexArray
+        /// </summary>
+        /// <param name="vertexArray"></param>
+        /// <returns></returns>
         private BoundingBox CreateBoundingBox(VertexPositionNormalTexture[] vertexArray)
         {
             List<Vector3> points = new List<Vector3>();
@@ -310,13 +378,6 @@ namespace GameEngine.Source.Factories
             }
             BoundingBox b = BoundingBox.CreateFromPoints(points);
             return b;
-        }
-
-        private BoundingSphere CreateBoundingSphere(VertexPositionNormalTexture[] vertexArray)
-        {
-            var first = vertexArray.First();
-            var last = vertexArray.Last();
-            return BoundingSphere.CreateFromPoints(new List<Vector3> { first.Position, last.Position });
         }
     }
 }

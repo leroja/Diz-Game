@@ -9,17 +9,24 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsStaticSystem : PhysicsSystem
+    public class PhysicsStaticSystem : IPhysicsTypeSystem
     {
-        public override PhysicsType PhysicsType { get; set; }
-        public PhysicsStaticSystem()
+        public PhysicsStaticSystem(IPhysics physicsSystem) : base(physicsSystem)
         {
             PhysicsType = PhysicsType.Static;
         }
         public override void Update(PhysicsComponent physic, float dt)
         {
             //TODO: StaticSystem
-            throw new NotImplementedException();
+            PhysicsSystem.UpdateAcceleration(physic);
+            PhysicsSystem.UpdateMass(physic);
+            PhysicsSystem.UpdateGravity(physic, dt);
+            PhysicsSystem.UpdateForce(physic);
+            PhysicsSystem.UpdateVelocity(physic, dt);
+            // Code here:
+
+            //
+            PhysicsSystem.UpdateDeceleration(physic);
         }
     }
 }

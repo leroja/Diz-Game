@@ -9,6 +9,15 @@ namespace DizGame.Source.Components
 {
     public class PlayerComponent : IComponent
     {
+        public int PlayerID { get; set; }
 
+        public PlayerComponent()
+        {
+        }
+
+        public PlayerComponent(int PlayerId)
+        {
+            this.PlayerID = PlayerID;
+        }
     }
 }

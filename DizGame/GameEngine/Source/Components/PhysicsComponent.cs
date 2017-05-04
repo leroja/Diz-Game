@@ -72,11 +72,6 @@ namespace GameEngine.Source.Components
         public float Volume { get; set; }
         public float Bounciness { get; set; }
         public bool IsInAir { get; set; }
-        /// <summary>
-        /// If using Euler calculation, true if 
-        /// acceleration always is constant else false.
-        /// </summary>
-        public bool Euler { get; set; }
         #endregion Public Configuration
         public PhysicsComponent()
         {
@@ -85,8 +80,7 @@ namespace GameEngine.Source.Components
             Mass = Density * Volume;
             Bounciness = 1;
 
-            IsInAir = true;
-            Euler = false;
+            IsInAir = false;
 
             Acceleration = Vector3.Zero;
             MaxVelocity = Vector3.Zero;

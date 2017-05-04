@@ -101,18 +101,6 @@
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff\canyonHeightMap.jpg
 
-#begin HeightMapStuff/test.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:HeightMapStuff/test.png
-
 #begin House/WoodHouse/Cyprys_House.obj
 /importer:OpenAssetImporter
 /processor:ModelProcessor

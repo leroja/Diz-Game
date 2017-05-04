@@ -7,15 +7,20 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsRigidBodySystem : PhysicsSystem
+    public class PhysicsRigidBodySystem : IPhysicsTypeSystem
     {
-        public override PhysicsType PhysicsType { get; set; }
-        public PhysicsRigidBodySystem()
+        public PhysicsRigidBodySystem(IPhysics physicsSystem) : base(physicsSystem)
         {
             PhysicsType = PhysicsType.Rigid;
         }
         public override void Update(PhysicsComponent physic, float dt)
         {
+            PhysicsSystem.UpdateAcceleration(physic);
+            PhysicsSystem.UpdateMass(physic);
+            PhysicsSystem.UpdateGravity(physic, dt);
+            PhysicsSystem.UpdateForce(physic);
+            PhysicsSystem.UpdateVelocity(physic, dt);
+
             // Creates and send this throught instead of creating globas that takes memory
             PhysicsRigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(physic.ID);
             TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID);
@@ -29,6 +34,8 @@ namespace GameEngine.Source.Systems
             rigidBody.BodyToLocal = Matrix.CreateFromQuaternion(transform.Orientation);
             rigidBody.LocalToBody = Matrix.Invert(rigidBody.BodyToLocal);
             IntegrateStateVariables(transform, rigidBody, dt);
+
+            PhysicsSystem.UpdateDeceleration(physic);
         }
         /// <summary>
         /// Updates the object position using its velocity * dt
