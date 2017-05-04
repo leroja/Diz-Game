@@ -71,8 +71,8 @@ namespace DizGame
             keys.AddActionAndKey("Up", Keys.Space);
 
             // temp
-            keys.AddActionAndKey("RotateY", Keys.E);
-            keys.AddActionAndKey("RotateNegY", Keys.Q);
+            keys.AddActionAndKey("RotateY", Keys.Q);
+            keys.AddActionAndKey("RotateNegY", Keys.E);
             // /temp
 
             MouseComponent mouse = new MouseComponent();
@@ -97,10 +97,10 @@ namespace DizGame
                 new TestComponent(),
             };
 
-
-            
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
+
+            TestingTheAnimationsWithDude(entityID);
             return entityID;
 
         }
@@ -346,25 +346,23 @@ namespace DizGame
             return BulletEntity;
         }
 
-        public void TestingTheAnimationsWithWolf()
+        public void TestingTheAnimationsWithDude(int entityID)
         {
             
-            Model model = Content.Load<Model>("Wolf/Wolf");
-            int entityID = ComponentManager.Instance.CreateID();
+            //Model model = Content.Load<Model>("Dude/dude");
+            //int entityID = ComponentManager.Instance.CreateID();
+            
+            
+            //Effect effect = Content.Load<Effect>("Effects/AnimationEffect");
+
+          
             AnimationComponent anm = new AnimationComponent(entityID);
 
-            List<IComponent> componentList = new List<IComponent>()
-            {
-                //Add transformcomponent when ready to test
-                new TransformComponent(new Vector3(0,0,-20), new Vector3(1f,1f,1f)),
+            ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 
+            anm.StartClip("Take 001");
 
-                new ModelComponent(model),
-                anm,
-            };
-            ComponentManager.Instance.AddAllComponents(entityID, componentList);
-
-            anm.CreateAnimationData();
+          
         }
 
         // todo finish comment

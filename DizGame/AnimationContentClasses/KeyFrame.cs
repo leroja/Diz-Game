@@ -3,7 +3,7 @@ using System;
 
 namespace AnimationContentClasses
 {
-    public class KeyFrame : IComparable
+    public class KeyFrame
     {
         public int BoneIndex { get; private set; }
 
@@ -29,12 +29,6 @@ namespace AnimationContentClasses
 
         }
 
-        public int CompareTo(object obj)
-        {
-            KeyFrame keyframe = obj as KeyFrame;
-            if (obj == null)
-                throw new ArgumentException("Object is not a KeyFrame!");
-            return Time.CompareTo(keyframe.Time);
-        }
+     
     }
 }

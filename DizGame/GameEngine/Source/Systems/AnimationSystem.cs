@@ -11,64 +11,104 @@ namespace GameEngine.Source.Systems
 {
     public class AnimationSystem : IUpdate
     {
+        TimeSpan time;
+        AnimationComponent anc;
         public override void Update(GameTime gameTime)
         {
-            List<int> entitiesWithAnimation = ComponentManager.GetAllEntitiesWithComponentType<AnimationComponent>();
+            time = gameTime.ElapsedGameTime;
 
-            foreach(int entity in entitiesWithAnimation)
+            List<int> entityList = ComponentManager.GetAllEntitiesWithComponentType<AnimationComponent>();
+            foreach (int entity in entityList)
             {
-                AnimationComponent anmc = ComponentManager.GetEntityComponent<AnimationComponent>(entity);
-                TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity);
+                anc = ComponentManager.GetEntityComponent<AnimationComponent>(entity);
+                TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(entity);
+                UpdateBoneTransforms(true);
+                UpdateWorldTransforms(tcp);
+                UpdateSkinTransforms();
+            }
 
-                anmc.ActiveAnimationTime = new TimeSpan((long)(gameTime.ElapsedGameTime.Ticks * anmc.AnimationSpeed));
+        }
 
-                if(anmc.ActiveAnimation != null)
-                {
-                    //loop the animation
-                    if (anmc.ActiveAnimationTime > anmc.ActiveAnimation.Duration && anmc.EnableAnimationLoop)
-                    {
-                        long elapsedTicks = anmc.ActiveAnimationTime.Ticks % anmc.ActiveAnimation.Duration.Ticks;
-                        anmc.ActiveAnimationTime = new TimeSpan(elapsedTicks);
-                        anmc.ActiveAnimationKeyFrame = 0;
-                    }
+        /// <summary>
+        /// Helper used by the Update method to refresh the BoneTransforms data.
+        /// </summary>
+        public void UpdateBoneTransforms(bool relativeToCurrentTime)
+        {
 
-                    if (anmc.ActiveAnimationKeyFrame == 0)
-                    {
-                        for (int i = 0; i < anmc.Bones.Length; i++)
-                            anmc.Bones[i] = anmc.AnimationModelData.BindPose[i];
-                    }
+            if (anc.currentClipValue == null)
+                throw new InvalidOperationException(
+                            "AnimationPlayer.Update was called before StartClip");
 
-                    int index = 0;
-                    KeyFrame[] keyframes = anmc.ActiveAnimation.KeyFrames;
-                    while (index < keyframes.Length && keyframes[index].Time <= anmc.ActiveAnimationTime)
-                    {
-                        int boneIndex = keyframes[index].BoneIndex;
-                        anmc.Bones[boneIndex] = keyframes[index].Transform * anmc.BonesTransforms[boneIndex];
-                        index++;
-                    }
-                    anmc.ActiveAnimationKeyFrame = index - 1;
-                }
+            // Update the animation position.
+            if (relativeToCurrentTime)
+            {
+                time += anc.currentTimeValue;
 
-                if(tfc.ObjectMatrix != null)
-                {
+                // If we reached the end, loop back to the start.
+                while (time >= anc.currentClipValue.Duration)
+                    time -= anc.currentClipValue.Duration;
+            }
 
-                    anmc.BonesAbsolute[0] = anmc.Bones[0] * tfc.ObjectMatrix;
-                    for (int i = 1; i < anmc.BonesAnimation.Length; i++)
-                    {
-                        int boneParent = anmc.AnimationModelData.BonesParent[i];
-                        // Here we are transforming a child bone by its parent
-                        anmc.BonesAbsolute[i] = anmc.Bones[i] * anmc.BonesAbsolute[boneParent];
-                    }
+            if ((time < TimeSpan.Zero) || (time >= anc.currentClipValue.Duration))
+                throw new ArgumentOutOfRangeException("time");
 
-                    for (int i = 0; i < anmc.BonesAnimation.Length; i++)
-                    {
-                        anmc.BonesAnimation[i] = anmc.AnimationModelData.InverseBindPose[i] * anmc.BonesAbsolute[i];
-                    }
+            // If the position moved backwards, reset the keyframe index.
+            if (time < anc.currentTimeValue)
+            {
+                anc.currentKeyframe = 0;
+                anc.skinningDataValue.BindPose.CopyTo(anc.boneTransforms, 0);
+            }
 
-                }
-                
-                
+            anc.currentTimeValue = time;
+
+            // Read keyframe matrices.
+            IList<KeyFrame> keyframes = anc.currentClipValue.KeyFrames;
+
+            while (anc.currentKeyframe < keyframes.Count)
+            {
+                KeyFrame keyframe = keyframes[anc.currentKeyframe];
+
+                // Stop when we've read up to the current time position.
+                if (keyframe.Time > anc.currentTimeValue)
+                    break;
+
+                // Use this keyframe.
+                anc.boneTransforms[keyframe.BoneIndex] = keyframe.Transform;
+
+                anc.currentKeyframe++;
             }
         }
+
+        /// <summary>
+        /// Helper used by the Update method to refresh the WorldTransforms data.
+        /// </summary>
+        public void UpdateWorldTransforms(TransformComponent tcp)
+        {
+            // Root bone.
+            anc.worldTransforms[0] = anc.boneTransforms[0] * tcp.ObjectMatrix;
+
+            // Child bones.
+            for (int bone = 1; bone < anc.worldTransforms.Length; bone++)
+            {
+                int parentBone = anc.skinningDataValue.SkeletonHierarchy[bone];
+
+                anc.worldTransforms[bone] = anc.boneTransforms[bone] *
+                                             anc.worldTransforms[parentBone];
+            }
+        }
+
+        /// <summary>
+        /// Helper used by the Update method to refresh the SkinTransforms data.
+        /// </summary>
+        public void UpdateSkinTransforms()
+        {
+            for (int bone = 0; bone < anc.skinTransforms.Length; bone++)
+            {
+                anc.skinTransforms[bone] = anc.skinningDataValue.InverseBindPose[bone] *
+                                            anc.worldTransforms[bone];
+            }
+        }
+
     }
 }
+

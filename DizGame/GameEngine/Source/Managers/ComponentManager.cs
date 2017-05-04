@@ -89,13 +89,7 @@ namespace GameEngine.Source.Managers
             {
                 compDic.Add(type, new Dictionary<int, IComponent>());
             }
-            try
-            {
-                compDic[type].Add(entityID, component);
-            }
-            catch (Exception)
-            {
-            }
+            compDic[type].Add(entityID, component);
         }
 
         /// <summary>
@@ -113,13 +107,7 @@ namespace GameEngine.Source.Managers
                 {
                     compDic.Add(type, new Dictionary<int, IComponent>());
                 }
-                try
-                {
-                    compDic[type].Add(entityID, comp);
-                }
-                catch (Exception)
-                {
-                }
+                compDic[type].Add(entityID, comp);
             }
         }
 
