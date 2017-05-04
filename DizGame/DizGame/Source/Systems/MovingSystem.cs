@@ -52,7 +52,7 @@ namespace DizGame.Source.Systems
                 if (key.State["Right"] == ButtonStates.Hold)
                 {
                     if (phys != null)
-                        move += Vector3.Right * +phys.Mass*10;// + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
+                        move += trans.Right * +phys.Mass*10;// + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
                         trans.Position += trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = trans.Right;

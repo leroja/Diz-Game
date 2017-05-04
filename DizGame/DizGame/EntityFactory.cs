@@ -71,8 +71,8 @@ namespace DizGame
             keys.AddActionAndKey("Up", Keys.Space);
 
             // temp
-            keys.AddActionAndKey("RotateY", Keys.E);
-            keys.AddActionAndKey("RotateNegY", Keys.Q);
+            keys.AddActionAndKey("RotateY", Keys.Q);
+            keys.AddActionAndKey("RotateNegY", Keys.E);
             // /temp
 
             MouseComponent mouse = new MouseComponent();
