@@ -42,26 +42,16 @@ namespace GameEngine.Source.Systems
             //p = (float)DensityType.Water_Pure;
 
             float Cd = (float)phy.DragType;                                                     // drag coefficent eg 0.25 to 0.45 for car
-            Vector3 V = transform.Dirrection;                                                   // V unit vector indicating the direction of the velocity (negativ to indicate drag opposite the velocity)
+            Vector3 V = -transform.Dirrection;                                                   // V unit vector indicating the direction of the velocity (negativ to indicate drag opposite the velocity)
             float A = phy.ReferenceArea;                                                        // reference area
             Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                       // speed of the object relativ to the fluid???
 
             //Vector3 Fd = -0.5f * p * Vector3Pow(v, 2) * A * Cd * V;                             // 1/2pv^2ACdV = force of drag
             Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
-            //Console.WriteLine("Before: " + Fd);
-            //Fd.X = (float)Math.Sqrt(Fd.X);
-            //Fd.Y = (float)Math.Sqrt(Fd.Y);
-            //Fd.Z = (float)Math.Sqrt(Fd.Z);
-            //Fd = Fd / (Cd * p * A);
-            //Console.WriteLine("DragF: " + Fd.Y + "Force: " + phy.Forces.Y + " Veclocity: " + v);
-
             CheckAndSetTerminalVelocity(phy, Fd);
-            UpdateDownwardAcceleration(phy, Fd);
-            //UpdateVelocity(phy, Cd, p, A);
-            phy.Forces = Fd - phy.Weight;
-            //Console.WriteLine("After: " + Fd);
-            //Console.WriteLine(phy.Velocity);
-            
+            //phy.Forces = Fd - phy.Weight;
+            //Console.WriteLine("Drag: " + Fd);
+            phy.Forces += Fd;
         }
         private void UpdateDownwardAcceleration(PhysicsComponent physic, Vector3 Drag)
         {
@@ -110,9 +100,38 @@ namespace GameEngine.Source.Systems
         private DensityType GetFluid(WorldComponent world, Vector3 Position)
         {
             foreach (var fluid in world.WorldFluids)
-                if (fluid.Value.Contains(Position))
+                foreach(var pos in fluid.Value)
+                    if(Vector3BiggerOrEquals(Position, pos.Item1) && Vector3SmallerOrEquals(Position, pos.Item2))
                     return fluid.Key;
             return DensityType.Air;
+        }
+        /// <summary>
+        /// Just an private method to check Smaller or equals by two vector3
+        /// </summary>
+        /// <param name="smaller"></param>
+        /// <param name="then"></param>
+        /// <returns></returns>
+        private bool Vector3SmallerOrEquals(Vector3 smaller, Vector3 then)
+        {
+            if (smaller.X <= then.X)
+                if (smaller.Y <= then.Y)
+                    if (smaller.Z <= then.Z)
+                        return true;
+            return false;
+        }
+        /// <summary>
+        /// Just an private method to check bigger or equals by two vector3
+        /// </summary>
+        /// <param name="bigger"></param>
+        /// <param name="then"></param>
+        /// <returns></returns>
+        private bool Vector3BiggerOrEquals(Vector3 bigger, Vector3 then)
+        {
+            if (bigger.X >= then.X)
+                if (bigger.Y >= then.Y)
+                    if (bigger.Z >= then.Z)
+                        return true;
+            return false;
         }
         /// <summary>
         /// Funktion to power an Vector3

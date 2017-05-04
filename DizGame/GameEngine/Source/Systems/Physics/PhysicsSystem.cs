@@ -173,6 +173,25 @@ namespace GameEngine.Source.Systems
                 if (physic.Forces.Z == 0)
                     physic.Velocity = new Vector3(physic.Velocity.X, physic.Velocity.Y, 0);
             }
+            if(!physic.IsMoving)
+            {
+                float X = physic.Acceleration.X, Y = physic.Acceleration.Y, Z = physic.Acceleration.Z;
+                if (physic.Acceleration.X < 0)
+                    X *= physic.Friction;
+                else
+                    X *= -physic.Friction;
+
+                if (physic.Acceleration.Y < 0)
+                    Y *= physic.Friction;
+                else
+                    Y *= -physic.Friction;
+
+                if (physic.Acceleration.Z < 0)
+                    Z *= physic.Friction;
+                else
+                    Z *= -physic.Friction;
+            }
+            Console.WriteLine(physic.Acceleration);
         }
         /// <summary>
         /// Updates the objects linear velocity
@@ -184,6 +203,7 @@ namespace GameEngine.Source.Systems
         public virtual void UpdateVelocity(PhysicsComponent physic, float dt)
         {
             physic.Velocity += physic.InitialVelocity + (physic.Acceleration * dt);
+            //TODO: physic.Velocity += physic.InitialVelocity + ((physic.Acceleration - frictio) * dt);
             //Console.WriteLine(physic.Velocity);
         }
         /// <summary>
@@ -195,7 +215,7 @@ namespace GameEngine.Source.Systems
             //Console.WriteLine("For1': " + physic.Forces);
             //physic.Forces =  physic.Mass * physic.Acceleration;
             float X, Y, Z;
-            X = (physic.Mass * physic.Acceleration.X);
+             X = (physic.Mass * physic.Acceleration.X);
             Y = (physic.Mass * physic.Acceleration.Y);
             Z = (physic.Mass * physic.Acceleration.Z);
 
@@ -211,14 +231,7 @@ namespace GameEngine.Source.Systems
         {
             UpdateAccelerationIfTerminal(physic);
             UpdateForceIfTerminal(physic);
-            float X, Y, Z;
-            X = (physic.Forces.X / physic.Mass);
-            //Y = (physic.Forces.Y / physic.Mass);
-                Z = (physic.Forces.Z / physic.Mass);
-
-            //physic.Acceleration = new Vector3(X, physic.Acceleration.Y, Z);
-            physic.Acceleration = physic.Forces / physic.Mass;
-            //physic.Acceleration = (physic.Forces / physic.Mass);
+            physic.Acceleration = (physic.Forces / physic.Mass);
         }
         /// <summary>
         /// Updates the gravity depending on physics gravity type
@@ -245,38 +258,6 @@ namespace GameEngine.Source.Systems
             }
                 
         }
-        /// <summary>
-        /// Udates the corresponding object by physictype
-        /// </summary>
-        /// <param name="entityID"></param>
-        /// <param name="dt"></param>
-        //public virtual void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
-        //{
-        //        switch(physic.PhysicsType)
-        //        {
-        //            case Enums.PhysicsType.Static:
-        //                _static.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Soft:
-        //                soft.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Rigid:
-        //                rigidBody.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Ragdoll:
-        //                ragDoll.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Projectiles:
-        //                projectile.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Particle:
-        //                particle.Update(physic, dt);
-        //                break;
-        //            default:
-        //                break;
-        //    }
-        //}
-
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>

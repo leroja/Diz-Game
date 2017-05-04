@@ -14,7 +14,6 @@ namespace DizGame.Source.Systems
     {
         public override void Update(GameTime gameTime)
         {
-            bool justSetAir = false;
             Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
 
             foreach(var entity in EntityDict)
@@ -61,15 +60,15 @@ namespace DizGame.Source.Systems
                 {
                     if (phys != null)
                     {
-                        justSetAir = true;
                         phys.IsInAir = true;
-                        move += -trans.Up * 8.91f * 10;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
+                        move += trans.Up * 8.91f * 10;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
                     }
                     trans.Dirrection = trans.Up;
                 }
                 float he = BASICGETHEIGTH(trans.Position);
                 if (phys != null)
                 {
+                    Console.WriteLine("Force: " + phys.Forces);
                     move.Y += phys.Forces.Y;
                     trans.Dirrection = new Vector3(trans.Dirrection.X, Vector3.Down.Y, trans.Dirrection.Z);
                     phys.Forces = move;
@@ -78,14 +77,17 @@ namespace DizGame.Source.Systems
                     
                     if (he != trans.Position.Y && !phys.IsInAir)
                     {
-                        trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
+                        phys.Forces = new Vector3(phys.Forces.X, 0, phys.Forces.Z);
                         if (phys != null)
                             TempFloor(entity.Key);
                         //Console.WriteLine(phys.Forces);
                     }
 
-                    if (he == trans.Position.Y && !justSetAir)
+                    if (he >= trans.Position.Y)
+                    {
                         phys.IsInAir = false;
+                        trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
+                    }
                 }
                 else
                 {
@@ -115,20 +117,20 @@ namespace DizGame.Source.Systems
 
         private void TempFloor(int entityID)
         {
-            ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity = new Vector3(
-                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.X,
-                0,
-                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.Z);
+            //ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity = new Vector3(
+            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.X,
+            //    0,
+            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.Z);
 
-            ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces = new Vector3(
-                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.X,
-                0,
-                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.Z);
+            //ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces = new Vector3(
+            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.X,
+            //    0,
+            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.Z);
 
-            ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration = new Vector3(
-                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.X,
-                0,
-                ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.Z);
+            //ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration = new Vector3(
+            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.X,
+            //    0,
+            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.Z);
         }
     }
 }

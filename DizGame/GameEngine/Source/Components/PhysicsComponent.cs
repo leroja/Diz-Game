@@ -79,20 +79,24 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float Volume { get; set; }
         public float Bounciness { get; set; }
+        public float Friction { get; set; } // TODO: Temp
         public bool IsInAir { get; set; }
+        public bool IsMoving { get; set; }
         #endregion Public Configuration
         public PhysicsComponent()
         {
             Density = 1f;
             Volume = 1f;
             Mass = Density * Volume;
-            Bounciness = 1;
+            Bounciness = 1f;
+            Friction = 0.5f;
             if (Mass == 0)
                 InverseMass = 0;
             else
                 InverseMass = 1 / Mass;
 
             IsInAir = false;
+            IsMoving = false;
 
             Acceleration = Vector3.Zero;
             MaxVelocity = Vector3.Zero;
