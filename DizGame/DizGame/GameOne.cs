@@ -66,8 +66,6 @@ namespace DizGame
             entf.AddChaseCamToEntity(idC, new Vector3(0, 100, 75));
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
-            entf.MakeMap(2,1000);
-            entf.TestingTheAnimationsWithWolf();
             
             InitializeSystems(entf);
             
@@ -81,6 +79,9 @@ namespace DizGame
         private void InitializeSystems(EntityFactory entf)
         {
             SystemManager.Instance.AddSystem(new WorldSystem(this));
+            //entf.CreateHeightMap("heightmap", "BetterGrass");
+            SystemManager.Instance.AddSystem(new TransformSystem());
+            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
 
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
