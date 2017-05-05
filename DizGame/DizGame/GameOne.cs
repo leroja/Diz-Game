@@ -67,7 +67,7 @@ namespace DizGame
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
 
-            entf.MakeMap(2, 1000);
+            entf.MakeMap(2, 100);
 
             InitializeSystems(entf);
             

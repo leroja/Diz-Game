@@ -13,7 +13,6 @@ namespace GameEngine.Source.Components
     public class ParticleComponent : IComponent
     {
         public Texture2D Texture { get; set; }
-        public Vector3 Position { get; set; }
         public float Timecreated { get; set; }
         public float Lifetime { get; set; }
         public int MaximumParticles { get; set; }
