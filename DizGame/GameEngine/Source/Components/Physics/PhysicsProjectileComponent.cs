@@ -13,11 +13,13 @@ namespace GameEngine.Source.Components
         /// The projectiles lifespan
         /// </summary>
         public float TotalTimePassed { get; set; }
+        public float Damping { get; set; }
         #endregion Public COnfiguration
 
         public PhysicsProjectileComponent()
         {
             TotalTimePassed = 0;
+            Damping = 0.99f;
         }
     }
 }

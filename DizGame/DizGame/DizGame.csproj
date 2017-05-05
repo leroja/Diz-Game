@@ -96,13 +96,16 @@
     <None Include="Content\Dude\upBodyC2.tga" />
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
-    <None Include="Content\House\Farmhouse\MedievalHouse1.obj" />
-    <None Include="Content\House\Rock\Rock.mtl" />
-    <None Include="Content\House\Rock\Rock.obj" />
-    <None Include="Content\House\Tree\lowpolytree.mtl" />
-    <None Include="Content\House\Tree\lowpolytree.obj" />
-    <None Include="Content\House\WoodHouse\Cyprys_House.mtl" />
-    <None Include="Content\House\WoodHouse\Cyprys_House.obj" />
+    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.mtl" />
+    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.obj" />
+    <None Include="Content\MapObjects\Farmhouse\roof.tga" />
+    <None Include="Content\MapObjects\Farmhouse\wall.tga" />
+    <None Include="Content\MapObjects\Rock\Rock.mtl" />
+    <None Include="Content\MapObjects\Rock\Rock.obj" />
+    <None Include="Content\MapObjects\Tree\lowpolytree.mtl" />
+    <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
+    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.mtl" />
+    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">

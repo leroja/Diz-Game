@@ -49,6 +49,10 @@ namespace GameEngine.Source.Components
         /// 1N = 1kg-m/s^2
         /// </summary>
         public Vector3 Forces { get; set; }
+        /// <summary>
+        /// Set 1 if true
+        /// </summary>
+        public Vector3 TerminalVelocity { get; set; }
         public PhysicsType PhysicsType { get; set; }
         public MaterialType MaterialType { get; set; }
         public DragType DragType { get; set; }
@@ -57,6 +61,10 @@ namespace GameEngine.Source.Components
         /// Defines mass in kilogram ex 1f = 1kg;
         /// </summary>
         public float Mass { get; set; }
+        /// <summary>
+        /// Invermass 1/M
+        /// </summary>
+        public float InverseMass { get; set; }
         /// <summary>
         /// ReferenceArea should be set as m^2
         /// </summary>
@@ -71,22 +79,31 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float Volume { get; set; }
         public float Bounciness { get; set; }
+        public float Friction { get; set; } // TODO: Temp
         public bool IsInAir { get; set; }
+        public bool IsMoving { get; set; }
         #endregion Public Configuration
         public PhysicsComponent()
         {
             Density = 1f;
             Volume = 1f;
             Mass = Density * Volume;
-            Bounciness = 1;
+            Bounciness = 1f;
+            Friction = 0.5f;
+            if (Mass == 0)
+                InverseMass = 0;
+            else
+                InverseMass = 1 / Mass;
 
             IsInAir = false;
+            IsMoving = false;
 
             Acceleration = Vector3.Zero;
-            MaxVelocity = Vector3.Zero;
+            MaxVelocity = new Vector3(14,14,14);
             LastAcceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
             InitialVelocity = Vector3.Zero;
+            TerminalVelocity = Vector3.Zero;
 
             Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
             Weight = Mass * Vector3.One;

@@ -32,17 +32,19 @@ namespace DizGame
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
                 { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
-                { "House_Wood", Content.Load<Model>("House/Farmhouse/medievalHouse1") } ,
-                { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") } ,
-                { "Tree", Content.Load<Model>("House/Tree/lowpolytree") },
-                { "Rock", Content.Load<Model>("House/Rock/Rock") },
+                { "House_Wood", Content.Load<Model>("MapObjects/Farmhouse/medievalHouse1") } ,
+                { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
+                { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
+                { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
                 { "Dude", Content.Load<Model>("Dude/dude")}
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
                 {"BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
-                {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
-                {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") }
+                //{"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
+                {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/Map3")},
+                {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
+                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") }
             };
         }
        
@@ -71,8 +73,8 @@ namespace DizGame
             keys.AddActionAndKey("Up", Keys.Space);
 
             // temp
-            keys.AddActionAndKey("RotateY", Keys.E);
-            keys.AddActionAndKey("RotateNegY", Keys.Q);
+            keys.AddActionAndKey("RotateY", Keys.Q);
+            keys.AddActionAndKey("RotateNegY", Keys.E);
             // /temp
 
             MouseComponent mouse = new MouseComponent();
@@ -97,10 +99,10 @@ namespace DizGame
                 new TestComponent(),
             };
 
-
-            
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
+
+            TestingTheAnimationsWithDude(entityID);
             return entityID;
 
         }
@@ -142,7 +144,7 @@ namespace DizGame
         }
 
         /// <summary>
-        /// 
+        /// creates the static objects
         /// </summary>
         /// <param name="nameOfModel"></param>
         /// <param name="position"></param>
@@ -155,6 +157,14 @@ namespace DizGame
             {
                 case "Rock":
                     scale = new Vector3(5, 5, 5);
+                    foreach (ModelMesh mesh in model.Meshes)
+                    {
+                        foreach( BasicEffect effect in mesh.Effects)
+                        {
+                            effect.TextureEnabled = true;
+                            effect.Texture = Texture2dDic["RockTexture"];
+                        }
+                    }
                     break;
                 case "Tree":
                     scale = new Vector3(5,5,5);
@@ -174,17 +184,17 @@ namespace DizGame
         }
 
         /// <summary>
-        /// 
+        /// Randomizes a map 
         /// </summary>
-        /// <param name="numberOfPlayers"></param>
+        /// <param name="numberOfHouses"></param>
         /// <param name="numberOfStaticObjects"></param>
-        public void MakeMap(int numberOfPlayers, int numberOfStaticObjects)
+        public void MakeMap(int numberOfHouses, int numberOfStaticObjects)
         {
             List<Vector3> positions = new List<Vector3>();
             List<Vector3> unablePositions = new List<Vector3>();
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            positions = GetModelPositions(numberOfPlayers);
-            for (int i = 0; i < numberOfPlayers; i++)
+            positions = GetModelPositions(numberOfHouses);
+            for (int i = 0; i < numberOfHouses; i++)
             {
                 if (!unablePositions.Contains(positions[i]))
                 {
@@ -224,7 +234,7 @@ namespace DizGame
         }
         
         /// <summary>
-        /// 
+        /// Gets target number of potitions on heightmap
         /// </summary>
         /// <param name="numberOfPositions"></param>
         /// <returns></returns>
@@ -240,17 +250,16 @@ namespace DizGame
             mapHeight = heigt.Height;
             for (int i = 0; i < numberOfPositions; i++)
             {
-                var pot = new Vector3(r.Next(mapWidht-100), 0,r.Next(mapHeight-100));
+                var pot = new Vector3(r.Next(mapWidht-10), 0,r.Next(mapHeight-10));
                 pot.Y = heigt.HeightMapData[(int)pot.X,(int)pot.Z];
-                if (pot.X < 100)
+                if (pot.X < 10)
                 {
-                    pot.X = pot.X + 100;
+                    pot.X = pot.X + 10;
                 }
-                if (pot.Z < -100)
+                if (pot.Z < 10)
                 {
-                    pot.Z = pot.Z - 100;
+                    pot.Z = pot.Z - 10;
                 }
-
                 pot.Z = -pot.Z;
                 positions.Add(pot);
             }
@@ -280,6 +289,14 @@ namespace DizGame
         public void RemoveCam()
         {
 
+        }
+
+        public void AddPOVCamToEntity(int entityID)
+        {
+            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov) {
+                Offset = new Vector3(0, 10, 30)
+            });
+                
         }
 
         /// <summary>
@@ -346,25 +363,23 @@ namespace DizGame
             return BulletEntity;
         }
 
-        public void TestingTheAnimationsWithWolf()
+        public void TestingTheAnimationsWithDude(int entityID)
         {
             
-            Model model = Content.Load<Model>("Wolf/Wolf");
-            int entityID = ComponentManager.Instance.CreateID();
+            //Model model = Content.Load<Model>("Dude/dude");
+            //int entityID = ComponentManager.Instance.CreateID();
+            
+            
+            //Effect effect = Content.Load<Effect>("Effects/AnimationEffect");
+
+          
             AnimationComponent anm = new AnimationComponent(entityID);
 
-            List<IComponent> componentList = new List<IComponent>()
-            {
-                //Add transformcomponent when ready to test
-                new TransformComponent(new Vector3(0,0,-20), new Vector3(1f,1f,1f)),
+            ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 
+            anm.StartClip("Take 001");
 
-                new ModelComponent(model),
-                anm,
-            };
-            ComponentManager.Instance.AddAllComponents(entityID, componentList);
-
-            anm.CreateAnimationData();
+          
         }
 
         // todo finish comment

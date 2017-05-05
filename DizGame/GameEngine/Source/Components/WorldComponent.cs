@@ -34,28 +34,32 @@ namespace GameEngine.Source.Components
         public AirTemperature Temperatur { get; set; }
         public Vector3 Gravity { get; set; }
         /// <summary>
-        /// Dictionary -> Key = DensityType which contains and Value = List<vector3> used as positions
+        /// Dictionary -> Key = DensityType which contains and Value = List<Tuple<Vector3,Vector3>> used as positions
+        /// From -> To -> Height as an "ratio"
         /// </summary>
-        public Dictionary<DensityType,List<Vector3>> WorldFluids { get; set; }
+        public Dictionary<DensityType, List<Tuple<Vector3, Vector3>>> WorldFluids { get; set; }
 
         #endregion Public Properties
 
         public WorldComponent(Matrix world)
         {
-            this.World = world;
+            World = world;
             Noon = true;
-            Notation = HOURS12;
+            Notation = HOURS24;
             Hour = 12;
             Minute = 0;
             Second = 0;
             Millisecond = 0;
-            DefineHour = 20;
+            Day = 0;
+            DefineHour = 1; // TODO: Definera en timme i sekunder
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
-            WorldFluids = new Dictionary<DensityType, List<Vector3>>();
-            WorldFluids.Add(DensityType.Air, new List<Vector3>());
-            WorldFluids.Add(DensityType.Water_Heavy, new List<Vector3>());
-            WorldFluids.Add(DensityType.Automobile_Oils, new List<Vector3>());
+            WorldFluids = new Dictionary<DensityType, List<Tuple<Vector3,Vector3>>>
+            {
+                { DensityType.Air, new List<Tuple<Vector3,Vector3>>() },
+                { DensityType.Water_Heavy, new List<Tuple<Vector3,Vector3>>() },
+                { DensityType.Automobile_Oils, new List<Tuple<Vector3,Vector3>>() }
+            };
         }
 
     }

@@ -102,6 +102,10 @@ namespace GameEngine.Source.Systems
         public virtual void UpdateMass(PhysicsComponent physic)
         {
             physic.Mass = (physic.Density * physic.Volume);
+            if (physic.Mass == 0)
+                physic.InverseMass = 0;
+            else
+                physic.InverseMass = 1 / physic.Mass;
         }
         /// <summary>
         /// Updates the objects weigth W = m * g
@@ -110,7 +114,7 @@ namespace GameEngine.Source.Systems
         /// <param name="gravity"></param>
         public virtual void UpdateWeight(PhysicsComponent physic, float gravity)
         {
-            physic.Weight = -Vector3.Down * (physic.Mass * gravity);
+            physic.Weight = Vector3.Down * (physic.Mass * gravity);
         }
         /// <summary>
         /// Updates the objects Euler acceleration
@@ -121,7 +125,9 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         public virtual void UpdateEulerAcceleration(PhysicsComponent physic)
         {
-            // Creating more vectors than necessary for an understanding of what is what.  
+            // Creating more vectors than necessary for an understanding of what is what.
+            UpdateAccelerationIfTerminal(physic);
+            UpdateForceIfTerminal(physic);
             physic.LastAcceleration = physic.Acceleration;
             Vector3 new_acceleration = physic.Forces / physic.Mass;
             Vector3 avg_acceleration = (physic.LastAcceleration + new_acceleration) / 2;
@@ -130,7 +136,28 @@ namespace GameEngine.Source.Systems
             //Vector3 avg_ay = 0.5f * new_ay;
             //physic.Acceleration = avg_ay;
         }
-
+        private void UpdateAccelerationIfTerminal(PhysicsComponent physic)
+        {
+            float X = physic.Acceleration.X, Y = physic.Acceleration.Y, Z = physic.Acceleration.Z;
+            if (physic.TerminalVelocity.X == 1)
+                X = 0;
+            if (physic.TerminalVelocity.Y == 1)
+                Y = 0;
+            if (physic.TerminalVelocity.Z == 1)
+                Z = 0;
+            physic.Acceleration = new Vector3(X, Y, Z);
+        }
+        private void UpdateForceIfTerminal(PhysicsComponent physic)
+        {
+            float X = physic.Forces.X, Y = physic.Forces.Y, Z = physic.Forces.Z;
+            if (physic.TerminalVelocity.X == 1)
+                X = 0;
+            if (physic.TerminalVelocity.Y == 1)
+                Y = 0;
+            if (physic.TerminalVelocity.Z == 1)
+                Z = 0;
+            physic.Forces = new Vector3(X, Y, Z);
+        }
         /// <summary>
         /// Calculates the physic objects Deaceleration
         /// </summary>
@@ -146,6 +173,25 @@ namespace GameEngine.Source.Systems
                 if (physic.Forces.Z == 0)
                     physic.Velocity = new Vector3(physic.Velocity.X, physic.Velocity.Y, 0);
             }
+            if(!physic.IsMoving)
+            {
+                float X = physic.Acceleration.X, Y = physic.Acceleration.Y, Z = physic.Acceleration.Z;
+                if (physic.Acceleration.X < 0)
+                    X *= physic.Friction;
+                else
+                    X *= -physic.Friction;
+
+                if (physic.Acceleration.Y < 0)
+                    Y *= physic.Friction;
+                else
+                    Y *= -physic.Friction;
+
+                if (physic.Acceleration.Z < 0)
+                    Z *= physic.Friction;
+                else
+                    Z *= -physic.Friction;
+            }
+            //Console.WriteLine(physic.Acceleration);
         }
         /// <summary>
         /// Updates the objects linear velocity
@@ -157,6 +203,7 @@ namespace GameEngine.Source.Systems
         public virtual void UpdateVelocity(PhysicsComponent physic, float dt)
         {
             physic.Velocity += physic.InitialVelocity + (physic.Acceleration * dt);
+            //TODO: physic.Velocity += physic.InitialVelocity + ((physic.Acceleration - frictio) * dt);
             //Console.WriteLine(physic.Velocity);
         }
         /// <summary>
@@ -165,15 +212,23 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateForce(PhysicsComponent physic)
         {
+            // TODO: Använda inversemass eller mass 
             //Console.WriteLine("For1': " + physic.Forces);
             //physic.Forces =  physic.Mass * physic.Acceleration;
             float X, Y, Z;
-            X = (physic.Mass * physic.Acceleration.X);
-            Y = (physic.Mass * physic.Acceleration.Y);
-            Z = (physic.Mass * physic.Acceleration.Z);
+             X = (physic.InverseMass * physic.Acceleration.X);
+            Y = (physic.InverseMass * physic.Acceleration.Y);
+            Z = (physic.InverseMass * physic.Acceleration.Z);
+            //Console.WriteLine("Fo: " + X + " " + Y + " " + Z);
 
-            physic.Forces = new Vector3(X, Y, Z);
-            //Console.WriteLine("For': " + physic.Forces);
+            float Q, W, E;
+            Q = (physic.Mass * physic.Acceleration.X);
+            W = (physic.Mass * physic.Acceleration.Y);
+            E = (physic.Mass * physic.Acceleration.Z);
+
+            physic.Forces = new Vector3(Q, W, E);
+            
+           // Console.WriteLine("For': " + Q + " " + W + " " + E);
         }
         /// <summary>
         /// Updates the Acceleration using formula 
@@ -182,14 +237,10 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateAcceleration(PhysicsComponent physic)
         {
-            float X, Y, Z;
-            X = (physic.Forces.X / physic.Mass);
-            //Y = (physic.Forces.Y / physic.Mass);
-            Z = (physic.Forces.Z / physic.Mass);
-
-            physic.Acceleration = new Vector3(X, physic.Acceleration.Y, Z);
-
-            //physic.Acceleration = (physic.Forces / physic.Mass);
+            UpdateAccelerationIfTerminal(physic);
+            UpdateForceIfTerminal(physic);
+            physic.Acceleration = (physic.Forces / physic.Mass);
+            //Console.WriteLine(physic.Acceleration);
         }
         /// <summary>
         /// Updates the gravity depending on physics gravity type
@@ -216,38 +267,6 @@ namespace GameEngine.Source.Systems
             }
                 
         }
-        /// <summary>
-        /// Udates the corresponding object by physictype
-        /// </summary>
-        /// <param name="entityID"></param>
-        /// <param name="dt"></param>
-        //public virtual void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
-        //{
-        //        switch(physic.PhysicsType)
-        //        {
-        //            case Enums.PhysicsType.Static:
-        //                _static.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Soft:
-        //                soft.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Rigid:
-        //                rigidBody.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Ragdoll:
-        //                ragDoll.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Projectiles:
-        //                projectile.Update(physic, dt);
-        //                break;
-        //            case Enums.PhysicsType.Particle:
-        //                particle.Update(physic, dt);
-        //                break;
-        //            default:
-        //                break;
-        //    }
-        //}
-
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>

@@ -65,14 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimatedModelDataReader.cs" />
-    <Compile Include="AnimationDataReader.cs" />
-    <Compile Include="AnimationDataWriter.cs" />
-    <Compile Include="AnimationModelDataWriter.cs" />
     <Compile Include="AnimationProcessor.cs" />
     <Compile Include="ContentImporter.cs" />
-    <Compile Include="KeyframeReader.cs" />
-    <Compile Include="KeyframeWriter.cs" />
     <Compile Include="ModelProcessorBounding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

@@ -63,8 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationData.cs" />
-    <Compile Include="AnimationModelData.cs" />
+    <Compile Include="AnimationClip.cs" />
+    <Compile Include="SkinningData.cs" />
     <Compile Include="KeyFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
