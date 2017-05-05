@@ -75,7 +75,8 @@ namespace DizGame.Source.Systems
                     //Console.WriteLine("Velocity: " + phys.Velocity);
                     move.Y += phys.Forces.Y;
                     trans.Dirrection = new Vector3(trans.Dirrection.X, Vector3.Down.Y, trans.Dirrection.Z);
-                    phys.Forces = move; 
+                    phys.Forces = move;
+                    CheckAndSetMaxVelocity(trans, phys); 
                     
                     //Console.WriteLine("Move: " + phys.Acceleration);
 
@@ -100,6 +101,17 @@ namespace DizGame.Source.Systems
                 }
                 //Console.WriteLine(phys.Velocity);
             }
+        }
+        private void CheckAndSetMaxVelocity(TransformComponent trans, PhysicsComponent physic)
+        {
+            if(physic.Velocity.X >=  physic.MaxVelocity.X || physic.Velocity.X <= -physic.MaxVelocity.X)
+                physic.Velocity *= -trans.Rotation;
+
+            if(physic.Velocity.Y >= physic.MaxVelocity.Y)
+                physic.Velocity *= -trans.Rotation;
+
+            if (physic.Velocity.Z >= physic.MaxVelocity.Z || physic.Velocity.Z <= -physic.MaxVelocity.Z)
+                physic.Velocity *= -trans.Rotation;
         }
 
         private float BASICGETHEIGTH(Vector3 position)
