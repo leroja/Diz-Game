@@ -26,7 +26,7 @@ namespace DizGame.Source.Systems
                 if (key.State["Forward"] == ButtonStates.Hold)
                 {
                     if (phys != null)
-                        move += trans.Forward * + phys.Mass*10; //+ new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
+                        move += trans.Forward * + phys.Mass*100; //+ new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
                         //Console.WriteLine(trans.Position);
                         trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
@@ -35,7 +35,7 @@ namespace DizGame.Source.Systems
                 if (key.State["Backwards"] == ButtonStates.Hold)
                 {
                     if (phys != null)
-                        move += -trans.Forward * +phys.Mass*10;// + new Vector3(0, 0, (phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
+                        move += -trans.Forward * +phys.Mass*100;// + new Vector3(0, 0, (phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
                         trans.Position -= trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = -trans.Forward;
@@ -43,7 +43,7 @@ namespace DizGame.Source.Systems
                 if (key.State["Left"] == ButtonStates.Hold)
                 {
                     if (phys != null)
-                        move += -trans.Right * +phys.Mass*10;// + new Vector3(-(phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
+                        move += -trans.Right * +phys.Mass*100;// + new Vector3(-(phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
                         trans.Position -= trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = -trans.Right;
@@ -51,7 +51,7 @@ namespace DizGame.Source.Systems
                 if (key.State["Right"] == ButtonStates.Hold)
                 {
                     if (phys != null)
-                        move += trans.Right * +phys.Mass*10;// + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
+                        move += trans.Right * +phys.Mass*100;// + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
                     else
                         trans.Position += trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                     trans.Dirrection = trans.Right;
@@ -71,10 +71,12 @@ namespace DizGame.Source.Systems
                 float he = BASICGETHEIGTH(trans.Position);
                 if (phys != null)
                 {
-                    Console.WriteLine("Force: " + phys.Forces);
+                    //Console.WriteLine("Force: " + phys.Forces);
+                    //Console.WriteLine("Velocity: " + phys.Velocity);
                     move.Y += phys.Forces.Y;
                     trans.Dirrection = new Vector3(trans.Dirrection.X, Vector3.Down.Y, trans.Dirrection.Z);
-                    phys.Forces = move;
+                    phys.Forces = move; 
+                    
                     //Console.WriteLine("Move: " + phys.Acceleration);
 
                     
@@ -108,7 +110,7 @@ namespace DizGame.Source.Systems
                 HeightmapComponentTexture hmap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(temp.First());
 
                 int roundX = (int)Math.Round(position.X); int roundY = (int)Math.Round(position.Z);
-                if (roundX >= hmap.Width - 1 || roundY >= hmap.Height -1)
+                if (roundX >= hmap.Width - 1 || roundY >= hmap.Height - 1)
                 {
                     return 0;
                 }

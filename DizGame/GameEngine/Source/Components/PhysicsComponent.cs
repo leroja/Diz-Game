@@ -99,7 +99,7 @@ namespace GameEngine.Source.Components
             IsMoving = false;
 
             Acceleration = Vector3.Zero;
-            MaxVelocity = Vector3.Zero;
+            MaxVelocity = new Vector3(7,7,7);
             LastAcceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
             InitialVelocity = Vector3.Zero;

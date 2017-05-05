@@ -191,7 +191,7 @@ namespace GameEngine.Source.Systems
                 else
                     Z *= -physic.Friction;
             }
-            Console.WriteLine(physic.Acceleration);
+            //Console.WriteLine(physic.Acceleration);
         }
         /// <summary>
         /// Updates the objects linear velocity
@@ -232,6 +232,7 @@ namespace GameEngine.Source.Systems
             UpdateAccelerationIfTerminal(physic);
             UpdateForceIfTerminal(physic);
             physic.Acceleration = (physic.Forces / physic.Mass);
+            //Console.WriteLine(physic.Acceleration);
         }
         /// <summary>
         /// Updates the gravity depending on physics gravity type

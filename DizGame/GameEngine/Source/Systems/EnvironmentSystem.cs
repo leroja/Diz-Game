@@ -48,7 +48,7 @@ namespace GameEngine.Source.Systems
 
             //Vector3 Fd = -0.5f * p * Vector3Pow(v, 2) * A * Cd * V;                             // 1/2pv^2ACdV = force of drag
             Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
-            CheckAndSetTerminalVelocity(phy, Fd);
+            //CheckAndSetTerminalVelocity(phy, Fd); //TODO: FIX THIS SHIT Rotationen gör allt weird
             //phy.Forces = Fd - phy.Weight;
             //Console.WriteLine("Drag: " + Fd);
             phy.Forces += Fd;
