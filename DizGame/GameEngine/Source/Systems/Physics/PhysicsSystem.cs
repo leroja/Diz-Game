@@ -212,15 +212,23 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateForce(PhysicsComponent physic)
         {
+            // TODO: Använda inversemass eller mass 
             //Console.WriteLine("For1': " + physic.Forces);
             //physic.Forces =  physic.Mass * physic.Acceleration;
             float X, Y, Z;
-             X = (physic.Mass * physic.Acceleration.X);
-            Y = (physic.Mass * physic.Acceleration.Y);
-            Z = (physic.Mass * physic.Acceleration.Z);
+             X = (physic.InverseMass * physic.Acceleration.X);
+            Y = (physic.InverseMass * physic.Acceleration.Y);
+            Z = (physic.InverseMass * physic.Acceleration.Z);
+            //Console.WriteLine("Fo: " + X + " " + Y + " " + Z);
 
-            physic.Forces = new Vector3(X, Y, Z);
-            //Console.WriteLine("For': " + physic.Forces);
+            float Q, W, E;
+            Q = (physic.Mass * physic.Acceleration.X);
+            W = (physic.Mass * physic.Acceleration.Y);
+            E = (physic.Mass * physic.Acceleration.Z);
+
+            physic.Forces = new Vector3(Q, W, E);
+            
+           // Console.WriteLine("For': " + Q + " " + W + " " + E);
         }
         /// <summary>
         /// Updates the Acceleration using formula 
