@@ -11,52 +11,65 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
+    /// <summary>
+    /// AnimationComponent class, used for/stores the relevant information to 
+    /// create animations for a model.
+    /// </summary>
     public class AnimationComponent : IComponent
     {
-
-
         #region Properties
-        private int AnimationEntityID;
 
-        // Information about the currently playing animation clip.
+        /// <summary>
+        /// Information about the currently playing animation clip.
+        /// </summary>
         public AnimationClip currentClipValue { get; private set; }
+        /// <summary>
+        /// The current time to controll where in the animation we are
+        /// </summary>
         public TimeSpan currentTimeValue { get; set; }
+        /// <summary>
+        /// The current keyframe which is "playing"
+        /// </summary>
         public int currentKeyframe { get; set; }
 
 
-        // Current animation transform matrices.
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
         public Matrix[] boneTransforms { get; set; }
         public Matrix[] worldTransforms { get; set; }
         public Matrix[] skinTransforms { get; set; }
-
+        /////////////////////////////////////////////////////////////////////////
 
         // Backlink to the bind pose and skeleton hierarchy data.
-        public SkinningData skinningDataValue { get; set; }
+        /// <summary>
+        /// SkinningDataValue is the parameter for which the animation data finally are stored.
+        /// This contains the skeleton hierarchy data aswell as the bind pose for the model.
+        /// </summary>
+        public SkinningData SkinningDataValue { get; set; }
 
         //public Effect AnimationEffect { get; set; }
         //AnimatedModelEffect AnimatedModelEffect {get; set;}
         #endregion
-
-        public AnimationComponent(int AnimationEntityID)
+        
+        /// <summary>
+        /// Basic constructor for the AnimationComponent class
+        /// </summary>
+        /// <param name="tag">Takes the tag which is stored within a model loaded with a content extension, this tag should contain all the relevant information for constructing the animations for a model</param>
+        public AnimationComponent(object tag)
         {
-            this.AnimationEntityID = AnimationEntityID;
 
-            ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(AnimationEntityID);
+            SkinningDataValue = tag as SkinningData;
 
-            skinningDataValue = mcp.Model.Tag as SkinningData;
-            // Default animation config
-            //AnimationSpeed = 1.0f;
-            //ActiveAnimationKeyFrame = 0;
-            //ActiveAnimationTime = TimeSpan.Zero;
 
-            if (skinningDataValue == null)
+            if (SkinningDataValue == null)
                 throw new InvalidOperationException("This model does not contain a SkinningData tag.");
 
 
 
-            boneTransforms = new Matrix[skinningDataValue.BindPose.Count];
-            worldTransforms = new Matrix[skinningDataValue.BindPose.Count];
-            skinTransforms = new Matrix[skinningDataValue.BindPose.Count];
+            boneTransforms = new Matrix[SkinningDataValue.BindPose.Count];
+            worldTransforms = new Matrix[SkinningDataValue.BindPose.Count];
+            skinTransforms = new Matrix[SkinningDataValue.BindPose.Count];
 
         }
 
@@ -68,13 +81,13 @@ namespace GameEngine.Source.Components
             if (clipName == null)
                 throw new ArgumentNullException("clipname is missing");
             
-            currentClipValue = (skinningDataValue.AnimationClips[clipName]);
+            currentClipValue = (SkinningDataValue.AnimationClips[clipName]);
             
             currentTimeValue = TimeSpan.Zero;
             currentKeyframe = 0;
 
             // Initialize bone transforms to the bind pose.
-            skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
+            SkinningDataValue.BindPose.CopyTo(boneTransforms, 0);
         }
 
 

@@ -122,7 +122,6 @@ namespace GameEngine.Source.Systems
         /// and position updating should use LastAcceleration
         /// </summary>
         /// <param name="physic"></param>
-        /// <param name="dt"></param>
         public virtual void UpdateEulerAcceleration(PhysicsComponent physic)
         {
             // Creating more vectors than necessary for an understanding of what is what.
@@ -246,6 +245,7 @@ namespace GameEngine.Source.Systems
         /// Updates the gravity depending on physics gravity type
         /// </summary>
         /// <param name="physic"></param>
+        /// <param name="dt"></param>
         public virtual void UpdateGravity(PhysicsComponent physic, float dt)
         {
             switch(physic.GravityType)
@@ -270,8 +270,8 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="dt"></param>
+        /// <param name="target"></param>
+        /// <param name="hit"></param>
         public virtual void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
         {
            int N = 1; //dunno

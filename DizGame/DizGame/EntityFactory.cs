@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace DizGame
 {
+    /// <summary>
+    /// Factory for creating various entities which might be used by the game in the end.
+    /// </summary>
     public class EntityFactory
     {
         private ContentManager Content;
@@ -60,7 +63,10 @@ namespace DizGame
 
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
         }
-
+        /// <summary>
+        /// Function to add the entity which might be the model for the different players
+        /// </summary>
+        /// <returns>return a int which represents the entity id for the object</returns>
         public int CreateDude()
         {
             int entityID = ComponentManager.Instance.CreateID();
@@ -362,18 +368,25 @@ namespace DizGame
 
             return BulletEntity;
         }
-
+        /// <summary>
+        /// A temporary class responsible for adding a 
+        /// </summary>
+        /// <param name="entityID"></param>
         public void TestingTheAnimationsWithDude(int entityID)
         {
-            
+
             //Model model = Content.Load<Model>("Dude/dude");
             //int entityID = ComponentManager.Instance.CreateID();
-            
-            
-            //Effect effect = Content.Load<Effect>("Effects/AnimationEffect");
 
-          
-            AnimationComponent anm = new AnimationComponent(entityID);
+
+            //Effect effect = Content.Load<Effect>("Effects/AnimationEffect");
+            
+
+            ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
+
+            
+
+            AnimationComponent anm = new AnimationComponent(mcp.Model.Tag);
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 

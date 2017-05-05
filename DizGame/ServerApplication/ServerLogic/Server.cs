@@ -11,6 +11,10 @@ using GameEngine.Source.Enums;
 
 namespace ServerApplication.ServerLogic
 {
+    /// <summary>
+    /// Server class, contains methods to run server application and also to find and recieve messages
+    /// from some (if any) hosts.
+    /// </summary>
     public class Server
     {
         private NetServer server;

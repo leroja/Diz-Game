@@ -95,7 +95,8 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="spheres1"></param>
         /// <param name="spheres2"></param>
-        /// <returns> true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
+        /// <param name="tuple"></param>
+        /// <returns>true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
         private bool FindFirstHit(List<BoundingSphere> spheres1, List<BoundingSphere> spheres2, out Tuple<BoundingSphere, BoundingSphere> tuple)
         {
             BoundingSphere s1 = spheres1.FirstOrDefault();

@@ -9,6 +9,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// Modelsystem class is responsible for handling all entities with an component type of modelcomponent, 
+    /// which is renderable objects. 
+    /// In other words this class contains logic for drawing these kind of objects.
+    /// </summary>
     public class ModelSystem : IRender
     {
         WorldComponent world;
@@ -88,7 +93,7 @@ namespace GameEngine.Source.Systems
             {
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
-                    effect.SetBoneTransforms(bones);
+                    effect.SetBoneTransforms(anm.skinTransforms);
 
                     effect.View = defaultCam.View;
                     effect.Projection = defaultCam.Projection;

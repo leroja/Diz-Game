@@ -9,10 +9,20 @@ using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// Class for handling components of the type AnimationComponent
+    /// Each component is suposed to be updated to run different kinds of animations,
+    /// therefore this class contains logic to do the desired updates for the respective
+    /// animations
+    /// </summary>
     public class AnimationSystem : IUpdate
     {
         TimeSpan time;
         AnimationComponent anc;
+        /// <summary>
+        /// Update logic required for the AnimationComponents
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime object which should represent the current elapsed gametime</param>
         public override void Update(GameTime gameTime)
         {
             time = gameTime.ElapsedGameTime;
@@ -29,9 +39,14 @@ namespace GameEngine.Source.Systems
 
         }
 
-        /// <summary>
         /// Helper used by the Update method to refresh the BoneTransforms data.
+
+        /// <summary>
+        /// Helper method used by the update method to update the data for which keyframes to play 
+        /// if the last keyframe is reached, i.e the end of the animation the animation is 'restarted'
+        /// from the beginning
         /// </summary>
+        /// <param name="relativeToCurrentTime"></param>
         public void UpdateBoneTransforms(bool relativeToCurrentTime)
         {
 
@@ -56,7 +71,7 @@ namespace GameEngine.Source.Systems
             if (time < anc.currentTimeValue)
             {
                 anc.currentKeyframe = 0;
-                anc.skinningDataValue.BindPose.CopyTo(anc.boneTransforms, 0);
+                anc.SkinningDataValue.BindPose.CopyTo(anc.boneTransforms, 0);
             }
 
             anc.currentTimeValue = time;
@@ -79,9 +94,10 @@ namespace GameEngine.Source.Systems
             }
         }
 
-        /// <summary>
-        /// Helper used by the Update method to refresh the WorldTransforms data.
-        /// </summary>
+       /// <summary>
+       /// Help functions used by the update function to update the bones matrices
+       /// </summary>
+       /// <param name="tcp">Takes the transformComponent as a parameter to get the entities transformation matrices</param>
         public void UpdateWorldTransforms(TransformComponent tcp)
         {
             // Root bone.
@@ -90,7 +106,7 @@ namespace GameEngine.Source.Systems
             // Child bones.
             for (int bone = 1; bone < anc.worldTransforms.Length; bone++)
             {
-                int parentBone = anc.skinningDataValue.SkeletonHierarchy[bone];
+                int parentBone = anc.SkinningDataValue.SkeletonHierarchy[bone];
 
                 anc.worldTransforms[bone] = anc.boneTransforms[bone] *
                                              anc.worldTransforms[parentBone];
@@ -104,7 +120,7 @@ namespace GameEngine.Source.Systems
         {
             for (int bone = 0; bone < anc.skinTransforms.Length; bone++)
             {
-                anc.skinTransforms[bone] = anc.skinningDataValue.InverseBindPose[bone] *
+                anc.skinTransforms[bone] = anc.SkinningDataValue.InverseBindPose[bone] *
                                             anc.worldTransforms[bone];
             }
         }

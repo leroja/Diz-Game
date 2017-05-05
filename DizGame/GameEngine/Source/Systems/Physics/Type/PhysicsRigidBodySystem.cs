@@ -40,7 +40,7 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Updates the object position using its velocity * dt
         /// </summary>
-        /// <param name="entityID"></param>
+        /// <param name="physic"></param>
         /// <param name="dt"></param>
         private void UpdatePosition(PhysicsComponent physic, float dt)
         {

@@ -14,35 +14,29 @@ using System.Threading.Tasks;
 
 namespace ContentProject
 {
+    /// <summary>
+    /// AnimationProcessor extending the Modelprocessor class to enable custom content processing.
+    /// </summary>
     [ContentProcessor(DisplayName = "AnimatedModelProcessor")]
     public class AnimationProcessor : ModelProcessor
     {
-        public static string TEXTURES_PATH = "Textures/";
-        public static string EFFECTS_PATH = "Effects/";
-        public static string EFFECT_FILENAME = "AnimatedModel.fx";
 
+        /// <summary>
+        /// Overriden method to enable custom processing of models loaded within the content pipeline
+        /// </summary>
+        /// <param name="input">the data retrived from the content pipeline</param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            //// Process the model with the default processor
-            //ModelContent model = base.Process(input, context);
-
-            ////Extract the model skeleton and all its animations
-            //SkinningData animatedModelData = ExtractSkeletonAndAnimations(input, context);
-
-            //// Stores the skeletal animation data in the model
-            //Dictionary<string, object> dictionary = new Dictionary<string, object>
-            //{
-            //    { "AnimationModelData", animatedModelData }
-            //};
-            //model.Tag = dictionary;
-
-            ValidateMesh(input, context, null);
+           
+            //ValidateMesh(input, context, null);
 
             BoneContent skeleton = MeshHelper.FindSkeleton(input);
             if (skeleton == null)
                 throw new InvalidContentException("Input skeleton not found.");
 
-            FlattenTransforms(input, skeleton);
+            //FlattenTransforms(input, skeleton);
 
             IList<BoneContent> bones = MeshHelper.FlattenSkeleton(skeleton);
 
@@ -85,15 +79,11 @@ namespace ContentProject
 
             for (int i = 0; i < bones.Count; i++)
             {
-                string boneName = bones[i].Name;
-
-                if (!string.IsNullOrEmpty(boneName))
-                    boneMap.Add(boneName, i);
+                    boneMap.Add(bones[i].Name, i);
             }
 
             // Convert each animation in turn.
-            Dictionary<string, AnimationClip> animationClips;
-            animationClips = new Dictionary<string, AnimationClip>();
+            Dictionary<string, AnimationClip> animationClips = new Dictionary<string, AnimationClip>();
 
             foreach (KeyValuePair<string, AnimationContent> animation in animations)
             {
@@ -119,15 +109,8 @@ namespace ContentProject
             foreach (KeyValuePair<string, AnimationChannel> channel in animation.Channels)
             {
                 // Look up what bone this channel is controlling.
-                int boneIndex;
-
-                if (!boneMap.TryGetValue(channel.Key, out boneIndex))
-                {
-                    throw new InvalidContentException(string.Format(
-                        "Found animation for bone '{0}', " +
-                        "which is not part of the skeleton.", channel.Key));
-                }
-
+                int boneIndex = boneMap[channel.Key];
+                
                 // Convert the keyframe data.
                 foreach (AnimationKeyframe keyframe in channel.Value)
                 {
@@ -153,75 +136,7 @@ namespace ContentProject
             return a.Time.CompareTo(b.Time);
         }
 
-        static void ValidateMesh(NodeContent node, ContentProcessorContext context,
-                                 string parentBoneName)
-        {
-            MeshContent mesh = node as MeshContent;
-
-            if (mesh != null)
-            {
-                // Validate the mesh.
-                if (parentBoneName != null)
-                {
-                    context.Logger.LogWarning(null, null,
-                        "Mesh {0} is a child of bone {1}. SkinnedModelProcessor " +
-                        "does not correctly handle meshes that are children of bones.",
-                        mesh.Name, parentBoneName);
-                }
-
-                if (!MeshHasSkinning(mesh))
-                {
-                    context.Logger.LogWarning(null, null,
-                        "Mesh {0} has no skinning information, so it has been deleted.",
-                        mesh.Name);
-
-                    mesh.Parent.Children.Remove(mesh);
-                    return;
-                }
-            }
-            else if (node is BoneContent)
-            {
-                // If this is a bone, remember that we are now looking inside it.
-                parentBoneName = node.Name;
-            }
-
-            // Recurse (iterating over a copy of the child collection,
-            // because validating children may delete some of them).
-            foreach (NodeContent child in new List<NodeContent>(node.Children))
-                ValidateMesh(child, context, parentBoneName);
-        }
-
-        static bool MeshHasSkinning(MeshContent mesh)
-        {
-            foreach (GeometryContent geometry in mesh.Geometry)
-            {
-                if (!geometry.Vertices.Channels.Contains(VertexChannelNames.Weights()))
-                    return false;
-            }
-
-            return true;
-        }
-
-        static void FlattenTransforms(NodeContent node, BoneContent skeleton)
-        {
-            foreach (NodeContent child in node.Children)
-            {
-                // Don't process the skeleton, because that is special.
-                if (child == skeleton)
-                    continue;
-
-                // Bake the local transform into the actual geometry.
-                MeshHelper.TransformScene(child, child.Transform);
-
-                // Having baked it, we can now set the local
-                // coordinate system back to identity.
-                child.Transform = Matrix.Identity;
-
-                // Recurse.
-                FlattenTransforms(child, skeleton);
-            }
-        }
-        
+    
 
         /// <summary>
         /// Force all the materials to use our skinned model effect.
