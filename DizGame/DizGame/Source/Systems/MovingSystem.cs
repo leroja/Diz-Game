@@ -60,8 +60,11 @@ namespace DizGame.Source.Systems
                 {
                     if (phys != null)
                     {
-                        phys.IsInAir = true;
-                        move += trans.Up * 8.91f * 10;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
+                        if (!phys.IsInAir)
+                        {
+                            phys.IsInAir = true;
+                            move += trans.Up * 8.91f * 10;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
+                        }
                     }
                     trans.Dirrection = trans.Up;
                 }
@@ -105,7 +108,7 @@ namespace DizGame.Source.Systems
                 HeightmapComponentTexture hmap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(temp.First());
 
                 int roundX = (int)Math.Round(position.X); int roundY = (int)Math.Round(position.Z);
-                if (roundX >= hmap.HeightMapData.Length - 1 || roundY >= hmap.HeightMapData.Length)
+                if (roundX >= hmap.Width - 1 || roundY >= hmap.Height -1)
                 {
                     return 0;
                 }
