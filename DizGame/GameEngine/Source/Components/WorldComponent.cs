@@ -50,6 +50,7 @@ namespace GameEngine.Source.Components
             Minute = 0;
             Second = 0;
             Millisecond = 0;
+            Day = 0;
             DefineHour = 1; // TODO: Definera en timme i sekunder
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;

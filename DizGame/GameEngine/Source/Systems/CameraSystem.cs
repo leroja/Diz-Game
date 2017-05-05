@@ -35,6 +35,7 @@ namespace GameEngine.Source.Systems
         {
             switch(camera.CameraType)
             {
+                // Todo något fel i POV
                 case Enums.CameraType.Pov:
                     Vector3 lookAtOffset = Vector3.Transform(Vector3.UnitZ, Matrix.CreateRotationX(transform.Rotation.X) * Matrix.CreateRotationY(transform.Rotation.Y));
                     camera.LookAt = transform.Position + lookAtOffset;

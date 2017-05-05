@@ -63,11 +63,14 @@ namespace DizGame
             var idC = entf.CreateDude();
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 100, 75));
+            //entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 25, 25));
+            //entf.AddPOVCamToEntity(idC);
+            //entf.AddChaseCamToEntity(idC, new Vector3(0, 0, 2));
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
 
-            entf.MakeMap(2, 100);
+            entf.MakeMap(10, 100);
 
             InitializeSystems(entf);
             

@@ -291,6 +291,14 @@ namespace DizGame
 
         }
 
+        public void AddPOVCamToEntity(int entityID)
+        {
+            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov) {
+                Offset = new Vector3(0, 10, 30)
+            });
+                
+        }
+
         /// <summary>
         /// Adds an chase Camera to an entity
         /// </summary>

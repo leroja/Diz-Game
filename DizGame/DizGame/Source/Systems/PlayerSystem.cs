@@ -28,6 +28,8 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var PlayerEntityIds = ComponentManager.GetAllEntitiesWithComponentType<PlayerComponent>();
+            var worldTemp = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
+            var worldComp = (WorldComponent)worldTemp.Values.First();
 
             foreach (var playerId in PlayerEntityIds)
             {
@@ -45,17 +47,16 @@ namespace DizGame.Source.Systems
 
                 if (keyComp.GetState("RotateY") == ButtonStates.Hold)
                 {
-                    rot.Y += 0.01f;
+                    rot.Y += 0.001f;
                 }
                 if (keyComp.GetState("RotateNegY") == ButtonStates.Hold )
                 {
-                    rot.Y -= 0.01f;
+                    rot.Y -= 0.001f;
                 }
-                
                 transformComp.Rotation = rot;
+                // /T
 
-                
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed)
+                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 3 == 0 && worldComp.Day != 0)
                 {
                     entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 100);
                 }
