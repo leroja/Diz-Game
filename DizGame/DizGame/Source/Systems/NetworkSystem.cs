@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// NetworkSystem class is responsible for the server side application
+    /// and contains the functions needed for the administration.
+    /// </summary>
     public class NetworkSystem
     {
         NetPeerConfiguration config;
