@@ -17,7 +17,7 @@
   <Class Name="GameEngine.Source.Components.AnimationComponent" Collapsed="true">
     <Position X="7.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAQAACAEAAAAAAgAAAAEQAAAAAKAAEAAEBgAAAAAAA=</HashCode>
+      <HashCode>AgAQAACAAAIAAAAAEAAAAEIAAAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Source\Components\AnimationComponent.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -87,7 +87,7 @@
   <Class Name="GameEngine.Source.Components.ParticleComponent" Collapsed="true">
     <Position X="20.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAGIEAgAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGIEAgAAAAQ=</HashCode>
       <FileName>Source\Components\ParticleComponent .cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -101,7 +101,7 @@
   <Class Name="GameEngine.Source.Components.PhysicsProjectileComponent" Collapsed="true">
     <Position X="29.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Source\Components\Physics\PhysicsProjectileComponent.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -115,7 +115,7 @@
   <Class Name="GameEngine.Source.Components.PhysicsComponent" Collapsed="true">
     <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAABIIAEAAAEAgAAABACAAEAAAAAJEAACdAyE=</HashCode>
+      <HashCode>AAABAAAAABIMAEAAAEAgAAQBACAAEAEAAAJEAACdAyE=</HashCode>
       <FileName>Source\Components\PhysicsComponent.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -220,7 +220,7 @@
   <Class Name="GameEngine.Source.Systems.AnimationSystem" Collapsed="true">
     <Position X="46.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQBACAAAAAAAABAgAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Source\Systems\AnimationSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -242,7 +242,7 @@
   <Class Name="GameEngine.Source.Systems.EnvironmentSystem" Collapsed="true">
     <Position X="37.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQEAAAEAAAEAAAAAAAAAAQgAAAAAAIAAAAAAAAAIAA=</HashCode>
+      <HashCode>AAQEQAAEAAAEAAAAAAAAAAQgAAAAAAIAAAAAIAAAIAA=</HashCode>
       <FileName>Source\Systems\EnvironmentSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -277,7 +277,7 @@
   <Class Name="GameEngine.Source.Systems.ModelSystem" Collapsed="true">
     <Position X="8" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAIAAgAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <HashCode>AAAAEAAAAAIAAgAAAAAAAAAAAAAAAAAAACAAAAIAAAA=</HashCode>
       <FileName>Source\Systems\ModelSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -288,10 +288,10 @@
       <FileName>Source\Systems\MouseSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GameEngine.Source.Systems.PhysicsSystem" Collapsed="true">
+  <Class Name="GameEngine.Source.Systems.PhysicsSystem">
     <Position X="32.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEQEAAAAAACBgAYEIAGBAIBAACIAAAAIAIEAAAAMBCA=</HashCode>
+      <HashCode>AEQEAAAAAACBgA4EIAGBAIBAACIAAAAIAIMAAAAMBCA=</HashCode>
       <FileName>Source\Systems\Physics\PhysicsSystem.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -355,7 +355,7 @@
   <Class Name="GameEngine.Source.Systems.WorldSystem" Collapsed="true">
     <Position X="39.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Source\Systems\WorldSystem.cs</FileName>
     </TypeIdentifier>
   </Class>

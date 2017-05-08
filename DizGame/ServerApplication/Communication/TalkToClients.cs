@@ -22,6 +22,27 @@ namespace ServerApplication.Communication
             this.server = server;
         }
 
+
+
+        private enum ClientStateEnum
+        {
+            SendingMessages = 1,
+            NotAnsweredXTimes = 3,
+            Predict = 4,
+
+        }
+
+        /// <summary>
+        /// This function shall try to read messages from client in
+        /// a round the robin fashion.
+        /// Clients that have not answered for a couple of reads
+        /// will be set to a state that predicts the client's position
+        /// and movements.
+        /// </summary>
+        private void ReadClientsRoundTheRobin()
+        {
+
+        }
         
         /// <summary>
         /// Write messages to all connected clients updating physics state (from KeyBoardComponent) and
@@ -30,6 +51,7 @@ namespace ServerApplication.Communication
         /// physics state:
         /// *time
         /// *entityID
+        /// *position(Vector3)
         /// How many keyboardstates that will be sent.
         /// *keyBoardStates for every movable controlled entity.
         /// *to be cont.
