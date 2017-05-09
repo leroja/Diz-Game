@@ -21,6 +21,8 @@ namespace DizGame
 
         private static Game instance;
 
+        public static EntityTracingSystem entityTracingSystem { get; private set; }
+
         public GameOne()
         {
             instance = this;
@@ -73,7 +75,7 @@ namespace DizGame
             entf.MakeMap(10, 100);
 
             InitializeSystems(entf);
-            
+
             base.Initialize();
         }
 
@@ -107,6 +109,12 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new AnimationSystem());
 
             SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
+
+            entityTracingSystem = new EntityTracingSystem();
+            entityTracingSystem.RecordInitialEntities();
+            SystemManager.Instance.AddSystem(entityTracingSystem);
+
+            
         }
 
         /// <summary>
