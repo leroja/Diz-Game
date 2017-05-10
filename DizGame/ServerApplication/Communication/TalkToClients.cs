@@ -13,9 +13,11 @@ namespace ServerApplication.Communication
         //private hmm keeps states of history for smoothing and prediction.
 
         private NetOutgoingMessage broadcastMessage;
-
+        private NetIncomingMessage incommingMessage;
 
         private NetServer server;
+
+        private int WAIT_MAX_MILLIS = 100;
 
         public TalkToClients(ref NetServer server)
         {
@@ -23,7 +25,9 @@ namespace ServerApplication.Communication
         }
 
 
-
+        /// <summary>
+        /// Used internally for setting a client's state as percieved by the server.
+        /// </summary>
         private enum ClientStateEnum
         {
             SendingMessages = 1,
@@ -31,6 +35,36 @@ namespace ServerApplication.Communication
             Predict = 4,
 
         }
+
+
+
+        /// <summary>
+        /// This function shall answer the message from the client. 
+        /// The answer is depending of which type of message is recevied.
+        /// </summary>
+        /// <param name="message"></param>
+        private void AnswerMessage(NetIncomingMessage message)
+        {
+            switch(message.MessageType)
+            {
+                case NetIncomingMessageType.Data:
+                    //read which message type (first byte) as defined by us and act accordingly.
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// This function shall send the initial game state when asked for by the clients.
+        /// </summary>
+        private void SendInitialGameState()
+        {
+            //Send boulders, houses, tree as a list of positions.
+            //Send Players as entities.
+        }
+
 
         /// <summary>
         /// This function shall try to read messages from client in
@@ -41,20 +75,23 @@ namespace ServerApplication.Communication
         /// </summary>
         private void ReadClientsRoundTheRobin()
         {
-
+            //Maybe not using this function as it is in the server logic above.
+           foreach(NetConnection netconn in server.Connections)
+            {
+                netconn.Peer.WaitMessage(WAIT_MAX_MILLIS);
+            }
         }
         
         /// <summary>
-        /// Write messages to all connected clients updating physics state (from KeyBoardComponent) and
+        /// Write messages to all connected clients updating physics state
         /// health, ammo, weapon.
         /// Client state contains:
         /// physics state:
         /// *time
         /// *entityID
         /// *position(Vector3)
-        /// How many keyboardstates that will be sent.
-        /// *keyBoardStates for every movable controlled entity.
-        /// *to be cont.
+        /// *rotation
+        /// *scale
         /// *Should be moved to client side though.
         /// 
         /// Rest of state:
@@ -63,44 +100,44 @@ namespace ServerApplication.Communication
         /// ammo
         /// weapon.
         /// </summary>
-        private void WriteClientsState()
+        private void WriteClientsState(int entityID)
         {
 
             broadcastMessage = server.CreateMessage();
             broadcastMessage.WriteTime(true);
 
-            WriteKeyBoardStates();
+            //WriteKeyBoardStates();
 
             //foreach (NetPeer peer in clients)
             server.SendMessage(broadcastMessage, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
-        /// <summary>
-        /// This function writes all keyboardstates that has a key pressed to message.
-        /// </summary>
-        private void WriteKeyBoardStates()
-        {
-            //TO DO: Build a byte array of message for each client. Seems easier than writing 
-            //variables of different kind to message.
-            List<int> entities;
-            KeyBoardComponent kbdComponent;
+        ///// <summary>
+        ///// This function writes all keyboardstates that has a key pressed to message.
+        ///// </summary>
+        //private void WriteKeyBoardStates()
+        //{
+        //    //TO DO: Build a byte array of message for each client. Seems easier than writing 
+        //    //variables of different kind to message.
+        //    List<int> entities;
+        //    KeyBoardComponent kbdComponent;
 
-            entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<KeyBoardComponent>();
+        //    entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<KeyBoardComponent>();
 
-            foreach (int entityID in entities)
-            {
-                kbdComponent = ComponentManager.Instance.GetEntityComponent<KeyBoardComponent>(entityID);
+        //    foreach (int entityID in entities)
+        //    {
+        //        kbdComponent = ComponentManager.Instance.GetEntityComponent<KeyBoardComponent>(entityID);
 
-                broadcastMessage.WriteVariableInt32(entityID);
+        //        broadcastMessage.WriteVariableInt32(entityID);
 
-                foreach (string move in kbdComponent.State.Keys)
-                {
-                    if (kbdComponent.State[move] == ButtonStates.Pressed)
-                        broadcastMessage.WriteAllFields(move);
-                }
+        //        foreach (string move in kbdComponent.State.Keys)
+        //        {
+        //            if (kbdComponent.State[move] == ButtonStates.Pressed)
+        //                broadcastMessage.WriteAllFields(move);
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
         /// <summary>
         /// This function shall see how long a client hasnt sent a message.
