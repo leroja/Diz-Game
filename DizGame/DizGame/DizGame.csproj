@@ -53,6 +53,7 @@
     <Compile Include="Source\Components\BulletComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Components\TestComponent.cs" />
+    <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />

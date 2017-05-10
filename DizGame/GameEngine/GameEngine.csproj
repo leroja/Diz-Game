@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\Components\Abstract Classes\GameState.cs" />
     <Compile Include="Source\Components\AnimationComponent.cs" />
     <Compile Include="Source\Components\HeightmapComponentTexture.cs" />
     <Compile Include="Source\Components\MouseComponent.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Source\Enums\Element.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
+    <Compile Include="Source\Managers\GameStateManager.cs" />
     <Compile Include="Source\Systems\AnimationSystem.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
@@ -73,7 +75,7 @@
     <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />
     <Compile Include="Source\Components\HeightMapComponent.cs" />
-    <Compile Include="Source\Components\Interface\IComponent.cs" />
+    <Compile Include="Source\Components\Abstract Classes\IComponent.cs" />
     <Compile Include="Source\Components\KeyBoardComponent.cs" />
     <Compile Include="Source\Components\ModelComponent.cs" />
     <Compile Include="Source\Components\PhysicsComponent.cs" />
