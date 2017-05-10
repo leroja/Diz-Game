@@ -37,7 +37,7 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Updates the projectiles position in an arc
         /// </summary>
-        /// <param name="entityID"></param>
+        /// <param name="physic"></param>
         /// <param name="dt"></param>
         private void UpdateArcPosition(PhysicsComponent physic, float dt)
         {
