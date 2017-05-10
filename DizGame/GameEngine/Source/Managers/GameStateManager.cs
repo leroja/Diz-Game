@@ -40,7 +40,8 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Pop function to enable the removal of a gamestate from the stack
+        /// Pop function to enable the removal of a gamestate from the stack, 
+        /// means that the gamestate is no longer the current gamestate
         /// </summary>
         /// <returns></returns>
         public GameState Pop()
@@ -59,6 +60,10 @@ namespace GameEngine.Source.Managers
 
         }
 
+        /// <summary>
+        /// Function to push a gamestate to the top of the stack and make it the current gamestate
+        /// </summary>
+        /// <param name="state">takes an object derived from the gamestate class which sould represent the desirable game state</param>
         public void Push(GameState state)
         {
             GameState previousState;
@@ -72,10 +77,23 @@ namespace GameEngine.Source.Managers
             stack.Push(state);
             state.Entered();
         }
-
+        /// <summary>
+        /// Function which enables a peek of the current gamestate
+        /// </summary>
+        /// <returns>returns the current gamestate as a GameState object</returns>
         public GameState Peek()
         {
             return stack.Peek();
+        }
+        /// <summary>
+        /// Method for running the current GameStates update logic, in order to 
+        /// run logic that might be nessecary for the gamestate to check condition
+        /// in which change of a gamestate might be necessary
+        /// </summary>
+        public void UpdateGameState()
+        {
+            GameState currGameState = Peek();
+            currGameState.Update();
         }
     }
 }

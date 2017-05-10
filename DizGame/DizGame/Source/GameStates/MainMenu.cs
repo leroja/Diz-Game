@@ -30,5 +30,10 @@ namespace DizGame.Source.GameStates
         {
             throw new NotImplementedException();
         }
+
+        public override void Update()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
