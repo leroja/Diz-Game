@@ -36,6 +36,9 @@ namespace GameEngine.Source.Managers
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static ComponentManager Instance
         {
             get
@@ -82,7 +85,7 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// "links" the component to the entity
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entityID"></param>
         /// <param name="component"></param>
         public void AddComponentToEntity(int entityID, IComponent component)
         {
@@ -118,7 +121,7 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// Removes the component from the entity
         /// </summary>
-        /// <param name="entity"> The entity that has the component </param>
+        /// <param name="entityID"> The entity that has the component </param>
         /// <param name="component"> The component to be removed </param>
         public void RemoveComponentFromEntity(int entityID, IComponent component)
         {
@@ -140,7 +143,7 @@ namespace GameEngine.Source.Managers
         /// <typeparam name="T">
         /// The type of the requested component
         /// </typeparam>
-        /// <param name="entity"></param>
+        /// <param name="entityID"></param>
         /// <returns>
         /// A component of the requested type if there is one
         /// else it returns null
@@ -208,7 +211,7 @@ namespace GameEngine.Source.Managers
         /// Removes an Entity from dictionary
         /// As a game Dev you also have to recycle the id
         /// </summary>
-        /// <param name="entity"> The entity to be removed </param>
+        /// <param name="entityID"> The entity to be removed </param>
         public void RemoveEntity(int entityID)
         {
             foreach (KeyValuePair<Type, Dictionary<int, IComponent>> entry in compDic)
@@ -240,7 +243,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Returns a dictionary with all entites that "has" the specific type of component & 
+        /// Returns a dictionary with all entites that "has" the specific type of component and
         /// and the components of that type
         /// </summary>
         /// <typeparam name="T"> The type of component </typeparam>

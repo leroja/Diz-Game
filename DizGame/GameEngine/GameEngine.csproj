@@ -104,6 +104,7 @@
     <Compile Include="Source\Systems\TransformSystem.cs" />
     <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />
     <Compile Include="Source\Systems\WorldSystem.cs" />
+    <Compile Include="Source\Utils\Util.cs" />
     <Compile Include="Tools\BoundingSphereRenderer.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -65,14 +65,16 @@ namespace DizGame
             var idC = entf.CreateDude();
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 25, 25));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
+            //entf.AddChaseCamToEntity(idC, new Vector3(0, 25, 25));
             //entf.AddPOVCamToEntity(idC);
             //entf.AddChaseCamToEntity(idC, new Vector3(0, 0, 2));
 
             entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
 
             entf.MakeMap(10, 100);
+
+            entf.CreateAI("Dude", new Vector3(30,45,-10), 100f, 100, 100);
 
             InitializeSystems(entf);
 
@@ -107,7 +109,7 @@ namespace DizGame
 
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
             SystemManager.Instance.AddSystem(new AnimationSystem());
-
+            SystemManager.Instance.AddSystem(new AISystem());
             SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
 
             entityTracingSystem = new EntityTracingSystem();

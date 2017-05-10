@@ -25,6 +25,12 @@ namespace DizGame
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Content"></param>
+        /// <param name="Device"></param>
         public EntityFactory(ContentManager Content, GraphicsDevice Device)
         {
 
@@ -297,6 +303,11 @@ namespace DizGame
 
         }
 
+        // todo fungerar inte riktigt
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entityID"></param>
         public void AddPOVCamToEntity(int entityID)
         {
             ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov) {
@@ -412,6 +423,41 @@ namespace DizGame
                 new TransformComponent(new Vector3(0, 0, 0), new Vector3(1, 1, 1))
             };
             ComponentManager.Instance.AddAllComponents(HeightmapEnt, HeightmapCompList);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound)
+        {
+            int AIEntityID = ComponentManager.Instance.CreateID();
+            Model model = ModelDic[ModelName];
+
+            var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
+            
+            List<IComponent> components = new List<IComponent>
+            {
+                new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
+                new ModelComponent(model),
+                new PhysicsComponent()
+                {
+                    Volume = 22.5f,
+                    Density = 2.66f,
+                    PhysicsType = PhysicsType.Rigid,
+                    MaterialType = MaterialType.Skin,
+                    GravityType = GravityType.World,
+                    DragType = DragType.ManUpright
+                },
+                new AIComponent(hysteria, BoundRec, 3f, MathHelper.Pi),
+            };
+
+            ComponentManager.Instance.AddAllComponents(AIEntityID, components);
+
+
+            TestingTheAnimationsWithDude(AIEntityID);
+
+            return AIEntityID;
         }
     }
 }
