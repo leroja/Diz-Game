@@ -11,7 +11,7 @@ namespace GameEngine.Source.Enums
         //Client to Server
 
         //Ask server
-        GetInitialGameState,
+        GetInitialGameState = 1,
 
         //Client's created objects
         CreatedNewPlayer,

@@ -60,6 +60,8 @@ namespace DizGame
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             client.DiscoverLocalPeers();
+            client.SendRequestInitialGameState();
+
             EntityFactory entf = new EntityFactory(Content, Device);
 
             var idC = entf.CreateDude();

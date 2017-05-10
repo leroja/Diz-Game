@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Enums;
+using GameEngine.Source.Communication;
 
 namespace ServerApplication.Communication
 {
@@ -18,10 +19,12 @@ namespace ServerApplication.Communication
         private NetServer server;
 
         private int WAIT_MAX_MILLIS = 100;
+        private int MAX_MESSAGE_SIZE = 100;
 
-        public TalkToClients(ref NetServer server)
+        public TalkToClients(NetServer server)
         {
             this.server = server;
+
         }
 
 
@@ -43,12 +46,22 @@ namespace ServerApplication.Communication
         /// The answer is depending of which type of message is recevied.
         /// </summary>
         /// <param name="message"></param>
-        private void AnswerMessage(NetIncomingMessage message)
+        public void AnswerMessage(NetIncomingMessage message)
         {
+            Byte messageType;
+
             switch(message.MessageType)
             {
                 case NetIncomingMessageType.Data:
                     //read which message type (first byte) as defined by us and act accordingly.
+                    messageType = message.ReadByte();
+
+                    switch(messageType)
+                    {
+                        case (byte)MessageType.GetInitialGameState:
+                            SendInitialGameState(message);
+                            break;
+                    }
                     break;
 
                 default:
@@ -59,8 +72,18 @@ namespace ServerApplication.Communication
         /// <summary>
         /// This function shall send the initial game state when asked for by the clients.
         /// </summary>
-        private void SendInitialGameState()
+        private void SendInitialGameState(NetIncomingMessage message)
         {
+            Byte[] messageArray = new byte[MAX_MESSAGE_SIZE];
+
+            NetOutgoingMessage outMessage = server.CreateMessage();
+
+            ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateMap);
+
+            outMessage.Write(messageArray);
+
+            server.SendMessage(outMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+
             //Send boulders, houses, tree as a list of positions.
             //Send Players as entities.
         }

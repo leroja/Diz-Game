@@ -8,6 +8,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using System.Collections;
 using GameEngine.Source.Enums;
+using ServerApplication.Communication;
 
 namespace ServerApplication.ServerLogic
 {
@@ -21,6 +22,7 @@ namespace ServerApplication.ServerLogic
         private List<NetPeer> clients;
         private int portnumber;
 
+        private TalkToClients talkToClients;
 
         /// <summary>
         /// Default constructor for the server, default portnumber is set to 1337.
@@ -29,6 +31,7 @@ namespace ServerApplication.ServerLogic
         {
             portnumber = 1337;
         }
+
         /// <summary>
         /// Alternate constructor for the server if another portnumber is desired
         /// </summary>
@@ -37,6 +40,7 @@ namespace ServerApplication.ServerLogic
         {
             this.portnumber = portnumber;
         }
+
         /// <summary>
         /// Method to create a server and to start it
         /// </summary>
@@ -55,6 +59,8 @@ namespace ServerApplication.ServerLogic
                 Console.WriteLine("Server not started...");
             }
             clients = new List<NetPeer>();
+
+            talkToClients = new TalkToClients(server);
 
         }
 
@@ -86,19 +92,22 @@ namespace ServerApplication.ServerLogic
                         case NetIncomingMessageType.Data:
                             {
                                 Console.WriteLine("Server got message!");
-                                var data = message.ReadString();
-                                Console.WriteLine(data);
+                                //var data = message.ReadString();
+                                //Console.WriteLine(data);
 
-                                NetOutgoingMessage somemsg = server.CreateMessage("Damn!");
+                                //NetOutgoingMessage somemsg = server.CreateMessage("Damn!");
 
-                                // Might wanna use different delivery method
-                                server.SendMessage(somemsg, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+                                //// Might wanna use different delivery method
+                                //server.SendMessage(somemsg, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+
+                                talkToClients.AnswerMessage(message);
+
                                 server.FlushSendQueue();
 
-                                if (data == "exit")
-                                {
-                                    stop = true;
-                                }
+                                //if (data == "exit")
+                                //{
+                                //    stop = true;
+                                //}
 
                                 break;
                             }

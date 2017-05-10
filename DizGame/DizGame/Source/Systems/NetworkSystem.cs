@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Source.Communication;
+using GameEngine.Source.Enums;
 
 namespace DizGame.Source.Systems
 {
@@ -71,6 +73,21 @@ namespace DizGame.Source.Systems
             client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
             client.FlushSendQueue();
                         
+        }
+
+        /// <summary>
+        /// This function is temporary - dont use it for now other than for testing purposes.
+        /// </summary>
+        public void SendRequestInitialGameState()
+        {
+            NetOutgoingMessage message = client.CreateMessage();
+            
+            Byte[] messageArray = new Byte[100];
+
+            ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.GetInitialGameState);
+
+            message.Write(messageArray);
+            client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
         }
 
         /// <summary>
