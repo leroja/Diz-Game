@@ -15,6 +15,9 @@ namespace GameEngine
         public SpriteBatch SpriteBatch { get; set; }
         public GraphicsDevice Device { get; set; } 
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public GameEngine()
         {
             Graphics = new GraphicsDeviceManager(this)
