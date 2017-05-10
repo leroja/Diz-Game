@@ -14,13 +14,16 @@ namespace DizGame.Source.Systems
 
         private  List<int> currentEntityIds;
 
+        private List<int> oldEntityIds;
+
         private static List<int> newEntityIds;
+
 
         public EntityTracingSystem()
         {
             currentEntityIds = new List<int>();
-
             newEntityIds = new List<int>();
+            oldEntityIds = new List<int>();
         }
 
 
@@ -30,7 +33,7 @@ namespace DizGame.Source.Systems
         /// </summary>
         public void RecordInitialEntities()
         {
-            currentEntityIds = ComponentManager.GetAllCurrentEntityIds();
+           oldEntityIds = new List<int>(ComponentManager.GetAllCurrentEntityIds());
         }
 
 
@@ -52,9 +55,11 @@ namespace DizGame.Source.Systems
 
         private void CheckForNewEntities()
         {
-            List<int> possibleNewEntIds = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<IComponent>().Keys.ToList();
+            List<int> possibleNewEntIds = ComponentManager.GetAllCurrentEntityIds();
 
-           newEntityIds = possibleNewEntIds.Except(currentEntityIds).ToList();
+           newEntityIds = possibleNewEntIds.Except(oldEntityIds).ToList();
+
+            oldEntityIds = new List<int>(possibleNewEntIds);
            
         }
 
