@@ -30,7 +30,7 @@ namespace DizGame.Source.Systems
         /// </summary>
         public void RecordInitialEntities()
         {
-            currentEntityIds = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<IComponent>().Keys.ToList();
+            currentEntityIds = ComponentManager.GetAllCurrentEntityIds();
         }
 
 

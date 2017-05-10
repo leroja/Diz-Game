@@ -23,6 +23,8 @@ namespace GameEngine.Source.Managers
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
+        public List<int> currentTakenEntityIds { get; private set; }
+
         private ComponentManager()
         {
             curMax = step;
@@ -30,6 +32,7 @@ namespace GameEngine.Source.Managers
             entityIDs.AddRange(Enumerable.Range(1, curMax));
             defaultList = new List<int>();
             defaultDictionary = new Dictionary<int, IComponent>();
+            currentTakenEntityIds = new List<int>();
         }
 
 
@@ -61,6 +64,7 @@ namespace GameEngine.Source.Managers
             int id = entityIDs[entityIDs.Count - 1];
 
             entityIDs.Remove(id);
+            currentTakenEntityIds.Add(id);
             return id;
         }
 
@@ -274,6 +278,16 @@ namespace GameEngine.Source.Managers
                 }
             }
             return false;
+        }
+
+
+        /// <summary>
+        /// This function is used for retrieving all the current entityIds that has been created up til now.
+        /// </summary>
+        /// <returns>All current entityIds.</returns>
+        public List<int> GetAllCurrentEntityIds()
+        {
+            return currentTakenEntityIds;
         }
     }
 }
