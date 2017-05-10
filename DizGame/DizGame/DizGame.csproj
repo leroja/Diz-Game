@@ -60,6 +60,7 @@
     <Compile Include="Source\Components\HealthComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Components\TestComponent.cs" />
+    <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
