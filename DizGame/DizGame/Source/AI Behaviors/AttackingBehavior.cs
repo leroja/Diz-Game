@@ -11,14 +11,14 @@ namespace DizGame.Source.AI_States
     /// <summary>
     /// 
     /// </summary>
-    public class AttackingBehavior : IAiBehavior
+    public class AttackingBehavior : AiBehavior
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="AIComp"></param>
         /// <param name="gameTime"></param>
-        public void Update(AIComponent AIComp, GameTime gameTime)
+        public override void Update(AIComponent AIComp, GameTime gameTime)
         {
             throw new NotImplementedException();
         }

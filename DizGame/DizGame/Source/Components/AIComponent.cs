@@ -17,7 +17,7 @@ namespace DizGame.Source.Components
         /// <summary>
         /// The current Behavior/state of the AI Entity
         /// </summary>
-        public IAiBehavior CurrentBehaivior { get; set; }
+        public AiBehavior CurrentBehaivior { get; set; }
         /// <summary>
         /// In what bounds the AI can move, based from origo
         /// </summary>

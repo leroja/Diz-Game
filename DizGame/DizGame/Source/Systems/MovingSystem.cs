@@ -21,7 +21,7 @@ namespace DizGame.Source.Systems
                 KeyBoardComponent key = ComponentManager.GetEntityComponent<KeyBoardComponent>(entity.Key);
                 TransformComponent trans = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
                 PhysicsComponent phys = ComponentManager.GetEntityComponent<PhysicsComponent>(entity.Key);
-                    Vector3 move = Vector3.Zero;
+                Vector3 move = Vector3.Zero;
                 if (!phys.IsInAir)
                 {
                     if (key.State["Forward"] == ButtonStates.Hold)

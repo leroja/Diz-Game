@@ -14,7 +14,7 @@ namespace DizGame.Source.AI_States
     /// <summary>
     /// 
     /// </summary>
-    public class WanderBehavior : IAiBehavior
+    public class WanderBehavior : AiBehavior
     {
         private Random _random;
         private Vector3 wanderDir;
@@ -34,7 +34,7 @@ namespace DizGame.Source.AI_States
         /// </summary>
         /// <param name="ai"></param>
         /// <param name="gameTime"></param>
-        public void Update(AIComponent ai, GameTime gameTime)
+        public override void Update(AIComponent ai, GameTime gameTime)
         {
             //var heightmapId = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>()[0];
             //var heightmapComp = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightmapId);

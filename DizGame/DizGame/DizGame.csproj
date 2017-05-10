@@ -50,7 +50,7 @@
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\AI Behaviors\IAiBehavior.cs" />
+    <Compile Include="Source\AI Behaviors\AiBehavior.cs" />
     <Compile Include="Source\AI Behaviors\AttackingBehavior.cs" />
     <Compile Include="Source\AI Behaviors\ChaseBehavior.cs" />
     <Compile Include="Source\AI Behaviors\EvadeBehavior.cs" />
