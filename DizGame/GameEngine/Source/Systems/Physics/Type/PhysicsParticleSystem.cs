@@ -1,17 +1,19 @@
-﻿using GameEngine.Source.Systems.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GameEngine.Source.Systems.Interfaces;
 using GameEngine.Source.Components;
-using Microsoft.Xna.Framework;
 using GameEngine.Source.Enums;
+using GameEngine.Source.Systems.AbstractClasses;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// Class for updating the particles physic
+    /// </summary>
     public class PhysicsParticleSystem : IPhysicsTypeSystem
     {
+        /// <summary>
+        /// Constructor which sets the PhysicType
+        /// </summary>
+        /// <param name="physicsSystem"></param>
         public PhysicsParticleSystem(IPhysics physicsSystem) : base(physicsSystem)
         {
             PhysicsType = PhysicsType.Particle;
@@ -28,12 +30,23 @@ namespace GameEngine.Source.Systems
             PhysicsSystem.UpdateGravity(physic, dt);
             PhysicsSystem.UpdateForce(physic);
             PhysicsSystem.UpdateEulerAcceleration(physic);
+            UpdatePosition(physic, dt);
             //TODO: ParticleSystem
             // Code here:
 
             //
             PhysicsSystem.UpdateVelocity(physic, dt);
             PhysicsSystem.UpdateDeceleration(physic);
+        }
+        /// <summary>
+        /// Updates the object position using its velocity * dt
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        private void UpdatePosition(PhysicsComponent physic, float dt)
+        {
+            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+                    += physic.Velocity * dt;
         }
     }
 }

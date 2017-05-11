@@ -1,18 +1,32 @@
-﻿using GameEngine.Source.Systems.Interface;
+﻿using GameEngine.Source.Systems.Interfaces;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using System;
 using GameEngine.Source.Enums;
+using GameEngine.Source.Systems.AbstractClasses;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// Class for updating the rigidbody physic
+    /// </summary>
     public class PhysicsRigidBodySystem : IPhysicsTypeSystem
     {
+        /// <summary>
+        /// Constructor which sets the PhysicType
+        /// </summary>
+        /// <param name="physicsSystem"></param>
         public PhysicsRigidBodySystem(IPhysics physicsSystem) : base(physicsSystem)
         {
             PhysicsType = PhysicsType.Rigid;
         }
+        /// <summary>
+        /// Updates Acceleration, mass, gravity, force, velocity, position and decaeleration
+        /// Using non euler for acceleration
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
         public override void Update(PhysicsComponent physic, float dt)
         {
             PhysicsSystem.UpdateAcceleration(physic);
