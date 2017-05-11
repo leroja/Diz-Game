@@ -14,6 +14,7 @@ namespace GameEngine.Source.Components
         public Dictionary<string, string> MouseActionBinding { get; set; }
         public float Y { get; set; }
         public float X { get; set; }
+        public float MouseSensitivity { get; set; }
 
         public MouseComponent()
         {

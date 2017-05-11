@@ -21,7 +21,7 @@ namespace DizGame
 
         private static Game instance;
 
-        public static EntityTracingSystem entityTracingSystem { get; private set; }
+        public static EntityTracingSystem EntityTracingSystem { get; private set; }
 
         public GameOne()
         {
@@ -60,13 +60,17 @@ namespace DizGame
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             client.DiscoverLocalPeers();
-            EntityFactory entf = new EntityFactory(Content, Device);
+            EntityFactory entf = EntityFactory.Instance;
 
-            var idC = entf.CreateDude();
+
+            entf.CreateAI("Dude", new Vector3(30, 45, -10), 100f, 100, 100, 2f, MathHelper.Pi);
+            var idC = EntityFactory.Instance.CreateDude();
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
+            //entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
             //entf.AddChaseCamToEntity(idC, new Vector3(0, 25, 25));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
+            //entf.AddChaseCamToEntity(idC, new Vector3(0, 0, 25));
             //entf.AddPOVCamToEntity(idC);
             //entf.AddChaseCamToEntity(idC, new Vector3(0, 0, 2));
 
@@ -74,7 +78,6 @@ namespace DizGame
 
             entf.MakeMap(10, 100);
 
-            entf.CreateAI("Dude", new Vector3(30,45,-10), 100f, 100, 100);
 
             InitializeSystems(entf);
 
@@ -105,16 +108,16 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
-            SystemManager.Instance.AddSystem(new PlayerSystem(entf));
+            SystemManager.Instance.AddSystem(new PlayerSystem());
 
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
             SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
 
-            entityTracingSystem = new EntityTracingSystem();
-            entityTracingSystem.RecordInitialEntities();
-            SystemManager.Instance.AddSystem(entityTracingSystem);
+            EntityTracingSystem = new EntityTracingSystem();
+            EntityTracingSystem.RecordInitialEntities();
+            SystemManager.Instance.AddSystem(EntityTracingSystem);
 
             
         }

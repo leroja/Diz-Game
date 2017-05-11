@@ -26,8 +26,8 @@ namespace GameEngine.Source.Systems
             {
                 TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
                 var rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, tfc.Rotation.X, tfc.Rotation.Z);
-
-                tfc.QuaternionRotation *= rotationQuaternion;
+                
+                tfc.QuaternionRotation = rotationQuaternion;
                 tfc.Forward = Vector3.Transform(Vector3.Forward, tfc.QuaternionRotation);
                 tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
                 tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);

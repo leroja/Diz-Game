@@ -36,12 +36,14 @@ namespace DizGame.Source.Components
         /// </summary>
         public float DirectionChangeRoation { get; set; }
 
+        
+
         /// <summary>
         /// Constructor
         /// </summary>
         public AIComponent(float hysteria, Rectangle rec, float dur, float rot)
         {
-            this.CurrentBehaivior = new WanderBehavior(Quaternion.Identity);
+            this.CurrentBehaivior = new AttackingBehavior();
             this.Hysteria = hysteria;
             this.Bounds = rec;
             this.DirectionDuration = dur;

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
+using GameEngine.Source.Managers;
+using GameEngine.Source.Components;
 
 namespace DizGame.Source.AI_States
 {
@@ -20,7 +22,15 @@ namespace DizGame.Source.AI_States
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-            throw new NotImplementedException();
+            bool fire = true;
+            var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
+            var worldComp = (WorldComponent)worldTemp.Values.First();
+            var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+
+            if (fire && worldComp.Day % 2 == 0 && worldComp.Day != 0)
+            {
+                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200);
+            }
         }
     }
 }

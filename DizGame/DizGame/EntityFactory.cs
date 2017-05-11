@@ -21,22 +21,39 @@ namespace DizGame
     /// </summary>
     public class EntityFactory
     {
+
+        private static EntityFactory instance;
+
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
+
+
+        public static EntityFactory Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new EntityFactory();
+                }
+                return instance;
+            }
+        }
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="Content"></param>
         /// <param name="Device"></param>
-        public EntityFactory(ContentManager Content, GraphicsDevice Device)
+        private EntityFactory()
         {
 
-            hmFactory = new HeightMapFactory(Device);
+            hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             CreateWorldComp();
-            this.Content = Content;
+            this.Content = GameOne.Instance.Content;
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
@@ -83,18 +100,15 @@ namespace DizGame
             keys.AddActionAndKey("Right", Keys.D);
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
-
-            // temp
-            keys.AddActionAndKey("RotateY", Keys.Q);
-            keys.AddActionAndKey("RotateNegY", Keys.E);
-            // /temp
+            
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
+            mouse.MouseSensitivity = 0.2f;
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,45,0), new Vector3(0.1f, 0.1f, 0.1f)),
+                new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(chuck),
                 keys,
                 mouse,
@@ -119,6 +133,7 @@ namespace DizGame
 
         }
 
+        // Todo lägg till FOG
         /// <summary>
         /// Creates a house of given model
         /// </summary>
@@ -155,6 +170,7 @@ namespace DizGame
 
         }
 
+        // Todo lägg till FOG
         /// <summary>
         /// creates the static objects
         /// </summary>
@@ -429,7 +445,7 @@ namespace DizGame
         /// 
         /// </summary>
         /// <returns></returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
@@ -449,7 +465,7 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new AIComponent(hysteria, BoundRec, 3f, MathHelper.Pi),
+                new AIComponent(hysteria, BoundRec, DirectionDuration, rotation),
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);

@@ -16,9 +16,9 @@ namespace DizGame.Source.Systems
     {
         private EntityFactory entFactory;
         
-        public PlayerSystem(EntityFactory entFac)
+        public PlayerSystem()
         {
-            this.entFactory = entFac;
+            this.entFactory = EntityFactory.Instance;
         }
 
         /// <summary>
@@ -39,26 +39,15 @@ namespace DizGame.Source.Systems
                 var testComp = ComponentManager.GetEntityComponent<TestComponent>(playerId);
                 var keyComp = ComponentManager.GetEntityComponent<KeyBoardComponent>(playerId);
                 
-                // Temporary
-                var rot = transformComp.Rotation;
-                rot.X = 0;
-                rot.Y = 0;
-                rot.Z = 0;
+                var m = UpdateInput(mouseComp);
 
-                if (keyComp.GetState("RotateY") == ButtonStates.Hold)
-                {
-                    rot.Y += 0.001f;
-                }
-                if (keyComp.GetState("RotateNegY") == ButtonStates.Hold )
-                {
-                    rot.Y -= 0.001f;
-                }
-                transformComp.Rotation = rot;
-                // /T
+                transformComp.Rotation += new Vector3(0, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 3 == 0 && worldComp.Day != 0)
+                transformComp.Rotation = WrapAngle(transformComp.Rotation);
+
+                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 2 == 0 && worldComp.Day != 0)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 100);
+                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200);
                 }
             }
         }
@@ -67,8 +56,7 @@ namespace DizGame.Source.Systems
         /// 
         /// </summary>
         /// <param name="mouseComp"></param>
-        /// <param name="testComp"></param>
-        private void UpdateInput(ref MouseComponent mouseComp, ref TestComponent testComp)
+        private Vector2 UpdateInput(MouseComponent mouseComp)
         {
             Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
 
@@ -78,9 +66,21 @@ namespace DizGame.Source.Systems
             float deltaY = centerY - mouseComp.Y;
 
             Mouse.SetPosition(centerX, centerY);
-            
-            testComp.SmoothedMouseMovement.X = deltaX;
-            testComp.SmoothedMouseMovement.Y = deltaY;
+
+            return new Vector2(deltaX, deltaY);
+        }
+
+        private Vector3 WrapAngle(Vector3 rotation)
+        {
+            while (rotation.Y < -MathHelper.Pi)
+            {
+                rotation.Y += MathHelper.TwoPi;
+            }
+            while (rotation.Y > MathHelper.Pi)
+            {
+                rotation.Y -= MathHelper.TwoPi;
+            }
+            return rotation;
         }
     }
 }

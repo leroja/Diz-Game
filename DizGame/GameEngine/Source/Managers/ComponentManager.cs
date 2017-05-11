@@ -23,7 +23,7 @@ namespace GameEngine.Source.Managers
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
-        public List<int> currentTakenEntityIds { get; private set; }
+        public List<int> CurrentTakenEntityIds { get; private set; }
 
         private ComponentManager()
         {
@@ -32,7 +32,7 @@ namespace GameEngine.Source.Managers
             entityIDs.AddRange(Enumerable.Range(1, curMax));
             defaultList = new List<int>();
             defaultDictionary = new Dictionary<int, IComponent>();
-            currentTakenEntityIds = new List<int>();
+            CurrentTakenEntityIds = new List<int>();
         }
 
 
@@ -67,7 +67,7 @@ namespace GameEngine.Source.Managers
             int id = entityIDs[entityIDs.Count - 1];
 
             entityIDs.Remove(id);
-            currentTakenEntityIds.Add(id);
+            CurrentTakenEntityIds.Add(id);
             return id;
         }
 
@@ -290,7 +290,7 @@ namespace GameEngine.Source.Managers
         /// <returns>All current entityIds.</returns>
         public List<int> GetAllCurrentEntityIds()
         {
-            return currentTakenEntityIds;
+            return CurrentTakenEntityIds;
         }
     }
 }
