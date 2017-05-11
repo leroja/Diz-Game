@@ -63,6 +63,7 @@
     <Compile Include="Source\Components\TestComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
+    <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />

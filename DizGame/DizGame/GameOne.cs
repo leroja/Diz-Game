@@ -10,6 +10,7 @@ using GameEngine.Source.Factories;
 using GameEngine.Source.Components;
 using System.Collections.Generic;
 using DizGame.Source.GameStates;
+using DizGame.Source.LanguageBasedModels;
 
 namespace DizGame
 {
@@ -137,6 +138,7 @@ namespace DizGame
         /// </summary>
         protected override void LoadContent()
         {
+            TreeModel tree = new TreeModel(Device, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
         }
 
         /// <summary>
