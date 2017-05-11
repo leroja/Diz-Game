@@ -8,6 +8,10 @@ using GameEngine.Source.Components;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// System to update the CameraComponents
+    /// derived from IUpdate
+    /// </summary>
     public class CameraSystem : IUpdate
     {
         /// <summary>

@@ -46,8 +46,6 @@ namespace DizGame
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Content"></param>
-        /// <param name="Device"></param>
         private EntityFactory()
         {
 

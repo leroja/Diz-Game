@@ -9,8 +9,15 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// System to update environment changes etc.
+    /// </summary>
     public class EnvironmentSystem : IUpdate
     {
+        /// <summary>
+        /// Function to update environment functions.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())

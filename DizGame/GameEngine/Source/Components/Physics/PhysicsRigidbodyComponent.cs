@@ -45,10 +45,18 @@ namespace GameEngine.Source.Components
         /// Given in the rigid body frame in the unit kilograms per meter^2.
         /// </summary>
         public Matrix BodyFrameInertiaTensor { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Matrix BodyFrameInvertedInertiaTensor { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Matrix WorldFrameInvertedInertiaTensor { get; set; }
+        /// <summary>
+        /// Bool to check if body is frozen
+        /// </summary>
         public bool Frozen { get; set; }
-        public bool Moved { get; set; }
         #endregion Public Configuration
 
         /// <summary>
@@ -58,7 +66,6 @@ namespace GameEngine.Source.Components
         public PhysicsRigidbodyComponent()
         {
             Frozen = false;
-            Moved = false;
 
             AngularVelocity = Vector3.Zero;
             AngularMomentum = Vector3.Zero;

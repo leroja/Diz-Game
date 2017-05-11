@@ -45,7 +45,7 @@ namespace GameEngine.Source.Systems
         }
         
         /// <summary>
-        /// updates the previous & current State of the Mouse
+        /// updates the previous and current State of the Mouse
         /// </summary>
         private void UpdateStates()
         {
@@ -54,7 +54,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Updates the states of left-, right- & middle mouse buttons
+        /// Updates the states of left-, right- and middle mouse buttons
         /// </summary>
         /// <param name="mouseComponent"></param>
         public void UpdateActionStates(MouseComponent mouseComponent)

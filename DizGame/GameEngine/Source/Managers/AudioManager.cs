@@ -92,13 +92,12 @@ namespace GameEngine.Source.Managers
                 soundEffInstDic.Remove(effectName);
             }
         }
-
         /// <summary>
         /// Plays a specific soundeffect
         /// </summary>
-        /// <param name="SoundEffect">
-        /// the name of the soundEffect
-        /// </param>
+        /// <param name="SoundEffect"> name of the soundEffect</param>
+        /// <param name="pan"></param>
+        /// <param name="pitch"></param>
         public void PlaySoundEffect(string SoundEffect, float pan, float pitch)
         {
             if (soundEffInstDic.ContainsKey(SoundEffect))

@@ -9,13 +9,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// System to draw text on the screen
+    /// derived from IRender
+    /// </summary>
     public class TextSystem : IRender
     {
-        SpriteBatch spriteBatch;
+        private SpriteBatch spriteBatch;
+        /// <summary>
+        /// Constructor which take spriteBatch as in parameter.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public TextSystem(SpriteBatch spriteBatch)
         {
             this.spriteBatch = spriteBatch;
         }
+        /// <summary>
+        /// Function that loops throught the TextComponents and then drawing them.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
            foreach(int entityID in ComponentManager.GetAllEntitiesWithComponentType<TextComponent>())
@@ -24,7 +36,10 @@ namespace GameEngine.Source.Systems
                 DrawText(text);
             }
         }
-
+        /// <summary>
+        /// Function to draw the text 
+        /// </summary>
+        /// <param name="text"></param>
         private void DrawText(TextComponent text)
         {
             if (spriteBatch != null)
