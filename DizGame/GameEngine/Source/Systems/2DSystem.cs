@@ -55,7 +55,7 @@ namespace GameEngine.Source.Systems
 
             spriteBatch.Begin();
             //spriteBatch.Draw(texture.Texture, texture.SourceRect, texture.Color);
-            spriteBatch.Draw(texture.Texture, texture.Position, null, texture.Color, 0, new Vector2(0, texture.Height), texture.Scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture.Texture, texture.Position, null, texture.Color, texture.Rotation, texture.Origin, texture.Scale, SpriteEffects.None, 0);
             spriteBatch.End();
 
             spriteBatch.GraphicsDevice.BlendState = BlendState.AlphaBlend;
