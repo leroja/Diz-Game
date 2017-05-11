@@ -10,8 +10,17 @@ using GameEngine.Source.Enums;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// System handles moving of an object,
+    /// using inheritance from IUpdate
+    /// </summary>
     public class MovingSystem : IUpdate
     {
+        /// <summary>
+        /// Updates an objects movement(position) using
+        /// Transformcomponents, PhysicComponent and KeyboardComponent.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();

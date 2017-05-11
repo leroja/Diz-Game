@@ -9,8 +9,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// System that updates the world using 
+    /// derived from IUpdate
+    /// </summary>
     public class WorldSystem : IUpdate
     {
+        /// <summary>
+        /// Basic constructor.
+        /// </summary>
+        /// <param name="game"></param>
         public WorldSystem(Game game)
         {
             ComponentManager.AddComponentToEntity(ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>()[0],
@@ -20,6 +28,10 @@ namespace GameEngine.Source.Systems
                 game.Content.Load<SpriteFont>("Fonts/font"), 
                 true));
         }
+        /// <summary>
+        /// Updates the worldComponents.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>())
@@ -51,17 +63,17 @@ namespace GameEngine.Source.Systems
             if (world.Millisecond > 100)
                 world.Millisecond = 0;
 
-            if (world.Hour > world.Notation)
+            if (world.Hour > (int)world.Notation)
             {
                 world.Hour = 0;
-                if (world.Notation == WorldComponent.HOURS12 && !world.Noon)
+                if (world.Notation == WorldComponent.ClockNotation.HOURS12 && !world.Noon)
                     world.Noon = true;
-                else if (world.Notation == WorldComponent.HOURS12 && world.Noon)
+                else if (world.Notation == WorldComponent.ClockNotation.HOURS12 && world.Noon)
                 {
                     world.Noon = false;
                     world.Day++;
                 }
-                if (world.Notation == WorldComponent.HOURS24)
+                if (world.Notation == WorldComponent.ClockNotation.HOURS24)
                     world.Day++;
             }
             UpdateClockText(world);

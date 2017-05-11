@@ -33,7 +33,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// updates the previous & current State of the keyboard
+        /// updates the previous and current State of the keyboard
         /// </summary>
         private void UpdateStates()
         {
