@@ -15,7 +15,7 @@ namespace ContentProject
         [ContentImporter(".xyz", DisplayName = "XYZ Importer", DefaultProcessor = "AnimationProcessor")]
         public override TInput Import(string filename, ContentImporterContext context)
         {
-            // TODO: process the input object, and return the modified data.
+            
             throw new NotImplementedException();
         }
     }

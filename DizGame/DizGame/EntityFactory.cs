@@ -319,7 +319,7 @@ namespace DizGame
 
         }
 
-        // todo fungerar inte riktigt
+
         /// <summary>
         /// 
         /// </summary>

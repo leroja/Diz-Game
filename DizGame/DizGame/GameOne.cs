@@ -9,6 +9,7 @@ using DizGame.Source.ConfiguredSystems;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Components;
 using System.Collections.Generic;
+using DizGame.Source.GameStates;
 
 namespace DizGame
 {
@@ -119,7 +120,12 @@ namespace DizGame
             EntityTracingSystem.RecordInitialEntities();
             SystemManager.Instance.AddSystem(EntityTracingSystem);
 
-            
+            //Uncoment the two rows below to watch the gamemenu, you might wanna comment the other
+            //stuffs before doing that
+            //MainMenu startState = new MainMenu();
+            //GameStateManager.Instance.Push(startState);
+
+
         }
 
         /// <summary>
@@ -144,7 +150,8 @@ namespace DizGame
             //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            //Remove comment below to make the gamestatemanager run the gamestates update functions
+            //GameStateManager.Instance.UpdateGameState();
             base.Update(gameTime);
         }
 
