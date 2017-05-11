@@ -419,3 +419,10 @@
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff/Map3.jpg
 
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/MenuFont.spritefont
+
