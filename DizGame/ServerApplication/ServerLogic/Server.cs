@@ -21,6 +21,8 @@ namespace ServerApplication.ServerLogic
         private NetServer server;
         private List<NetPeer> clients;
         private int portnumber;
+        private NetPeerConfiguration config;
+        private NetOutgoingMessage approvalMessage;
 
         private TalkToClients talkToClients;
 
@@ -41,12 +43,22 @@ namespace ServerApplication.ServerLogic
             this.portnumber = portnumber;
         }
 
+        private void ConfigServer()
+        {
+            config = new NetPeerConfiguration("gameOne") { Port = portnumber };
+            config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+            config.EnableMessageType(NetIncomingMessageType.DebugMessage);
+            config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
+            config.EnableMessageType(NetIncomingMessageType.StatusChanged);
+            config.EnableMessageType(NetIncomingMessageType.Data);
+
+        }
         /// <summary>
         /// Method to create a server and to start it
         /// </summary>
         public void StartServer()
         {
-            var config = new NetPeerConfiguration("gameOne") { Port = portnumber };
+            ConfigServer();
             server = new NetServer(config);
             server.Start();
 
@@ -82,6 +94,12 @@ namespace ServerApplication.ServerLogic
 
                     switch (message.MessageType)
                     {
+                        case NetIncomingMessageType.ConnectionApproval:
+                            approvalMessage = server.CreateMessage();
+                            approvalMessage.Write("Client approved");
+                            message.SenderConnection.Approve(approvalMessage);
+                            break;
+
                         case NetIncomingMessageType.DiscoveryRequest:
                             //
                             // Server received a discovery request from a client; send a discovery response (with no extra data attached)
@@ -101,8 +119,6 @@ namespace ServerApplication.ServerLogic
                                 //server.SendMessage(somemsg, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
 
                                 talkToClients.AnswerMessage(message);
-
-                                server.FlushSendQueue();
 
                                 //if (data == "exit")
                                 //{

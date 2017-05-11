@@ -9,6 +9,7 @@ using DizGame.Source.ConfiguredSystems;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Components;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace DizGame
 {
@@ -18,6 +19,7 @@ namespace DizGame
     public class GameOne : GameEngine.GameEngine
     {
         NetworkSystem client;
+        private Thread netClientThread;
 
         private static Game instance;
 
@@ -26,11 +28,7 @@ namespace DizGame
         public GameOne()
         {
             instance = this;
-            client = new NetworkSystem();
-            client.RunClient();
-            this.IsMouseVisible = true;
-
-            
+            this.IsMouseVisible = true;  
         }
 
         public static Game Instance
@@ -39,6 +37,14 @@ namespace DizGame
             {
                 return instance;
             }
+        }
+
+        private void InitNetworkClient()
+        {
+            client = new NetworkSystem();
+            client.ConnectToServer();
+            netClientThread = new Thread(new ThreadStart(client.ReadMessages));
+            netClientThread.Start();
         }
 
         /// <summary>
@@ -59,7 +65,9 @@ namespace DizGame
             //Graphics.IsFullScreen = true;
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            client.DiscoverLocalPeers();
+            InitNetworkClient();
+            //client.SendMessage("Hej");
+            //client.ReadMessages();
 
             EntityFactory entf = new EntityFactory(Content, Device);
 

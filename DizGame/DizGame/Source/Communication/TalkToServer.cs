@@ -47,6 +47,7 @@ namespace DizGame.Source.Communication
                     {
                         case (byte)MessageType.CreateInitialGameState:
                             ReceiveInitialGameState(message);
+                            Console.WriteLine("Initial game state length: " + message.LengthBytes);
                             break;
                     }
                     break;
@@ -62,6 +63,7 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
+            ;
             //Byte[] messageArray = new byte[MAX_MESSAGE_SIZE];
 
             //NetOutgoingMessage outMessage = server.CreateMessage();
@@ -91,6 +93,7 @@ namespace DizGame.Source.Communication
 
             message.Write(messageArray);
             client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+            client.FlushSendQueue();
         }
     }
 }

@@ -78,12 +78,15 @@ namespace ServerApplication.Communication
 
             NetOutgoingMessage outMessage = server.CreateMessage();
 
-            ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+            int messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+
+            Array.Resize(ref messageArray, messageLen);
 
             outMessage.Write(messageArray);
 
             server.SendMessage(outMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
 
+            server.FlushSendQueue();
             //Send boulders, houses, tree as a list of positions.
             //Send Players as entities.
         }
