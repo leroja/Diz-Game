@@ -79,7 +79,9 @@ namespace DizGame
 
             entf.MakeMap(10, 100);
 
-
+            entf.CreateHud(new Vector2(30, GraphicsDevice.Viewport.Height-50), 
+                new Vector2(GraphicsDevice.Viewport.Width / 10, GraphicsDevice.Viewport.Height - 50), 
+                new Vector2(0, 0), new List<Vector2>());
             InitializeSystems(entf);
 
             base.Initialize();
@@ -115,6 +117,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
             SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
+            SystemManager.Instance.AddSystem(new _2DSystem(SpriteBatch));
 
             EntityTracingSystem = new EntityTracingSystem();
             EntityTracingSystem.RecordInitialEntities();

@@ -34,6 +34,10 @@ namespace GameEngine.Source.Components
         /// An bool to check if text should be drawn
         /// </summary>
         public bool IsVisible { get; set; }
+        /// <summary>
+        /// Dictionary used if more then one text is wanted for an entity. 
+        /// </summary>
+        public Dictionary<string, TextComponent> Children { get; set; }
         #endregion Public Configuration
         /// <summary>
         /// Constructor which takes in all the nessecary parameters
@@ -50,7 +54,18 @@ namespace GameEngine.Source.Components
             Position = position;
             Color = color;
             Font = font;
-            IsVisible = isVisible;
+            IsVisible = isVisible;  
+        }
+        /// <summary>
+        /// Is used if multiple text is wanted
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="textComponents"></param>
+        public TextComponent(List<string> key, List<TextComponent> textComponents)
+        {
+            Children = new Dictionary<string, TextComponent>();
+            for (int i = 0; i < key.Count; i++)
+                Children.Add(key[i], textComponents[i]);
         }
     }
 }

@@ -51,11 +51,13 @@
     <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
     <Compile Include="Source\Components\TextComponent.cs" />
+    <Compile Include="Source\Components\Texture2DComponent.cs" />
     <Compile Include="Source\Enums\MessageType.cs" />
     <Compile Include="Source\Enums\Element.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
+    <Compile Include="Source\Systems\2DSystem.cs" />
     <Compile Include="Source\Systems\AnimationSystem.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />

@@ -58,8 +58,10 @@
     <Compile Include="Source\Components\AIComponent.cs" />
     <Compile Include="Source\Components\BulletComponent.cs" />
     <Compile Include="Source\Components\HealthComponent.cs" />
+    <Compile Include="Source\Components\AmmunitionComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Components\TestComponent.cs" />
+    <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
@@ -87,6 +89,9 @@
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
+    <Content Include="Content\Icons\squareTest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\bullet\" />
-    <Folder Include="Source\Enums\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

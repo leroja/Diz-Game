@@ -33,7 +33,11 @@ namespace GameEngine.Source.Systems
            foreach(int entityID in ComponentManager.GetAllEntitiesWithComponentType<TextComponent>())
             {
                 TextComponent text = ComponentManager.GetEntityComponent<TextComponent>(entityID);
-                DrawText(text);
+                if(text.Children != null)
+                    foreach(var child in text.Children)
+                            DrawText(child.Value);
+                else
+                    DrawText(text);
             }
         }
         /// <summary>

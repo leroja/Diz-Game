@@ -23,7 +23,7 @@ namespace GameEngine.Source.Systems
         {
             ComponentManager.AddComponentToEntity(ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>()[0],
                 new TextComponent("WorldTime", 
-                new Vector2(game.GraphicsDevice.Viewport.Width/2 - 20, 0), 
+                new Vector2(game.GraphicsDevice.Viewport.Width/2 - 50, 0), 
                 Color.White, 
                 game.Content.Load<SpriteFont>("Fonts/font"), 
                 true));
