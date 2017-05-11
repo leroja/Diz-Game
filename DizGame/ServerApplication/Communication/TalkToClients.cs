@@ -78,7 +78,7 @@ namespace ServerApplication.Communication
 
             NetOutgoingMessage outMessage = server.CreateMessage();
 
-            ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateMap);
+            ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
 
             outMessage.Write(messageArray);
 

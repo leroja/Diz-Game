@@ -50,6 +50,7 @@
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Communication\TalkToServer.cs" />
     <Compile Include="Source\Components\BulletComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Components\TestComponent.cs" />

@@ -24,16 +24,16 @@ namespace GameEngine.Source.Enums
         //Server to Client
 
         //Create objects
-        CreatedPlayer,    //start positions
-        CreateMap,        //Used instead for createboulder etc (they are included in the vector as positions).
+        CreatePlayer,    //start positions
+        CreateInitialGameState,        //Used instead for createboulder etc (they are included in the vector as positions).
         //CreatedBoulder, //Vector with positions instead e.g 10 first positions are boulders 
         //CreatedTree,    //next 20 are trees and
         //CreatedHouse,   // the rest are houses.
-        CreatedBullet,
+        CreateBullet,
 
 
         //Moved objects
-        MovedEntity,
+        MoveEntity,
 
     }
 }
