@@ -58,7 +58,7 @@ namespace DizGame.Source.AI_States
             {
                 var rot = GetUpwardsRotationToClosestEnenmy(AIComp);
 
-                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 10, transformComp.Rotation + new Vector3(rot, 0, 0));
+                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 10, transformComp.Rotation + new Vector3(rot, 0, 0));
                 time = AIComp.ShootingCooldown;
             }
 
