@@ -51,7 +51,8 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
-            
+            SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
+
             string[] itemNames = {"One Player Game", "Multiplayer Game", "Settings", "Whatever"};
             ItemNames = itemNames;
 
@@ -74,11 +75,15 @@ namespace DizGame.Source.GameStates
                 y += 40;
             }
         }
-
+        /// <summary>
+        /// Removes all the entities created in this state which is not needed anymore.
+        /// </summary>
         public override void Exiting()
         {
-            //TODO: this function should remove the entities which represents the menu.
-            throw new NotImplementedException();
+            foreach(int id in GameStateEntities)
+            {
+                ComponentManager.Instance.RemoveEntity(id);
+            }
         }
 
         public override void Obscuring()
@@ -147,6 +152,9 @@ namespace DizGame.Source.GameStates
                 {
                     case 0:
                         //TODO: Create new gamestates for the appropriate states we wanna enter for each of the options here.
+                        PlayGameState newGame = new PlayGameState();
+                        GameStateManager.Instance.Pop();
+                        GameStateManager.Instance.Push(newGame);
                         break;
                     case 1:
                         break;

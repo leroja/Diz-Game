@@ -60,9 +60,11 @@
     <Compile Include="Source\Components\HealthComponent.cs" />
     <Compile Include="Source\Components\AmmunitionComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
+    <Compile Include="Source\Components\ScoreComponent.cs" />
     <Compile Include="Source\Components\TestComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
+    <Compile Include="Source\GameStates\PlayGameState.cs" />
     <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
@@ -136,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\bullet\" />
+    <Folder Include="Content\Characters\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

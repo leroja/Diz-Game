@@ -69,7 +69,7 @@ namespace GameEngine
             SystemManager.Instance.GameTime = gameTime;
             SystemManager.Instance.RunUpdateSystems();
             //Todo: uncomment the line below whenever there is support for gamestates in the game.
-            //GameStateManager.Instance.UpdateGameState();
+            GameStateManager.Instance.UpdateGameState();
 
             base.Update(gameTime);
         }

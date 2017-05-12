@@ -23,7 +23,7 @@ namespace DizGame
 
         private static Game instance;
 
-        public static EntityTracingSystem EntityTracingSystem { get; private set; }
+        
 
         public GameOne()
         {
@@ -52,40 +52,20 @@ namespace DizGame
         protected override void Initialize()
         {
             Device = Graphics.GraphicsDevice;
-            // test
-            //Graphics.PreferredBackBufferWidth = 1280;
-            //Graphics.PreferredBackBufferHeight = 720;
+
             Graphics.PreferredBackBufferHeight = Device.DisplayMode.Height / 2;
             Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
             Graphics.ApplyChanges();
-            //Graphics.IsFullScreen = true;
+
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+            SystemManager.Instance.SpriteBatch = SpriteBatch;
 
             client.DiscoverLocalPeers();
-            EntityFactory entf = EntityFactory.Instance;
 
+            MainMenu startState = new MainMenu();
+            GameStateManager.Instance.Push(startState);
+            
 
-            entf.CreateAI("Dude", new Vector3(30, 45, -10), 25, 100, 300, 5f, MathHelper.Pi);
-            entf.CreateAI("Dude", new Vector3(40, 45, -10), 25, 100, 300, 3.5f, MathHelper.Pi);
-            entf.CreateAI("Dude", new Vector3(50, 45, -10), 25, 100, 300, 2f, MathHelper.Pi);
-            var idC = EntityFactory.Instance.CreateDude();
-
-            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 25, 25));
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 0, 25));
-            //entf.AddPOVCamToEntity(idC);
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 0, 2));
-
-            entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
-
-            entf.MakeMap(10, 100);
-
-            entf.CreateHud(new Vector2(30, GraphicsDevice.Viewport.Height-50), 
-                new Vector2(GraphicsDevice.Viewport.Width / 10, GraphicsDevice.Viewport.Height - 50), 
-                new Vector2(0, 0), new List<Vector2>());
-            InitializeSystems(entf);
 
             base.Initialize();
         }
@@ -96,40 +76,39 @@ namespace DizGame
         /// <param name="entf"></param>
         private void InitializeSystems(EntityFactory entf)
         {
-            SystemManager.Instance.AddSystem(new WorldSystem(this));
-            //entf.CreateHeightMap("heightmap", "BetterGrass");
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
+            //SystemManager.Instance.AddSystem(new WorldSystem(this));
+            ////entf.CreateHeightMap("heightmap", "BetterGrass");
+            //SystemManager.Instance.AddSystem(new TransformSystem());
+            //SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
 
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            SystemManager.Instance.AddSystem(new ModelSystem());
-            SystemManager.Instance.AddSystem(new KeyBoardSystem());
-            SystemManager.Instance.AddSystem(new MovingSystem());
-            SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem());
-            SystemManager.Instance.AddSystem(new EnvironmentSystem());
-            SystemManager.Instance.AddSystem(new MouseSystem());
-            SystemManager.Instance.AddSystem(new BulletSystem());
-            SystemManager.Instance.AddSystem(new PlayerSystem());
+            //SystemManager.Instance.AddSystem(new TransformSystem());
+            //SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
+            //SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
+            //SystemManager.Instance.AddSystem(new TransformSystem());
+            //SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
+            //SystemManager.Instance.AddSystem(new ModelSystem());
+            //SystemManager.Instance.AddSystem(new KeyBoardSystem());
+            //SystemManager.Instance.AddSystem(new MovingSystem());
+            //SystemManager.Instance.AddSystem(new CameraSystem());
+            //SystemManager.Instance.AddSystem(new PhysicsSystem());
+            //SystemManager.Instance.AddSystem(new EnvironmentSystem());
+            //SystemManager.Instance.AddSystem(new MouseSystem());
+            //SystemManager.Instance.AddSystem(new BulletSystem());
+            //SystemManager.Instance.AddSystem(new PlayerSystem());
 
-            SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
-            SystemManager.Instance.AddSystem(new AnimationSystem());
-            SystemManager.Instance.AddSystem(new AISystem());
-            SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
-            SystemManager.Instance.AddSystem(new _2DSystem(SpriteBatch));
+            //SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
+            //SystemManager.Instance.AddSystem(new AnimationSystem());
+            //SystemManager.Instance.AddSystem(new AISystem());
+            
+            //SystemManager.Instance.AddSystem(new _2DSystem(SpriteBatch));
 
-            EntityTracingSystem = new EntityTracingSystem();
-            EntityTracingSystem.RecordInitialEntities();
-            SystemManager.Instance.AddSystem(EntityTracingSystem);
+            //EntityTracingSystem = new EntityTracingSystem();
+            //EntityTracingSystem.RecordInitialEntities();
+            //SystemManager.Instance.AddSystem(EntityTracingSystem);
 
             //Uncoment the two rows below to watch the gamemenu, you might wanna comment the other
             //stuffs before doing that
-            //MainMenu startState = new MainMenu();
-            //GameStateManager.Instance.Push(startState);
+            
 
 
         }
