@@ -37,10 +37,7 @@ namespace DizGame.Source.Systems
                 if (curRange > bulletComponent.MaxRange)
                 {
                     toDelete.Add(id);
-                }
-
-                // Todo, temp
-                //transformComp.Position += transformComp.Forward *(float)10 *(float)gameTime.ElapsedGameTime.TotalSeconds;
+                }                
             }
 
             foreach (var id in toDelete)

@@ -27,10 +27,15 @@ namespace DizGame.Source.Systems
 
             foreach (var EntId in AIIds)
             {
+
                 var AIComponent = ComponentManager.GetEntityComponent<AIComponent>(EntId);
                 AIComponent.CurrentBehaivior.FindClosestEnemy(AIComponent);
-                var test = AIComponent.Bounds;
+                
+                //Console.WriteLine(AIComponent.CurrentBehaivior.ToString());
+
                 AIComponent.CurrentBehaivior.Update(AIComponent, gameTime);
+
+                //Console.WriteLine(AIComponent.CurrentBehaivior.ToString());
 
             }
         }

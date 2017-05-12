@@ -15,6 +15,23 @@ namespace DizGame.Source.AI_States
     /// </summary>
     public class AttackingBehavior : AiBehavior
     {
+        private float time;
+        private float coolDown;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public AttackingBehavior(float coolDown)
+        {
+            this.time = coolDown;
+            this.coolDown = coolDown;
+        }
+
+        public override void OnEnter(Vector3 rotation)
+        {
+            this.time = coolDown;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -22,14 +39,26 @@ namespace DizGame.Source.AI_States
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-            bool fire = true;
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
-            if (fire && worldComp.Day % 2 == 0 && worldComp.Day != 0)
+            time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+
+
+            transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
+
+            
+            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
             {
-                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200);
+                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
+                time = AIComp.ShootingCooldown;
+            }
+
+            if (worldComp.Day % 2 != 0 || worldComp.Day == 0)
+            {
+                AIComp.ChangeBehavior("Evade", transformComp.Rotation);
             }
         }
     }
