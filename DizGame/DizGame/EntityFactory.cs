@@ -61,7 +61,8 @@ namespace DizGame
                 { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
-                { "Dude", Content.Load<Model>("Dude/dude")}
+                { "Dude", Content.Load<Model>("Dude/dude")},
+                { "Girl", Content.Load<Model>("Characters/MediGirl2")},
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {

@@ -49,31 +49,31 @@ namespace GameEngine.Source.Components
 
         #region Public Properties
         /// <summary>
-        /// 
+        /// Field if view
         /// </summary>
         public float FieldOfView { get; set; }
         /// <summary>
-        /// 
+        /// Aspect ratio (Screen Height / Screen Width)
         /// </summary>
         public float AspectRatio { get; set; }
         /// <summary>
-        /// 
+        /// Near plane
         /// </summary>
         public float NearPlane { get; set; }
         /// <summary>
-        /// 
+        /// Far plane
         /// </summary>
         public float FarPlane { get; set; }
         /// <summary>
-        /// 
+        /// Camera view
         /// </summary>
         public Matrix View { get; set; }
         /// <summary>
-        /// 
+        /// Camera Projection
         /// </summary>
         public Matrix Projection { get; set; }
         /// <summary>
-        /// 
+        /// What the camera looks at
         /// </summary>
         public Vector3 LookAt { get; set; }
         /// <summary>
@@ -96,7 +96,6 @@ namespace GameEngine.Source.Components
         /// </summary>
         public CameraComponent(CameraType type)
         {
-
             FieldOfView = DEFAULT_FOV;
             AspectRatio = DEFAULT_ARATIO;
             NearPlane = DEFAULT_ZNEAR;
@@ -104,7 +103,7 @@ namespace GameEngine.Source.Components
 
             View = Matrix.Identity;
             Projection = Matrix.Identity;
-            this.CameraType = type;
+            CameraType = type;
 
             LookAt = Vector3.Zero;
             if (type == CameraType.Chase)
