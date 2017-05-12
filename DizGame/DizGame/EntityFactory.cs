@@ -62,7 +62,6 @@ namespace DizGame
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
                 { "Dude", Content.Load<Model>("Dude/dude")},
-                { "Girl", Content.Load<Model>("Characters/MediGirl2")},
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -467,7 +466,7 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new AIComponent(hysteria, BoundRec, DirectionDuration, rotation, 0.7f, 1f, 0.5f, 50, 10),
+                new AIComponent(hysteria, BoundRec, DirectionDuration, rotation, 0.7f, 1f, 0.5f, 50, 50),
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);
