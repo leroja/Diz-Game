@@ -1,9 +1,11 @@
 ﻿using DizGame.Source.Systems;
+using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +14,30 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.GameStates
 {
+    /// <summary>
+    /// PlayGameState is a state which represents the basic gameplay logic.
+    /// </summary>
     public class PlayGameState : GameState
     {
         #region Properties
+        /// <summary>
+        /// List with ints representing the entityid's 'active' in this current state
+        /// </summary>
         public override List<int> GameStateEntities { get; }
-        public static EntityTracingSystem EntityTracingSystem { get; private set; }
+        private static EntityTracingSystem EntityTracingSystem { get; set; }
+        private bool multiplayerGame;
+
         #endregion
 
         /// <summary>
         /// Basic constructor for the PlayGame-state 
         /// </summary>
-        public PlayGameState()
+        /// <param name="multiplayerGame">a boolean variable, should be set to true if the user 
+        /// wants to start a multiplayer game or false if he/she wants to play against AI</param>
+        public PlayGameState(bool multiplayerGame)
         {
             GameStateEntities = new List<int>();
+            this.multiplayerGame = multiplayerGame;
         }
 
         /// <summary>
@@ -33,35 +46,17 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
-            EntityFactory entf = EntityFactory.Instance;
-            
-            entf.CreateAI("Dude", new Vector3(30, 45, -80), 25, 300, 300, 5f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f);
-            entf.CreateAI("Dude", new Vector3(65, 45, -10), 25, 300, 300, 3.5f, MathHelper.Pi, 0.5f, 50f, 25f, 0.7f, 1f);
-            entf.CreateAI("Dude", new Vector3(135, 45, -50), 25, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f);
-            var idC = EntityFactory.Instance.CreateDude();
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
-            //Add entity for the dude to this state
-            GameStateEntities.Add(idC);
-
-            int heightmapID = entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
-            //Add hightmap entityid to this state
-            GameStateEntities.Add(heightmapID);
-
-            //Add all static objects to this state i.e rocks, houses etc.
-            List<int> entityIdList = entf.MakeMap(10, 100);
-            GameStateEntities.AddRange(entityIdList);
-
             InitializeSystems();
 
-            
-            int HudID = entf.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
-                new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
-                new Vector2(0, 0), new List<Vector2>());
-
-            //Add HUD id to this state
-            GameStateEntities.Add(HudID);
-
-           
+            if (multiplayerGame)
+            {
+                CreateEntitiesForMultiplayerGame();
+            }
+            else
+            {
+                CreateEntitiesForSinglePlayerGame();
+            }
+                
         }
 
         /// <summary>
@@ -70,23 +65,62 @@ namespace DizGame.Source.GameStates
         public override void Exiting()
         {
             //TODO: observera att vi kanske inte vill ta bort precis alla entiteter i detta statet,
-            //Tex vill vi kanske ha kvar spelarna för att göra typ en "score-screen" i slutet.
+            //Tex vill vi kanske ha kvar spelarna + tillhörande componenter för att göra typ en "score-screen" i slutet.
             foreach (int entity in GameStateEntities)
                 ComponentManager.Instance.RemoveEntity(entity);
         }
 
+        /// <summary>
+        /// Hides everything visable in the state, except the time and the "hud", dunno if
+        /// we want to hide that. Since that incase the state is obscured, we dont really "want to leave it"
+        /// we might just wanna check our inventory or such. Needs more adjusting if we want to manage a paused state
+        /// only in the single player mode that is.
+        /// </summary>
         public override void Obscuring()
         {
-            throw new NotImplementedException();
-        }
+            foreach(int entityId in GameStateEntities)
+            {
+                ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityId);
+                HeightmapComponentTexture hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(entityId);
+                if (mc != null)
+                    mc.IsVisable = false;
+                if (hmct != null)
+                    hmct.IsVisable = false;
 
+                EntityFactory.Instance.VisableBullets = false;
+            }
+        }
+        /// <summary>
+        /// Method to show everything again that's been hidden incase of an obscuring state
+        /// might also need some adjustment if we wanna handle a paused state, in single player mode that is.
+        /// </summary>
         public override void Revealed()
         {
-            throw new NotImplementedException();
+            foreach (int entityId in GameStateEntities)
+            {
+                ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityId);
+                HeightmapComponentTexture hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(entityId);
+                if (mc != null)
+                    mc.IsVisable = true;
+                if (hmct != null)
+                    hmct.IsVisable = true;
+
+                EntityFactory.Instance.VisableBullets = true;
+                
+            }
         }
 
         public override void Update()
         {
+            //Bara för att testa så att obscuring och revealed metoderna fungerar.
+            //Allting döljs men det återstår väl o se om tex AI:n fortfarande "rör" sig/och kan
+            //attakera under tiden som allting är "dolt" eller vad man ska säga, för updatesen bör fortfarande
+            //Göras som vanligt bara att modell-systemet inte ritar ut modellerna liksom
+            //KeyboardState state = Keyboard.GetState();
+            //if (state.IsKeyDown(Keys.B))
+            //    Obscuring();
+            //if (state.IsKeyDown(Keys.V))
+            //    Revealed();
         }
 
         /// <summary>
@@ -127,9 +161,52 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
+        }
+        /// <summary>
+        /// Function for initializing the entities which are needed for a single player game 
+        /// against AI
+        /// </summary>
+        private void CreateEntitiesForSinglePlayerGame()
+        {
+            EntityFactory entf = EntityFactory.Instance;
+            List<int> aiEntityList = new List<int>();
 
+            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(30, 45, -80), 25, 300, 300, 5f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f));
+            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(65, 45, -10), 25, 300, 300, 3.5f, MathHelper.Pi, 0.5f, 50f, 25f, 0.7f, 1f));
+            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(135, 45, -50), 25, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f));
+            GameStateEntities.AddRange(aiEntityList);
 
+            var idC = EntityFactory.Instance.CreateDude();
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
+            //Add entity for the dude to this state
+            GameStateEntities.Add(idC);
 
+            int heightmapID = entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
+            //Add hightmap entityid to this state
+            GameStateEntities.Add(heightmapID);
+
+            //Add all static objects to this state i.e rocks, houses etc.
+            List<int> entityIdList = entf.MakeMap(10, 100);
+            GameStateEntities.AddRange(entityIdList);
+            
+
+            int HudID = entf.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
+                new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
+                new Vector2(0, 0), new List<Vector2>());
+
+            //Add HUD id to this state
+            GameStateEntities.Add(HudID);
+
+        }
+        /// <summary>
+        /// Function for initializing all the entities which are needed for a 
+        /// multiplayer game.
+        /// </summary>
+        private void CreateEntitiesForMultiplayerGame()
+        {
+            //TODO: initziera alla entiteter som krävs för ett multiplayer game, eventuellt om vi 
+            //"Redirictar" till en lobby eftersom att vi behöver hitta alla klienter och så först, kanske borde skapa ett helt nytt state för detta ändå?
+            throw new NotImplementedException();
         }
     }
 }

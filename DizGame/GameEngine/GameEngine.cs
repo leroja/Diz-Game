@@ -66,7 +66,7 @@ namespace GameEngine
         protected override void Update(GameTime gameTime)
         {
             SystemManager.Instance.RunUpdateSystems(gameTime);
-            //Todo: uncomment the line below whenever there is support for gamestates in the game.
+           
             GameStateManager.Instance.UpdateGameState();
 
             base.Update(gameTime);

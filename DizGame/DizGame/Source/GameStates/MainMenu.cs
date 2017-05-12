@@ -164,12 +164,14 @@ namespace DizGame.Source.GameStates
                 switch (SelectedItem)
                 {
                     case 0:
-                        //TODO: Create new gamestates for the appropriate states we wanna enter for each of the options here.
-                        PlayGameState newGame = new PlayGameState();
+                        PlayGameState newGame = new PlayGameState(false);
                         GameStateManager.Instance.Pop();
                         GameStateManager.Instance.Push(newGame);
                         break;
                     case 1:
+                        PlayGameState newMultGame = new PlayGameState(true);
+                        GameStateManager.Instance.Pop();
+                        GameStateManager.Instance.Push(newMultGame);
                         break;
                     case 2:
                         break;

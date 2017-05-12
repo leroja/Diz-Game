@@ -30,7 +30,13 @@ namespace GameEngine.Source.Components
         /// A Bool that says that the model is static or not
         /// </summary>
         public bool IsStatic { get; set; }
+
+        public bool IsVisable { get; set; }
         #endregion Public Properties
+
+
+
+
         /// <summary>
         /// Constructor which takes model as parameter
         /// </summary>
@@ -38,7 +44,8 @@ namespace GameEngine.Source.Components
         public ModelComponent(Model model)
         {
             Model = model;
-            
+            IsVisable = true;
         }
+
     }
 }

@@ -18,6 +18,7 @@ namespace DizGame.Source.AI_States
         private float time;
         private float coolDown;
 
+
         /// <summary>
         /// 
         /// </summary>
@@ -46,6 +47,8 @@ namespace DizGame.Source.AI_States
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+            
+            
 
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             
@@ -53,8 +56,20 @@ namespace DizGame.Source.AI_States
             
             if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
             {
-                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
+                int bulletid = EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
                 time = AIComp.ShootingCooldown;
+
+                if (EntityFactory.Instance.VisableBullets)
+                {
+                    ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(bulletid);
+                    mc.IsVisable = true;
+                }
+                else
+                {
+                    ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(bulletid);
+                    mc.IsVisable = false;
+                }
+
             }
 
             if (worldComp.Day % 2 != 0 || worldComp.Day == 0)

@@ -39,28 +39,32 @@ namespace GameEngine.Source.Systems
             foreach (int heightMapId in ents)
             {
                 var heightMap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(heightMapId);
-                var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(heightMapId);
-
-                foreach (var chunk in heightMap.HeightMapChunks)
+                if (heightMap.IsVisable)
                 {
-                    chunk.Effect.Projection = cameraComp.Projection;
-                    chunk.Effect.View = cameraComp.View;
-                    chunk.Effect.World = transformComp.ObjectMatrix * Matrix.CreateTranslation(chunk.OffsetPosition);
+                    var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(heightMapId);
 
-
-                    BoundingBox box = ConvertBoundingBoxToWorldCoords(chunk.BoundingBox, chunk.Effect.World);
-
-                    if (box.Intersects(cameraComp.CameraFrustrum))
+                    foreach (var chunk in heightMap.HeightMapChunks)
                     {
-                        device.Indices = chunk.IndexBuffer;
-                        device.SetVertexBuffer(chunk.VertexBuffer);
-                        foreach (EffectPass p in chunk.Effect.CurrentTechnique.Passes)
+                        chunk.Effect.Projection = cameraComp.Projection;
+                        chunk.Effect.View = cameraComp.View;
+                        chunk.Effect.World = transformComp.ObjectMatrix * Matrix.CreateTranslation(chunk.OffsetPosition);
+
+
+                        BoundingBox box = ConvertBoundingBoxToWorldCoords(chunk.BoundingBox, chunk.Effect.World);
+
+                        if (box.Intersects(cameraComp.CameraFrustrum))
                         {
-                            p.Apply();
-                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, chunk.IndicesDiv3);
+                            device.Indices = chunk.IndexBuffer;
+                            device.SetVertexBuffer(chunk.VertexBuffer);
+                            foreach (EffectPass p in chunk.Effect.CurrentTechnique.Passes)
+                            {
+                                p.Apply();
+                                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, chunk.IndicesDiv3);
+                            }
                         }
                     }
                 }
+                
             }
         }
         

@@ -46,41 +46,43 @@ namespace GameEngine.Source.Systems
         {
 
             ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
-            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-
-            if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(entityID))
+            if (model.IsVisable)
             {
-                if (defaultCam.CameraFrustrum.Intersects(model.BoundingSphere))
+                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+
+                if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(entityID))
                 {
-                    if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
-                        model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
-
-                    model.Model.CopyAbsoluteBoneTransformsTo(model.MeshWorldMatrices);
-                    foreach (ModelMesh mesh in model.Model.Meshes)
+                    if (defaultCam.CameraFrustrum.Intersects(model.BoundingSphere))
                     {
-                        foreach (BasicEffect effect in mesh.Effects)
+                        if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
+                            model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
+
+                        model.Model.CopyAbsoluteBoneTransformsTo(model.MeshWorldMatrices);
+                        foreach (ModelMesh mesh in model.Model.Meshes)
                         {
-                            effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
-
-                            effect.View = defaultCam.View;
-                            effect.Projection = defaultCam.Projection;
-
-                            //effect.EnableDefaultLighting();
-                            effect.PreferPerPixelLighting = true;
-                            foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                            foreach (BasicEffect effect in mesh.Effects)
                             {
-                                pass.Apply();
-                                mesh.Draw();
+                                effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
+
+                                effect.View = defaultCam.View;
+                                effect.Projection = defaultCam.Projection;
+
+                                //effect.EnableDefaultLighting();
+                                effect.PreferPerPixelLighting = true;
+                                foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                                {
+                                    pass.Apply();
+                                    mesh.Draw();
+                                }
                             }
                         }
                     }
                 }
+                else
+                {
+                    DrawAnimation(entityID, model);
+                }
             }
-            else
-            {
-                DrawAnimation(entityID, model);
-            }
-
             
         }
 

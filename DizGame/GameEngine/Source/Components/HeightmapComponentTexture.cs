@@ -32,12 +32,16 @@ namespace GameEngine.Source.Components
         /// </summary>
         public int Height { get; set; }
 
+        public bool IsVisable { get; set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
         public HeightmapComponentTexture()
         {
             HeightMapChunks = new List<HeightMapChunk>();
+            IsVisable = true;
         }
+
     }
 }

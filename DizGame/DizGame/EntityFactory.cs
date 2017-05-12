@@ -29,6 +29,7 @@ namespace DizGame
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
+        public bool VisableBullets { get; set; }
 
         /// <summary>
         /// The instance of the Entity Factory
@@ -51,7 +52,7 @@ namespace DizGame
         /// </summary>
         private EntityFactory()
         {
-
+            VisableBullets = true;
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             CreateWorldComp();
             this.Content = GameOne.Instance.Content;
@@ -515,7 +516,7 @@ namespace DizGame
             {
                 new TextComponent(health.Health.ToString(), healthPosition, Color.Pink, font, true), // health
                 new TextComponent(ammo.ActiveMagazine.Item2 + "/" + ammo.ActiveMagazine.Item3 + " " + ammo.ActiveMagazine.Item1 + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.DeepPink, font, true), // ammo
-                // TODO: en player remaining vet inte om vi skall göra en komponent för det? :)
+                // TODO: en player remaining vet inte om vi skall göra en komponent för det? :) <- Det är väl bara att plocka ut typ alla "health component" o kolla hur många som har mer än 0 i hälsa?
             };
             List<string> names = new List<string>
             {
