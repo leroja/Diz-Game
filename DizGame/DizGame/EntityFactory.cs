@@ -513,8 +513,8 @@ namespace DizGame
 
             List<TextComponent> textComponents = new List<TextComponent>
             {
-                new TextComponent(health.Health.ToString(), healthPosition, Color.Green, font, true), // health
-                new TextComponent(ammo.ActiveMagazine.Item2 + "/" + ammo.ActiveMagazine.Item3 + " " + ammo.ActiveMagazine.Item1 + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.Black, font, true), // ammo
+                new TextComponent(health.Health.ToString(), healthPosition, Color.Pink, font, true), // health
+                new TextComponent(ammo.ActiveMagazine.Item2 + "/" + ammo.ActiveMagazine.Item3 + " " + ammo.ActiveMagazine.Item1 + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.DeepPink, font, true), // ammo
                 // TODO: en player remaining vet inte om vi skall göra en komponent för det? :)
             };
             List<string> names = new List<string>

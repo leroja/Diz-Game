@@ -87,13 +87,13 @@ namespace GameEngine.Source.Systems
         private void DrawAnimation(int entityID, ModelComponent model)
         {
             AnimationComponent anm = ComponentManager.GetEntityComponent<AnimationComponent>(entityID);
-            Matrix[] bones = anm.skinTransforms;
+            Matrix[] bones = anm.SkinTransforms;
 
             foreach (ModelMesh mesh in model.Model.Meshes)
             {
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
-                    effect.SetBoneTransforms(anm.skinTransforms);
+                    effect.SetBoneTransforms(anm.SkinTransforms);
 
                     effect.View = defaultCam.View;
                     effect.Projection = defaultCam.Projection;
