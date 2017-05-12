@@ -30,7 +30,10 @@ namespace DizGame
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
 
-
+        /// <summary>
+        /// Instance for the entity factory cause it's manipulated through 
+        /// multiple sources.
+        /// </summary>
         public static EntityFactory Instance
         {
             get
