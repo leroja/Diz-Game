@@ -35,9 +35,9 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory entf = EntityFactory.Instance;
             
-            entf.CreateAI("Dude", new Vector3(30, 45, -10), 25, 100, 300, 5f, MathHelper.Pi);
-            entf.CreateAI("Dude", new Vector3(40, 45, -10), 25, 100, 300, 3.5f, MathHelper.Pi);
-            entf.CreateAI("Dude", new Vector3(50, 45, -10), 25, 100, 300, 2f, MathHelper.Pi);
+            entf.CreateAI("Dude", new Vector3(30, 45, -80), 25, 300, 300, 5f, MathHelper.Pi);
+            entf.CreateAI("Dude", new Vector3(65, 45, -10), 25, 300, 300, 3.5f, MathHelper.Pi);
+            entf.CreateAI("Dude", new Vector3(135, 45, -50), 25, 300, 300, 2f, MathHelper.Pi);
             var idC = EntityFactory.Instance.CreateDude();
             entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
             //Add entity for the dude to this state
