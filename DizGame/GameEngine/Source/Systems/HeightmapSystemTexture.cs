@@ -39,7 +39,7 @@ namespace GameEngine.Source.Systems
             foreach (int heightMapId in ents)
             {
                 var heightMap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(heightMapId);
-                if (heightMap.IsVisable)
+                if (heightMap.IsVisible)
                 {
                     var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(heightMapId);
 

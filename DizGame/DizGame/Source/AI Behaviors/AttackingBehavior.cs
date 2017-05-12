@@ -54,28 +54,18 @@ namespace DizGame.Source.AI_States
             
             transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
             
-            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
+            if (/*worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0*/ true)
             {
-                int bulletid = EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
+                var rot = GetUpwardsRotationToClosestEnenmy(AIComp);
+
+                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 10, transformComp.Rotation + new Vector3(rot, 0, 0));
                 time = AIComp.ShootingCooldown;
-
-                if (EntityFactory.Instance.VisableBullets)
-                {
-                    ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(bulletid);
-                    mc.IsVisable = true;
-                }
-                else
-                {
-                    ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(bulletid);
-                    mc.IsVisable = false;
-                }
-
             }
 
-            if (worldComp.Day % 2 != 0 || worldComp.Day == 0)
-            {
-                AIComp.ChangeBehavior("Evade", transformComp.Rotation);
-            }
+            //if (worldComp.Day % 2 != 0 || worldComp.Day == 0)
+            //{
+            //    AIComp.ChangeBehavior("Evade", transformComp.Rotation);
+            //}
         }
     }
 }

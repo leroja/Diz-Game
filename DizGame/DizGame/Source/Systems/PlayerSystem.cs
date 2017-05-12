@@ -52,17 +52,7 @@ namespace DizGame.Source.Systems
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 2 == 0 && worldComp.Day != 0)
                 {
-                    int bulletID = entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
-                    if (entFactory.VisableBullets)
-                    {
-                        ModelComponent mc = ComponentManager.GetEntityComponent<ModelComponent>(bulletID);
-                        mc.IsVisable = true;
-                    }
-                    else
-                    {
-                        ModelComponent mc = ComponentManager.GetEntityComponent<ModelComponent>(bulletID);
-                        mc.IsVisable = false;
-                    }
+                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
                 }
             }
         }

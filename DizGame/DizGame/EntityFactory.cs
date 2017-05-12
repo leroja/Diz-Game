@@ -29,7 +29,7 @@ namespace DizGame
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
-        public bool VisableBullets { get; set; }
+        public bool VisibleBullets { get; set; }
 
         /// <summary>
         /// The instance of the Entity Factory
@@ -52,7 +52,7 @@ namespace DizGame
         /// </summary>
         private EntityFactory()
         {
-            VisableBullets = true;
+            VisibleBullets = true;
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             CreateWorldComp();
             this.Content = GameOne.Instance.Content;
@@ -352,8 +352,7 @@ namespace DizGame
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
-
-        // todo fix initial roation
+        
         // todo write comment
         /// <summary>
         /// Creates an bullet .... 
@@ -367,7 +366,7 @@ namespace DizGame
         /// <param name="initialVelocity"></param>
         /// <param name="rotation"></param>
         /// <returns> The enityId of the bullet in case someone would need it sometime </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity, Vector3 rotation)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity, Vector3 rotation)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -379,7 +378,9 @@ namespace DizGame
                 {
                     Rotation = rotation,
                 },
-                new  ModelComponent(model),
+                new  ModelComponent(model){
+                    IsVisible = VisibleBullets,
+                },
                 
                 new BulletComponent(){
                     StartPos = pos,
@@ -396,8 +397,9 @@ namespace DizGame
                     GravityType = GravityType.World,
                     ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
                     PhysicsType = PhysicsType.Projectiles,
-                    InitialVelocity = Matrix.CreateFromQuaternion(Orientation).Forward * initialVelocity,
-                },
+                    
+                    InitialVelocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity,
+                }, 
             };
 
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
@@ -423,14 +425,14 @@ namespace DizGame
 
           
         }
-
-        // todo finish comment
+        
         /// <summary>
         /// Creates an Height based on the specified heightMap
         /// </summary>
         /// <param name="heightmap"> Name of the heightMap texture that shall be used to build the hieghtMap </param>
-        /// <param name="heightTexture"> ... </param>
-        /// <param name="numberOfChunksPerSide"> .... eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
+        /// <param name="heightTexture"> the texture that each chunk of the height map will have </param>
+        /// <param name="numberOfChunksPerSide"> number of chunks per side
+        /// eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
         public int CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
         {
             int HeightmapEnt = ComponentManager.Instance.CreateID();
@@ -445,7 +447,7 @@ namespace DizGame
             return HeightmapEnt;
         }
 
-        // todo
+        // todo write comment
         /// <summary>
         /// 
         /// </summary>

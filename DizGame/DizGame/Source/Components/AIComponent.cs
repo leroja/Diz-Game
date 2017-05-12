@@ -81,7 +81,7 @@ namespace DizGame.Source.Components
                 {"Evade", new EvadeBehavior() },
                 {"Attacking", new AttackingBehavior(ShootingCooldown) }
             };
-            this.CurrentBehaivior = AiBehaviors["Chase"];
+            this.CurrentBehaivior = AiBehaviors["Attacking"];
         }
 
 

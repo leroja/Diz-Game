@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.AI_States
 {
+    // todo reerite all comments on all behaviors
     /// <summary>
     /// 
     /// </summary>
@@ -162,5 +163,22 @@ namespace DizGame.Source.AI_States
             }
             return rotation;
         }
+
+        // todo funkar inte riktigt
+        public float GetUpwardsRotationToClosestEnenmy(AIComponent AIComp)
+        {
+            var ClosestEnemyTransFormComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy);
+            var AITransformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+
+            float x = ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
+            //float x = ClosestEnemyTransFormComp.Position.Z - AITransformComp.Position.Z + ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
+            //float x = 0;
+            float y = ClosestEnemyTransFormComp.Position.Y - AITransformComp.Position.Y;
+
+            float desiredAngle = (float)Math.Atan2(y, x);
+
+            return WrapAngle(desiredAngle);
+        }
+
     }
 }

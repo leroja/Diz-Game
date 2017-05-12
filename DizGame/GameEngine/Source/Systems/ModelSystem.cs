@@ -46,7 +46,7 @@ namespace GameEngine.Source.Systems
         {
 
             ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
-            if (model.IsVisable)
+            if (model.IsVisible)
             {
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
 

@@ -71,7 +71,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Hides everything visable in the state, except the time and the "hud", dunno if
+        /// Hides everything visible in the state, except the time and the "hud", dunno if
         /// we want to hide that. Since that incase the state is obscured, we dont really "want to leave it"
         /// we might just wanna check our inventory or such. Needs more adjusting if we want to manage a paused state
         /// only in the single player mode that is.
@@ -83,11 +83,11 @@ namespace DizGame.Source.GameStates
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityId);
                 HeightmapComponentTexture hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(entityId);
                 if (mc != null)
-                    mc.IsVisable = false;
+                    mc.IsVisible = false;
                 if (hmct != null)
-                    hmct.IsVisable = false;
+                    hmct.IsVisible = false;
 
-                EntityFactory.Instance.VisableBullets = false;
+                EntityFactory.Instance.VisibleBullets = false;
             }
         }
         /// <summary>
@@ -101,11 +101,11 @@ namespace DizGame.Source.GameStates
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityId);
                 HeightmapComponentTexture hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(entityId);
                 if (mc != null)
-                    mc.IsVisable = true;
+                    mc.IsVisible = true;
                 if (hmct != null)
-                    hmct.IsVisable = true;
+                    hmct.IsVisible = true;
 
-                EntityFactory.Instance.VisableBullets = true;
+                EntityFactory.Instance.VisibleBullets = true;
                 
             }
         }
@@ -171,9 +171,9 @@ namespace DizGame.Source.GameStates
             EntityFactory entf = EntityFactory.Instance;
             List<int> aiEntityList = new List<int>();
 
-            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(30, 45, -80), 25, 300, 300, 5f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f));
-            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(65, 45, -10), 25, 300, 300, 3.5f, MathHelper.Pi, 0.5f, 50f, 25f, 0.7f, 1f));
-            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(135, 45, -50), 25, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f));
+            //aiEntityList.Add(entf.CreateAI("Dude", new Vector3(30, 45, -80), 25, 300, 300, 5f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f));
+            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(65, 39, -10), 25, 300, 300, 3.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f));
+            //aiEntityList.Add(entf.CreateAI("Dude", new Vector3(135, 45, -50), 25, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f));
             GameStateEntities.AddRange(aiEntityList);
 
             var idC = EntityFactory.Instance.CreateDude();

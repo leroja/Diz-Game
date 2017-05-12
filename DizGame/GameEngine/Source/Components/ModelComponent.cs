@@ -31,7 +31,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public bool IsStatic { get; set; }
 
-        public bool IsVisable { get; set; }
+        public bool IsVisible { get; set; }
         #endregion Public Properties
 
 
@@ -44,7 +44,7 @@ namespace GameEngine.Source.Components
         public ModelComponent(Model model)
         {
             Model = model;
-            IsVisable = true;
+            IsVisible = true;
         }
 
     }
