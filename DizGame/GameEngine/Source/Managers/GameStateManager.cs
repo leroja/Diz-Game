@@ -48,6 +48,7 @@ namespace GameEngine.Source.Managers
         {
             GameState previousState, removedState;
             removedState = stack.Pop();
+            removedState.Exiting();
 
             //means that there is another state on the stack waiting to be revealed again
             if (stack.Count > 0)
@@ -55,6 +56,7 @@ namespace GameEngine.Source.Managers
                 previousState = stack.Peek();
                 previousState.Revealed();
             }
+            
 
             return removedState;
 
@@ -92,8 +94,12 @@ namespace GameEngine.Source.Managers
         /// </summary>
         public void UpdateGameState()
         {
-            GameState currGameState = Peek();
-            currGameState.Update();
+            if(stack.Count != 0)
+            {
+                GameState currGameState = Peek();
+                currGameState.Update();
+            }
+            
         }
     }
 }
