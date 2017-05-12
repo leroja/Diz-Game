@@ -19,6 +19,10 @@ namespace DizGame.Source.AI_States
         private float currentTimeForRot;
         private float desiredRotation;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"> The current rotation of the AI </param>
         public override void OnEnter(Vector3 rotation)
         {
             currentTimeForRot = 0;
@@ -38,20 +42,15 @@ namespace DizGame.Source.AI_States
             var pos = transformComp.Position;
             
             var height = GetCurrentHeight(pos);
-            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (currentTimeForRot > AIComp.UpdateFrequency)
             {
                 desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
                 currentTimeForRot = 0f;
             }
-            
-            var rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
-            
 
-            transformComp.Rotation = rotation;
-            
-            transformComp.Position = t;
+            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
 
             BehaviorStuff(AIComp, transformComp);
         }

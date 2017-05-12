@@ -55,13 +55,11 @@
     <Compile Include="Source\Enums\MessageType.cs" />
     <Compile Include="Source\Enums\Element.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
-    <Compile Include="Source\HeightMapObject.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
     <Compile Include="Source\Systems\2DSystem.cs" />
     <Compile Include="Source\Systems\AnimationSystem.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
-    <Compile Include="Source\Systems\HeightMapSystem.cs" />
     <Compile Include="Source\Systems\HeightmapSystemTexture.cs" />
     <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
@@ -76,7 +74,6 @@
     <Compile Include="Source\Components\BoundingBoxComponent.cs" />
     <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />
-    <Compile Include="Source\Components\HeightMapComponent.cs" />
     <Compile Include="Source\Components\Abstract Classes\IComponent.cs" />
     <Compile Include="Source\Components\KeyBoardComponent.cs" />
     <Compile Include="Source\Components\ModelComponent.cs" />
@@ -89,11 +86,10 @@
     <Compile Include="Source\Managers\AudioManager.cs" />
     <Compile Include="Source\Enums\MaterialType.cs" />
     <Compile Include="Source\Managers\ComponentManager.cs" />
-    <Compile Include="Source\Managers\MessageManager.cs" />
     <Compile Include="Source\Managers\SystemManager.cs" />
-    <Compile Include="Source\Systems\Abstract classes\IRender.cs" />
-    <Compile Include="Source\Systems\Abstract classes\ISystem.cs" />
-    <Compile Include="Source\Systems\Abstract classes\IUpdate.cs" />
+    <Compile Include="Source\Systems\Abstract classes\Render.cs" />
+    <Compile Include="Source\Systems\Abstract classes\System.cs" />
+    <Compile Include="Source\Systems\Abstract classes\Update.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

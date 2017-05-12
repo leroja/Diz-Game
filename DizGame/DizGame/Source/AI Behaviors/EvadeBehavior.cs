@@ -15,6 +15,10 @@ namespace DizGame.Source.AI_States
     /// </summary>
     public class EvadeBehavior : AiBehavior
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"> The current rotation of the AI </param>
         public override void OnEnter(Vector3 rotation)
         {
 
@@ -27,7 +31,6 @@ namespace DizGame.Source.AI_States
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-
             // todo fix smooth rotation
 
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);

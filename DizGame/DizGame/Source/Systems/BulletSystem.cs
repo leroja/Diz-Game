@@ -10,6 +10,9 @@ using GameEngine.Source.Components;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// A system that controlls the deletion of bullets taht has exceeded their maximun range
+    /// </summary>
     public class BulletSystem : IUpdate
     {
         /// <summary>
@@ -18,7 +21,7 @@ namespace DizGame.Source.Systems
         private List<int> toDelete = new List<int>();
 
         /// <summary>
-        /// Currently this system only checks if any of the bullets have exceeded their max range
+        /// Currently this system only checks if any of the bullets have exceeded their maximum range
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)

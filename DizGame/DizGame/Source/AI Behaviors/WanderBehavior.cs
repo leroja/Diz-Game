@@ -27,6 +27,10 @@ namespace DizGame.Source.AI_States
             currentTimeForDir = 0f;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"> The current rotation of the AI </param>
         public override void OnEnter(Vector3 rotation)
         {
             currentTimeForDir = 0f;
@@ -44,16 +48,7 @@ namespace DizGame.Source.AI_States
             var pos = transformComp.Position;
             
             currentTimeForDir += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //if (currentTimeForDir > AIComp.DirectionDuration)
-            //{
-            //    var rotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
-            //    rotation /= MathHelper.TwoPi;
-            //    transformComp.Rotation += new Vector3(0, rotation, 0);
-            //    currentTimeForDir = 0f;
-            //    transformComp.Rotation = WrapAngle(transformComp.Rotation);
-            //}
-
+            
             if (currentTimeForDir > AIComp.DirectionDuration)
             {
                 desiredRotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);

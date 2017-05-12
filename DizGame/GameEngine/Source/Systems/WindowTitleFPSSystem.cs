@@ -18,6 +18,10 @@ namespace GameEngine.Source.Systems
         private TimeSpan timeSinceLastUpdate;
         private int frameCounter;
 
+        /// <summary>
+        /// Updates the FPS in the window title
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             TimeSpan elapsed = gameTime.ElapsedGameTime;
@@ -38,6 +42,10 @@ namespace GameEngine.Source.Systems
             }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="game"></param>
         public WindowTitleFPSSystem(Game game)
         {
             g = game;

@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 namespace DizGame.Source.Systems
 {
     /// <summary>
-    /// 
+    /// A system that updates various things for the players
     /// </summary>
     public class PlayerSystem : IUpdate
     {
@@ -58,7 +58,7 @@ namespace DizGame.Source.Systems
         }
 
         /// <summary>
-        /// 
+        /// Calculates the mouse delta movement And sets the mouse to be in the middle of the screen
         /// </summary>
         /// <param name="mouseComp"></param>
         private Vector2 UpdateInput(MouseComponent mouseComp)
@@ -76,10 +76,10 @@ namespace DizGame.Source.Systems
         }
 
         /// <summary>
-        /// 
+        /// A function for keeping the rotation to be between -2PI and +2PI
         /// </summary>
-        /// <param name="rotation"></param>
-        /// <returns></returns>
+        /// <param name="rotation"> The current rotation </param>
+        /// <returns> A rotation between -2PI and +2PI </returns>
         private Vector3 WrapAngle(Vector3 rotation)
         {
             while (rotation.Y < -MathHelper.Pi)

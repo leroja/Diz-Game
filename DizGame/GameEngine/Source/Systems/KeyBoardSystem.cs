@@ -10,9 +10,18 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// A system the updates the states of keybord components
+    /// </summary>
     public class KeyBoardSystem : IUpdate
     {
+        /// <summary>
+        /// The previous state of the keyboard
+        /// </summary>
         public KeyboardState PrevState { get; set; }
+        /// <summary>
+        /// The current state of the Keyboard
+        /// </summary>
         public KeyboardState CurState { get; set; }
 
         /// <summary>

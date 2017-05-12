@@ -65,9 +65,7 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
-            SystemManager.Instance.GameTime = gameTime;
-            SystemManager.Instance.RunUpdateSystems();
+            SystemManager.Instance.RunUpdateSystems(gameTime);
             //Todo: uncomment the line below whenever there is support for gamestates in the game.
             GameStateManager.Instance.UpdateGameState();
 
@@ -81,9 +79,8 @@ namespace GameEngine
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            SystemManager.Instance.GameTime = gameTime;
-            SystemManager.Instance.RunRenderSystems();
+            
+            SystemManager.Instance.RunRenderSystems(gameTime);
 
             base.Draw(gameTime);
         }

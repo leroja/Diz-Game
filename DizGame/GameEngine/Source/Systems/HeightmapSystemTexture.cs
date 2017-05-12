@@ -9,16 +9,26 @@ using GameEngine.Source.Components;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// A system that is used for drawing height maps
+    /// </summary>
     public class HeightmapSystemTexture : IRender
     {
         private GraphicsDevice device;
         
-
+        /// <summary>
+        /// A constructor that takes a GrapicsDevice as a parameter
+        /// </summary>
+        /// <param name="device"></param>
         public HeightmapSystemTexture(GraphicsDevice device)
         {
             this.device = device;
         }
 
+        /// <summary>
+        /// Methos for drawing the heightmaps
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
             var ents = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
@@ -47,13 +57,19 @@ namespace GameEngine.Source.Systems
                         foreach (EffectPass p in chunk.Effect.CurrentTechnique.Passes)
                         {
                             p.Apply();
-                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, chunk.indicesDiv3);
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, chunk.IndicesDiv3);
                         }
                     }
                 }
             }
         }
         
+        /// <summary>
+        /// Recalculates/moves the boudning box to its correct placemnet in the world
+        /// </summary>
+        /// <param name="box"> The boundingBox of the object </param>
+        /// <param name="world"> The WorldMatrix of an object </param>
+        /// <returns></returns>
         private BoundingBox ConvertBoundingBoxToWorldCoords(BoundingBox box, Matrix world)
         {
             Vector3 pos = Vector3.Transform(Vector3.Zero, Matrix.Invert(world));

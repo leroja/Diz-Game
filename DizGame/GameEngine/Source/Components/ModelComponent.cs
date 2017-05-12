@@ -22,7 +22,13 @@ namespace GameEngine.Source.Components
         /// Used to store the models bone transforms.
         /// </summary>
         public Matrix[] MeshWorldMatrices { get; set; }
+        /// <summary>
+        /// The boudnin sphere the encapsulates the model
+        /// </summary>
         public BoundingSphere BoundingSphere { get; set; }
+        /// <summary>
+        /// A Bool that says that the model is static or not
+        /// </summary>
         public bool IsStatic { get; set; }
         #endregion Public Properties
         /// <summary>

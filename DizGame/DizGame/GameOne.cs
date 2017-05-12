@@ -5,7 +5,6 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using DizGame.Source.ConfiguredSystems;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Components;
 using System.Collections.Generic;

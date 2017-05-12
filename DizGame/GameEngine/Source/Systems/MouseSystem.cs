@@ -10,14 +10,23 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// A system that updates the mouse components
+    /// </summary>
     public class MouseSystem : IUpdate
     {
+        /// <summary>
+        /// The previous state of the mouse
+        /// </summary>
         public MouseState PrevState { get; set; }
+        /// <summary>
+        /// The current state of the mouse
+        /// </summary>
         public MouseState CurState { get; set; }
 
 
         /// <summary>
-        /// 
+        /// Updates each mouse component
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
@@ -35,7 +44,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// 
+        /// Uppdates the mouse postions ocg the component
         /// </summary>
         /// <param name="mouseComp"></param>
         private void UpdateMousePositions(MouseComponent mouseComp)

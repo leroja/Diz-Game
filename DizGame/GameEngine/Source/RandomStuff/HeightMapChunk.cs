@@ -8,26 +8,24 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.RandomStuff
 {
+    /// <summary>
+    /// holds the data of a Chunk of a heightmap
+    /// </summary>
     public class HeightMapChunk
     {
         public VertexBuffer VertexBuffer { get; set; }
         public IndexBuffer IndexBuffer { get; set; }
         public BasicEffect Effect { get; set; }
         public BoundingBox BoundingBox { get; set; }
-        public BoundingSphere BoundingSphere { get; set; }
-
         public Vector3 OffsetPosition { get; set; }
-        
-        public int indicesDiv3;
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public float[,] heightInfo;
-        public VertexPositionNormalTexture[] Vertices { get; set; }
-        public int[] Indices { get; set; }
+        /// <summary>
+        /// hOw many indices there are in the index buffer divided by three
+        /// </summary>
+        public int IndicesDiv3 { get; set; }
 
-        public Rectangle Rectangle { get; set; }
-        public Texture2D Texture { get; set; }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public HeightMapChunk()
         {
 

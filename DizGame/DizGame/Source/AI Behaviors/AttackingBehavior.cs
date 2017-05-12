@@ -27,6 +27,10 @@ namespace DizGame.Source.AI_States
             this.coolDown = coolDown;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"> The current rotation of the AI </param>
         public override void OnEnter(Vector3 rotation)
         {
             this.time = coolDown;
@@ -44,11 +48,8 @@ namespace DizGame.Source.AI_States
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-
-
+            
             transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
-
             
             if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
             {

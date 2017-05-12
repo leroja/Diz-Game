@@ -30,7 +30,9 @@ namespace DizGame
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
 
-
+        /// <summary>
+        /// The instance of the Entity Factory
+        /// </summary>
         public static EntityFactory Instance
         {
             get
@@ -442,17 +444,18 @@ namespace DizGame
             return HeightmapEnt;
         }
 
+        // todo
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
 
             var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
-            
+
             List<IComponent> components = new List<IComponent>
             {
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
@@ -466,7 +469,15 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new AIComponent(hysteria, BoundRec, DirectionDuration, rotation, 0.7f, 1f, 0.5f, 50, 50),
+                new AIComponent(BoundRec, shootingCoolDown){
+                    Hysteria = hysteria,
+                    AttackingDistance = attackingDistance,
+                    DirectionChangeRoation = rotation,
+                    DirectionDuration = DirectionDuration,
+                    EvadeDistance = evadeDist,
+                    TurningSpeed = turningSpeed,
+                    UpdateFrequency = updateFreq,
+                },
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);

@@ -9,16 +9,16 @@ namespace DizGame.Source.LanguageBasedModels
 
     public class TreeModel
     {
-        private struct pos_or
+        private struct Pos_or
         {
-            public Vector3 position { get; set; }
-            public Vector3 direction { get; set; }
-            public float scale { get; set; }
+            public Vector3 Position { get; set; }
+            public Vector3 Direction { get; set; }
+            public float Scale { get; set; }
         }
 
         private Stack<VertexPositionNormalTexture> treeStack;
         private Stack<VertexPositionNormalTexture> storeStack;
-        private Stack<pos_or> turtleStack;
+        private Stack<Pos_or> turtleStack;
 
         private int replicationDepth;
 
@@ -35,8 +35,8 @@ namespace DizGame.Source.LanguageBasedModels
 
         private VertexPositionNormalTexture[] vertices;
         private int[] indices;
-        public VertexBuffer vertexBuffer { get; private set; }
-        public IndexBuffer indexBuffer { get; private set; }
+        public VertexBuffer VertexBuffer { get; private set; }
+        public IndexBuffer IndexBuffer { get; private set; }
 
         private Vector3 startPosition;
         //private Vector3 segmentVector;
@@ -50,7 +50,7 @@ namespace DizGame.Source.LanguageBasedModels
         /// Example : TreeModel(gd, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
         /// </summary>
         /// <param name="gd">The device to render to.</param>
-        /// <param name="unitLength">The length of one unit of the tree.</par am>
+        /// <param name="unitLength">The length of one unit of the tree.</param>
         /// <param name="rotAroundZAxis">Rotate branches around the stem.</param>
         /// <param name="dna">The formula to build the tree from. F = Forward, [ = push onto stack,
         /// L = Left, ] = pop from the stack, R = Right.</param>
@@ -63,7 +63,7 @@ namespace DizGame.Source.LanguageBasedModels
         {
             treeStack = new Stack<VertexPositionNormalTexture>();
             storeStack = new Stack<VertexPositionNormalTexture>();
-            turtleStack = new Stack<pos_or>();
+            turtleStack = new Stack<Pos_or>();
 
             this.replicationDepth = replicationDepth;
 
@@ -89,36 +89,36 @@ namespace DizGame.Source.LanguageBasedModels
             //directionR = new Vector3(0, 1, 0);
 
 
-            buildDna(ref this.dna, 0);
+            BuildDna(ref this.dna, 0);
 
             //System.Diagnostics.Debug.WriteLine(currentString);
 
-            countRecursiveStrings();
+            CountRecursiveStrings();
 
-            buildStructure();
+            BuildStructure();
 
-            createIndices();
+            CreateIndices();
 
-            setVertexAndIndexBuffer(gd, vertices, indices);
+            SetVertexAndIndexBuffer(gd, vertices, indices);
         }
 
 
-        private void setVertexAndIndexBuffer(GraphicsDevice gd, VertexPositionNormalTexture[] vertices, int[] indices)
+        private void SetVertexAndIndexBuffer(GraphicsDevice gd, VertexPositionNormalTexture[] vertices, int[] indices)
         {
-            vertexBuffer = new VertexBuffer(gd, typeof(VertexPositionNormalTexture), vertices.Count(), BufferUsage.None);
-            indexBuffer = new IndexBuffer(gd, typeof(int), indices.Count(), BufferUsage.None);
+            VertexBuffer = new VertexBuffer(gd, typeof(VertexPositionNormalTexture), vertices.Count(), BufferUsage.None);
+            IndexBuffer = new IndexBuffer(gd, typeof(int), indices.Count(), BufferUsage.None);
 
-            vertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
-            indexBuffer.SetData<int>(indices);
+            VertexBuffer.SetData<VertexPositionNormalTexture>(vertices);
+            IndexBuffer.SetData<int>(indices);
         }
 
 
-        private void buildStructure()
+        private void BuildStructure()
         {
             Random rnd = new Random();
             Vector3 direction = directionF;
             Vector3 currentVector = Vector3.Zero;
-            pos_or turtleValues;
+            Pos_or turtleValues;
 
             int counter = 1;
             float scale = 1f;
@@ -148,20 +148,20 @@ namespace DizGame.Source.LanguageBasedModels
 
                     case '[':
                         scale = this.scaleReplication * scale;
-                        turtleStack.Push(new pos_or()
+                        turtleStack.Push(new Pos_or()
                         {
-                            position = currentVector,
-                            direction = direction,
-                            scale = scale
+                            Position = currentVector,
+                            Direction = direction,
+                            Scale = scale
                         });
 
                         break;
 
                     case ']':
                         turtleValues = turtleStack.Pop();
-                        currentVector = turtleValues.position;
-                        direction = turtleValues.direction;
-                        scale = turtleValues.scale;
+                        currentVector = turtleValues.Position;
+                        direction = turtleValues.Direction;
+                        scale = turtleValues.Scale;
                         break;
 
 
@@ -172,7 +172,7 @@ namespace DizGame.Source.LanguageBasedModels
         }
 
 
-        private void createIndices()
+        private void CreateIndices()
         {
             Stack<int> indices = new Stack<int>();
             Stack<int> leftIndices = new Stack<int>();
@@ -208,7 +208,7 @@ namespace DizGame.Source.LanguageBasedModels
         }
 
 
-        private void countRecursiveStrings()
+        private void CountRecursiveStrings()
         {
             countVertices = currentString.Count(x => x.Equals(recursiveStrings[0].ToCharArray()[0]));
         }
@@ -223,7 +223,7 @@ namespace DizGame.Source.LanguageBasedModels
         }
 
 
-        private void buildDna(ref char[] buildString, int replicationDepth)
+        private void BuildDna(ref char[] buildString, int replicationDepth)
         {
 
             if (replicationDepth > this.replicationDepth)
@@ -232,7 +232,7 @@ namespace DizGame.Source.LanguageBasedModels
             foreach (string str in recursiveStrings)
                 currentString = new string(buildString).Replace(str, new string(dna)).ToArray();
 
-            buildDna(ref currentString, ++replicationDepth);
+            BuildDna(ref currentString, ++replicationDepth);
 
             dna = currentString;
         }

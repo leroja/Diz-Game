@@ -14,6 +14,10 @@ namespace GameEngine.Source.Systems
     /// </summary>
     public class ModelBoundingSphereSystem : IUpdate
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var ids = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();

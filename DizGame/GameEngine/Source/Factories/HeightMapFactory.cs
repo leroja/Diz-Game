@@ -10,15 +10,19 @@ using GameEngine.Source.RandomStuff;
 
 namespace GameEngine.Source.Factories
 {
+    // todo write comments
+    /// <summary>
+    /// A factory for creating heightmaps
+    /// </summary>
     public class HeightMapFactory
     {
         private GraphicsDevice graphicsDevice;
         
         private Texture2D heightMap;
         private Texture2D heightMapTexture;
-        public VertexPositionNormalTexture[] VerticesTexture { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        private VertexPositionNormalTexture[] VerticesTexture;
+        private int Width;
+        private int Height;
 
         private int fractions_per_side;
         private int chunk_width;
@@ -28,6 +32,10 @@ namespace GameEngine.Source.Factories
         
         private float[,] heightMapData;
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="graphicsDevice"></param>
         public HeightMapFactory(GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
@@ -48,10 +56,6 @@ namespace GameEngine.Source.Factories
             this.heightMapTexture = heightMapTexture;
             this.fractions_per_side = fractions_per_side;
             SetHeightMapData(ref heightMapComponent);
-            //heightMapComponent.Effect = Effect;
-            //heightMapComponent.IndexBuffer = IndexBuffer;
-            heightMapComponent.Indices = Indices;
-            //heightMapComponent.VertexBuffer = VertexBuffer;
             return heightMapComponent;
         }
         
@@ -238,7 +242,7 @@ namespace GameEngine.Source.Factories
             };
 
             var indices = InitIndices(terrainRect);
-            chunk.indicesDiv3 = indices.Length / 3; // för att slipa göra den här divisionen flera gånger
+            chunk.IndicesDiv3 = indices.Length / 3; // för att slipa göra den här divisionen flera gånger
 
             CopyNormals(vertexNormals, chunkVertices);
 
@@ -246,10 +250,6 @@ namespace GameEngine.Source.Factories
             
             chunk.Effect = effect;
             chunk.BoundingBox = boundingBox;
-            chunk.Vertices = chunkVertices;
-            chunk.Rectangle = terrainRect;
-            chunk.Width = terrainRect.Width;
-            chunk.Height = terrainRect.Height;
             return chunk;
         }
 

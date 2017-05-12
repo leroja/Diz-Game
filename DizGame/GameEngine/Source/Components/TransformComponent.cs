@@ -7,9 +7,11 @@ using Microsoft.Xna.Framework;
 
 namespace GameEngine.Source.Components
 {
+    /// <summary>
+    /// Holds data such as position, rotation and scaling.
+    /// </summary>
     public class TransformComponent : IComponent
     {
-        //Holds data such as position, rotation and scaling.
 
         /// <summary>
         /// Vector3 representing the position for an object

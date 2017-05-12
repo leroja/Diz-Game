@@ -11,7 +11,7 @@ using GameEngine.Source.Components;
 namespace DizGame.Source.Systems
 {
     /// <summary>
-    /// 
+    /// A system for updating all of the AIs
     /// </summary>
     public class AISystem : IUpdate
     {
@@ -27,16 +27,10 @@ namespace DizGame.Source.Systems
 
             foreach (var EntId in AIIds)
             {
-
                 var AIComponent = ComponentManager.GetEntityComponent<AIComponent>(EntId);
                 AIComponent.CurrentBehaivior.FindClosestEnemy(AIComponent);
                 
-                //Console.WriteLine(AIComponent.CurrentBehaivior.ToString());
-
                 AIComponent.CurrentBehaivior.Update(AIComponent, gameTime);
-
-                //Console.WriteLine(AIComponent.CurrentBehaivior.ToString());
-
             }
         }
         

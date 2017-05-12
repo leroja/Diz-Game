@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Components
 {
+    /// <summary>
+    /// A component for bullets that are being fired in the game
+    /// </summary>
     public class BulletComponent : IComponent
     {
         /// <summary>
