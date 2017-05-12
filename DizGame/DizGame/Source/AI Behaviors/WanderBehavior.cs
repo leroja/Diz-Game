@@ -17,12 +17,20 @@ namespace DizGame.Source.AI_States
     public class WanderBehavior : AiBehavior
     {
         private float currentTimeForDir;
+        private float desiredRotation;
+
         /// <summary>
         /// Constructor
         /// </summary>
         public WanderBehavior()
         {
             currentTimeForDir = 0f;
+        }
+
+        public override void OnEnter(Vector3 rotation)
+        {
+            currentTimeForDir = 0f;
+            desiredRotation = rotation.Y;
         }
 
         /// <summary>
@@ -37,14 +45,24 @@ namespace DizGame.Source.AI_States
             
             currentTimeForDir += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            //if (currentTimeForDir > AIComp.DirectionDuration)
+            //{
+            //    var rotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
+            //    rotation /= MathHelper.TwoPi;
+            //    transformComp.Rotation += new Vector3(0, rotation, 0);
+            //    currentTimeForDir = 0f;
+            //    transformComp.Rotation = WrapAngle(transformComp.Rotation);
+            //}
+
             if (currentTimeForDir > AIComp.DirectionDuration)
             {
-                var rotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
-                rotation /= MathHelper.TwoPi;
-                transformComp.Rotation += new Vector3(0, rotation, 0);
+                desiredRotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
+                desiredRotation = WrapAngle(desiredRotation);
                 currentTimeForDir = 0f;
-                transformComp.Rotation = WrapAngle(transformComp.Rotation);
             }
+            var rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            
+            transformComp.Rotation = rotation;
 
             var height = GetCurrentHeight(transformComp.Position);
             
@@ -75,6 +93,24 @@ namespace DizGame.Source.AI_States
                 t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             transformComp.Position = t;
+
+            BehaviorStuff(AIComp, transformComp);
         }
+
+        private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
+        {
+            var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
+            var worldComp = (WorldComponent)worldTemp.Values.First();
+
+            if (AIComp.EvadeDistance + AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % 2 == 0 && worldComp.Day != 0)))
+            {
+                AIComp.ChangeBehavior("Evade", transcomp.Rotation);
+            }
+            else if (worldComp.Day % 2 == 0 && worldComp.Day != 0)
+            {
+                AIComp.ChangeBehavior("Chase", transcomp.Rotation);
+            }
+        }
+
     }
 }

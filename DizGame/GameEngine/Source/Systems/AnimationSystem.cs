@@ -25,11 +25,11 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime">Takes a GameTime object which should represent the current elapsed gametime</param>
         public override void Update(GameTime gameTime)
         {
-            time = gameTime.ElapsedGameTime;
 
             List<int> entityList = ComponentManager.GetAllEntitiesWithComponentType<AnimationComponent>();
             foreach (int entity in entityList)
             {
+                time = gameTime.ElapsedGameTime;
                 anc = ComponentManager.GetEntityComponent<AnimationComponent>(entity);
                 TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(entity);
                 UpdateBoneTransforms(true);

@@ -12,10 +12,16 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PlayerSystem : IUpdate
     {
         private EntityFactory entFactory;
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PlayerSystem()
         {
             this.entFactory = EntityFactory.Instance;
@@ -47,7 +53,7 @@ namespace DizGame.Source.Systems
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 2 == 0 && worldComp.Day != 0)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200);
+                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
                 }
             }
         }
@@ -70,6 +76,11 @@ namespace DizGame.Source.Systems
             return new Vector2(deltaX, deltaY);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
         private Vector3 WrapAngle(Vector3 rotation)
         {
             while (rotation.Y < -MathHelper.Pi)

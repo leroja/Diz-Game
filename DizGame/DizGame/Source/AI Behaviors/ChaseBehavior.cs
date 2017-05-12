@@ -16,6 +16,15 @@ namespace DizGame.Source.AI_States
     /// </summary>
     public class ChaseBehavior : AiBehavior
     {
+        private float currentTimeForRot;
+        private float desiredRotation;
+
+        public override void OnEnter(Vector3 rotation)
+        {
+            currentTimeForRot = 0;
+            desiredRotation = rotation.Y;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -23,17 +32,40 @@ namespace DizGame.Source.AI_States
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
+            currentTimeForRot += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var pos = transformComp.Position;
             
             var height = GetCurrentHeight(pos);
-            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 5 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            var rotation = GetRotationToClosestEnenmy(AIComp);
+            if (currentTimeForRot > AIComp.UpdateFrequency)
+            {
+                desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
+                currentTimeForRot = 0f;
+            }
             
+            var rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            
+
             transformComp.Rotation = rotation;
             
             transformComp.Position = t;
+
+            BehaviorStuff(AIComp, transformComp);
         }
+
+        private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
+        {
+            var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
+            var worldComp = (WorldComponent)worldTemp.Values.First();
+
+            if (AIComp.AttackingDistance + AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy)
+            {
+                AIComp.ChangeBehavior("Attacking", transcomp.Rotation);
+            }
+        }
+
     }
 }

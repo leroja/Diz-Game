@@ -31,6 +31,7 @@ namespace DizGame.Source.AI_States
         /// <param name="AIComp"></param>
         /// <param name="gameTime"></param>
         public abstract void Update(AIComponent AIComp, GameTime gameTime);
+        public abstract void OnEnter(Vector3 rotation);
 
 
         /// <summary>
@@ -125,6 +126,11 @@ namespace DizGame.Source.AI_States
             return WrapAngle(new Vector3(0, desiredAngle, 0));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
         public Vector3 WrapAngle(Vector3 rotation)
         {
             while (rotation.Y < -MathHelper.Pi)
@@ -139,81 +145,36 @@ namespace DizGame.Source.AI_States
         }
 
 
-        public Vector3 TestRot(TransformComponent AiTransComp)
+
+        /// <summary>
+        /// Calculates the angle that an object should face, given its position, its
+        /// target's position, its current angle, and its maximum turning speed.
+        /// </summary>
+        public float TurnToFace(float desiredAngle, float currentAngle, float turnSpeed)
         {
-            var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy);
+            // first, figure out how much we want to turn, using WrapAngle to get our
+            // result from -Pi to Pi ( -180 degrees to 180 degrees )
+            float difference = WrapAngle(desiredAngle - currentAngle);
 
-            var lookPos = AiTransComp.Position - transComp.Position;
-            lookPos.Y = 0;
+            // clamp that between -turnSpeed and turnSpeed.
+            difference = MathHelper.Clamp(difference, -turnSpeed, turnSpeed);
 
-            ////var rot  = Quaternion
-            //var rotation = Quaternion.LookRotation(lookPos);
-
-            return Vector3.One;
+            // so, the closest we can get to our target is currentAngle + difference.
+            // return that, using WrapAngle again.
+            return WrapAngle(currentAngle + difference);
         }
 
-        // Todo, temp kanske ta bort
-
-        // O is your object's position
-        // P is the position of the object to face
-        // U is the nominal "up" vector (typically Vector3.Y)
-        // Note: this does not work when O is straight below or straight above P
-        Matrix RotateToFace(Vector3 O, Vector3 P, Vector3 U)
+        public float WrapAngle(float radians)
         {
-            Vector3 D = (O - P);
-            Vector3 Right = Vector3.Cross(U, D);
-            Vector3.Normalize(ref Right, out Right);
-            Vector3 Backwards = Vector3.Cross(Right, U);
-            Vector3.Normalize(ref Backwards, out Backwards);
-            Vector3 Up = Vector3.Cross(Backwards, Right);
-            Matrix rot = new Matrix(Right.X, Right.Y, Right.Z, 0, Up.X, Up.Y, Up.Z, 0, Backwards.X, Backwards.Y, Backwards.Z, 0, 0, 0, 0, 1);
-            return rot;
-        }
-
-        public Quaternion GetRotation(Vector3 entityPos)
-        {
-            Vector3 targetPos = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position;
-
-            // the new forward vector, so the avatar faces the target
-            Vector3 newForward = Vector3.Normalize(entityPos - targetPos);
-
-            // calc the rotation so the avatar faces the target
-            var src = Vector3.Forward;
-
-            var dest = newForward;
-
-            src.Normalize();
-            dest.Normalize();
-
-            float d = Vector3.Dot(src, dest);
-
-            if (d >= 1f)
+            while (radians < -MathHelper.Pi)
             {
-                return Quaternion.Identity;
+                radians += MathHelper.TwoPi;
             }
-            if (d < (1e-6f - 1.0f))
+            while (radians > MathHelper.Pi)
             {
-                Vector3 axis = Vector3.Cross(Vector3.UnitX, src);
-
-                if (axis.LengthSquared() == 0)
-                {
-                    axis = Vector3.Cross(Vector3.UnitY, src);
-                }
-
-                axis.Normalize();
-                return Quaternion.CreateFromAxisAngle(axis, MathHelper.Pi);
+                radians -= MathHelper.TwoPi;
             }
-
-
-            float s = (float)Math.Sqrt((1 + d) * 2);
-            float invS = 1 / s;
-
-            Vector3 c = Vector3.Cross(src, dest);
-            Quaternion q = new Quaternion(invS * c, 0.5f * s);
-            q.Normalize();
-
-            return q;
+            return radians;
         }
-
     }
 }

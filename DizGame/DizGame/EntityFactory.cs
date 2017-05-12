@@ -344,7 +344,8 @@ namespace DizGame
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
-        
+
+        // todo fix initial roation
         // todo write comment
         /// <summary>
         /// Creates an bullet .... 
@@ -356,8 +357,9 @@ namespace DizGame
         /// <param name="forward"></param>
         /// <param name="MaxRange"></param>
         /// <param name="initialVelocity"></param>
+        /// <param name="rotation"></param>
         /// <returns> The enityId of the bullet in case someone would need it sometime </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity)
+        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity, Vector3 rotation)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -367,7 +369,7 @@ namespace DizGame
             {
                 new TransformComponent(pos, scale)
                 {
-                    QuaternionRotation = Orientation
+                    Rotation = rotation,
                 },
                 new  ModelComponent(model),
                 
@@ -464,7 +466,7 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new AIComponent(hysteria, BoundRec, DirectionDuration, rotation),
+                new AIComponent(hysteria, BoundRec, DirectionDuration, rotation, 0.7f, 1f, 0.5f, 50, 10),
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);

@@ -15,6 +15,11 @@ namespace DizGame.Source.AI_States
     /// </summary>
     public class EvadeBehavior : AiBehavior
     {
+        public override void OnEnter(Vector3 rotation)
+        {
+
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -22,13 +27,17 @@ namespace DizGame.Source.AI_States
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
+
+            // todo fix smooth rotation
+
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var pos = transformComp.Position;
 
-            var rotation = GetRotationToClosestEnenmy(AIComp);
-            
             var height = GetCurrentHeight(pos);
             var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
+
+            var rotation = GetRotationToClosestEnenmy(AIComp);
+            
             
             transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0);
 
@@ -36,27 +45,42 @@ namespace DizGame.Source.AI_States
             {
                 t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
             }
             else if (t.X <= 3)
             {
                 t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
             }
             else if (t.Z <= -AIComp.Bounds.Width)
             {
                 t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
             }
             else if (t.Z >= -3)
             {
                 t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
             }
             else
             {
-                t += transformComp.Forward * 5 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-            transformComp.Position = t;   
+            transformComp.Position = t;
+
+            BehaviorStuff(AIComp, transformComp);
         }
+
+        private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
+        {
+            if (AIComp.EvadeDistance + AIComp.Hysteria < AIComp.CurrentBehaivior.DistanceToClosestEnemy)
+            {
+                AIComp.ChangeBehavior("Wander", transcomp.Rotation);
+            }
+        }
+
     }
 }

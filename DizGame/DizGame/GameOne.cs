@@ -65,7 +65,9 @@ namespace DizGame
             EntityFactory entf = EntityFactory.Instance;
 
 
-            entf.CreateAI("Dude", new Vector3(30, 45, -10), 100f, 100, 100, 2f, MathHelper.Pi);
+            entf.CreateAI("Dude", new Vector3(30, 45, -10), 25, 100, 300, 5f, MathHelper.Pi);
+            entf.CreateAI("Dude", new Vector3(40, 45, -10), 25, 100, 300, 3.5f, MathHelper.Pi);
+            entf.CreateAI("Dude", new Vector3(50, 45, -10), 25, 100, 300, 2f, MathHelper.Pi);
             var idC = EntityFactory.Instance.CreateDude();
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
