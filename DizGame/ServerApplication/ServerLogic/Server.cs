@@ -9,6 +9,7 @@ using GameEngine.Source.Managers;
 using System.Collections;
 using GameEngine.Source.Enums;
 using ServerApplication.Communication;
+using ServerApplication.Protocol;
 
 namespace ServerApplication.ServerLogic
 {
@@ -32,6 +33,19 @@ namespace ServerApplication.ServerLogic
         public Server()
         {
             portnumber = 1337;
+
+            //int start = 0;
+            //int end = 0;
+
+            //InitialGameStateProtocol.ReserveRangeEntityIds(2, ref start, ref end);
+
+            //InitialGameStateProtocol.ReserveRangeEntityIds(3, ref start, ref end);
+
+            //InitialGameStateProtocol.GetReservedRangeEntityIds(2, ref start, ref end);
+
+            //InitialGameStateProtocol.GetReservedRangeEntityIds(3, ref start, ref end);
+
+
         }
 
         /// <summary>

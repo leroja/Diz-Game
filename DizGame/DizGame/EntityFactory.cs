@@ -215,11 +215,8 @@ namespace DizGame
                         unablePositions.Add(positions[i]);
                     }
                 }
-                else
-                {
-                    i--;
-                }
             }
+
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
             {
