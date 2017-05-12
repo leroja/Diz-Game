@@ -121,7 +121,6 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new TestComponent(),
             };
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
@@ -175,7 +174,7 @@ namespace DizGame
         /// </summary>
         /// <param name="nameOfModel"></param>
         /// <param name="position"></param>
-        public void CreateStaticObject(string nameOfModel, Vector3 position)
+        public int CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
             Model model = ModelDic[nameOfModel];
@@ -208,6 +207,8 @@ namespace DizGame
                 comp
             };
             ComponentManager.Instance.AddAllComponents(entityID, components);
+
+            return entityID;
         }
 
         /// <summary>
@@ -215,8 +216,10 @@ namespace DizGame
         /// </summary>
         /// <param name="numberOfHouses"></param>
         /// <param name="numberOfStaticObjects"></param>
-        public void MakeMap(int numberOfHouses, int numberOfStaticObjects)
+        public List<int> MakeMap(int numberOfHouses, int numberOfStaticObjects)
         {
+            List<int> entityIdList = new List<int>();
+
             List<Vector3> positions = new List<Vector3>();
             List<Vector3> unablePositions = new List<Vector3>();
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
@@ -227,12 +230,12 @@ namespace DizGame
                 {
                     if (i % 2 == 0)
                     {
-                        CreateHouse("House_Wood", positions[i]);
+                        entityIdList.Add(CreateHouse("House_Wood", positions[i]));
                         unablePositions.Add(positions[i]);
                     }
                     else
                     {
-                        CreateHouse("House_Stone", positions[i]);
+                        entityIdList.Add(CreateHouse("House_Stone", positions[i]));
                         unablePositions.Add(positions[i]);
                     }
                 }
@@ -250,14 +253,16 @@ namespace DizGame
                     switch (modul)
                     {
                         case 0:
-                            CreateStaticObject("Tree", positions[j]);
+                            entityIdList.Add(CreateStaticObject("Tree", positions[j]));
                             break;
                         case 1:
-                            CreateStaticObject("Rock", positions[j]);
+                            entityIdList.Add(CreateStaticObject("Rock", positions[j]));
                             break;
                     }
                 }
             }
+
+            return entityIdList;
         }
         
         /// <summary>
@@ -401,13 +406,6 @@ namespace DizGame
         public void TestingTheAnimationsWithDude(int entityID)
         {
 
-            //Model model = Content.Load<Model>("Dude/dude");
-            //int entityID = ComponentManager.Instance.CreateID();
-
-
-            //Effect effect = Content.Load<Effect>("Effects/AnimationEffect");
-            
-
             ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
 
             
@@ -428,7 +426,7 @@ namespace DizGame
         /// <param name="heightmap"> Name of the heightMap texture that shall be used to build the hieghtMap </param>
         /// <param name="heightTexture"> ... </param>
         /// <param name="numberOfChunksPerSide"> .... eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
-        public void CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
+        public int CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
         {
             int HeightmapEnt = ComponentManager.Instance.CreateID();
             var hmp = hmFactory.CreateTexturedHeightMap(Texture2dDic[heightmap], Texture2dDic[heightTexture], numberOfChunksPerSide);
@@ -438,6 +436,8 @@ namespace DizGame
                 new TransformComponent(new Vector3(0, 0, 0), new Vector3(1, 1, 1))
             };
             ComponentManager.Instance.AddAllComponents(HeightmapEnt, HeightmapCompList);
+
+            return HeightmapEnt;
         }
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace DizGame
         /// <param name="AmmunitionPosition"></param>
         /// <param name="PlayersRemainingPosition"></param>
         /// <param name="SlotPositions"></param>
-        public void CreateHud(Vector2 healthPosition, Vector2 AmmunitionPosition, Vector2 PlayersRemainingPosition, List<Vector2> SlotPositions)
+        public int CreateHud(Vector2 healthPosition, Vector2 AmmunitionPosition, Vector2 PlayersRemainingPosition, List<Vector2> SlotPositions)
         {
             int HudID = ComponentManager.Instance.CreateID();
             SpriteFont font = Content.Load<SpriteFont>("Fonts\\Font");
@@ -525,6 +525,8 @@ namespace DizGame
                 new TextComponent(names, textComponents)
             };
             ComponentManager.Instance.AddAllComponents(HudID, components);
+
+            return HudID;
         }
     }
 }

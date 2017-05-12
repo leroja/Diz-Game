@@ -19,11 +19,18 @@ namespace DizGame.Source.GameStates
         public static EntityTracingSystem EntityTracingSystem { get; private set; }
         #endregion
 
+        /// <summary>
+        /// Basic constructor for the PlayGame-state 
+        /// </summary>
         public PlayGameState()
         {
             GameStateEntities = new List<int>();
         }
 
+        /// <summary>
+        /// Entered function to initialize all the needed entities which we need for
+        /// the gameplay.
+        /// </summary>
         public override void Entered()
         {
             EntityFactory entf = EntityFactory.Instance;
@@ -31,21 +38,39 @@ namespace DizGame.Source.GameStates
             entf.CreateAI("Dude", new Vector3(30, 45, -10), 100f, 100, 100, 2f, MathHelper.Pi);
             var idC = EntityFactory.Instance.CreateDude();
             entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
+            //Add entity for the dude to this state
+            GameStateEntities.Add(idC);
 
-            entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
+            int heightmapID = entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
+            //Add hightmap entityid to this state
+            GameStateEntities.Add(heightmapID);
 
-            entf.MakeMap(10, 100);
+            //Add all static objects to this state i.e rocks, houses etc.
+            List<int> entityIdList = entf.MakeMap(10, 100);
+            GameStateEntities.AddRange(entityIdList);
 
-            entf.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
+            InitializeSystems();
+
+            
+            int HudID = entf.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(0, 0), new List<Vector2>());
 
-            InitializeSystems(entf);
+            //Add HUD id to this state
+            GameStateEntities.Add(HudID);
+
+           
         }
 
+        /// <summary>
+        /// Exiting function to remove all the entities which is no longer needed.
+        /// </summary>
         public override void Exiting()
         {
-            throw new NotImplementedException();
+            //TODO: observera att vi kanske inte vill ta bort precis alla entiteter i detta statet,
+            //Tex vill vi kanske ha kvar spelarna för att göra typ en "score-screen" i slutet.
+            foreach (int entity in GameStateEntities)
+                ComponentManager.Instance.RemoveEntity(entity);
         }
 
         public override void Obscuring()
@@ -62,19 +87,24 @@ namespace DizGame.Source.GameStates
         {
         }
 
-        private void InitializeSystems(EntityFactory entf)
+        /// <summary>
+        /// Seperate method for initializing all the systems required by this state
+        /// just in order to make the code more readable.
+        /// </summary>
+        private void InitializeSystems()
         {
-            
-            //entf.CreateHeightMap("heightmap", "BetterGrass");
+
+            SystemManager.Instance.AddSystem(new ModelSystem());
+            SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
+
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
 
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            
+
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
@@ -83,12 +113,9 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
-
             
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
-
-            
 
             EntityTracingSystem = new EntityTracingSystem();
             EntityTracingSystem.RecordInitialEntities();
@@ -96,9 +123,10 @@ namespace DizGame.Source.GameStates
 
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
-            SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
-            
+            SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
+
+
 
         }
     }

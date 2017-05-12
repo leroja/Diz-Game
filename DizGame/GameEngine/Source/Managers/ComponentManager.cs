@@ -23,6 +23,9 @@ namespace GameEngine.Source.Managers
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
+        /// <summary>
+        /// List which represents the current occupied id's for entities.
+        /// </summary>
         public List<int> CurrentTakenEntityIds { get; private set; }
 
         private ComponentManager()

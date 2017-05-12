@@ -60,7 +60,6 @@
     <Compile Include="Source\Components\HealthComponent.cs" />
     <Compile Include="Source\Components\AmmunitionComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
-    <Compile Include="Source\Components\TestComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\GameStates\PlayGameState.cs" />

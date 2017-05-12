@@ -23,8 +23,9 @@ namespace DizGame
 
         private static Game instance;
 
-        
-
+        /// <summary>
+        /// Basic constructor for the Game
+        /// </summary>
         public GameOne()
         {
             instance = this;
@@ -34,7 +35,9 @@ namespace DizGame
 
             
         }
-
+        /// <summary>
+        /// Instance of the game
+        /// </summary>
         public static Game Instance
         {
             get
@@ -70,48 +73,6 @@ namespace DizGame
             base.Initialize();
         }
 
-        /// <summary>
-        /// Initializes the systems and adds them to the system manager
-        /// </summary>
-        /// <param name="entf"></param>
-        private void InitializeSystems(EntityFactory entf)
-        {
-            //SystemManager.Instance.AddSystem(new WorldSystem(this));
-            ////entf.CreateHeightMap("heightmap", "BetterGrass");
-            //SystemManager.Instance.AddSystem(new TransformSystem());
-            //SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-
-            //SystemManager.Instance.AddSystem(new TransformSystem());
-            //SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            //SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
-            //SystemManager.Instance.AddSystem(new TransformSystem());
-            //SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            //SystemManager.Instance.AddSystem(new ModelSystem());
-            //SystemManager.Instance.AddSystem(new KeyBoardSystem());
-            //SystemManager.Instance.AddSystem(new MovingSystem());
-            //SystemManager.Instance.AddSystem(new CameraSystem());
-            //SystemManager.Instance.AddSystem(new PhysicsSystem());
-            //SystemManager.Instance.AddSystem(new EnvironmentSystem());
-            //SystemManager.Instance.AddSystem(new MouseSystem());
-            //SystemManager.Instance.AddSystem(new BulletSystem());
-            //SystemManager.Instance.AddSystem(new PlayerSystem());
-
-            //SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
-            //SystemManager.Instance.AddSystem(new AnimationSystem());
-            //SystemManager.Instance.AddSystem(new AISystem());
-            
-            //SystemManager.Instance.AddSystem(new _2DSystem(SpriteBatch));
-
-            //EntityTracingSystem = new EntityTracingSystem();
-            //EntityTracingSystem.RecordInitialEntities();
-            //SystemManager.Instance.AddSystem(EntityTracingSystem);
-
-            //Uncoment the two rows below to watch the gamemenu, you might wanna comment the other
-            //stuffs before doing that
-            
-
-
-        }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -131,28 +92,20 @@ namespace DizGame
 
         }
 
+        /// <summary>
+        /// Updateloop for the game, other stuff that's not updated in the Gameengine could be handled here.
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
             //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            //Remove comment below to make the gamestatemanager run the gamestates update functions
-            //GameStateManager.Instance.UpdateGameState();
+
             base.Update(gameTime);
         }
 
-        //protected override void Update(GameTime gameTime)
-        //{
-        //    client.ReadMessages();
-        //    for(var i = 1; i < 10000; i++)
-        //    {
-        //        if(i % 4 == 0)
-        //        {
-        //            client.SendMessage("What's my name?");
-        //        }
-        //    }
-
-        //}
+      
 
 
     }

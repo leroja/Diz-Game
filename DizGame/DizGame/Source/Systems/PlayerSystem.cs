@@ -36,7 +36,6 @@ namespace DizGame.Source.Systems
                 var playerComp = ComponentManager.GetEntityComponent<PlayerComponent>(playerId);
                 var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(playerId);
                 var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(playerId);
-                var testComp = ComponentManager.GetEntityComponent<TestComponent>(playerId);
                 var keyComp = ComponentManager.GetEntityComponent<KeyBoardComponent>(playerId);
                 
                 var m = UpdateInput(mouseComp);

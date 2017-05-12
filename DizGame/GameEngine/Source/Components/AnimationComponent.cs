@@ -37,7 +37,13 @@ namespace GameEngine.Source.Components
         /// Arrays of matrices relevant for the transformations of the animations
         /// </summary>
         public Matrix[] boneTransforms { get; set; }
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
         public Matrix[] worldTransforms { get; set; }
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
         public Matrix[] skinTransforms { get; set; }
         /////////////////////////////////////////////////////////////////////////
 

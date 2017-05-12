@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Components;
+﻿using DizGame.Source.Systems;
+using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
@@ -30,6 +31,7 @@ namespace DizGame.Source.GameStates
         private int SelectedItem;
         private SpriteFont SpriteFont;
         private KeyboardState oldState;
+        private TextSystem TextSystem;
         #endregion
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace DizGame.Source.GameStates
             SelectedItem = 0;
             SpriteFont = GameOne.Instance.Content.Load<SpriteFont>("Fonts/MenuFont");
             oldState = Keyboard.GetState();
+            TextSystem = new TextSystem(SystemManager.Instance.SpriteBatch);
         }
 
         /// <summary>
@@ -51,8 +54,7 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
-            SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
-
+            SystemManager.Instance.AddSystem(TextSystem);
             string[] itemNames = {"One Player Game", "Multiplayer Game", "Settings", "Whatever"};
             ItemNames = itemNames;
 
@@ -73,6 +75,8 @@ namespace DizGame.Source.GameStates
                 GameStateEntities.Add(entityID);
                 ComponentManager.Instance.AddComponentToEntity(entityID, textComponent);
                 y += 40;
+
+
             }
         }
         /// <summary>
@@ -84,16 +88,25 @@ namespace DizGame.Source.GameStates
             {
                 ComponentManager.Instance.RemoveEntity(id);
             }
+            SystemManager.Instance.RemoveSystem(TextSystem);
         }
 
+        /// <summary>
+        /// Method derrived from the baseclass, usefull if there has to be any changes done 
+        /// to specific entities or whatever when another states is pushed ontop of this state.
+        /// </summary>
         public override void Obscuring()
         {
-            throw new NotImplementedException();
+            
         }
 
+        /// <summary>
+        /// Method derrived from the baseclass, if there is some changes that needs to be done
+        /// when this state is revealed again (if some other state previously have beed obscuring this state)
+        /// then that logic should be in this method.
+        /// </summary>
         public override void Revealed()
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -167,5 +180,7 @@ namespace DizGame.Source.GameStates
             oldState = newState;
 
         }
+
+        
     }
 }
