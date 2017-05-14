@@ -516,8 +516,8 @@ namespace DizGame
 
             List<TextComponent> textComponents = new List<TextComponent>
             {
-                new TextComponent(health.Health.ToString(), healthPosition, Color.Pink, font, true), // health
-                new TextComponent(ammo.ActiveMagazine.Item2 + "/" + ammo.ActiveMagazine.Item3 + " " + ammo.ActiveMagazine.Item1 + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.DeepPink, font, true), // ammo
+                new TextComponent(health.Health.ToString(), healthPosition, Color.Pink, font, true, Color.WhiteSmoke, true, 0.3f), // health
+                new TextComponent(ammo.ActiveMagazine.Item2 + "/" + ammo.ActiveMagazine.Item3 + " " + ammo.ActiveMagazine.Item1 + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.DeepPink, font, true, Color.WhiteSmoke, true, 0.3f), // ammo
                 // TODO: en player remaining vet inte om vi skall göra en komponent för det? :) <- Det är väl bara att plocka ut typ alla "health component" o kolla hur många som har mer än 0 i hälsa?
             };
             List<string> names = new List<string>

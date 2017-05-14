@@ -38,6 +38,22 @@ namespace GameEngine.Source.Components
         /// Dictionary used if more then one text is wanted for an entity. 
         /// </summary>
         public Dictionary<string, TextComponent> Children { get; set; }
+        /// <summary>
+        /// Set an background rectangle
+        /// </summary>
+        public Texture2D BackgroundRectangle { get; set; }
+        /// <summary>
+        /// Bool if rectangle is visible (background)
+        /// </summary>
+        public bool IsBackgroundVisible { get; set; }
+        /// <summary>
+        /// Set background color
+        /// </summary>
+        public Color BackgroundColor { get; set; }
+        /// <summary>
+        /// Sets the backgrounds opacity (see through)
+        /// </summary>
+        public float BackgroundOpacity { get; set; }
         #endregion Public Configuration
         /// <summary>
         /// Constructor which takes in all the nessecary parameters
@@ -48,13 +64,20 @@ namespace GameEngine.Source.Components
         /// <param name="color"></param>
         /// <param name="font"></param>
         /// <param name="isVisible"></param>
-        public TextComponent(string text, Vector2 position, Color color, SpriteFont font, bool isVisible)
+        /// <param name="isBackgroundVisible"></param>
+        /// <param name="backgroundOpacity"></param>
+        /// <param name="backgroundColor"></param>
+        public TextComponent(string text, Vector2 position, Color color, SpriteFont font, bool isVisible, Color? backgroundColor = null, bool isBackgroundVisible = false, float backgroundOpacity = 1f)
         {
             Text = text;
             Position = position;
             Color = color;
             Font = font;
-            IsVisible = isVisible;  
+            IsVisible = isVisible;
+
+            BackgroundColor = backgroundColor ?? Color.Black;
+            IsBackgroundVisible = isBackgroundVisible;
+            BackgroundOpacity = backgroundOpacity;
         }
         /// <summary>
         /// Is used if multiple text is wanted

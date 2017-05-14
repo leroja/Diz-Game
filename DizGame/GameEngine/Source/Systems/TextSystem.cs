@@ -41,7 +41,7 @@ namespace GameEngine.Source.Systems
             }
         }
         /// <summary>
-        /// Function to draw the text 
+        /// Function to draw the text and it's background
         /// </summary>
         /// <param name="text"></param>
         private void DrawText(TextComponent text)
@@ -51,6 +51,16 @@ namespace GameEngine.Source.Systems
                 if (text.IsVisible)
                 {
                     spriteBatch.Begin();
+                    if(text.IsBackgroundVisible)
+                    {
+                        Vector2 textSize = text.Font.MeasureString(text.Text);
+                        text.BackgroundRectangle = new Texture2D(spriteBatch.GraphicsDevice, (int)textSize.X, (int)textSize.Y);
+                        Color[] data = new Color[(int)textSize.X * (int)textSize.Y];
+                        for (int i = 0; i < data.Length; ++i) data[i] = text.BackgroundColor * text.BackgroundOpacity;
+                        text.BackgroundRectangle.SetData(data);
+
+                        spriteBatch.Draw(text.BackgroundRectangle, text.Position, Color.White);
+                    }
                     spriteBatch.DrawString(text.Font, text.Text, text.Position, text.Color);
                     spriteBatch.End();
                 }
