@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
-    public class NetworkSystem
+    /// <summary>
+    /// NetworkSystem class is responsible for the server side application
+    /// and contains the functions needed for the administration.
+    /// </summary>
+    public class NetworkSystem 
     {
         NetPeerConfiguration config;
         NetClient client;
@@ -78,8 +82,7 @@ namespace DizGame.Source.Systems
             NetIncomingMessage message;
             
 
-            //TODO: add functionallity for the different messagetypes, some information might be needed to be broadcasted to other clients
-            
+           
             while ((message = client.ReadMessage()) != null)
             {
                 switch (message.MessageType)

@@ -1,5 +1,4 @@
-﻿using AnimationContentClasses;
-using GameEngine.Source.Components;
+﻿using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
 using System;
@@ -10,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
-    class CollisionSystem : IUpdate, IObservable<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>>
+    class CollisionSystem : IUpdate, IObservable<List<Tuple<BoundingSphere, BoundingSphere>>>
     {
         //Holds all the observers for this class
-        List<IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>>> observers;
+        List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> observers;
 
         partial class Unsubscriber : IDisposable
         {
-            private List<IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>>> _observers;
-            private IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>> _observer;
+            private List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> _observers;
+            private IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> _observer;
 
-            public Unsubscriber(List<IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>>> observers,
-                IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>> observer)
+            public Unsubscriber(List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>> observers,
+                IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> observer)
             {
                 this._observers = observers;
                 this._observer = observer;
@@ -37,7 +36,7 @@ namespace GameEngine.Source.Systems
         //Constructor
         public CollisionSystem()
         {
-            observers = new List<IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>>>();
+            observers = new List<IObserver<List<Tuple<BoundingSphere, BoundingSphere>>>>();
         }
 
         /// <summary>
@@ -46,23 +45,25 @@ namespace GameEngine.Source.Systems
         /// </summary>
         public void CollisionDetection()
         {
-            List<int> VolEntities = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>> collidedVolumes = new List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>();
+            List<int> sphereEntities = ComponentManager.Instance.GetAllEntitiesWithComponentType<BoundingSphereComponent>();
+            List<Tuple<BoundingSphere, BoundingSphere>> collidedVolumes = new List<Tuple<BoundingSphere, BoundingSphere>>();
 
-            for (int i = 0; i < VolEntities.Count - 1; i++)
+            for (int i = 0; i < sphereEntities.Count - 1; i++)
             {
-                ModelComponent modelComp1 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(VolEntities[i]);
+                BoundingSphereComponent sphereComp1 = ComponentManager.Instance.GetEntityComponent<BoundingSphereComponent>(sphereEntities[i]);
 
-                for (int j = 1; j < VolEntities.Count; i++)
+                for (int j = 1; j < sphereEntities.Count; i++)
                 {
-                    ModelComponent modelComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(VolEntities[j]);
-                    if (modelComp1.BoundingVolume.Bounding.Intersects(modelComp2.BoundingVolume.Bounding))
+                    BoundingSphereComponent sphereComp2 = ComponentManager.Instance.GetEntityComponent<BoundingSphereComponent>(sphereEntities[j]);
+                    if (sphereComp1.Sphere.Intersects(sphereComp2.Sphere))
                     {
-                        if (ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(VolEntities[i]) && ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(VolEntities[j]))
+                        if (ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(sphereEntities[i]) && ComponentManager.Instance.CheckIfEntityHasComponent<ModelComponent>(sphereEntities[j]))
                         {
-                            List<BoundingVolume> spheres1 = modelComp1.BoundingVolume.Volume;
-                            List<BoundingVolume> spheres2 = modelComp2.BoundingVolume.Volume;
-                            if (FindFirstHit(modelComp1.ID, modelComp2.ID, spheres1, spheres2, out Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>> tuple))
+                            ModelComponent mComp1 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(sphereEntities[i]);
+                            ModelComponent mComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(sphereEntities[j]);
+                            List<BoundingSphere> spheres1 = mComp1.Model.Meshes.Select(s => s.BoundingSphere).ToList();
+                            List<BoundingSphere> spheres2 = mComp2.Model.Meshes.Select(s => s.BoundingSphere).ToList();
+                            if (FindFirstHit(spheres1, spheres2, out Tuple<BoundingSphere, BoundingSphere> tuple))
                             {
                                 if (tuple != null)
                                     collidedVolumes.Add(tuple);
@@ -71,7 +72,7 @@ namespace GameEngine.Source.Systems
                     }
                 }
             }
-            foreach (IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>> observer in observers)
+            foreach (IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> observer in observers)
             {
                 observer.OnNext(collidedVolumes);
             }
@@ -82,7 +83,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="observer"></param>
         /// <returns></returns>
-        public IDisposable Subscribe(IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>> observer)
+        public IDisposable Subscribe(IObserver<List<Tuple<BoundingSphere, BoundingSphere>>> observer)
         {
             if (!observers.Contains(observer))
                 observers.Add(observer);
@@ -94,32 +95,28 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="spheres1"></param>
         /// <param name="spheres2"></param>
-        /// <returns> true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
-        private bool FindFirstHit(int mod1ID, int mod2ID, List<BoundingVolume> spheres1, List<BoundingVolume> spheres2, out Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>> tuple)
+        /// <param name="tuple"></param>
+        /// <returns>true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
+        private bool FindFirstHit(List<BoundingSphere> spheres1, List<BoundingSphere> spheres2, out Tuple<BoundingSphere, BoundingSphere> tuple)
         {
-            IBounding3D s1 = spheres1[0].Bounding;
-            IBounding3D s2 = spheres2[0].Bounding;
+            BoundingSphere s1 = spheres1.FirstOrDefault();
+            BoundingSphere s2 = spheres2.FirstOrDefault();
             if (s1 != null || s2 != null)
             {
                 if (s1.Intersects(s2))
                 {
-                    tuple = new Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>(new KeyValuePair<int, IBounding3D>(mod1ID, s1), new KeyValuePair<int, IBounding3D>(mod2ID, s2));
+                    tuple = new Tuple<BoundingSphere, BoundingSphere>(s1, s2);
                     return true;
                 }
                 else if (spheres1.Count > spheres2.Count)
                 {
-                    BoundingVolume[] temp1 = new BoundingVolume[spheres1.Count];
-                    spheres1.CopyTo(temp1);
-                    
-                    temp1.Skip(1);
-                    FindFirstHit(mod1ID, mod2ID, temp1.ToList(), spheres2, out tuple);
+                    spheres1.Remove(s1);
+                    FindFirstHit(spheres1, spheres2, out tuple);
                 }
                 else if (spheres1.Count < spheres2.Count)
                 {
-                    BoundingVolume[] temp2 = new BoundingVolume[spheres2.Count];
-                    spheres2.CopyTo(temp2);
-                    temp2.Skip(1);
-                    FindFirstHit(mod1ID, mod2ID, spheres1, temp2.ToList(), out tuple);
+                    spheres2.Remove(s2);
+                    FindFirstHit(spheres1, spheres2, out tuple);
                 }
             }
             tuple = null;

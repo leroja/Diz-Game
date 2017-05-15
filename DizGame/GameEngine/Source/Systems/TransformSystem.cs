@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// Transform system responsible for handling all entities with transform components 
+    /// and the calculations for which the transformations require within the update sequence of a game.
+    /// </summary>
     public class TransformSystem : IUpdate
     {
 
@@ -22,8 +26,8 @@ namespace GameEngine.Source.Systems
             {
                 TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
                 var rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, tfc.Rotation.X, tfc.Rotation.Z);
-
-                tfc.QuaternionRotation *= rotationQuaternion;
+                
+                tfc.QuaternionRotation = rotationQuaternion;
                 tfc.Forward = Vector3.Transform(Vector3.Forward, tfc.QuaternionRotation);
                 tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
                 tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);

@@ -23,6 +23,11 @@ namespace GameEngine.Source.Managers
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
+        /// <summary>
+        /// List which represents the current occupied id's for entities.
+        /// </summary>
+        public List<int> CurrentTakenEntityIds { get; private set; }
+
         private ComponentManager()
         {
             curMax = step;
@@ -30,9 +35,13 @@ namespace GameEngine.Source.Managers
             entityIDs.AddRange(Enumerable.Range(1, curMax));
             defaultList = new List<int>();
             defaultDictionary = new Dictionary<int, IComponent>();
+            CurrentTakenEntityIds = new List<int>();
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static ComponentManager Instance
         {
             get
@@ -61,6 +70,7 @@ namespace GameEngine.Source.Managers
             int id = entityIDs[entityIDs.Count - 1];
 
             entityIDs.Remove(id);
+            CurrentTakenEntityIds.Add(id);
             return id;
         }
 
@@ -78,7 +88,7 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// "links" the component to the entity
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entityID"></param>
         /// <param name="component"></param>
         public void AddComponentToEntity(int entityID, IComponent component)
         {
@@ -89,13 +99,7 @@ namespace GameEngine.Source.Managers
             {
                 compDic.Add(type, new Dictionary<int, IComponent>());
             }
-            try
-            {
-                compDic[type].Add(entityID, component);
-            }
-            catch (Exception)
-            {
-            }
+            compDic[type].Add(entityID, component);
         }
 
         /// <summary>
@@ -113,20 +117,14 @@ namespace GameEngine.Source.Managers
                 {
                     compDic.Add(type, new Dictionary<int, IComponent>());
                 }
-                try
-                {
-                    compDic[type].Add(entityID, comp);
-                }
-                catch (Exception)
-                {
-                }
+                compDic[type].Add(entityID, comp);
             }
         }
 
         /// <summary>
         /// Removes the component from the entity
         /// </summary>
-        /// <param name="entity"> The entity that has the component </param>
+        /// <param name="entityID"> The entity that has the component </param>
         /// <param name="component"> The component to be removed </param>
         public void RemoveComponentFromEntity(int entityID, IComponent component)
         {
@@ -148,7 +146,7 @@ namespace GameEngine.Source.Managers
         /// <typeparam name="T">
         /// The type of the requested component
         /// </typeparam>
-        /// <param name="entity"></param>
+        /// <param name="entityID"></param>
         /// <returns>
         /// A component of the requested type if there is one
         /// else it returns null
@@ -216,7 +214,7 @@ namespace GameEngine.Source.Managers
         /// Removes an Entity from dictionary
         /// As a game Dev you also have to recycle the id
         /// </summary>
-        /// <param name="entity"> The entity to be removed </param>
+        /// <param name="entityID"> The entity to be removed </param>
         public void RemoveEntity(int entityID)
         {
             foreach (KeyValuePair<Type, Dictionary<int, IComponent>> entry in compDic)
@@ -248,7 +246,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Returns a dictionary with all entites that "has" the specific type of component & 
+        /// Returns a dictionary with all entites that "has" the specific type of component and
         /// and the components of that type
         /// </summary>
         /// <typeparam name="T"> The type of component </typeparam>
@@ -286,6 +284,16 @@ namespace GameEngine.Source.Managers
                 }
             }
             return false;
+        }
+
+
+        /// <summary>
+        /// This function is used for retrieving all the current entityIds that has been created up til now.
+        /// </summary>
+        /// <returns>All current entityIds.</returns>
+        public List<int> GetAllCurrentEntityIds()
+        {
+            return CurrentTakenEntityIds;
         }
     }
 }

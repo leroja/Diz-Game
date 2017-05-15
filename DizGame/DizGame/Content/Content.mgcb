@@ -17,7 +17,7 @@
 
 #begin bullet/bullet.obj
 /importer:OpenAssetImporter
-/processor:BoundingSphereProcessor
+/processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -27,16 +27,16 @@
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
-/processorParam:RotationY=0
+/processorParam:RotationY=180
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=DxtCompressed
 /build:bullet/bullet.obj
 
 #begin bullet/Cartridge.obj
 /importer:OpenAssetImporter
-/processor:BoundingSphereProcessor
+/processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -46,11 +46,11 @@
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
-/processorParam:RotationY=0
+/processorParam:RotationY=180
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=DxtCompressed
 /build:bullet/Cartridge.obj
 
 #begin HeightMapStuff/grass.png
@@ -101,74 +101,12 @@
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff\canyonHeightMap.jpg
 
-#begin House/WoodHouse/Cyprys_House.obj
-/importer:OpenAssetImporter
-/processor:BoundingBoxProcessor
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
-/build:House/WoodHouse/Cyprys_House.obj
-
-#begin House/Farmhouse/MedievalHouse1.obj
-/importer:OpenAssetImporter
-/processor:BoundingBoxProcessor
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=True
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
-/build:House/Farmhouse/MedievalHouse1.obj
-
-#begin House/Farmhouse/roof.tga
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:House/Farmhouse/roof.tga
-
-#begin House/Farmhouse/wall.tga
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:House/Farmhouse/wall.tga
-
 #begin Dude/dude.fbx
 /importer:FbxImporter
-/processor:BoundingSphereProcessor
+/processor:AnimationProcessor
+/processorParam:DefaultEffect=BasicEffect
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
 /processorParam:GenerateMipmaps=True
 /processorParam:GenerateTangentFrames=False
 /processorParam:PremultiplyTextureAlpha=True
@@ -338,47 +276,9 @@
 /processorParam:TextureFormat=Color
 /build:Dude/upBodyS.tga
 
-#begin House/Tree/lowpolytree.obj
-/importer:OpenAssetImporter
-/processor:BoundingBoxProcessor
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
-/build:House/Tree/lowpolytree.obj
-
-#begin House/Rock/Rock.obj
-/importer:OpenAssetImporter
-/processor:BoundingBoxProcessor
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
-/build:House/Rock/Rock.obj
-
-#begin Wolf/wolf.fbx
+#begin Body.fbx
 /importer:FbxImporter
-/processor:ModelSpheresAndAnimationProcessor
+/processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -393,9 +293,47 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/build:Wolf/wolf.fbx
+/build:Body.fbx
 
-#begin Wolf/Wolf_Body.jpg
+#begin MapObjects/WoodHouse/Cyprys_House.obj
+/importer:OpenAssetImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=90
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=DxtCompressed
+/build:MapObjects/WoodHouse/Cyprys_House.obj
+
+#begin MapObjects/Farmhouse/MedievalHouse1.obj
+/importer:OpenAssetImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=True
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=DxtCompressed
+/build:MapObjects/Farmhouse/MedievalHouse1.obj
+
+#begin MapObjects/Farmhouse/roof.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -405,9 +343,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Wolf/Wolf_Body.jpg
+/build:MapObjects/Farmhouse/roof.tga
 
-#begin Wolf/Wolf_Eyes_1.jpg
+#begin MapObjects/Farmhouse/wall.tga
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -417,9 +355,47 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Wolf/Wolf_Eyes_1.jpg
+/build:MapObjects/Farmhouse/wall.tga
 
-#begin Wolf/Wolf_Eyes_2.jpg
+#begin MapObjects/Tree/lowpolytree.obj
+/importer:OpenAssetImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=DxtCompressed
+/build:MapObjects/Tree/lowpolytree.obj
+
+#begin MapObjects/Rock/Rock.obj
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=DxtCompressed
+/build:MapObjects/Rock/Rock.obj
+
+#begin MapObjects/Rock/Stone texture.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -429,9 +405,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Wolf/Wolf_Eyes_2.jpg
+/build:MapObjects/Rock/Stone texture.jpg
 
-#begin Wolf/Wolf_Fur.jpg
+#begin HeightMapStuff/Map3.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -441,5 +417,24 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Wolf/Wolf_Fur.jpg
+/build:HeightMapStuff/Map3.jpg
+
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/MenuFont.spritefont
+
+#begin Icons/squareTest.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Icons/squareTest.png
 

@@ -1,18 +1,32 @@
-﻿using GameEngine.Source.Systems.Interface;
+﻿using GameEngine.Source.Systems.Interfaces;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using System;
 using GameEngine.Source.Enums;
+using GameEngine.Source.Systems.AbstractClasses;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// Class for updating the rigidbody physic
+    /// </summary>
     public class PhysicsRigidBodySystem : IPhysicsTypeSystem
     {
+        /// <summary>
+        /// Constructor which sets the PhysicType
+        /// </summary>
+        /// <param name="physicsSystem"></param>
         public PhysicsRigidBodySystem(IPhysics physicsSystem) : base(physicsSystem)
         {
             PhysicsType = PhysicsType.Rigid;
         }
+        /// <summary>
+        /// Updates Acceleration, mass, gravity, force, velocity, position and decaeleration
+        /// Using non euler for acceleration
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
         public override void Update(PhysicsComponent physic, float dt)
         {
             PhysicsSystem.UpdateAcceleration(physic);
@@ -40,16 +54,15 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Updates the object position using its velocity * dt
         /// </summary>
-        /// <param name="entityID"></param>
+        /// <param name="physic"></param>
         /// <param name="dt"></param>
         private void UpdatePosition(PhysicsComponent physic, float dt)
         {
-            if (physic.LastAcceleration == Vector3.Zero)
-                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+            //        += physic.Velocity * dt + physic.Acceleration * dt * dt * 0.5f;
+
+            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
                     += physic.Velocity * dt;
-            else
-                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-                    += physic.Velocity * dt + (0.5f * physic.LastAcceleration * (float)Math.Pow(dt, 2));
 
             Vector3 rotation = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Rotation;
             if (rotation.Length() != 0)

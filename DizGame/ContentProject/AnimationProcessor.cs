@@ -3,104 +3,150 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ContentProject
 {
+    /// <summary>
+    /// AnimationProcessor extending the Modelprocessor class to enable custom content processing.
+    /// </summary>
     [ContentProcessor(DisplayName = "AnimatedModelProcessor")]
     public class AnimationProcessor : ModelProcessor
     {
-        public static string TEXTURES_PATH = "Textures/";
-        public static string EFFECTS_PATH = "Effects/";
-        public static string EFFECT_FILENAME = "AnimatedModel.fx";
 
+        /// <summary>
+        /// Overriden method to enable custom processing of models loaded within the content pipeline
+        /// </summary>
+        /// <param name="input">the data retrived from the content pipeline</param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            //System.Diagnostics.Debugger.Launch();
-            // Process the model with the default processor
+           
+            //ValidateMesh(input, context, null);
+
+            BoneContent skeleton = MeshHelper.FindSkeleton(input);
+            if (skeleton == null)
+                throw new InvalidContentException("Input skeleton not found.");
+
+            //FlattenTransforms(input, skeleton);
+
+            IList<BoneContent> bones = MeshHelper.FlattenSkeleton(skeleton);
+
+            if (bones.Count > SkinnedEffect.MaxBones)
+            {
+                throw new InvalidContentException(string.Format(
+                    "Skeleton has {0} bones, but the maximum supported is {1}.",
+                    bones.Count, SkinnedEffect.MaxBones));
+            }
+
+            List<Matrix> bindPose = new List<Matrix>();
+            List<Matrix> inverseBindPose = new List<Matrix>();
+            List<int> skeletonHierarchy = new List<int>();
+
+            foreach (BoneContent bone in bones)
+            {
+                bindPose.Add(bone.Transform);
+                inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
+                skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
+            }
+
+            // Convert animation data to our runtime format.
+            Dictionary<string, AnimationClip> animationClips;
+            animationClips = ProcessAnimations(skeleton.Animations, bones);
+
+            // Chain to the base ModelProcessor class so it can convert the model data.
             ModelContent model = base.Process(input, context);
 
-            //Extract the model skeleton and all its animations
-            AnimationModelData animatedModelData = ExtractSkeletonAndAnimations(input, context);
-            // Stores the skeletal animation data in the model
-            Dictionary<string, object> dictionary = new Dictionary<string, object>
-            {
-                { "AnimationModelData", animatedModelData },
-            };
-            model.Tag = dictionary;
+            // Store our custom animation data in the Tag property of the model.
+            model.Tag = new SkinningData(animationClips, bindPose,
+                                         inverseBindPose, skeletonHierarchy);
+
             return model;
-        }      
-
-        protected AnimationModelData ExtractSkeletonAndAnimations(NodeContent input, ContentProcessorContext context)
-        {
-            //Finds the root boon of the skeleton
-            BoneContent skeleton = MeshHelper.FindSkeleton(input);
-            //Transforms the skeleton tree into a list using deep search
-            //this list are in the same order as they are indexed by the mesh’s vertices.
-            IList<BoneContent> boneList = MeshHelper.FlattenSkeleton(skeleton);
-            context.Logger.LogImportantMessage("{0} bones found.", boneList.Count);
-            Matrix[] bonesBindPose = new Matrix[boneList.Count];
-            Matrix[] inverseBindPose = new Matrix[boneList.Count];
-            int[] bonesParentIndex = new int[boneList.Count];
-            List<string> boneNameList = new List<string>(boneList.Count);
-
-            for (int i = 0; i < boneList.Count; i++)
-            {
-                bonesBindPose[i] = boneList[i].Transform;
-                inverseBindPose[i] = Matrix.Invert(boneList[i].AbsoluteTransform);
-                int parentIndex = boneNameList.IndexOf(boneList[i].Parent.Name);
-                bonesParentIndex[i] = parentIndex;
-                boneNameList.Add(boneList[i].Name);
-            }
-
-            // Extract all animations
-
-            AnimationData[] animations = ExtractAnimations(skeleton.Animations, boneNameList, context);
-
-            return new AnimationModelData(bonesBindPose, inverseBindPose, bonesParentIndex, animations);
-
         }
 
-        private AnimationData[] ExtractAnimations(AnimationContentDictionary animationDictionary, List<string> boneNameList, ContentProcessorContext context)
+        static Dictionary<string, AnimationClip> ProcessAnimations(AnimationContentDictionary animations, IList<BoneContent> bones)
         {
-            context.Logger.LogImportantMessage("{0} animations found.", animationDictionary.Count);
+            // Build up a table mapping bone names to indices.
+            Dictionary<string, int> boneMap = new Dictionary<string, int>();
 
-            AnimationData[] animations = new AnimationData[animationDictionary.Count];
-
-            int count = 0;
-            foreach (AnimationContent animationContent in animationDictionary.Values)
+            for (int i = 0; i < bones.Count; i++)
             {
-                // Store all keyframes of the animation
-                List<KeyFrame> keyframes = new List<KeyFrame>();
+                    boneMap.Add(bones[i].Name, i);
+            }
 
-                //Go through all animation channels, each bone has its own channel
-                foreach (string animationKey in animationContent.Channels.Keys)
+            // Convert each animation in turn.
+            Dictionary<string, AnimationClip> animationClips = new Dictionary<string, AnimationClip>();
+
+            foreach (KeyValuePair<string, AnimationContent> animation in animations)
+            {
+                AnimationClip processed = ProcessAnimation(animation.Value, boneMap);
+
+                animationClips.Add(animation.Key, processed);
+            }
+
+            if (animationClips.Count == 0)
+            {
+                throw new InvalidContentException(
+                            "Input file does not contain any animations.");
+            }
+
+            return animationClips;
+        }
+
+        static AnimationClip ProcessAnimation(AnimationContent animation, Dictionary<string, int> boneMap)
+        {
+            List<KeyFrame> keyframes = new List<KeyFrame>();
+
+            // For each input animation channel.
+            foreach (KeyValuePair<string, AnimationChannel> channel in animation.Channels)
+            {
+                // Look up what bone this channel is controlling.
+                int boneIndex = boneMap[channel.Key];
+                
+                // Convert the keyframe data.
+                foreach (AnimationKeyframe keyframe in channel.Value)
                 {
-                    AnimationChannel animationChannel = animationContent.Channels[animationKey];
-                    int boneIndex = boneNameList.IndexOf(animationKey);
-                    foreach (AnimationKeyframe keyframe in animationChannel)
-                        keyframes.Add(new KeyFrame(
-                        boneIndex, keyframe.Time, keyframe.Transform));
-
+                    keyframes.Add(new KeyFrame(boneIndex, keyframe.Time,
+                                               keyframe.Transform));
                 }
-
-                // Sort all animation frames by time
-                keyframes.Sort();
-
-                animations[count++] = new AnimationData(animationContent.Name, animationContent.Duration, keyframes.ToArray());
-
             }
 
-            return animations;
+            // Sort the merged keyframes by time.
+            keyframes.Sort(CompareKeyframeTimes);
+
+            if (keyframes.Count == 0)
+                throw new InvalidContentException("Animation has no keyframes.");
+
+            if (animation.Duration <= TimeSpan.Zero)
+                throw new InvalidContentException("Animation has a zero duration.");
+
+            return new AnimationClip(animation.Duration, keyframes);
         }
 
-        protected override MaterialContent ConvertMaterial(MaterialContent material, ContentProcessorContext context)
+        static int CompareKeyframeTimes(KeyFrame a, KeyFrame b)
         {
-            return base.ConvertMaterial(material, context);
+            return a.Time.CompareTo(b.Time);
         }
+
+    
+
+        /// <summary>
+        /// Force all the materials to use our skinned model effect.
+        /// </summary>
+        [DefaultValue(MaterialProcessorDefaultEffect.SkinnedEffect)]
+        public override MaterialProcessorDefaultEffect DefaultEffect
+        {
+            get { return MaterialProcessorDefaultEffect.SkinnedEffect; }
+            set { }
+        }
+
     }
 }

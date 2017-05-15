@@ -27,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Windows\x86\Debug\DizGame.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -49,12 +50,24 @@
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\AI Behaviors\AiBehavior.cs" />
+    <Compile Include="Source\AI Behaviors\AttackingBehavior.cs" />
+    <Compile Include="Source\AI Behaviors\ChaseBehavior.cs" />
+    <Compile Include="Source\AI Behaviors\EvadeBehavior.cs" />
+    <Compile Include="Source\AI Behaviors\WanderBehavior.cs" />
+    <Compile Include="Source\Components\AIComponent.cs" />
     <Compile Include="Source\Components\BulletComponent.cs" />
+    <Compile Include="Source\Components\HealthComponent.cs" />
+    <Compile Include="Source\Components\AmmunitionComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
-    <Compile Include="Source\Components\TestComponent.cs" />
+    <Compile Include="Source\Components\ScoreComponent.cs" />
+    <Compile Include="Source\Enums\AmmunitionType.cs" />
+    <Compile Include="Source\GameStates\MainMenu.cs" />
+    <Compile Include="Source\GameStates\PlayGameState.cs" />
+    <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
+    <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
-    <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
-    <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
+    <Compile Include="Source\Systems\EntityTracingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
@@ -77,16 +90,15 @@
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
+    <Content Include="Content\Icons\squareTest.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="app.manifest">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
     <None Include="Content\Dude\dude.fbx" />
     <None Include="Content\Dude\head.tga" />
     <None Include="Content\Dude\headN.tga" />
@@ -101,19 +113,18 @@
     <None Include="Content\Dude\upBodyC2.tga" />
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
-    <None Include="Content\House\Farmhouse\MedievalHouse1.obj" />
-    <None Include="Content\House\Rock\Rock.mtl" />
-    <None Include="Content\House\Rock\Rock.obj" />
-    <None Include="Content\House\Tree\lowpolytree.mtl" />
-    <None Include="Content\House\Tree\lowpolytree.obj" />
-    <None Include="Content\House\WoodHouse\Cyprys_House.mtl" />
-    <None Include="Content\House\WoodHouse\Cyprys_House.obj" />
+    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.mtl" />
+    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.obj" />
+    <None Include="Content\MapObjects\Farmhouse\roof.tga" />
+    <None Include="Content\MapObjects\Farmhouse\wall.tga" />
+    <None Include="Content\MapObjects\Rock\Rock.mtl" />
+    <None Include="Content\MapObjects\Rock\Rock.obj" />
+    <None Include="Content\MapObjects\Tree\lowpolytree.mtl" />
+    <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
+    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.mtl" />
+    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
-      <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
-      <Name>AnimationContentClasses</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">
       <Project>{2020d833-ad3f-446e-9609-b751490b0800}</Project>
       <Name>ContentProject</Name>
@@ -125,7 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\bullet\" />
-    <Folder Include="Source\Enums\" />
+    <Folder Include="Content\Characters\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
