@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /DizGame/GameEngine/Source/Components/Interface/IBoundingVolume.cs
+/DizGame/GameEngine/Source/Systems/SkyBoxSystem.cs

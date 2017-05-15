@@ -453,7 +453,7 @@ namespace DizGame
         /// 
         /// </summary>
         /// <returns></returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
@@ -473,7 +473,7 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new AIComponent(BoundRec, shootingCoolDown){
+                new AIComponent(BoundRec, shootingCoolDown, waypoints){
                     Hysteria = hysteria,
                     AttackingDistance = attackingDistance,
                     DirectionChangeRoation = rotation,
@@ -481,6 +481,7 @@ namespace DizGame
                     EvadeDistance = evadeDist,
                     TurningSpeed = turningSpeed,
                     UpdateFrequency = updateFreq,
+                    ChaseDistance = chaseDist,
                 },
             };
 

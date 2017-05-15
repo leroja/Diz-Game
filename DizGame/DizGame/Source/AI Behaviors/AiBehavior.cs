@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DizGame.Source.AI_States
+namespace DizGame.Source.AI_Behaviors
 {
     // todo reerite all comments on all behaviors
     /// <summary>
@@ -163,19 +163,23 @@ namespace DizGame.Source.AI_States
             }
             return rotation;
         }
+        
 
-        // todo funkar inte riktigt
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AIComp"></param>
+        /// <returns></returns>
         public float GetUpwardsRotationToClosestEnenmy(AIComponent AIComp)
         {
             var ClosestEnemyTransFormComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy);
             var AITransformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
-            float x = ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
-            //float x = ClosestEnemyTransFormComp.Position.Z - AITransformComp.Position.Z + ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
-            //float x = 0;
+            var dist = Vector2.Distance(new Vector2(AITransformComp.Position.X, AITransformComp.Position.Z), new Vector2(ClosestEnemyTransFormComp.Position.X, ClosestEnemyTransFormComp.Position.Z));
+            
             float y = ClosestEnemyTransFormComp.Position.Y - AITransformComp.Position.Y;
 
-            float desiredAngle = (float)Math.Atan2(y, x);
+            float desiredAngle = (float)Math.Atan2(y, dist);
 
             return WrapAngle(desiredAngle);
         }

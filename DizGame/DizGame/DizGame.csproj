@@ -54,6 +54,7 @@
     <Compile Include="Source\AI Behaviors\AttackingBehavior.cs" />
     <Compile Include="Source\AI Behaviors\ChaseBehavior.cs" />
     <Compile Include="Source\AI Behaviors\EvadeBehavior.cs" />
+    <Compile Include="Source\AI Behaviors\PatrollingBehavior.cs" />
     <Compile Include="Source\AI Behaviors\WanderBehavior.cs" />
     <Compile Include="Source\Components\AIComponent.cs" />
     <Compile Include="Source\Components\BulletComponent.cs" />

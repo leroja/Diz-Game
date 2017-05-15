@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 
-namespace DizGame.Source.AI_States
+namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
     /// 

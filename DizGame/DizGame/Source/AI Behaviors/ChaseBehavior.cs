@@ -9,7 +9,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework.Input;
 
-namespace DizGame.Source.AI_States
+namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
     /// A state that makes the AI Chase either another AI or the Player
@@ -50,7 +50,7 @@ namespace DizGame.Source.AI_States
                 currentTimeForRot = 0f;
             }
 
-            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed/* * (float)gameTime.ElapsedGameTime.TotalSeconds*/), 0);
 
             BehaviorStuff(AIComp, transformComp);
         }

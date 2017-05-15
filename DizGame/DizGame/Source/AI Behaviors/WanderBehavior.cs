@@ -9,7 +9,7 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using GameEngine.Source.Utils;
 
-namespace DizGame.Source.AI_States
+namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
     /// 
@@ -45,7 +45,6 @@ namespace DizGame.Source.AI_States
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
-            var pos = transformComp.Position;
             
             currentTimeForDir += (float)gameTime.ElapsedGameTime.TotalSeconds;
             

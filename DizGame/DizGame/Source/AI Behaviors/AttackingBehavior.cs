@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 
-namespace DizGame.Source.AI_States
+namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
     /// 
@@ -54,7 +54,7 @@ namespace DizGame.Source.AI_States
             
             transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
             
-            if (/*worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0*/ true)
+            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
             {
                 var rot = GetUpwardsRotationToClosestEnenmy(AIComp);
 
@@ -62,10 +62,31 @@ namespace DizGame.Source.AI_States
                 time = AIComp.ShootingCooldown;
             }
 
-            //if (worldComp.Day % 2 != 0 || worldComp.Day == 0)
-            //{
-            //    AIComp.ChangeBehavior("Evade", transformComp.Rotation);
-            //}
+            BehaviorStuff(AIComp, transformComp, worldComp);
+            
         }
+
+        private void BehaviorStuff(AIComponent AIComp, TransformComponent transformComp, WorldComponent worldComp)
+        {
+            // todo, kanske inte ska ha den här för att AIn blir enklare att undvika
+            if (worldComp.Day % 2 == 0 && AIComp.AttackingDistance + AIComp.Hysteria < AIComp.CurrentBehaivior.DistanceToClosestEnemy)
+            {
+
+                AIComp.ChangeBehavior("Chase", transformComp.Rotation);
+            }
+
+            if (worldComp.Day % 2 != 0)
+            {
+                if (AIComp.HaveBehavior("Patroll"))
+                {
+                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                }
+                else
+                {
+                    AIComp.ChangeBehavior("Evade", transformComp.Rotation);
+                }
+            }
+        }
+
     }
 }
