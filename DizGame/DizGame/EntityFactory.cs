@@ -1,4 +1,4 @@
-﻿
+﻿using AnimationContentClasses;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
@@ -13,7 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ContentProject;
+    
 namespace DizGame
 {
     public class EntityFactory
@@ -28,6 +29,11 @@ namespace DizGame
             hmFactory = new HeightMapFactory(Device);
             CreateWorldComp();
             this.Content = Content;
+            Content.Load<Texture2D>("HeightMapStuff/BetterGrass");
+            //Model mod = Content.Load<Model>("House/WoodHouse/Cyprys_House");
+            //Content.Load<Model>("Bullet/Cartridge");
+            //Content.Load<Model>("Dude/dude");
+            Content.Load<Model>("bullet/bullet");
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
@@ -62,7 +68,7 @@ namespace DizGame
         public int CreateDude()
         {
             int entityID = ComponentManager.Instance.CreateID();
-            Model chuck = ModelDic["Dude"];
+            Model dude= ModelDic["Dude"];
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.AddActionAndKey("Forward", Keys.W);
             keys.AddActionAndKey("Backwards", Keys.S);
@@ -78,10 +84,11 @@ namespace DizGame
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
 
+            Dictionary<string, object> temp = (Dictionary<string, object>)dude.Tag;
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,45,0), new Vector3(0.1f, 0.1f, 0.1f)),
-                new ModelComponent(chuck),
+                new TransformComponent(new Vector3(0,45,0), Vector3.One),
+                new ModelComponent(dude, (BoundingVolume)temp["BoundingVolume"]),
                 keys,
                 mouse,
                 new PlayerComponent(),
@@ -94,7 +101,7 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new TestComponent(),
+                new TestComponent()
             };
 
 
@@ -104,7 +111,6 @@ namespace DizGame
             return entityID;
 
         }
-
         /// <summary>
         /// Creates a house of given model
         /// </summary>
@@ -115,8 +121,9 @@ namespace DizGame
         {
             Vector3 scale = new Vector3();
             Model house = ModelDic[nameOfModel];
-            
-            if(nameOfModel == "House_Wood")
+            Dictionary<string, object> temp = (Dictionary<string, object>)house.Tag;
+
+            if (nameOfModel == "House_Wood")
             {
                 scale = new Vector3(0.04f, 0.04f, 0.04f);
             }
@@ -125,7 +132,7 @@ namespace DizGame
                 scale = new Vector3(4f, 4f, 4f);
             }
             int entityID = ComponentManager.Instance.CreateID();
-            ModelComponent mod = new ModelComponent(house)
+            ModelComponent mod = new ModelComponent(house, (BoundingVolume)temp["BoundingVolume"])
             {
                 IsStatic = true
             };
@@ -150,6 +157,7 @@ namespace DizGame
         {
             Vector3 scale = new Vector3();
             Model model = ModelDic[nameOfModel];
+            Dictionary<string, object> temp = (Dictionary<string, object>)model.Tag;
 
             switch (nameOfModel)
             {
@@ -161,7 +169,7 @@ namespace DizGame
                     break;
             }
             int entityID = ComponentManager.Instance.CreateID();
-            ModelComponent comp = new ModelComponent(model)
+            ModelComponent comp = new ModelComponent(model, (BoundingVolume)temp["BoundingVolume"])
             {
                 IsStatic = true
             };
@@ -314,13 +322,14 @@ namespace DizGame
             int BulletEntity = ComponentManager.Instance.CreateID();
 
             Model model = ModelDic[modelName];
+            Dictionary<string, object> temp = (Dictionary<string, object>)model.Tag;
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
                 {
                     QuaternionRotation = Orientation
                 },
-                new  ModelComponent(model),
+                new  ModelComponent(model, (BoundingVolume)temp["BoundingVolume"]),
                 
                 new BulletComponent(){
                     StartPos = pos,
@@ -350,6 +359,7 @@ namespace DizGame
         {
             
             Model model = Content.Load<Model>("Wolf/Wolf");
+            Dictionary<string, object> temp = (Dictionary<string, object>)model.Tag;
             int entityID = ComponentManager.Instance.CreateID();
             AnimationComponent anm = new AnimationComponent(entityID);
 
@@ -359,7 +369,7 @@ namespace DizGame
                 new TransformComponent(new Vector3(0,0,-20), new Vector3(1f,1f,1f)),
 
 
-                new ModelComponent(model),
+                new ModelComponent(model, (BoundingVolume)temp["BoundingVolume"]),
                 anm,
             };
             ComponentManager.Instance.AddAllComponents(entityID, componentList);

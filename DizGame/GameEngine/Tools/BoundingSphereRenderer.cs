@@ -14,7 +14,7 @@ namespace GameEngine.Tools
         public static float RADIANS_FOR_90DEGREES = MathHelper.ToRadians(90);//(float)(Math.PI / 2.0);
         public static float RADIANS_FOR_180DEGREES = RADIANS_FOR_90DEGREES * 2;
 
-        private Game _gameInstance = null;
+        private GraphicsDevice graphicsDevice = null;
 
         protected VertexBuffer buffer;
         protected VertexDeclaration vertexDecl;
@@ -27,24 +27,21 @@ namespace GameEngine.Tools
 
         //private Matrix[] modelBoneTransforms;
 
-        public BoundingSphereRenderer(Game game)
+        public BoundingSphereRenderer(GraphicsDevice device)
         {
-            _gameInstance = game;
+            graphicsDevice = device;
+            OnCreateDevice();
         }
 
         public void OnCreateDevice()
         {
-            IGraphicsDeviceService graphicsService = (IGraphicsDeviceService)_gameInstance.Services.GetService(typeof(IGraphicsDeviceService));
-
-            basicEffect = new BasicEffect(graphicsService.GraphicsDevice);
+            basicEffect = new BasicEffect(graphicsDevice);
 
             CreateShape();
         }
 
         public void CreateShape()
         {
-            IGraphicsDeviceService graphicsService = (IGraphicsDeviceService)_gameInstance.Services.GetService(typeof(IGraphicsDeviceService));
-
             double angle = MathHelper.TwoPi / CIRCLE_NUM_POINTS;
 
             _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS + 1];
@@ -70,7 +67,7 @@ namespace GameEngine.Tools
             }
 
             // Initialize the vertex buffer, allocating memory for each vertex
-            buffer = new VertexBuffer(graphicsService.GraphicsDevice,
+            buffer = new VertexBuffer(graphicsDevice,
                 VertexPositionNormalTexture.VertexDeclaration,
                 _vertices.Length,
                 BufferUsage.None);
@@ -84,8 +81,6 @@ namespace GameEngine.Tools
 
         private void InitializeLineStrip()
         {
-            IGraphicsDeviceService graphicsService = (IGraphicsDeviceService)_gameInstance.Services.GetService(typeof(IGraphicsDeviceService));
-
             // Initialize an array of indices of type short
             short[] lineStripIndices = new short[CIRCLE_NUM_POINTS + 1];
 
@@ -99,7 +94,7 @@ namespace GameEngine.Tools
 
             // Initialize the index buffer, allocating memory for each index
             _indexBuffer = new IndexBuffer(
-                graphicsService.GraphicsDevice,
+                graphicsDevice,
                 IndexElementSize.SixteenBits,
                 lineStripIndices.Length,
                 BufferUsage.None
@@ -110,25 +105,15 @@ namespace GameEngine.Tools
 
         }
 
-        public void Draw(BoundingSphere bs, Color color)
+        public void Draw(ModelMesh mm, Color color)
         {
-
-            IGraphicsDeviceService graphicsService = (IGraphicsDeviceService)_gameInstance.Services.GetService(typeof(IGraphicsDeviceService));
-            GraphicsDevice device = graphicsService.GraphicsDevice;
-
-            if (bs != null)
+            if (mm.BoundingSphere != null)
             {
-                Matrix scaleMatrix = Matrix.CreateScale(bs.Radius);
-                Matrix translateMat = Matrix.CreateTranslation(bs.Center);
+                
+                Matrix scaleMatrix = Matrix.CreateScale(mm.BoundingSphere.Radius);
+                Matrix translateMat = Matrix.CreateTranslation(mm.BoundingSphere.Center);
                 Matrix rotateYMatrix = Matrix.CreateRotationY(RADIANS_FOR_90DEGREES);
                 Matrix rotateXMatrix = Matrix.CreateRotationX(RADIANS_FOR_90DEGREES);
-
-                //device.RenderState.DepthBufferEnable = true;
-                //device.RenderState.DepthBufferWriteEnable = true;
-                //device.RenderState.AlphaBlendEnable = true;
-                //device.RenderState.SourceBlend = Blend.SourceAlpha;
-                //device.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
-                //device.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
 
                 // effect is a compiled effect created and compiled elsewhere
                 // in the application
@@ -137,29 +122,29 @@ namespace GameEngine.Tools
                 basicEffect.EnableDefaultLighting();
                 basicEffect.View = cc.View;
                 basicEffect.Projection = cc.Projection;
-
                 foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
 
-                    device.SetVertexBuffer(buffer);
-                    device.Indices = _indexBuffer;
+                    graphicsDevice.SetVertexBuffer(buffer);
+                    graphicsDevice.Indices = _indexBuffer;
 
                     basicEffect.Alpha = ((float)color.A / (float)byte.MaxValue);
 
                     basicEffect.World = scaleMatrix * translateMat;
                     basicEffect.DiffuseColor = color.ToVector3();
 
-                    device.DrawIndexedPrimitives(
+                    graphicsDevice.DrawIndexedPrimitives(
                         PrimitiveType.LineStrip,
                         0,  // vertex buffer offset to add to each element of the index buffer
                         0,  // first index element to read
                         CIRCLE_NUM_POINTS); // number of primitives to draw
 
-                    basicEffect.World = rotateYMatrix * scaleMatrix * translateMat;
+                    //basicEffect.World =  scaleMatrix * rotateYMatrix * translateMat;
+                    basicEffect.World =  translateMat * rotateYMatrix * scaleMatrix;
                     basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
 
-                    device.DrawIndexedPrimitives(
+                    graphicsDevice.DrawIndexedPrimitives(
                         PrimitiveType.LineStrip,
                         0,  // vertex buffer offset to add to each element of the index buffer
                         0,  // first index element to read
@@ -168,7 +153,7 @@ namespace GameEngine.Tools
                     basicEffect.World = rotateXMatrix * scaleMatrix * translateMat;
                     basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
 
-                    device.DrawIndexedPrimitives(
+                    graphicsDevice.DrawIndexedPrimitives(
                         PrimitiveType.LineStrip,
                         0,  // vertex buffer offset to add to each element of the index buffer
                         0,  // first index element to read
@@ -185,7 +170,7 @@ namespace GameEngine.Tools
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
                 foreach(ModelMesh mm in mc.Model.Meshes)
                 {
-                    Draw(mm.BoundingSphere, new Color(new Vector3(255, 0, 0)));
+                    Draw(mm, new Color(new Vector3(255, 0, 0)));
                 }
             }
         }

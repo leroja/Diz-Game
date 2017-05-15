@@ -20,23 +20,22 @@ namespace ContentProject
 
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
+            //System.Diagnostics.Debugger.Launch();
             // Process the model with the default processor
             ModelContent model = base.Process(input, context);
 
             //Extract the model skeleton and all its animations
             AnimationModelData animatedModelData = ExtractSkeletonAndAnimations(input, context);
-
             // Stores the skeletal animation data in the model
             Dictionary<string, object> dictionary = new Dictionary<string, object>
             {
-                { "AnimationModelData", animatedModelData }
+                { "AnimationModelData", animatedModelData },
             };
             model.Tag = dictionary;
-
             return model;
-        }
+        }      
 
-        private AnimationModelData ExtractSkeletonAndAnimations(NodeContent input, ContentProcessorContext context)
+        protected AnimationModelData ExtractSkeletonAndAnimations(NodeContent input, ContentProcessorContext context)
         {
             //Finds the root boon of the skeleton
             BoneContent skeleton = MeshHelper.FindSkeleton(input);

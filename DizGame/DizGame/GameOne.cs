@@ -9,6 +9,7 @@ using DizGame.Source.ConfiguredSystems;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Components;
 using System.Collections.Generic;
+using GameEngine.Tools;
 
 namespace DizGame
 {
@@ -82,10 +83,10 @@ namespace DizGame
         private void InitializeSystems(EntityFactory entf)
         {
             SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
+            SystemManager.Instance.AddSystem(new ModelBoundingSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
             SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
+            SystemManager.Instance.AddSystem(new ModelBoundingSystem());
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
@@ -95,6 +96,7 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem(entf));
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GraphicsDevice));
 
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
             SystemManager.Instance.AddSystem(new AnimationSystem());

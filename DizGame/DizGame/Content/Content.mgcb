@@ -17,7 +17,7 @@
 
 #begin bullet/bullet.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:BoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -27,16 +27,16 @@
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
-/processorParam:RotationY=180
+/processorParam:RotationY=0
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:bullet/bullet.obj
 
 #begin bullet/Cartridge.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:BoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -46,11 +46,11 @@
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
-/processorParam:RotationY=180
+/processorParam:RotationY=0
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:bullet/Cartridge.obj
 
 #begin HeightMapStuff/grass.png
@@ -103,7 +103,7 @@
 
 #begin House/WoodHouse/Cyprys_House.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:BoundingBoxProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -113,16 +113,16 @@
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
-/processorParam:RotationY=90
+/processorParam:RotationY=0
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:House/WoodHouse/Cyprys_House.obj
 
 #begin House/Farmhouse/MedievalHouse1.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:BoundingBoxProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -165,7 +165,7 @@
 
 #begin Dude/dude.fbx
 /importer:FbxImporter
-/processor:AnimationProcessor
+/processor:BoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -175,11 +175,11 @@
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
-/processorParam:RotationY=180
+/processorParam:RotationY=0
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:Dude/dude.fbx
 
 #begin Dude/head.tga
@@ -340,7 +340,7 @@
 
 #begin House/Tree/lowpolytree.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:BoundingBoxProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -354,12 +354,12 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:House/Tree/lowpolytree.obj
 
 #begin House/Rock/Rock.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:BoundingBoxProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -373,12 +373,12 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:House/Rock/Rock.obj
 
 #begin Wolf/wolf.fbx
 /importer:FbxImporter
-/processor:AnimationProcessor
+/processor:ModelSpheresAndAnimationProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -392,7 +392,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:Wolf/wolf.fbx
 
 #begin Wolf/Wolf_Body.jpg

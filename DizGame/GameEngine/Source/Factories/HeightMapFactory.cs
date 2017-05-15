@@ -376,7 +376,7 @@ namespace GameEngine.Source.Factories
             {
                 points.Add(v.Position);
             }
-            BoundingBox b = BoundingBox.CreateFromPoints(points);
+            Microsoft.Xna.Framework.BoundingBox b = Microsoft.Xna.Framework.BoundingBox.CreateFromPoints(points);
             return b;
         }
     }

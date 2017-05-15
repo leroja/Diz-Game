@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AnimationContentClasses;
+using GameEngine.Source.RandomStuff;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -13,14 +15,14 @@ namespace GameEngine.Source.Components
         #region Public Properties
         public Model Model { get; set; }
         public Matrix[] MeshWorldMatrices { get; set; }
-        public BoundingSphere BoundingSphere { get; set; }
+        public BoundingVolume BoundingVolume { get; set; }
         public bool IsStatic { get; set; }
         #endregion Public Properties
 
-        public ModelComponent(Model model)
+        public ModelComponent(Model model, BoundingVolume volume)
         {
             Model = model;
-            
+            BoundingVolume = volume;
         }
     }
 }

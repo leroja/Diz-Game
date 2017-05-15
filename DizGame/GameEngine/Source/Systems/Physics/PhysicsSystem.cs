@@ -8,11 +8,13 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Systems.Interface;
+using GameEngine.Source.RandomStuff;
+using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
     //TODO: Fixa så alla siffror är korrekta efter metric.
-    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<BoundingSphereComponent, BoundingSphereComponent>>>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>>
     {
         private float frameCount = 0;
         private float timeSinceLastUpdate = 0;
@@ -292,16 +294,7 @@ namespace GameEngine.Source.Systems
                 timeSinceLastUpdate -= updateInterval;
             }
         }
-        /// <summary>
-        /// Observer funktion, Updates the reflection on two objects 
-        /// on collision (retrieves data from collision system)
-        /// </summary>
-        /// <param name="value"></param>
-        public void OnNext(List<Tuple<BoundingSphereComponent, BoundingSphereComponent>> value)
-        {
-            foreach (var val in value)
-                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.ID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.ID));
-        }
+        
         /// <summary>
         /// Does nothing atm
         /// </summary>
@@ -316,6 +309,17 @@ namespace GameEngine.Source.Systems
         public void OnCompleted()
         {
             //TODO: OnCompleted
+        }
+        /// <summary>
+        /// Observer funktion, Updates the reflection on two objects 
+        /// on collision (retrieves data from collision system)
+        /// </summary>
+        /// <param name="value"></param>
+        public void OnNext(List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>> value)
+        {
+            foreach (var val in value)
+                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.Key), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.Key));
+
         }
     }
 }

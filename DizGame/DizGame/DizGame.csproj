@@ -54,6 +54,7 @@
     <Compile Include="Source\Components\TestComponent.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
+    <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
@@ -80,8 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
-    <None Include="app.config" />
-    <None Include="app.manifest" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Content\Dude\dude.fbx" />
     <None Include="Content\Dude\head.tga" />
     <None Include="Content\Dude\headN.tga" />
@@ -105,6 +110,10 @@
     <None Include="Content\House\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
+      <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
+      <Name>AnimationContentClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">
       <Project>{2020d833-ad3f-446e-9609-b751490b0800}</Project>
       <Name>ContentProject</Name>
