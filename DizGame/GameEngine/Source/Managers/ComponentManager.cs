@@ -12,7 +12,6 @@ namespace GameEngine.Source.Managers
     /// </summary>
     public class ComponentManager
     {
-        // TODO rewrite comments
         private static ComponentManager instance;
 
         private List<int> entityIDs;
@@ -40,7 +39,7 @@ namespace GameEngine.Source.Managers
 
 
         /// <summary>
-        /// 
+        /// The instance of the component manager
         /// </summary>
         public static ComponentManager Instance
         {
@@ -55,7 +54,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// 
+        /// Creates a new unique ID
         /// </summary>
         /// <returns>
         /// A new Id 
@@ -103,10 +102,10 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// 
+        /// "Links" a list of components to an entity
         /// </summary>
-        /// <param name="entityID"></param>
-        /// <param name="componentList"></param>
+        /// <param name="entityID"> ID of the entity </param>
+        /// <param name="componentList"> the list of components </param>
         public void AddAllComponents(int entityID, List<IComponent> componentList)
         {
             foreach (var comp in componentList)

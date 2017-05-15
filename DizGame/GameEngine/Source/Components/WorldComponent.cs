@@ -97,7 +97,7 @@ namespace GameEngine.Source.Components
             Second = 0;
             Millisecond = 0;
             Day = 0;
-            DefineHour = 1; // TODO: Definera en timme i sekunder
+            DefineHour = 1;
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
             WorldFluids = new Dictionary<DensityType, List<Tuple<Vector3,Vector3>>>

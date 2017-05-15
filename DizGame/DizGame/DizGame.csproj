@@ -69,6 +69,7 @@
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
+    <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
@@ -94,6 +95,7 @@
     <Content Include="Content\Icons\squareTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\SoundEffects\Gun-Shot.wav" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +140,7 @@
   <ItemGroup>
     <Folder Include="Content\bullet\" />
     <Folder Include="Content\Characters\" />
+    <Folder Include="Content\Songs\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

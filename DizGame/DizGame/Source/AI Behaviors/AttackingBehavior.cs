@@ -11,7 +11,7 @@ using GameEngine.Source.Components;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// 
+    /// A Behavior that makes the AI shoot at the closest enemy
     /// </summary>
     public class AttackingBehavior : AiBehavior
     {
@@ -20,7 +20,7 @@ namespace DizGame.Source.AI_Behaviors
 
 
         /// <summary>
-        /// 
+        /// Constructor
         /// </summary>
         public AttackingBehavior(float coolDown)
         {
@@ -48,7 +48,6 @@ namespace DizGame.Source.AI_Behaviors
             var worldComp = (WorldComponent)worldTemp.Values.First();
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             
-            
 
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             
@@ -56,22 +55,20 @@ namespace DizGame.Source.AI_Behaviors
             
             if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
             {
-                var rot = GetUpwardsRotationToClosestEnenmy(AIComp);
+                var rot = GetRotationForAimingAtEnemy(AIComp);
 
                 EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 10, transformComp.Rotation + new Vector3(rot, 0, 0));
                 time = AIComp.ShootingCooldown;
             }
 
-            BehaviorStuff(AIComp, transformComp, worldComp);
-            
+            BehaviorStuff(AIComp, transformComp, worldComp);            
         }
 
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transformComp, WorldComponent worldComp)
         {
-            // todo, kanske inte ska ha den här för att AIn blir enklare att undvika
+            // todo, kanske inte ska ha den här, för att AIn blir enklare att undvika
             if (worldComp.Day % 2 == 0 && AIComp.AttackingDistance + AIComp.Hysteria < AIComp.CurrentBehaivior.DistanceToClosestEnemy)
             {
-
                 AIComp.ChangeBehavior("Chase", transformComp.Rotation);
             }
 
@@ -87,6 +84,5 @@ namespace DizGame.Source.AI_Behaviors
                 }
             }
         }
-
     }
 }

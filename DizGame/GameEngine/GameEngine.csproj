@@ -61,6 +61,7 @@
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
     <Compile Include="Source\Systems\HeightmapSystemTexture.cs" />
+    <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
     <Compile Include="Source\Systems\ModelBoundingSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interfaces\IPhysics.cs" />

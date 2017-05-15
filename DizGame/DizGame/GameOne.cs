@@ -10,6 +10,8 @@ using GameEngine.Source.Components;
 using System.Collections.Generic;
 using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace DizGame
 {
@@ -80,6 +82,8 @@ namespace DizGame
         protected override void LoadContent()
         {
             TreeModel tree = new TreeModel(Device, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
+            AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
+            AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
         }
 
         /// <summary>

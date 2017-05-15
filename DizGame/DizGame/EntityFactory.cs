@@ -316,17 +316,18 @@ namespace DizGame
                 }
             });
         }
-
-        // Todo
+        
         /// <summary>
-        /// 
+        /// Removes the current camera
         /// </summary>
         public void RemoveCam()
         {
-
+            var temp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<CameraComponent>();
+            ComponentManager.Instance.RemoveComponentFromEntity(temp.Keys.First(), temp.Values.First());
         }
 
 
+        // todo, funkar inte
         /// <summary>
         /// 
         /// </summary>

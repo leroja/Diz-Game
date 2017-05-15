@@ -10,11 +10,18 @@ using GameEngine.Source.Components;
 
 namespace DizGame.Source.AI_Behaviors
 {
+    /// <summary>
+    /// A behavior that makes the AI patroll between some specified waypoint
+    /// </summary>
     public class PatrollingBehavior : AiBehavior
     {
         private Queue<Vector2> waypoints;
         private float atDestinationLimit = 5f;
 
+        /// <summary>
+        /// A Constructor
+        /// </summary>
+        /// <param name="waypointList"> A list of Vector2 waypoints </param>
         public PatrollingBehavior(List<Vector2> waypointList)
         {
             waypoints = new Queue<Vector2>();
@@ -25,14 +32,21 @@ namespace DizGame.Source.AI_Behaviors
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"></param>
         public override void OnEnter(Vector3 rotation)
         {
-            Console.WriteLine("hej");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AIComp"></param>
+        /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
             transformComp.Rotation = GetRotationToNextWayPoint(AIComp.ID);
@@ -53,7 +67,6 @@ namespace DizGame.Source.AI_Behaviors
             }
 
             BehaviorStuff(AIComp, transformComp);
-
         }
 
 

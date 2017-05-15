@@ -75,15 +75,15 @@ namespace DizGame.Source.GameStates
                 GameStateEntities.Add(entityID);
                 ComponentManager.Instance.AddComponentToEntity(entityID, textComponent);
                 y += 40;
-
-
             }
+            AudioManager.Instance.PlaySong("MenuSong");
         }
         /// <summary>
         /// Removes all the entities created in this state which is not needed anymore.
         /// </summary>
         public override void Exiting()
         {
+            AudioManager.Instance.StopSong();
             foreach(int id in GameStateEntities)
             {
                 ComponentManager.Instance.RemoveEntity(id);
