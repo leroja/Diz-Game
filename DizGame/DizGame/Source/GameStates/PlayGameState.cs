@@ -202,7 +202,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.AddRange(entityIdList);
             
 
-            int HudID = entf.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
+            int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(0, 0), new List<Vector2>());
 

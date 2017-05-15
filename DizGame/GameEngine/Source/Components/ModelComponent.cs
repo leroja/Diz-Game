@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AnimationContentClasses;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// The boudnin sphere the encapsulates the model
         /// </summary>
-        public BoundingSphere BoundingSphere { get; set; }
+        public BoundingVolume BoundingSphere { get; set; }
         /// <summary>
         /// A Bool that says that the model is static or not
         /// </summary>
