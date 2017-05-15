@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Enums;
+﻿using AnimationContentClasses;
+using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,7 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Is an BoundingFrustrum which is View * Projection
         /// </summary>
-        public BoundingFrustum CameraFrustrum { get; set; }
+        public BoundingFrustum3D CameraFrustrum { get; set; }
         /// <summary>
         /// Set which type of camera is used eg.(Pov, static, chase)
         /// </summary>
@@ -114,7 +115,7 @@ namespace GameEngine.Source.Components
             {
                 Offset = DEFAULT_STATIC;
             }
-            CameraFrustrum = new BoundingFrustum(View * Projection);
+            CameraFrustrum = new BoundingFrustum3D(new BoundingFrustum(View * Projection));
         }
     }
 }

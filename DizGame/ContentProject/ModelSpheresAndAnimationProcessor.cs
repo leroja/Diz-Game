@@ -16,10 +16,9 @@ namespace ContentProject
     {
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            // Process the model with the default processor
+            BoundingVolume bv = BoundingSphereProcessor.CreateBoundingSpheres(input);
             ModelContent model = base.Process(input, context);
 
-            BoundingVolume bv = BoundingBoxProcessor.CreateBoundingBoxes(model);
             // Stores the bounding data in the model
             ((Dictionary<string, object>)model.Tag).Add("BoundingVolume", bv);
             return model;

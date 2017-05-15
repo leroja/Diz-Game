@@ -63,6 +63,7 @@
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Components\ScoreComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
+    <Compile Include="Source\Factories\HudFactory.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\GameStates\PlayGameState.cs" />
     <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
@@ -128,6 +129,10 @@
     <None Include="Content\MapObjects\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
+      <Project>{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}</Project>
+      <Name>AnimationContentClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">
       <Project>{2020d833-ad3f-446e-9609-b751490b0800}</Project>
       <Name>ContentProject</Name>

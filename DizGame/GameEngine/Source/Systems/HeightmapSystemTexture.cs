@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Components;
+using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
@@ -50,7 +51,7 @@ namespace GameEngine.Source.Systems
                         chunk.Effect.World = transformComp.ObjectMatrix * Matrix.CreateTranslation(chunk.OffsetPosition);
 
 
-                        BoundingBox box = ConvertBoundingBoxToWorldCoords(chunk.BoundingBox, chunk.Effect.World);
+                        BoundingBox3D box = new BoundingBox3D(ConvertBoundingBoxToWorldCoords(chunk.BoundingBox, chunk.Effect.World));
 
                         if (box.Intersects(cameraComp.CameraFrustrum))
                         {
