@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
+using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
@@ -27,7 +28,7 @@ namespace GameEngine.Source.Systems
                 
                 UpdateCameraAfterType(camera, transform);
                 camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
-                camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
+                camera.CameraFrustrum = new BoundingFrustum3D(new BoundingFrustum(camera.View * camera.Projection));
             }
         }
         /// <summary>

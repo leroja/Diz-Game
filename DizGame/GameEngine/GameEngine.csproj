@@ -61,7 +61,7 @@
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
     <Compile Include="Source\Systems\HeightmapSystemTexture.cs" />
-    <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
+    <Compile Include="Source\Systems\ModelBoundingSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interfaces\IPhysics.cs" />
     <Compile Include="Source\Systems\Physics\Type\AbstractClasses\IPhysicsTypeSystem.cs" />
@@ -71,8 +71,6 @@
     <Compile Include="Source\Systems\Physics\Type\PhysicsRigidBodySystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsSoftSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsStaticSystem.cs" />
-    <Compile Include="Source\Components\BoundingBoxComponent.cs" />
-    <Compile Include="Source\Components\BoundingSphereComponent.cs" />
     <Compile Include="Source\Components\CameraComponent.cs" />
     <Compile Include="Source\Components\Abstract Classes\IComponent.cs" />
     <Compile Include="Source\Components\KeyBoardComponent.cs" />
