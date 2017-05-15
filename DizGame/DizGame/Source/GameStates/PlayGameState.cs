@@ -2,6 +2,7 @@
 using DizGame.Source.Systems;
 using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
+using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
@@ -157,6 +158,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
+            SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
         }
         /// <summary>
         /// Function for initializing the entities which are needed for a single player game 
@@ -185,7 +187,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.AddRange(aiEntityList);
 
             var idC = entf.CreateDude();
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);
 

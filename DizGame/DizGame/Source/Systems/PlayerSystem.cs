@@ -55,7 +55,7 @@ namespace DizGame.Source.Systems
                 
                 var m = UpdateInput(mouseComp);
 
-                transformComp.Rotation += new Vector3(0, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(-m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 transformComp.Rotation = WrapAngle(transformComp.Rotation);
 

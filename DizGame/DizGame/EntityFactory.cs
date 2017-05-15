@@ -93,10 +93,10 @@ namespace DizGame
             var compList = new List<IComponent>() {
                 new WorldComponent(Matrix.Identity)
                 {
-                    
+                    IsSunActive = true
                 },
             };
-
+            FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
         }
         /// <summary>
@@ -310,19 +310,21 @@ namespace DizGame
             }
             return positions;
         }
-                    
+
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
         /// </summary>
         /// <param name="CameraPosition"> Position of the camera </param>
         /// <param name="lookAt"> A position that the camera should look at </param>
-        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
+        /// <param name="flareAble"></param>
+        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt, bool flareAble = false)
         {
             ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
                 new TransformComponent(CameraPosition, Vector3.One),
                 new CameraComponent(CameraType.StaticCam)
                 {
-                    LookAt = lookAt
+                    LookAt = lookAt,
+                    IsFlareable = flareAble
                 }
             });
         }
@@ -342,10 +344,13 @@ namespace DizGame
         /// Adds a POV camera to an entity
         /// </summary>
         /// <param name="entityID"> ID of the entity </param>
-        public void AddPOVCamToEntity(int entityID)
+        /// <param name="isFlareable"></param>
+        public void AddPOVCamToEntity(int entityID, bool isFlareable = false)
         {
-            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov) {
-                Offset = new Vector3(0, 10, 30)
+            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov)
+            {
+                Offset = new Vector3(0, 10, 30),
+                IsFlareable = isFlareable
             });
         }
 
@@ -354,11 +359,13 @@ namespace DizGame
         /// </summary>
         /// <param name="EntityId"> The ID of the enitt that the camera should follow </param>
         /// <param name="Offset"> How far behind the camera should be </param>
-        public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
+        /// <param name="isFlareable"></param>
+        public void AddChaseCamToEntity(int EntityId, Vector3 Offset, bool isFlareable = false)
         {
             CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
             {
-                Offset = Offset
+                Offset = Offset,
+                IsFlareable = isFlareable
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }

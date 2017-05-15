@@ -89,7 +89,10 @@ namespace GameEngine.Source.Components
         /// Set which type of camera is used eg.(Pov, static, chase)
         /// </summary>
         public CameraType CameraType { get; set; }
-
+        /// <summary>
+        /// Sets if camera is flareable eg. reflect the light flares.
+        /// </summary>
+        public bool IsFlareable { get; set; }
         #endregion Public Propterties
         /// <summary>
         /// Basic constructor which sets default values
@@ -116,6 +119,8 @@ namespace GameEngine.Source.Components
                 Offset = DEFAULT_STATIC;
             }
             CameraFrustrum = new BoundingFrustum3D(new BoundingFrustum(View * Projection));
+
+            IsFlareable = false;
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
+using GameEngine.Source.Factories;
+using GameEngine.Source.RandomStuff;
 
 namespace GameEngine.Source.Systems
 {
@@ -34,9 +36,11 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>())
             {
                 UpdateTime(entityID, gameTime);
+                UpdateSun(entityID, dt);
             }
         }
         /// <summary>
@@ -90,6 +94,23 @@ namespace GameEngine.Source.Systems
                 second = "0" + Math.Floor(world.Second);
 
             text.Text = "Day: " + world.Day + "\n" + hour + ":" + minute + ":" + second;
+        }
+        /// <summary>
+        /// Updates the sun rotation
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="dt"></param>
+        private void UpdateSun(int entityID, float dt)
+        {
+            // TODO: fixa denna
+            WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(entityID);
+            FlareComponent flare = null;
+            if (world.IsSunActive)
+                flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
+            if (flare != null)
+            {
+
+            }
         }
     }
 }
