@@ -10,6 +10,8 @@ using GameEngine.Source.Components;
 using System.Collections.Generic;
 using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace DizGame
 {
@@ -64,11 +66,14 @@ namespace DizGame
 
             client.DiscoverLocalPeers();
 
+
+            AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
+            AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
+            AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
+
             MainMenu startState = new MainMenu();
             GameStateManager.Instance.Push(startState);
             
-
-
             base.Initialize();
         }
 
@@ -97,15 +102,10 @@ namespace DizGame
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             base.Update(gameTime);
         }
-
-      
-
-
     }
 }

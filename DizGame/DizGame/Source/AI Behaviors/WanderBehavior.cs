@@ -12,7 +12,7 @@ using GameEngine.Source.Utils;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// 
+    /// A behavior for the AI that makes it wander around the map
     /// </summary>
     public class WanderBehavior : AiBehavior
     {

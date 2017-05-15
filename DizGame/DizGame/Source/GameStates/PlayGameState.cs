@@ -1,6 +1,8 @@
-﻿using DizGame.Source.Systems;
+﻿using AnimationContentClasses;
+using DizGame.Source.Systems;
 using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
+using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
@@ -56,7 +58,8 @@ namespace DizGame.Source.GameStates
             {
                 CreateEntitiesForSinglePlayerGame();
             }
-                
+            AudioManager.Instance.PlaySong("GameSong");
+            AudioManager.Instance.ChangeSongVolume(0.25f);
         }
 
         /// <summary>
@@ -64,6 +67,8 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Exiting()
         {
+            AudioManager.Instance.ChangeSongVolume(1f);
+            AudioManager.Instance.StopSong();
             //TODO: observera att vi kanske inte vill ta bort precis alla entiteter i detta statet,
             //Tex vill vi kanske ha kvar spelarna + tillhörande componenter för att göra typ en "score-screen" i slutet.
             foreach (int entity in GameStateEntities)
@@ -132,15 +137,7 @@ namespace DizGame.Source.GameStates
 
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
-
             SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
@@ -156,11 +153,12 @@ namespace DizGame.Source.GameStates
             EntityTracingSystem = new EntityTracingSystem();
             EntityTracingSystem.RecordInitialEntities();
             SystemManager.Instance.AddSystem(EntityTracingSystem);
-
+            SystemManager.Instance.AddSystem(new ModelBoundingSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
+            SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
         }
         /// <summary>
         /// Function for initializing the entities which are needed for a single player game 
@@ -188,8 +186,8 @@ namespace DizGame.Source.GameStates
             };
             GameStateEntities.AddRange(aiEntityList);
 
-            var idC = EntityFactory.Instance.CreateDude();
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
+            var idC = entf.CreateDude();
+            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);
 
@@ -202,12 +200,20 @@ namespace DizGame.Source.GameStates
             GameStateEntities.AddRange(entityIdList);
             
 
-            int HudID = entf.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
+            int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(0, 0), new List<Vector2>());
 
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
+            var ids = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            foreach (var modelEnt in ids)
+            {
+                var modelComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modelEnt);
+                var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(modelEnt);
+                modelComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(
+                    new BoundingSphere(new Vector3(transComp.Position.X, transComp.Position.Y, transComp.Position.Z), 3)));
+            }
 
         }
         /// <summary>

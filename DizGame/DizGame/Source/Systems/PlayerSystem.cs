@@ -9,6 +9,7 @@ using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
+using GameEngine.Source.Managers;
 
 namespace DizGame.Source.Systems
 {
@@ -44,15 +45,24 @@ namespace DizGame.Source.Systems
                 var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(playerId);
                 var keyComp = ComponentManager.GetEntityComponent<KeyBoardComponent>(playerId);
                 
+                if (keyComp.GetState("Mute") == ButtonStates.Pressed)
+                {
+                    if (AudioManager.Instance.IsMuted())
+                        AudioManager.Instance.GlobalUnMute();
+                    else
+                        AudioManager.Instance.GlobalMute();
+                }
+                
                 var m = UpdateInput(mouseComp);
 
-                transformComp.Rotation += new Vector3(0, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(-m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 transformComp.Rotation = WrapAngle(transformComp.Rotation);
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 2 == 0 && worldComp.Day != 0)
                 {
                     entFactory.CreateBullet("Bullet", transformComp.Position, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
+                    AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }
         }

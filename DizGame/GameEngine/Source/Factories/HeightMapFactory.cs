@@ -177,14 +177,9 @@ namespace GameEngine.Source.Factories
             { 
                 for (int y = 0; y < Height - chunk_height; y += chunk_height)
                 {
-                    
                     Rectangle clipRect = new Rectangle(x, y, chunk_width + 1, chunk_height + 1);
                     var offsetpos = new Vector3(x, 0, -y);
-
-                    // Uncomment in för att se att det verkligen är chunks
-                    //HeightMapChunk chunk = CreateHeightMapChunk(heightMap, new Rectangle(x, y, chunk_width, chunk_height),
-                    //new Vector3(x, 0, -y), GetVertexTextureNormals(new Rectangle(x, y, chunk_width, chunk_height)), heightMapTexture);
-
+                    
                     HeightMapChunk chunk = CreateHeightMapChunk(heightMap, clipRect, offsetpos, GetVertexTextureNormals(clipRect), heightMapTexture);
                     
                     heightMapComp.HeightMapChunks.Add(chunk);

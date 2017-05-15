@@ -8,18 +8,17 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
-    // todo write comments
     /// <summary>
-    /// 
+    /// A component for using the mouse as input
     /// </summary>
     public class MouseComponent : IComponent
     {
         /// <summary>
-        /// 
+        /// Stores the states of the actions bound to the specific keys
         /// </summary>
         public Dictionary<string, ButtonStates> MouseActionState { get; set; }
         /// <summary>
-        /// 
+        /// Stores wich actions are boudn to wich specific key
         /// </summary>
         public Dictionary<string, string> MouseActionBinding { get; set; }
         /// <summary>

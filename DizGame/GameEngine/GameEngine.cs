@@ -11,8 +11,17 @@ namespace GameEngine
     /// </summary>
     public class GameEngine : Game
     {
+        /// <summary>
+        /// The GraphicsDeviceManager
+        /// </summary>
         public GraphicsDeviceManager Graphics { get; set; }
+        /// <summary>
+        /// A SpriteBatch
+        /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
+        /// <summary>
+        /// A GraphicsDevice
+        /// </summary>
         public GraphicsDevice Device { get; set; } 
 
         /// <summary>

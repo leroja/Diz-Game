@@ -11,7 +11,7 @@ using GameEngine.Source.Components;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// 
+    /// A behavior that makes the AI evade all enemies that are within the specified distance
     /// </summary>
     public class EvadeBehavior : AiBehavior
     {
@@ -21,7 +21,6 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="rotation"> The current rotation of the AI </param>
         public override void OnEnter(Vector3 rotation)
         {
-
         }
 
         /// <summary>
@@ -40,7 +39,6 @@ namespace DizGame.Source.AI_Behaviors
             var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
             var rotation = GetRotationToClosestEnenmy(AIComp);
-            
             
             transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0);
 

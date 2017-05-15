@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace DizGame.Source.Components
 {
     /// <summary>
-    /// 
+    /// A component for the AI:s
     /// </summary>
     public class AIComponent : IComponent
     {
@@ -26,7 +26,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public Rectangle Bounds { get; set; }
         /// <summary>
-        /// todo
+        /// 
         /// </summary>
         public float Hysteria { get; set; }
         /// <summary>
@@ -34,7 +34,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public float DirectionDuration { get; set; }     
         /// <summary>
-        /// todo
+        /// In what range the new rotaionj can be. eg. -PI --- +PI
         /// </summary>
         public float DirectionChangeRoation { get; set; }
         /// <summary>
@@ -51,7 +51,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public float ShootingCooldown { get; set; }
         /// <summary>
-        /// todo
+        /// How far from the other AI/player the AI want to be at a minimum
         /// </summary>
         public float EvadeDistance { get; set; }
         /// <summary>
@@ -102,6 +102,11 @@ namespace DizGame.Source.Components
             return AiBehaviors[Behavior];
         }
 
+        /// <summary>
+        /// Checks if an AI has an behavior
+        /// </summary>
+        /// <param name="behavior"> The name of the behavior </param>
+        /// <returns> true if the AI have an instance of the specfied behavior </returns>
         public bool HaveBehavior(string behavior)
         {
             return AiBehaviors.ContainsKey(behavior);

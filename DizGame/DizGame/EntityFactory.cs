@@ -1,6 +1,7 @@
 ﻿
 using DizGame.Source.Components;
 using DizGame.Source.Enums;
+using DizGame.Source.Factories;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
@@ -22,13 +23,19 @@ namespace DizGame
     /// </summary>
     public class EntityFactory
     {
-
         private static EntityFactory instance;
 
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
+        /// <summary>
+        /// Hud factory
+        /// </summary>
+        public HudFactory HudFactory { get; set; }
+        /// <summary>
+        /// A Bool that says whether the models are vivible or not
+        /// </summary>
         public bool VisibleBullets { get; set; }
 
         /// <summary>
@@ -45,10 +52,8 @@ namespace DizGame
                 return instance;
             }
         }
-
-
         /// <summary>
-        /// 
+        /// Private constructor of the entityfactory
         /// </summary>
         private EntityFactory()
         {
@@ -56,6 +61,9 @@ namespace DizGame
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             CreateWorldComp();
             this.Content = GameOne.Instance.Content;
+
+            HudFactory = new HudFactory(Content);
+
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
@@ -84,8 +92,11 @@ namespace DizGame
             var worldEntId = ComponentManager.Instance.CreateID();
             var compList = new List<IComponent>() {
                 new WorldComponent(Matrix.Identity)
+                {
+                    IsSunActive = true
+                },
             };
-
+            FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
         }
         /// <summary>
@@ -102,6 +113,7 @@ namespace DizGame
             keys.AddActionAndKey("Right", Keys.D);
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
+            keys.AddActionAndKey("Mute", Keys.M);
             
 
             MouseComponent mouse = new MouseComponent();
@@ -127,11 +139,9 @@ namespace DizGame
             };
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
-
-
+            
             TestingTheAnimationsWithDude(entityID);
             return entityID;
-
         }
 
         // Todo lägg till FOG
@@ -300,43 +310,48 @@ namespace DizGame
             }
             return positions;
         }
-                    
+
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
         /// </summary>
         /// <param name="CameraPosition"> Position of the camera </param>
         /// <param name="lookAt"> A position that the camera should look at </param>
-        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
+        /// <param name="flareAble"></param>
+        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt, bool flareAble = false)
         {
             ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
                 new TransformComponent(CameraPosition, Vector3.One),
                 new CameraComponent(CameraType.StaticCam)
                 {
-                    LookAt = lookAt
+                    LookAt = lookAt,
+                    IsFlareable = flareAble
                 }
             });
         }
-
-        // Todo
+        
         /// <summary>
-        /// 
+        /// Removes the current camera
         /// </summary>
         public void RemoveCam()
         {
-
+            var temp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<CameraComponent>();
+            ComponentManager.Instance.RemoveComponentFromEntity(temp.Keys.First(), temp.Values.First());
         }
 
 
+        // todo, funkar inte
         /// <summary>
-        /// 
+        /// Adds a POV camera to an entity
         /// </summary>
-        /// <param name="entityID"></param>
-        public void AddPOVCamToEntity(int entityID)
+        /// <param name="entityID"> ID of the entity </param>
+        /// <param name="isFlareable"></param>
+        public void AddPOVCamToEntity(int entityID, bool isFlareable = false)
         {
-            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov) {
-                Offset = new Vector3(0, 10, 30)
+            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov)
+            {
+                Offset = new Vector3(0, 10, 30),
+                IsFlareable = isFlareable
             });
-                
         }
 
         /// <summary>
@@ -344,11 +359,13 @@ namespace DizGame
         /// </summary>
         /// <param name="EntityId"> The ID of the enitt that the camera should follow </param>
         /// <param name="Offset"> How far behind the camera should be </param>
-        public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
+        /// <param name="isFlareable"></param>
+        public void AddChaseCamToEntity(int EntityId, Vector3 Offset, bool isFlareable = false)
         {
             CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
             {
-                Offset = Offset
+                Offset = Offset,
+                IsFlareable = isFlareable
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
@@ -359,7 +376,6 @@ namespace DizGame
         /// </summary>
         /// <param name="modelName"></param>
         /// <param name="pos"></param>
-        /// <param name="Orientation"></param>
         /// <param name="scale"></param>
         /// <param name="forward"></param>
         /// <param name="MaxRange"></param>
@@ -414,16 +430,12 @@ namespace DizGame
         {
 
             ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
-
             
-
-            AnimationComponent anm = new AnimationComponent(mcp.Model.Tag);
+            AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 
             anm.StartClip("Take 001");
-
-          
         }
         
         /// <summary>
@@ -491,59 +503,6 @@ namespace DizGame
 
             return AIEntityID;
         }
-        /// <summary>
-        /// Function to create gaming hud.
-        /// </summary>
-        /// <param name="healthPosition"></param>
-        /// <param name="AmmunitionPosition"></param>
-        /// <param name="PlayersRemainingPosition"></param>
-        /// <param name="SlotPositions"></param>
-        public int CreateHud(Vector2 healthPosition, Vector2 AmmunitionPosition, Vector2 PlayersRemainingPosition, List<Vector2> SlotPositions)
-        {
-            int HudID = ComponentManager.Instance.CreateID();
-            SpriteFont font = Content.Load<SpriteFont>("Fonts\\Font");
-
-            HealthComponent health = new HealthComponent();
-            AmmunitionComponent ammo = new AmmunitionComponent()
-            {
-                ActiveMagazine = new Tuple<AmmunitionType, int, int>(AmmunitionType.AK_47, 30, Magazine.GetSize(AmmunitionType.AK_47))
-            };
-            Texture2DComponent slot1 = new Texture2DComponent(Content.Load<Texture2D>("Icons\\squareTest"))
-            {
-                Scale = new Vector2(0.2f, 0.2f),
-            };
-            slot1.Position = new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width/2 - ((slot1.Width * slot1.Scale.X)/2), GameOne.Instance.GraphicsDevice.Viewport.Height);
-
-
-            List<TextComponent> textComponents = new List<TextComponent>
-            {
-                new TextComponent(health.Health.ToString(), healthPosition, Color.Pink, font, true, Color.WhiteSmoke, true, 0.3f), // health
-                new TextComponent(ammo.ActiveMagazine.Item2 + "/" + ammo.ActiveMagazine.Item3 + " " + ammo.ActiveMagazine.Item1 + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.DeepPink, font, true, Color.WhiteSmoke, true, 0.3f), // ammo
-                // TODO: en player remaining vet inte om vi skall göra en komponent för det? :) <- Det är väl bara att plocka ut typ alla "health component" o kolla hur många som har mer än 0 i hälsa?
-            };
-            List<string> names = new List<string>
-            {
-                "Health",
-                "Ammunition",
-
-                // TODO: en player remaining vet inte om vi skall göra en komponent för det? :)
-            };
-            foreach (Vector2 slots in SlotPositions)
-            {
-
-            }
-
-
-            List<IComponent> components = new List<IComponent>
-            {
-                health,
-                ammo,
-                slot1,
-                new TextComponent(names, textComponents)
-            };
-            ComponentManager.Instance.AddAllComponents(HudID, components);
-
-            return HudID;
-        }
+        
     }
 }

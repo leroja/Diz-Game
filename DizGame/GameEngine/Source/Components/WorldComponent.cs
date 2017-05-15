@@ -81,7 +81,10 @@ namespace GameEngine.Source.Components
         /// big chance of removing.
         /// </summary>
         public Dictionary<DensityType, List<Tuple<Vector3, Vector3>>> WorldFluids { get; set; }
-
+        /// <summary>
+        /// bool if sun is "on"
+        /// </summary>
+        public bool IsSunActive { get; set; }
         #endregion Public Properties
         /// <summary>
         /// Basic constructor which sets all the attributes to default value.
@@ -97,7 +100,7 @@ namespace GameEngine.Source.Components
             Second = 0;
             Millisecond = 0;
             Day = 0;
-            DefineHour = 1; // TODO: Definera en timme i sekunder
+            DefineHour = 1;
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
             WorldFluids = new Dictionary<DensityType, List<Tuple<Vector3,Vector3>>>
@@ -106,6 +109,7 @@ namespace GameEngine.Source.Components
                 { DensityType.Water_Heavy, new List<Tuple<Vector3,Vector3>>() },
                 { DensityType.Automobile_Oils, new List<Tuple<Vector3,Vector3>>() }
             };
+            IsSunActive = true;
         }
 
     }

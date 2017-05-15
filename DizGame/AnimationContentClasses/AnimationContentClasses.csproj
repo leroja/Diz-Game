@@ -65,6 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimationClip.cs" />
+    <Compile Include="BoundingBox3D.cs" />
+    <Compile Include="BoundingFrustum3D.cs" />
+    <Compile Include="BoundingSphere3D.cs" />
+    <Compile Include="BoundingVolume.cs" />
+    <Compile Include="IBounding3D.cs" />
     <Compile Include="SkinningData.cs" />
     <Compile Include="KeyFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
