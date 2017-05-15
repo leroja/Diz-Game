@@ -14,8 +14,6 @@ namespace GameEngine.Source.Components
         public Dictionary<string, string> MouseActionBinding { get; set; }
         public float Y { get; set; }
         public float X { get; set; }
-        public Vector2 MouseDeltaPosition { get; set; }
-        public float MouseSensitivity { get; set; }
 
         public MouseComponent()
         {
@@ -25,8 +23,25 @@ namespace GameEngine.Source.Components
                 { "MiddleButton", ButtonStates.Not_Pressed },
                 { "RightButton", ButtonStates.Not_Pressed }
             };
-            MouseSensitivity = 1f;
+            MouseActionBinding = new Dictionary<string, string>();
         }
 
+        /// <summary>
+        /// 
+        /// 
+        /// available keys:
+        ///     RightButton, LeftButton, MiddleButton
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="button"></param>
+        public void AddActionToButton(string action, string button)
+        {
+            MouseActionBinding.Add(action, button);
+        }
+
+        public ButtonStates GetState(string action)
+        {
+            return MouseActionState[MouseActionBinding[action]];
+        }
     }
 }

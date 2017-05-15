@@ -6,31 +6,42 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
+using GameEngine.Source.Enums;
+using GameEngine.Source.Systems.Interface;
+using GameEngine.Source.RandomStuff;
+using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsSystem : IUpdate, IObserver<List<Tuple<BoundingSphereComponent, BoundingSphereComponent>>>
+    //TODO: Fixa så alla siffror är korrekta efter metric.
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>>
     {
         private float frameCount = 0;
         private float timeSinceLastUpdate = 0;
         private float updateInterval = 1;
         private float framesPerSecond = 0;
 
-        private PhysicsRigidBodySystem rigidBody;
-        private PhysicsParticleSystem particle;
-        private PhysicsProjectilesSystem projectile;
-        private PhysicsRagdollSystem ragDoll;
-        private PhysicsSoftSystem soft;
-        private PhysicsStaticSystem _static;
+        private List<IPhysicsTypeSystem> physicSystems;
 
         public PhysicsSystem()
         {
-            rigidBody = new PhysicsRigidBodySystem();
-            particle = new PhysicsParticleSystem();
-            projectile = new PhysicsProjectilesSystem();
-            ragDoll = new PhysicsRagdollSystem();
-            soft = new PhysicsSoftSystem();
-            _static = new PhysicsStaticSystem();
+            physicSystems = new List<IPhysicsTypeSystem>
+            {
+                new PhysicsRigidBodySystem(this),
+                new PhysicsParticleSystem(this),
+                new PhysicsProjectilesSystem(this),
+                new PhysicsRagdollSystem(this),
+                new PhysicsSoftSystem(this),
+                new PhysicsStaticSystem(this)
+        };
+        }
+        public void AddIPhysicsTypeSystem(IPhysicsTypeSystem system)
+        {
+            physicSystems.Add(system);
+        }
+        public void RemoveIPhysicsTypeSystem(IPhysicsTypeSystem system)
+        {
+            physicSystems.Remove(system);
         }
         /// <summary>
         /// Updates all the necessary part for the physicsystem
@@ -44,104 +55,207 @@ namespace GameEngine.Source.Systems
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-
-                UpdatePosition(entityID, dt);
-
-                UpdateMaxAcceleration(physic);
-                UpdateLinearAcceleration(physic, dt);
-                UpdateLinearVelocity(physic, dt);
-
-                UpdatePhysicComponentByType(entityID, dt);
-                //Console.WriteLine("Forces: " + physic.Forces);
-                Console.WriteLine("Velocity: " + physic.Velocity);
-                if (!physic.IsMoving)
-                    UpdateLinearDeceleration(physic, dt);
+                physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
             }
         }
         /// <summary>
-        /// Updates the object position using its velocity * dt
+        /// Using Euler order -> Acceleration -> Position -> Velocity
+        /// will provide better accuracy but only when
+        /// acceleration is constant
         /// </summary>
-        /// <param name="entityID"></param>
+        /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdatePosition(int entityID, float dt)
+        private void UpdateEulerOrder(PhysicsComponent physic, float dt)
         {
-            ComponentManager.GetEntityComponent<TransformComponent>(entityID).Position
-                += ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity * dt;
+            UpdateMaxAcceleration(physic);
+            UpdateMass(physic);
+            UpdateGravity(physic, dt);
+            UpdateForce(physic);
+
+            UpdateEulerAcceleration(physic);
+
+            //UpdatePhysicComponentByType(physic, dt);
+
+            UpdateVelocity(physic, dt);
+
+            UpdateDeceleration(physic);
+        }
+        /// <summary>
+        /// Using Non Euler order does work but with less accurac        /// except when acceleration is not constant
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        private void UpdateNonEulerOrder(PhysicsComponent physic, float dt)
+        {
+            UpdateAcceleration(physic);
+            UpdateMaxAcceleration(physic);
+            UpdateMass(physic);
+            UpdateGravity(physic, dt);
+            UpdateForce(physic);
+            UpdateVelocity(physic, dt);
+            //UpdatePhysicComponentByType(physic, dt);
+
+            UpdateDeceleration(physic);
+        }
+        /// <summary>
+        /// Updates the mass using density * volume
+        /// </summary>
+        /// <param name="physic"></param>
+        public virtual void UpdateMass(PhysicsComponent physic)
+        {
+            physic.Mass = (physic.Density * physic.Volume);
+        }
+        /// <summary>
+        /// Updates the objects weigth W = m * g
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="gravity"></param>
+        public virtual void UpdateWeight(PhysicsComponent physic, float gravity)
+        {
+            physic.Weight = -Vector3.Down * (physic.Mass * gravity);
+        }
+        /// <summary>
+        /// Updates the objects Euler acceleration
+        /// This function should be updated BEFORE position,
+        /// and position updating should use LastAcceleration
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        public virtual void UpdateEulerAcceleration(PhysicsComponent physic)
+        {
+            // Creating more vectors than necessary for an understanding of what is what.  
+            physic.LastAcceleration = physic.Acceleration;
+            Vector3 new_acceleration = physic.Forces / physic.Mass;
+            Vector3 avg_acceleration = (physic.LastAcceleration + new_acceleration) / 2;
+            physic.Acceleration = avg_acceleration;
+            //Vector3 new_ay = physic.Forces / physic.Mass;
+            //Vector3 avg_ay = 0.5f * new_ay;
+            //physic.Acceleration = avg_ay;
+        }
+
+        /// <summary>
+        /// Calculates the physic objects Deaceleration
+        /// </summary>
+        /// <param name="physic"></param>
+        public virtual void UpdateDeceleration(PhysicsComponent physic)
+        {
+            if (!physic.IsInAir)
+            {
+                if (physic.Forces.X == 0)
+                    physic.Velocity = new Vector3(0, physic.Velocity.Y, physic.Velocity.Z);
+                if (physic.Forces.Y == 0)
+                    physic.Velocity = new Vector3(physic.Velocity.X, 0, physic.Velocity.Z);
+                if (physic.Forces.Z == 0)
+                    physic.Velocity = new Vector3(physic.Velocity.X, physic.Velocity.Y, 0);
+            }
+        }
+        /// <summary>
+        /// Updates the objects linear velocity
+        /// using its initialVelocity if any 
+        /// using m/s
+        /// </summary>
+        /// <param name="physic"></param>
+        /// <param name="dt"></param>
+        public virtual void UpdateVelocity(PhysicsComponent physic, float dt)
+        {
+            physic.Velocity += physic.InitialVelocity + (physic.Acceleration * dt);
+            //Console.WriteLine(physic.Velocity);
+        }
+        /// <summary>
+        /// Updates the forces
+        /// </summary>
+        /// <param name="physic"></param>
+        public virtual void UpdateForce(PhysicsComponent physic)
+        {
+            //Console.WriteLine("For1': " + physic.Forces);
+            //physic.Forces =  physic.Mass * physic.Acceleration;
+            float X, Y, Z;
+            X = (physic.Mass * physic.Acceleration.X);
+            Y = (physic.Mass * physic.Acceleration.Y);
+            Z = (physic.Mass * physic.Acceleration.Z);
+
+            physic.Forces = new Vector3(X, Y, Z);
+            //Console.WriteLine("For': " + physic.Forces);
+        }
+        /// <summary>
+        /// Updates the Acceleration using formula 
+        /// A = F/M
+        /// </summary>
+        /// <param name="physic"></param>
+        public virtual void UpdateAcceleration(PhysicsComponent physic)
+        {
+            float X, Y, Z;
+            X = (physic.Forces.X / physic.Mass);
+            //Y = (physic.Forces.Y / physic.Mass);
+            Z = (physic.Forces.Z / physic.Mass);
+
+            physic.Acceleration = new Vector3(X, physic.Acceleration.Y, Z);
+
+            //physic.Acceleration = (physic.Forces / physic.Mass);
+        }
+        /// <summary>
+        /// Updates the gravity depending on physics gravity type
+        /// </summary>
+        /// <param name="physic"></param>
+        public virtual void UpdateGravity(PhysicsComponent physic, float dt)
+        {
+            switch(physic.GravityType)
+            {
+                case GravityType.None:
+                    physic.Forces += new Vector3(physic.Forces.X, 0, physic.Forces.Z);
+                    UpdateWeight(physic, 0);
+                    break;
+                case GravityType.Self:
+                    physic.Forces += Vector3.Down * physic.Gravity;
+                    UpdateWeight(physic, physic.Gravity);
+                    break;
+                case GravityType.World:
+                    List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+                    WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+                    physic.Forces += world.Gravity;
+                    UpdateWeight(physic, world.Gravity.Y);
+                    break;
+            }
+                
         }
         /// <summary>
         /// Udates the corresponding object by physictype
         /// </summary>
         /// <param name="entityID"></param>
         /// <param name="dt"></param>
-        private void UpdatePhysicComponentByType(int entityID, float dt)
-        {
-                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-                switch(physic.PhysicsType)
-                {
-                    case Enums.PhysicsType.Static:
-                        _static.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Soft:
-                        soft.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Rigid:
-                        rigidBody.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Ragdoll:
-                        ragDoll.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Projectiles:
-                        projectile.Update(entityID, dt);
-                        break;
-                    case Enums.PhysicsType.Particle:
-                        particle.Update(entityID, dt);
-                        break;
-                    default:
-                        break;
-            }
-        }
-        /// <summary>
-        /// Updates the objects linear acceleration
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="dt"></param>
-        private void UpdateLinearAcceleration(PhysicsComponent physic, float dt)
-        {
-            physic.Acceleration = physic.Forces / physic.Mass;
-        }
-        /// <summary>
-        /// Updates the objects linear velocity
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="dt"></param>
-        private void UpdateLinearVelocity(PhysicsComponent physic, float dt)
-        {
-            physic.Velocity += physic.Acceleration * dt;
-        }
-        private void UpdateLinearDeceleration(PhysicsComponent physic, float dt)
-        {
-            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
-            WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+        //public virtual void UpdatePhysicComponentByType(PhysicsComponent physic, float dt)
+        //{
+        //        switch(physic.PhysicsType)
+        //        {
+        //            case Enums.PhysicsType.Static:
+        //                _static.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Soft:
+        //                soft.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Rigid:
+        //                rigidBody.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Ragdoll:
+        //                ragDoll.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Projectiles:
+        //                projectile.Update(physic, dt);
+        //                break;
+        //            case Enums.PhysicsType.Particle:
+        //                particle.Update(physic, dt);
+        //                break;
+        //            default:
+        //                break;
+        //    }
+        //}
 
-            Vector3 f = physic.Velocity;
-            if (physic.Velocity != Vector3.Zero)
-                f -= (physic.Velocity - physic.InitialVelocity) / dt;
-            if (f.X < 0)
-                f.X = 0;
-            if (f.Z < 0)
-                f.Z = 0;
-            if(physic.IsFalling)
-            {
-                physic.Forces = new Vector3(physic.Forces.X, world.Gravity.Y, physic.Forces.Z);
-            }
-            physic.Velocity = new Vector3(f.X, physic.Velocity.Y, f.X);
-        }
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
-        private void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
+        public virtual void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
         {
            int N = 1; //dunno
            int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
@@ -160,7 +274,7 @@ namespace GameEngine.Source.Systems
         /// divided by FPS to give meters per second each frame.
         /// </summary>
         /// <param name="physic"></param>
-        private void UpdateMaxAcceleration(PhysicsComponent physic)
+        public virtual void UpdateMaxAcceleration(PhysicsComponent physic)
         {
                 physic.MaxAcceleration = (physic.Forces / physic.Mass) / framesPerSecond;
         }
@@ -180,21 +294,32 @@ namespace GameEngine.Source.Systems
                 timeSinceLastUpdate -= updateInterval;
             }
         }
-
-        public void OnNext(List<Tuple<BoundingSphereComponent, BoundingSphereComponent>> value)
-        {
-            foreach (var val in value)
-                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.ID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.ID));
-        }
-
+        
+        /// <summary>
+        /// Does nothing atm
+        /// </summary>
+        /// <param name="error"></param>
         public void OnError(Exception error)
         {
             //TODO: OnError
         }
-
+        /// <summary>
+        /// Does nothing atm
+        /// </summary>
         public void OnCompleted()
         {
             //TODO: OnCompleted
+        }
+        /// <summary>
+        /// Observer funktion, Updates the reflection on two objects 
+        /// on collision (retrieves data from collision system)
+        /// </summary>
+        /// <param name="value"></param>
+        public void OnNext(List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>> value)
+        {
+            foreach (var val in value)
+                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.Key), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.Key));
+
         }
     }
 }

@@ -29,6 +29,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.Portable.3.6.0.1625\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
@@ -47,114 +65,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelProcessor.cs" />
+    <Compile Include="ReadersAndWriters\AnimatedModelDataReader.cs" />
+    <Compile Include="ReadersAndWriters\AnimationDataReader.cs" />
+    <Compile Include="ReadersAndWriters\AnimationDataWriter.cs" />
+    <Compile Include="ReadersAndWriters\AnimationModelDataWriter.cs" />
+    <Compile Include="AnimationProcessor.cs" />
+    <Compile Include="BoundingBoxProcessor.cs" />
+    <Compile Include="ReadersAndWriters\BoundingBox3DReader.cs" />
+    <Compile Include="ReadersAndWriters\BoundingBox3DWriter.cs" />
+    <Compile Include="ReadersAndWriters\BoundingVolumeReader.cs" />
+    <Compile Include="BoundingSphereProcessor.cs" />
+    <Compile Include="ReadersAndWriters\BoundingVolumeWriter.cs" />
+    <Compile Include="ContentImporter.cs" />
+    <Compile Include="ReadersAndWriters\BoundingSphere3DReader.cs" />
+    <Compile Include="ReadersAndWriters\BoundingSphere3DWriter.cs" />
+    <Compile Include="ReadersAndWriters\IBounding3DReader.cs" />
+    <Compile Include="ReadersAndWriters\IBounding3DWriter.cs" />
+    <Compile Include="ReadersAndWriters\KeyframeReader.cs" />
+    <Compile Include="ReadersAndWriters\KeyframeWriter.cs" />
+    <Compile Include="ModelBoxesAndAnimationProcessor.cs" />
+    <Compile Include="ModelSpheresAndAnimationProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TempModel.cs" />
+    <Compile Include="TestModelProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Body.fbx" />
-    <None Include="Content\bullet\bullet.FBX" />
-    <None Include="Content\bullet\bullet.max" />
-    <None Include="Content\bullet\bullet.mtl" />
-    <None Include="Content\bullet\bullet.obj" />
-    <None Include="Content\chuck\cast_04_bm.tga" />
-    <None Include="Content\chuck\cast_04_bm_01.tga" />
-    <None Include="Content\chuck\cast_04_boot_cm.tga" />
-    <None Include="Content\chuck\cast_04_boot_l.tga" />
-    <None Include="Content\chuck\cast_04_boot_nm.tga" />
-    <None Include="Content\chuck\cast_04_boot_om.tga" />
-    <None Include="Content\chuck\cast_04_boot_sm.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_cm.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_l.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_nm.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_sm.tga" />
-    <None Include="Content\chuck\cast_04_eye_cm.tga" />
-    <None Include="Content\chuck\cast_04_hair_cm.tga" />
-    <None Include="Content\chuck\cast_04_hair_nm.tga" />
-    <None Include="Content\chuck\cast_04_hair_om.tga" />
-    <None Include="Content\chuck\cast_04_hair_sm.tga" />
-    <None Include="Content\chuck\cast_04_hand_cm.tga" />
-    <None Include="Content\chuck\cast_04_hand_cv.tga" />
-    <None Include="Content\chuck\cast_04_hand_l.tga" />
-    <None Include="Content\chuck\cast_04_hand_nm.tga" />
-    <None Include="Content\chuck\cast_04_hand_sm.tga" />
-    <None Include="Content\chuck\cast_04_head_cm.tga" />
-    <None Include="Content\chuck\cast_04_head_cv.tga" />
-    <None Include="Content\chuck\cast_04_head_l.tga" />
-    <None Include="Content\chuck\cast_04_head_nm.tga" />
-    <None Include="Content\chuck\cast_04_head_sm.tga" />
-    <None Include="Content\chuck\cast_04_jacket_cm.tga" />
-    <None Include="Content\chuck\cast_04_jacket_l.tga" />
-    <None Include="Content\chuck\cast_04_jacket_nm.tga" />
-    <None Include="Content\chuck\cast_04_jacket_sm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_cm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_l.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_nm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_rm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_sm.tga" />
-    <None Include="Content\chuck\cast_04_newhair_cm.tga" />
-    <None Include="Content\chuck\cast_04_newhair_nm.tga" />
-    <None Include="Content\chuck\cast_04_newhair_om.tga" />
-    <None Include="Content\chuck\cast_04_newhair_sm.tga" />
-    <None Include="Content\chuck\cast_04_pants_cm.tga" />
-    <None Include="Content\chuck\cast_04_pants_l.tga" />
-    <None Include="Content\chuck\cast_04_pants_nm.tga" />
-    <None Include="Content\chuck\cast_04_pants_rm.tga" />
-    <None Include="Content\chuck\cast_04_pants_sm.tga" />
-    <None Include="Content\chuck\cast_04_patches00_cm.tga" />
-    <None Include="Content\chuck\cast_04_patches00_l.tga" />
-    <None Include="Content\chuck\cast_04_patches00_nm.tga" />
-    <None Include="Content\chuck\cast_04_patches00_om.tga" />
-    <None Include="Content\chuck\cast_04_patches00_sm.tga" />
-    <None Include="Content\chuck\cast_04_torso_cm.tga" />
-    <None Include="Content\chuck\cast_04_torso_cv.tga" />
-    <None Include="Content\chuck\cast_04_torso_l.tga" />
-    <None Include="Content\chuck\cast_04_torso_nm.tga" />
-    <None Include="Content\chuck\cast_04_torso_sm.tga" />
-    <None Include="Content\chuck\cast_04_zipper_cm.tga" />
-    <None Include="Content\chuck\cast_04_zipper_l.tga" />
-    <None Include="Content\chuck\cast_04_zipper_nm.tga" />
-    <None Include="Content\chuck\cast_04_zipper_om.tga" />
-    <None Include="Content\chuck\cast_04_zipper_sm.tga" />
-    <None Include="Content\chuck\cindy_jacketpattern_cm.tga" />
-    <None Include="Content\chuck\cindy_jacketpattern_nm.tga" />
-    <None Include="Content\chuck\cindy_jacketpattern_sm.tga" />
-    <None Include="Content\chuck\default_eyelash_cm.tga" />
-    <None Include="Content\chuck\default_eyelash_om.tga" />
-    <None Include="Content\chuck\default_eye_dm.tga" />
-    <None Include="Content\chuck\default_eye_l.tga" />
-    <None Include="Content\chuck\default_eye_nm.tga" />
-    <None Include="Content\chuck\default_eye_sm.tga" />
-    <None Include="Content\chuck\default_teeth_cm.tga" />
-    <None Include="Content\chuck\default_teeth_l.tga" />
-    <None Include="Content\chuck\default_teeth_nm.tga" />
-    <None Include="Content\chuck\default_teeth_sm.tga" />
-    <None Include="Content\chuck\default_tongue_cm.tga" />
-    <None Include="Content\chuck\default_tongue_l.tga" />
-    <None Include="Content\chuck\default_tongue_nm.tga" />
-    <None Include="Content\chuck\default_tongue_sm.tga" />
-    <None Include="Content\chuck\DR3_Chuck_Greene.FBX" />
-    <None Include="Content\chuck\DR3_Chuck_Greene.mtl" />
-    <None Include="Content\chuck\Normal_Bump_Normal_Bump.tga" />
-    <None Include="Content\chuck\psy_01_hair_tr.tga" />
-    <None Include="Content\chuck\svr_01_ssslookup.tga" />
-    <None Include="Content\chuck\svr_01_sssshadow.tga" />
     <None Include="Content\Content.mgcb" />
-    <None Include="Content\Kitana\Kitana.FBX" />
-    <None Include="Content\Kitana\Kitana.mtl" />
-    <None Include="Content\Kitana\Kitana_ClothDetail_Norm.tga" />
-    <None Include="Content\Kitana\Kitana_Diff.tga" />
-    <None Include="Content\Kitana\Kitana_Hair_DiffA.tga" />
-    <None Include="Content\Kitana\Kitana_hair_NormHQA.tga" />
-    <None Include="Content\Kitana\Kitana_hair_Spec.tga" />
-    <None Include="Content\Kitana\Kitana_LeatherDetail_Norm.tga" />
-    <None Include="Content\Kitana\Kitana_NormHQA.tga" />
-    <None Include="Content\Kitana\Kitana_Spec.tga" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -164,7 +104,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\HeightMaps\" />
+    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
+      <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
+      <Name>AnimationContentClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameEngine\GameEngine.csproj">
+      <Project>{beb5aa74-8cd7-4ded-86d9-693fa6e9aaf0}</Project>
+      <Name>GameEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

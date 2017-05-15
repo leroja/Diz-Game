@@ -2,25 +2,60 @@
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
+using System;
+using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsRigidBodySystem : IPhysicsType
+    public class PhysicsRigidBodySystem : IPhysicsTypeSystem
     {
-        public override void Update(int entityID, float dt)
+        public PhysicsRigidBodySystem(IPhysics physicsSystem) : base(physicsSystem)
         {
+            PhysicsType = PhysicsType.Rigid;
+        }
+        public override void Update(PhysicsComponent physic, float dt)
+        {
+            PhysicsSystem.UpdateAcceleration(physic);
+            PhysicsSystem.UpdateMass(physic);
+            PhysicsSystem.UpdateGravity(physic, dt);
+            PhysicsSystem.UpdateForce(physic);
+            PhysicsSystem.UpdateVelocity(physic, dt);
+
             // Creates and send this throught instead of creating globas that takes memory
-            PhysicsComponent physics = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
-            PhysicsRigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(entityID);
-            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+            PhysicsRigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(physic.ID);
+            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID);
+
+            UpdatePosition(physic, dt);
 
             if (rigidBody == null)
-                ComponentManager.AddComponentToEntity(entityID, new PhysicsRigidbodyComponent());
-            rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(entityID);
+                ComponentManager.AddComponentToEntity(physic.ID, new PhysicsRigidbodyComponent());
+            rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(physic.ID);
 
             rigidBody.BodyToLocal = Matrix.CreateFromQuaternion(transform.Orientation);
             rigidBody.LocalToBody = Matrix.Invert(rigidBody.BodyToLocal);
             IntegrateStateVariables(transform, rigidBody, dt);
+
+            PhysicsSystem.UpdateDeceleration(physic);
+        }
+        /// <summary>
+        /// Updates the object position using its velocity * dt
+        /// </summary>
+        /// <param name="entityID"></param>
+        /// <param name="dt"></param>
+        private void UpdatePosition(PhysicsComponent physic, float dt)
+        {
+            if (physic.LastAcceleration == Vector3.Zero)
+                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+                    += physic.Velocity * dt;
+            else
+                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
+                    += physic.Velocity * dt + (0.5f * physic.LastAcceleration * (float)Math.Pow(dt, 2));
+
+            Vector3 rotation = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Rotation;
+            if (rotation.Length() != 0)
+                ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Orientation
+                    *= Quaternion.CreateFromAxisAngle(
+                        ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Rotation * (1 / rotation.Length()), rotation.Length() * dt);
         }
         private void IntegrateStateVariables(TransformComponent transform, PhysicsRigidbodyComponent rigidbody, float dt)
         {

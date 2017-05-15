@@ -11,7 +11,7 @@ namespace GameEngine.Source.Systems
 {
     public class ModelSystem : IRender
     {
-        //WorldComponent world;
+        WorldComponent world;
         CameraComponent defaultCam;
 
         /// <summary>
@@ -21,20 +21,16 @@ namespace GameEngine.Source.Systems
         public override void Draw(GameTime gameTime)
         {
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
-            //world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+            world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             //pick one
-            if(entitiesWithCamera.Count > 0)
-            {
-                defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
 
-                foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-                {
-                    DrawModel(entityID);
-                }
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            {
+                DrawModel(entityID);
             }
-                
         }
         /// <summary>
         /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo
@@ -47,12 +43,11 @@ namespace GameEngine.Source.Systems
             ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
             TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
 
-            if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
-                defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
+            //if (ComponentManager.CheckIfEntityHasComponent<CameraComponent>(entityID))
+            //    defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
 
-            //if (camera.CameraFrustrum.Intersects(model.BoundingSphere))
-            //{
-
+            if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
+            {
                 if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                     model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
 
@@ -62,12 +57,12 @@ namespace GameEngine.Source.Systems
                 mesh.BoundingSphere = new BoundingSphere(Vector3.Transform(mesh.BoundingSphere.Center, model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix), mesh.BoundingSphere.Radius);
                 foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix /** world.World*/;
+                        effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
 
                         effect.View = defaultCam.View;
                         effect.Projection = defaultCam.Projection;
 
-                        effect.EnableDefaultLighting();
+                        //effect.EnableDefaultLighting();
                         effect.PreferPerPixelLighting = true;
                         foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                         {
@@ -76,7 +71,7 @@ namespace GameEngine.Source.Systems
                         }
                     }
                 }
-            //}
+            }
         }
     }
 }

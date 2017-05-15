@@ -5,15 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Source.Components;
+using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
-    public class PhysicsRagdollSystem : IPhysicsType
+    public class PhysicsRagdollSystem : IPhysicsTypeSystem
     {
-        public override void Update(int entityID, float dt)
+        public PhysicsRagdollSystem(IPhysics physicsSystem) : base(physicsSystem)
+        {
+            PhysicsType = PhysicsType.Ragdoll;
+        }
+        public override void Update(PhysicsComponent physic, float dt)
         {
             //TODO: RagdollSystem
-            throw new NotImplementedException();
+            PhysicsSystem.UpdateAcceleration(physic);
+            PhysicsSystem.UpdateMass(physic);
+            PhysicsSystem.UpdateGravity(physic, dt);
+            PhysicsSystem.UpdateForce(physic);
+            PhysicsSystem.UpdateVelocity(physic, dt);
+            // Code here: 
+
+            //
+            PhysicsSystem.UpdateDeceleration(physic);
         }
     }
 }

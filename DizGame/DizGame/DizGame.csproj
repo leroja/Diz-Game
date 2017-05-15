@@ -51,10 +51,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\Components\BulletComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
+    <Compile Include="Source\Components\TestComponent.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
+    <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
+    <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
+    <Compile Include="Source\Systems\PlayerSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
@@ -69,104 +73,47 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
+    <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
+    <Content Include="Content\HeightMapStuff\grass.png" />
+    <Content Include="Content\HeightMapStuff\heightmap.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="app.manifest" />
-    <None Include="Content\chuck\cast_04_bm.tga" />
-    <None Include="Content\chuck\cast_04_bm_01.tga" />
-    <None Include="Content\chuck\cast_04_boot_cm.tga" />
-    <None Include="Content\chuck\cast_04_boot_l.tga" />
-    <None Include="Content\chuck\cast_04_boot_nm.tga" />
-    <None Include="Content\chuck\cast_04_boot_om.tga" />
-    <None Include="Content\chuck\cast_04_boot_sm.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_cm.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_l.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_nm.tga" />
-    <None Include="Content\chuck\cast_04_chainlink_sm.tga" />
-    <None Include="Content\chuck\cast_04_eye_cm.tga" />
-    <None Include="Content\chuck\cast_04_hair_cm.tga" />
-    <None Include="Content\chuck\cast_04_hair_nm.tga" />
-    <None Include="Content\chuck\cast_04_hair_om.tga" />
-    <None Include="Content\chuck\cast_04_hair_sm.tga" />
-    <None Include="Content\chuck\cast_04_hand_cm.tga" />
-    <None Include="Content\chuck\cast_04_hand_cv.tga" />
-    <None Include="Content\chuck\cast_04_hand_l.tga" />
-    <None Include="Content\chuck\cast_04_hand_nm.tga" />
-    <None Include="Content\chuck\cast_04_hand_sm.tga" />
-    <None Include="Content\chuck\cast_04_head_cm.tga" />
-    <None Include="Content\chuck\cast_04_head_cv.tga" />
-    <None Include="Content\chuck\cast_04_head_l.tga" />
-    <None Include="Content\chuck\cast_04_head_nm.tga" />
-    <None Include="Content\chuck\cast_04_head_sm.tga" />
-    <None Include="Content\chuck\cast_04_jacket_cm.tga" />
-    <None Include="Content\chuck\cast_04_jacket_l.tga" />
-    <None Include="Content\chuck\cast_04_jacket_nm.tga" />
-    <None Include="Content\chuck\cast_04_jacket_sm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_cm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_l.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_nm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_rm.tga" />
-    <None Include="Content\chuck\cast_04_knife_shirt_sm.tga" />
-    <None Include="Content\chuck\cast_04_newhair_cm.tga" />
-    <None Include="Content\chuck\cast_04_newhair_nm.tga" />
-    <None Include="Content\chuck\cast_04_newhair_om.tga" />
-    <None Include="Content\chuck\cast_04_newhair_sm.tga" />
-    <None Include="Content\chuck\cast_04_pants_cm.tga" />
-    <None Include="Content\chuck\cast_04_pants_l.tga" />
-    <None Include="Content\chuck\cast_04_pants_nm.tga" />
-    <None Include="Content\chuck\cast_04_pants_rm.tga" />
-    <None Include="Content\chuck\cast_04_pants_sm.tga" />
-    <None Include="Content\chuck\cast_04_patches00_cm.tga" />
-    <None Include="Content\chuck\cast_04_patches00_l.tga" />
-    <None Include="Content\chuck\cast_04_patches00_nm.tga" />
-    <None Include="Content\chuck\cast_04_patches00_om.tga" />
-    <None Include="Content\chuck\cast_04_patches00_sm.tga" />
-    <None Include="Content\chuck\cast_04_torso_cm.tga" />
-    <None Include="Content\chuck\cast_04_torso_cv.tga" />
-    <None Include="Content\chuck\cast_04_torso_l.tga" />
-    <None Include="Content\chuck\cast_04_torso_nm.tga" />
-    <None Include="Content\chuck\cast_04_torso_sm.tga" />
-    <None Include="Content\chuck\cast_04_zipper_cm.tga" />
-    <None Include="Content\chuck\cast_04_zipper_l.tga" />
-    <None Include="Content\chuck\cast_04_zipper_nm.tga" />
-    <None Include="Content\chuck\cast_04_zipper_om.tga" />
-    <None Include="Content\chuck\cast_04_zipper_sm.tga" />
-    <None Include="Content\chuck\cindy_jacketpattern_cm.tga" />
-    <None Include="Content\chuck\cindy_jacketpattern_nm.tga" />
-    <None Include="Content\chuck\cindy_jacketpattern_sm.tga" />
-    <None Include="Content\chuck\default_eyelash_cm.tga" />
-    <None Include="Content\chuck\default_eyelash_om.tga" />
-    <None Include="Content\chuck\default_eye_dm.tga" />
-    <None Include="Content\chuck\default_eye_l.tga" />
-    <None Include="Content\chuck\default_eye_nm.tga" />
-    <None Include="Content\chuck\default_eye_sm.tga" />
-    <None Include="Content\chuck\default_teeth_cm.tga" />
-    <None Include="Content\chuck\default_teeth_l.tga" />
-    <None Include="Content\chuck\default_teeth_nm.tga" />
-    <None Include="Content\chuck\default_teeth_sm.tga" />
-    <None Include="Content\chuck\default_tongue_cm.tga" />
-    <None Include="Content\chuck\default_tongue_l.tga" />
-    <None Include="Content\chuck\default_tongue_nm.tga" />
-    <None Include="Content\chuck\default_tongue_sm.tga" />
-    <None Include="Content\chuck\DR3_Chuck_Greene.FBX" />
-    <None Include="Content\chuck\DR3_Chuck_Greene.mtl" />
-    <None Include="Content\chuck\Normal_Bump_Normal_Bump.tga" />
-    <None Include="Content\chuck\psy_01_hair_tr.tga" />
-    <None Include="Content\chuck\svr_01_ssslookup.tga" />
-    <None Include="Content\chuck\svr_01_sssshadow.tga" />
-    <None Include="Content\Kitana\Kitana.mtl" />
-    <None Include="Content\Kitana\Kitana_ClothDetail_Norm.tga" />
-    <None Include="Content\Kitana\Kitana_Diff.tga" />
-    <None Include="Content\Kitana\Kitana_Hair_DiffA.tga" />
-    <None Include="Content\Kitana\Kitana_hair_NormHQA.tga" />
-    <None Include="Content\Kitana\Kitana_hair_Spec.tga" />
-    <None Include="Content\Kitana\Kitana_LeatherDetail_Norm.tga" />
-    <None Include="Content\Kitana\Kitana_NormHQA.tga" />
-    <None Include="Content\Kitana\Kitana_Spec.tga" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Content\Dude\dude.fbx" />
+    <None Include="Content\Dude\head.tga" />
+    <None Include="Content\Dude\headN.tga" />
+    <None Include="Content\Dude\headS.tga" />
+    <None Include="Content\Dude\jacket.tga" />
+    <None Include="Content\Dude\jacketN.tga" />
+    <None Include="Content\Dude\jacketS.tga" />
+    <None Include="Content\Dude\pants.tga" />
+    <None Include="Content\Dude\pantsN.tga" />
+    <None Include="Content\Dude\pantsS.tga" />
+    <None Include="Content\Dude\upBodyC.tga" />
+    <None Include="Content\Dude\upBodyC2.tga" />
+    <None Include="Content\Dude\upbodyN.tga" />
+    <None Include="Content\Dude\upBodyS.tga" />
+    <None Include="Content\House\Farmhouse\MedievalHouse1.obj" />
+    <None Include="Content\House\Rock\Rock.mtl" />
+    <None Include="Content\House\Rock\Rock.obj" />
+    <None Include="Content\House\Tree\lowpolytree.mtl" />
+    <None Include="Content\House\Tree\lowpolytree.obj" />
+    <None Include="Content\House\WoodHouse\Cyprys_House.mtl" />
+    <None Include="Content\House\WoodHouse\Cyprys_House.obj" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
+      <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
+      <Name>AnimationContentClasses</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">
       <Project>{2020d833-ad3f-446e-9609-b751490b0800}</Project>
       <Name>ContentProject</Name>
@@ -178,7 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\bullet\" />
-    <Folder Include="Content\HeightMaps\" />
     <Folder Include="Source\Enums\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
+using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
@@ -20,13 +21,10 @@ namespace GameEngine.Source.Systems
             {
                 CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-               if(camera != null || transform != null)
-                {
-                    UpdateCameraAfterType(camera, transform);
-                    camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
-                    // TODO skapa ett frustrum som är lite större än det verkliga "camera.View * camera.Projection"
-                    camera.CameraFrustrum = new BoundingFrustum(camera.View * camera.Projection);
-                }
+                
+                UpdateCameraAfterType(camera, transform);
+                camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
+                camera.CameraFrustrum = new BoundingFrustum3D(new BoundingFrustum(camera.View * camera.Projection));
             }
         }
         /// <summary>
@@ -44,7 +42,6 @@ namespace GameEngine.Source.Systems
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.StaticCam:
-                    //camera.LookAt = transform.Position;
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.Chase:

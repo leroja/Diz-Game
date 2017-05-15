@@ -14,34 +14,36 @@ namespace GameEngine.Source.Systems
     public class WindowTitleFPSSystem : IUpdate
     {
         private Game g;
-        private float framecount;
-        private float timeSinceLastUpdate;
-        private float frameCounter;
+        private int framecount;
+        private TimeSpan timeSinceLastUpdate;
+        private int frameCounter;
 
         public override void Update(GameTime gameTime)
         {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TimeSpan elapsed = gameTime.ElapsedGameTime;
 
 
             framecount++;
             timeSinceLastUpdate += elapsed;
-            if (timeSinceLastUpdate > 1)
+            if (timeSinceLastUpdate > TimeSpan.FromSeconds(1))
             {
-                frameCounter = framecount / timeSinceLastUpdate;
+
+                //frameCounter = framecount / timeSinceLastUpdate;
+                frameCounter = framecount;
 
                 g.Window.Title = "FPS: " + frameCounter;
 
                 framecount = 0;
-                timeSinceLastUpdate -= 1;
+                timeSinceLastUpdate -= TimeSpan.FromSeconds(1); ;
             }
         }
 
         public WindowTitleFPSSystem(Game game)
         {
             g = game;
-            framecount = 0f;
-            timeSinceLastUpdate = 0.0f;
-            frameCounter = 0.0f;
+            framecount = 0;
+            timeSinceLastUpdate = TimeSpan.Zero;
+            frameCounter = 0;
         }
     }
 }

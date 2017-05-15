@@ -14,30 +14,37 @@ namespace GameEngine.Tools
         public static float RADIANS_FOR_90DEGREES = MathHelper.ToRadians(90);//(float)(Math.PI / 2.0);
         public static float RADIANS_FOR_180DEGREES = RADIANS_FOR_90DEGREES * 2;
 
-        private Game game = null;
+        private GraphicsDevice graphicsDevice = null;
 
         protected VertexBuffer buffer;
         protected VertexDeclaration vertexDecl;
 
-        BasicEffect basicEffect;
+        private BasicEffect basicEffect;
 
         private const int CIRCLE_NUM_POINTS = 32;
         private IndexBuffer _indexBuffer;
         private VertexPositionNormalTexture[] _vertices;
 
-        public BoundingSphereRenderer(Game game)
+        //private Matrix[] modelBoneTransforms;
+
+        public BoundingSphereRenderer(GraphicsDevice device)
         {
-            this.game = game;
-            basicEffect = new BasicEffect(game.GraphicsDevice);
-            CreateShape();
+            graphicsDevice = device;
+            OnCreateDevice();
         }
 
+        public void OnCreateDevice()
+        {
+            basicEffect = new BasicEffect(graphicsDevice);
+
+            CreateShape();
+        }
 
         public void CreateShape()
         {
             double angle = MathHelper.TwoPi / CIRCLE_NUM_POINTS;
 
-            _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS+1];
+            _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS + 1];
 
             _vertices[0] = new VertexPositionNormalTexture(
                 Vector3.Zero, Vector3.Forward, Vector2.One);
@@ -58,25 +65,9 @@ namespace GameEngine.Tools
                     Vector3.Forward,
                     new Vector2());
             }
-            //for (int i = 33; i <= CIRCLE_NUM_POINTS*2; i++)
-            //{
-            //    float y = (float)Math.Round(Math.Cos(angle * i), 4);
-            //    float z = (float)Math.Round(Math.Sin(angle * i), 4);
-            //    Vector3 point = new Vector3(
-            //                     0.0f,
-            //                     y,
-            //                     z);
 
-
-
-            //    _vertices[i] = new VertexPositionNormalTexture(
-            //        point,
-            //        Vector3.Forward,
-            //        new Vector2());
-            //}
-
-                // Initialize the vertex buffer, allocating memory for each vertex
-                buffer = new VertexBuffer(game.GraphicsDevice,
+            // Initialize the vertex buffer, allocating memory for each vertex
+            buffer = new VertexBuffer(graphicsDevice,
                 VertexPositionNormalTexture.VertexDeclaration,
                 _vertices.Length,
                 BufferUsage.None);
@@ -103,7 +94,7 @@ namespace GameEngine.Tools
 
             // Initialize the index buffer, allocating memory for each index
             _indexBuffer = new IndexBuffer(
-                game.GraphicsDevice,
+                graphicsDevice,
                 IndexElementSize.SixteenBits,
                 lineStripIndices.Length,
                 BufferUsage.None
@@ -114,65 +105,59 @@ namespace GameEngine.Tools
 
         }
 
-        public void Draw(TransformComponent transComp, BoundingSphere bs, Color color)
+        public void Draw(ModelMesh mm, Color color)
         {
-            GraphicsDevice device = game.GraphicsDevice;
-            if (bs != null)
+            if (mm.BoundingSphere != null)
             {
-                Matrix translateMat = Matrix.CreateTranslation(bs.Center);
-                Matrix scaleMat = Matrix.CreateScale(bs.Radius-1);
-                Matrix rotateZMatrix = Matrix.CreateRotationZ(RADIANS_FOR_90DEGREES);
+                
+                Matrix scaleMatrix = Matrix.CreateScale(mm.BoundingSphere.Radius);
+                Matrix translateMat = Matrix.CreateTranslation(mm.BoundingSphere.Center);
+                Matrix rotateYMatrix = Matrix.CreateRotationY(RADIANS_FOR_90DEGREES);
                 Matrix rotateXMatrix = Matrix.CreateRotationX(RADIANS_FOR_90DEGREES);
-
-                RasterizerState rState = new RasterizerState();
-                rState.CullMode = CullMode.None;
-                rState.FillMode = FillMode.Solid;
-                game.GraphicsDevice.BlendState = BlendState.Opaque;
-                game.GraphicsDevice.RasterizerState = rState;
 
                 // effect is a compiled effect created and compiled elsewhere
                 // in the application
                 int ent = ComponentManager.Instance.GetAllEntitiesWithComponentType<CameraComponent>()[0];
                 CameraComponent cc = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
-
                 basicEffect.EnableDefaultLighting();
                 basicEffect.View = cc.View;
                 basicEffect.Projection = cc.Projection;
-                basicEffect.World = translateMat * rotateZMatrix * scaleMat;
-                basicEffect.DiffuseColor = color.ToVector3();
-
                 foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
 
-                    device.SetVertexBuffer(buffer);
-                    device.Indices = _indexBuffer;
+                    graphicsDevice.SetVertexBuffer(buffer);
+                    graphicsDevice.Indices = _indexBuffer;
 
                     basicEffect.Alpha = ((float)color.A / (float)byte.MaxValue);
 
-                    device.DrawIndexedPrimitives(
+                    basicEffect.World = scaleMatrix * translateMat;
+                    basicEffect.DiffuseColor = color.ToVector3();
+
+                    graphicsDevice.DrawIndexedPrimitives(
                         PrimitiveType.LineStrip,
                         0,  // vertex buffer offset to add to each element of the index buffer
                         0,  // first index element to read
                         CIRCLE_NUM_POINTS); // number of primitives to draw
 
-                    //basicEffect.World = rotateZMatrix * scaleMat * translateMat;
-                    //basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
+                    //basicEffect.World =  scaleMatrix * rotateYMatrix * translateMat;
+                    basicEffect.World =  translateMat * rotateYMatrix * scaleMatrix;
+                    basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
 
-                    //device.DrawIndexedPrimitives(
-                    //    PrimitiveType.LineStrip,
-                    //    0,  // vertex buffer offset to add to each element of the index buffer
-                    //    0,  // first index element to read
-                    //    CIRCLE_NUM_POINTS); // number of primitives to draw
+                    graphicsDevice.DrawIndexedPrimitives(
+                        PrimitiveType.LineStrip,
+                        0,  // vertex buffer offset to add to each element of the index buffer
+                        0,  // first index element to read
+                        CIRCLE_NUM_POINTS); // number of primitives to draw
 
-                    //basicEffect.World = rotateXMatrix * scaleMat * translateMat;
-                    //basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
+                    basicEffect.World = rotateXMatrix * scaleMatrix * translateMat;
+                    basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
 
-                    //device.DrawIndexedPrimitives(
-                    //    PrimitiveType.LineStrip,
-                    //    0,  // vertex buffer offset to add to each element of the index buffer
-                    //    0,  // first index element to read
-                    //    CIRCLE_NUM_POINTS); // number of primitives to draw
+                    graphicsDevice.DrawIndexedPrimitives(
+                        PrimitiveType.LineStrip,
+                        0,  // vertex buffer offset to add to each element of the index buffer
+                        0,  // first index element to read
+                        CIRCLE_NUM_POINTS); // number of primitives to draw
                 }
             }
         }
@@ -180,24 +165,12 @@ namespace GameEngine.Tools
         public override void Draw(GameTime gameTime)
         {
             List<int> entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            foreach (int ent in entities)
+            foreach(int ent in entities)
             {
-
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
-                TransformComponent tc = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ent);
-                foreach (ModelMesh mm in mc.Model.Meshes)
+                foreach(ModelMesh mm in mc.Model.Meshes)
                 {
-                    List<Vector3> verticePositions = new List<Vector3>();
-                    foreach (ModelMeshPart mp in mm.MeshParts)
-                    {
-                        Vector3[] temp = new Vector3[mp.NumVertices];
-                        mp.VertexBuffer.GetData<Vector3>(temp);
-                        verticePositions.AddRange(temp);
-                    }
-                    BoundingSphere sphere = BoundingSphere.CreateFromPoints(verticePositions);
-                    sphere = new BoundingSphere(Vector3.Transform(sphere.Center, mc.MeshWorldMatrices[mm.ParentBone.Index] * tc.ObjectMatrix), sphere.Radius);
-                    mm.BoundingSphere = sphere;
-                    Draw(tc, mm.BoundingSphere, new Color(new Vector3(255, 0, 0)));
+                    Draw(mm, new Color(new Vector3(255, 0, 0)));
                 }
             }
         }

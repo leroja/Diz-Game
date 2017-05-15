@@ -10,48 +10,45 @@ using GameEngine.Source.Components;
 
 namespace DizGame.Source.Systems
 {
-    // temporär
     public class BulletSystem : IUpdate
     {
+        /// <summary>
+        /// A list containing the ids of the bullets that shall be removed because they have exceeded their max range
+        /// </summary>
+        private List<int> toDelete = new List<int>();
+
+        /// <summary>
+        /// Currently this system only checks if any of the bullets have exceeded their max range
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var compIds = ComponentManager.GetAllEntitiesWithComponentType<BulletComponent>();
+            
             foreach (var id in compIds)
             {
                 var bulletComponent = ComponentManager.GetEntityComponent<BulletComponent>(id);
                 var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(id);
                 var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(id);
 
-                //System.Console.WriteLine(mouseComp.MouseDeltaPosition);
+                var curPos = transformComp.Position;
 
-
-
-                //transformComp.Rotation = /*transformComp.Rotation +*/ new Vector3(-mouseComp.MouseDeltaPosition.Y, -mouseComp.MouseDeltaPosition.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                var rot = transformComp.Rotation;
-                rot.X = 0;
-                rot.Y = 0;
-                rot.Z = 0;
-
-                if (mouseComp.MouseDeltaPosition.X > 0)
+                var curRange = Vector3.Distance(transformComp.Position, bulletComponent.StartPos);
+                if (curRange > bulletComponent.MaxRange)
                 {
-                    rot.X += 0.01f;
-                }
-                if (mouseComp.MouseDeltaPosition.X < 0)
-                {
-                    rot.X -= 0.01f;
-                }
-                if (mouseComp.MouseDeltaPosition.Y > 0)
-                {
-                    rot.Y += 0.01f;
-                }
-                if (mouseComp.MouseDeltaPosition.Y < 0)
-                {
-                    rot.Y -= 0.01f;
+                    toDelete.Add(id);
                 }
 
-                transformComp.Rotation = rot;
+                // Todo, temp
+                //transformComp.Position += transformComp.Forward *(float)10 *(float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+
+            foreach (var id in toDelete)
+            {
+                ComponentManager.RemoveEntity(id);
+                ComponentManager.RecycleID(id);
+            }
+            toDelete.Clear();
         }
     }
 }

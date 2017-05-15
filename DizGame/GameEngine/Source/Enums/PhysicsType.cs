@@ -9,6 +9,10 @@ namespace GameEngine.Source.Enums
     public enum PhysicsType : int
     {
         /// <summary>
+        /// None
+        /// </summary>
+        None,
+        /// <summary>
         /// "Immovable entity"
         /// </summary>
         Static,
@@ -32,5 +36,11 @@ namespace GameEngine.Source.Enums
         /// Used for cloth, jelly etc
         /// </summary>
         Soft
+    }
+    public enum GravityType
+    {
+        None,
+        World,
+        Self
     }
 }

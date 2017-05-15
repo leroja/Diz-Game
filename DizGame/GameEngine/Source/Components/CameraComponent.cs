@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Enums;
+﻿using AnimationContentClasses;
+using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace GameEngine.Source.Components
         public Vector3 LookAt { get; set; }
         public Vector3 Offset { get; set; }
 
-        public BoundingFrustum CameraFrustrum { get; set; }
+        public BoundingFrustum3D CameraFrustrum { get; set; }
 
        public CameraType CameraType { get; set; }
 

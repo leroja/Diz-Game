@@ -15,7 +15,7 @@ namespace GameEngine.Source.Components
 
         public Vector3 Rotation { get; set; }
 
-        public Quaternion QuaternionRotation { get; set; }
+        public Quaternion QuaternionRotation;
         public Quaternion Orientation { get; set; }
         public Vector3 Dirrection { get; set; }
         public Vector3 Forward { get; set; }
