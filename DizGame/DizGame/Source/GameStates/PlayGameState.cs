@@ -169,11 +169,23 @@ namespace DizGame.Source.GameStates
         private void CreateEntitiesForSinglePlayerGame()
         {
             EntityFactory entf = EntityFactory.Instance;
-            List<int> aiEntityList = new List<int>();
 
-            //aiEntityList.Add(entf.CreateAI("Dude", new Vector3(30, 45, -80), 25, 300, 300, 5f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f));
-            aiEntityList.Add(entf.CreateAI("Dude", new Vector3(65, 39, -10), 25, 300, 300, 3.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f));
-            //aiEntityList.Add(entf.CreateAI("Dude", new Vector3(135, 45, -50), 25, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f));
+            var l = new List<Vector2>()
+            {
+                new Vector2(5, -5),
+                new Vector2(290, -5),
+                new Vector2(290, -290),
+                new Vector2(5, -290),
+            };
+
+            List<int> aiEntityList = new List<int>
+            {
+
+                entf.CreateAI("Dude", new Vector3(30, 45, -80), 25, 300, 300, 5f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150),
+                entf.CreateAI("Dude", new Vector3(65, 39, -10), 25, 300, 300, 3.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150),
+                entf.CreateAI("Dude", new Vector3(135, 45, -50), 25, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150),
+                entf.CreateAI("Dude", new Vector3(45, 39, -30), 25, 300, 300, 3.5f, MathHelper.Pi, 1.5f, 4f, 25f, 0.2f, 1f, l, 50),
+            };
             GameStateEntities.AddRange(aiEntityList);
 
             var idC = EntityFactory.Instance.CreateDude();

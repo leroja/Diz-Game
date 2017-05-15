@@ -1,4 +1,4 @@
-﻿using DizGame.Source.AI_States;
+﻿using DizGame.Source.AI_Behaviors;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using System;
@@ -55,16 +55,23 @@ namespace DizGame.Source.Components
         /// </summary>
         public float EvadeDistance { get; set; }
         /// <summary>
-        /// from how far the AI will start shooting
+        /// From how far the AI will start shooting
         /// </summary>
         public float AttackingDistance { get; set; }
-        
+        /// <summary>
+        /// In what distance the enemy have to be for the AI to chase it
+        /// </summary>
+        public float ChaseDistance { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public AIComponent(Rectangle boudnRec, float shootingCoolDown)
-        {            
+        /// <param name="boundRec"></param>
+        /// <param name="shootingCoolDown"></param>
+        /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
+        public AIComponent(Rectangle boundRec, float shootingCoolDown, List<Vector2> waypoints)
+        {
+            this.Bounds = boundRec;
             this.Hysteria = 50;
             this.DirectionDuration = 2f;
             this.DirectionChangeRoation = MathHelper.Pi;
@@ -81,13 +88,23 @@ namespace DizGame.Source.Components
                 {"Evade", new EvadeBehavior() },
                 {"Attacking", new AttackingBehavior(ShootingCooldown) }
             };
-            this.CurrentBehaivior = AiBehaviors["Attacking"];
+            this.CurrentBehaivior = AiBehaviors["Wander"];
+            if (waypoints != null)
+            {
+                AiBehaviors.Add("Patroll", new PatrollingBehavior(waypoints));
+                this.CurrentBehaivior = AiBehaviors["Patroll"];
+            }
         }
 
 
         private AiBehavior GetBehavior(string Behavior)
         {
             return AiBehaviors[Behavior];
+        }
+
+        public bool HaveBehavior(string behavior)
+        {
+            return AiBehaviors.ContainsKey(behavior);
         }
 
         /// <summary>
