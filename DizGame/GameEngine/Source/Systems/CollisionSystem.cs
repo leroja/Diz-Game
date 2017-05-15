@@ -91,8 +91,8 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Goes through every boundingsphere in 
         /// </summary>
-        /// <param name="spheres1"></param>
-        /// <param name="spheres2"></param>
+        /// <param name="volume1"></param>
+        /// <param name="volume2"></param>
         /// <param name="tuple"></param>
         /// <returns>true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
         private bool FindFirstHit(KeyValuePair<int, List<BoundingVolume>> volume1, KeyValuePair<int, List<BoundingVolume>> volume2, out Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>> tuple)

@@ -450,3 +450,9 @@
 /processorParam:Quality=Best
 /build:SoundEffects/Gun-Shot.wav
 
+#begin Songs/GameSong.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/GameSong.mp3
+

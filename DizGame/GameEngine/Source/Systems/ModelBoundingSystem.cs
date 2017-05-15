@@ -18,11 +18,16 @@ namespace GameEngine.Source.Systems
     public class ModelBoundingSystem : IUpdate
     {
         /// <summary>
-        /// 
+        /// Constructor
         /// </summary>
         public ModelBoundingSystem()
         {
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var ids = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();
@@ -38,7 +43,7 @@ namespace GameEngine.Source.Systems
         {
             var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(entityId);
             var sphere = new BoundingSphere(transformComp.Position, 0);
-            var box = new BoundingBox();
+            //var box = new BoundingBox();
             modComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(new BoundingSphere(new Vector3(transformComp.Position.X, transformComp.Position.Y, transformComp.Position.Z), 3)));
             //if (volume.Volume.FirstOrDefault().Bounding is BoundingSphere3D)
             //{

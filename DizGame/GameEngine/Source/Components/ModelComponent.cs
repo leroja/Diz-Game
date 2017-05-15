@@ -28,15 +28,16 @@ namespace GameEngine.Source.Components
         /// </summary>
         public BoundingVolume BoundingVolume { get; set; }
         /// <summary>
-        /// A Bool that says that the model is static or not
+        /// A Bool that says whether the model is static or not
         /// </summary>
         public bool IsStatic { get; set; }
-
+        /// <summary>
+        /// A Bool that says whether the model is vivible or not
+        /// </summary>
         public bool IsVisible { get; set; }
+
         #endregion Public Properties
-
-
-
+        
 
         /// <summary>
         /// Constructor which takes model as parameter

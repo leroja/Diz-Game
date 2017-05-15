@@ -23,7 +23,6 @@ namespace DizGame
     /// </summary>
     public class EntityFactory
     {
-
         private static EntityFactory instance;
 
         private ContentManager Content;
@@ -34,6 +33,9 @@ namespace DizGame
         /// Hud factory
         /// </summary>
         public HudFactory HudFactory { get; set; }
+        /// <summary>
+        /// A Bool that says whether the models are vivible or not
+        /// </summary>
         public bool VisibleBullets { get; set; }
 
         /// <summary>
@@ -50,14 +52,11 @@ namespace DizGame
                 return instance;
             }
         }
-
-
         /// <summary>
-        /// 
+        /// Private constructor of the entityfactory
         /// </summary>
         private EntityFactory()
         {
-            
             VisibleBullets = true;
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             CreateWorldComp();
@@ -93,6 +92,9 @@ namespace DizGame
             var worldEntId = ComponentManager.Instance.CreateID();
             var compList = new List<IComponent>() {
                 new WorldComponent(Matrix.Identity)
+                {
+                    
+                },
             };
 
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
@@ -111,6 +113,7 @@ namespace DizGame
             keys.AddActionAndKey("Right", Keys.D);
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
+            keys.AddActionAndKey("Mute", Keys.M);
             
 
             MouseComponent mouse = new MouseComponent();
@@ -136,11 +139,9 @@ namespace DizGame
             };
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
-
-
+            
             TestingTheAnimationsWithDude(entityID);
             return entityID;
-
         }
 
         // Todo lägg till FOG
@@ -338,15 +339,14 @@ namespace DizGame
 
         // todo, funkar inte
         /// <summary>
-        /// 
+        /// Adds a POV camera to an entity
         /// </summary>
-        /// <param name="entityID"></param>
+        /// <param name="entityID"> ID of the entity </param>
         public void AddPOVCamToEntity(int entityID)
         {
             ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov) {
                 Offset = new Vector3(0, 10, 30)
             });
-                
         }
 
         /// <summary>
@@ -369,7 +369,6 @@ namespace DizGame
         /// </summary>
         /// <param name="modelName"></param>
         /// <param name="pos"></param>
-        /// <param name="Orientation"></param>
         /// <param name="scale"></param>
         /// <param name="forward"></param>
         /// <param name="MaxRange"></param>
@@ -424,16 +423,12 @@ namespace DizGame
         {
 
             ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
-
             
-
             AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 
             anm.StartClip("Take 001");
-
-          
         }
         
         /// <summary>

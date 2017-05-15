@@ -77,6 +77,7 @@ namespace DizGame.Source.GameStates
                 y += 40;
             }
             AudioManager.Instance.PlaySong("MenuSong");
+            AudioManager.Instance.ChangeRepeat();
         }
         /// <summary>
         /// Removes all the entities created in this state which is not needed anymore.

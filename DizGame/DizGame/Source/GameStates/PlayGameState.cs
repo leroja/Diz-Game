@@ -57,7 +57,8 @@ namespace DizGame.Source.GameStates
             {
                 CreateEntitiesForSinglePlayerGame();
             }
-                
+            AudioManager.Instance.PlaySong("GameSong");
+            AudioManager.Instance.ChangeSongVolume(0.25f);
         }
 
         /// <summary>
@@ -65,6 +66,8 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Exiting()
         {
+            AudioManager.Instance.ChangeSongVolume(1f);
+            AudioManager.Instance.StopSong();
             //TODO: observera att vi kanske inte vill ta bort precis alla entiteter i detta statet,
             //Tex vill vi kanske ha kvar spelarna + tillhörande componenter för att göra typ en "score-screen" i slutet.
             foreach (int entity in GameStateEntities)
@@ -181,7 +184,7 @@ namespace DizGame.Source.GameStates
             };
             GameStateEntities.AddRange(aiEntityList);
 
-            var idC = EntityFactory.Instance.CreateDude();
+            var idC = entf.CreateDude();
             entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25));
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);

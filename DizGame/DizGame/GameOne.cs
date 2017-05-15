@@ -66,11 +66,14 @@ namespace DizGame
 
             client.DiscoverLocalPeers();
 
+
+            AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
+            AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
+            AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
+
             MainMenu startState = new MainMenu();
             GameStateManager.Instance.Push(startState);
             
-
-
             base.Initialize();
         }
 
@@ -82,8 +85,6 @@ namespace DizGame
         protected override void LoadContent()
         {
             TreeModel tree = new TreeModel(Device, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
-            AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
-            AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
         }
 
         /// <summary>
@@ -106,9 +107,5 @@ namespace DizGame
 
             base.Update(gameTime);
         }
-
-      
-
-
     }
 }
