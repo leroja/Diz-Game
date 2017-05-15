@@ -54,6 +54,8 @@
     <Compile Include="Source\Components\BulletComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Components\TestComponent.cs" />
+    <Compile Include="Source\Enums\GameSettingsType.cs" />
+    <Compile Include="Source\Settings\GameSettings.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\ConfiguredHeightMapSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
@@ -122,7 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\bullet\" />
-    <Folder Include="Source\Enums\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,6 +5,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Communication;
+using DizGame.Source.Enums;
 
 namespace ServerApplication.Communication
 {
@@ -78,7 +79,14 @@ namespace ServerApplication.Communication
 
             NetOutgoingMessage outMessage = server.CreateMessage();
 
+            //Part1 of message
             int messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+
+            //Part2 of message
+            messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.GameSettings0);
+
+            //Part3 of message
+            //All entityIds that the client needs to create GameSetting0
 
             Array.Resize(ref messageArray, messageLen);
 

@@ -74,6 +74,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DizGame\DizGame.csproj">
+      <Project>{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}</Project>
+      <Name>DizGame</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameEngine\GameEngine.csproj">
       <Project>{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}</Project>
       <Name>GameEngine</Name>
