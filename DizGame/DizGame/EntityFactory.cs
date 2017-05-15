@@ -55,7 +55,8 @@ namespace DizGame
             VisibleBullets = true;
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             CreateWorldComp();
-            this.Content = GameOne.Instance.Content;
+            Content = GameOne.Instance.Content;
+            Model model = Content.Load<Model>("Bullet/Bullet");
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
@@ -417,7 +418,7 @@ namespace DizGame
 
             
 
-            AnimationComponent anm = new AnimationComponent(mcp.Model.Tag);
+            AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 

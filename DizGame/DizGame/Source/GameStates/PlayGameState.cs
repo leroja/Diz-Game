@@ -1,4 +1,5 @@
-﻿using DizGame.Source.Systems;
+﻿using AnimationContentClasses;
+using DizGame.Source.Systems;
 using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Managers;
@@ -132,15 +133,7 @@ namespace DizGame.Source.GameStates
 
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
-
             SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
@@ -156,7 +149,7 @@ namespace DizGame.Source.GameStates
             EntityTracingSystem = new EntityTracingSystem();
             EntityTracingSystem.RecordInitialEntities();
             SystemManager.Instance.AddSystem(EntityTracingSystem);
-
+            SystemManager.Instance.AddSystem(new ModelBoundingSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
@@ -196,6 +189,14 @@ namespace DizGame.Source.GameStates
 
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
+            var ids = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            foreach (var modelEnt in ids)
+            {
+                var modelComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modelEnt);
+                var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(modelEnt);
+                modelComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(
+                    new BoundingSphere(new Vector3(transComp.Position.X, transComp.Position.Y, transComp.Position.Z), 3)));
+            }
 
         }
         /// <summary>
