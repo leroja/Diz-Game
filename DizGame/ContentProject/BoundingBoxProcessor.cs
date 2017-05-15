@@ -44,6 +44,11 @@ namespace ContentProject
 
         }
 
+        public static BoundingVolume CreateFromMeshes(ModelContent mc)
+        {
+            return null;
+        }
+
         private static List<BoundingVolume> Loop(ModelBoneContentCollection mbcc, float box_size)
         {
             List<BoundingVolume> bvs = new List<BoundingVolume>();

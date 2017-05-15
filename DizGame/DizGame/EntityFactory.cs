@@ -33,7 +33,7 @@ namespace DizGame
             //Model mod = Content.Load<Model>("House/WoodHouse/Cyprys_House");
             //Content.Load<Model>("Bullet/Cartridge");
             //Content.Load<Model>("Dude/dude");
-            Content.Load<Model>("bullet/bullet");
+            Content.Load<Model>("Dude/dude");
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },

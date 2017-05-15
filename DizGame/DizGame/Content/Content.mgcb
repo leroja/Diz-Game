@@ -165,10 +165,10 @@
 
 #begin Dude/dude.fbx
 /importer:FbxImporter
-/processor:BoundingSphereProcessor
+/processor:ModelSpheresAndAnimationProcessor
+/processorParam:DefaultEffect=SkinnedEffect
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
 /processorParam:GenerateMipmaps=True
 /processorParam:GenerateTangentFrames=False
 /processorParam:PremultiplyTextureAlpha=True
@@ -379,9 +379,9 @@
 #begin Wolf/wolf.fbx
 /importer:FbxImporter
 /processor:ModelSpheresAndAnimationProcessor
+/processorParam:DefaultEffect=BasicEffect
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
 /processorParam:GenerateMipmaps=True
 /processorParam:GenerateTangentFrames=False
 /processorParam:PremultiplyTextureAlpha=True
