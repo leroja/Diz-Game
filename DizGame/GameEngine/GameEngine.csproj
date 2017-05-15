@@ -50,6 +50,7 @@
     <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
     <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
+    <Compile Include="Source\Components\SkyBoxComponent.cs" />
     <Compile Include="Source\Components\TextComponent.cs" />
     <Compile Include="Source\Components\Texture2DComponent.cs" />
     <Compile Include="Source\Enums\MessageType.cs" />
@@ -96,6 +97,8 @@
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
     <Compile Include="Source\Systems\ModelSystem.cs" />
     <Compile Include="Source\Systems\Physics\PhysicsSystem.cs" />
+    <Compile Include="Source\Systems\SkyBoxSystem.cs" />
+    <Compile Include="Source\Systems\SoundSystem.cs" />
     <Compile Include="Source\Systems\TextSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
     <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />

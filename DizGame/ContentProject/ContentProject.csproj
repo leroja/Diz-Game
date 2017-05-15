@@ -68,7 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimationProcessor.cs" />
+    <Compile Include="BoundingBoxProcessor.cs" />
+    <Compile Include="BoundingSphereProcessor.cs" />
     <Compile Include="ContentImporter.cs" />
+    <Compile Include="ModelBoxesAndAnimationProcessor.cs" />
+    <Compile Include="ModelSpheresAndAnimationProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -9,6 +9,7 @@ using GameEngine.Source.Systems;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Systems.Interfaces;
 using GameEngine.Source.Systems.AbstractClasses;
+using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
@@ -16,7 +17,7 @@ namespace GameEngine.Source.Systems
     /// <summary>
     /// PhysicSystem which handles all the physic
     /// </summary>
-    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<BoundingSphereComponent, BoundingSphereComponent>>>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<IBounding3D, IBounding3D>>>
     {
         private float frameCount = 0;
         private float timeSinceLastUpdate = 0;
@@ -337,10 +338,10 @@ namespace GameEngine.Source.Systems
         /// on collision (retrieves data from collision system)
         /// </summary>
         /// <param name="value"></param>
-        public void OnNext(List<Tuple<BoundingSphereComponent, BoundingSphereComponent>> value)
+        public void OnNext(List<Tuple<IBounding3D, IBounding3D>> value)
         {
             foreach (var val in value)
-                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.ID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.ID));
+                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.CompID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.CompID));
         }
         /// <summary>
         /// Does nothing atm

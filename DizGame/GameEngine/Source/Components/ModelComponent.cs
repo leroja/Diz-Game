@@ -26,7 +26,7 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// The boudnin sphere the encapsulates the model
         /// </summary>
-        public BoundingVolume BoundingSphere { get; set; }
+        public BoundingVolume BoundingVolume { get; set; }
         /// <summary>
         /// A Bool that says that the model is static or not
         /// </summary>

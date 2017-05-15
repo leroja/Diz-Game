@@ -426,7 +426,7 @@ namespace DizGame
 
             
 
-            AnimationComponent anm = new AnimationComponent(mcp.Model.Tag);
+            AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 

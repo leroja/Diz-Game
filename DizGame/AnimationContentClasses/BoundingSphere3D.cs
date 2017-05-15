@@ -17,7 +17,7 @@ namespace AnimationContentClasses
             Sphere = ball;
         }
 
-        public bool Intersects(IBounding3D bounding)
+        public override bool Intersects(IBounding3D bounding)
         {
             if (bounding is BoundingBox3D)
             {
@@ -30,7 +30,7 @@ namespace AnimationContentClasses
             return false;
         }
 
-        public IBounding3D CreateMerged(IBounding3D bound)
+        public override IBounding3D CreateMerged(IBounding3D bound)
         {
             if (bound is BoundingBox3D)
             {
