@@ -101,7 +101,6 @@ namespace DizGame
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
