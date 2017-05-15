@@ -117,6 +117,9 @@
   <ItemGroup>
     <Content Include="Content\HeightMaps\grass.png" />
     <Content Include="Content\HeightMaps\heightmap.png" />
+    <Content Include="Content\Shaders\AllEff.fx" />
+    <Content Include="Content\Shaders\Shadow.fx" />
+    <Content Include="Content\Shaders\WaterShader.fx" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
