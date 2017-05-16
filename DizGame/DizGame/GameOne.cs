@@ -63,6 +63,7 @@ namespace DizGame
             EntityFactory entf = new EntityFactory(Content, Device);
 
             var idC = entf.CreateDude();
+            entf.CreateParticleEmiter();
 
             //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
             entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
@@ -107,6 +108,9 @@ namespace DizGame
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem(entf));
 
+            
+            SystemManager.Instance.AddSystem(new ParticleRenderSystem(Device));
+            SystemManager.Instance.AddSystem(new SmokePaticleSystemcs());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());

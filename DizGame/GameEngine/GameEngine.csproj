@@ -46,9 +46,9 @@
     <Compile Include="Source\Components\AnimationComponent.cs" />
     <Compile Include="Source\Components\HeightmapComponentTexture.cs" />
     <Compile Include="Source\Components\MouseComponent.cs" />
+    <Compile Include="Source\Components\ParticleEmiterComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsParticleComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
-    <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
     <Compile Include="Source\Components\TextComponent.cs" />
     <Compile Include="Source\Enums\MessageType.cs" />
@@ -56,6 +56,7 @@
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\HeightMapObject.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
+    <Compile Include="Source\RandomStuff\ParticleVertex.cs" />
     <Compile Include="Source\Systems\AnimationSystem.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Source\Systems\HeightmapSystemTexture.cs" />
     <Compile Include="Source\Systems\ModelBoundingSphereSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
+    <Compile Include="Source\Systems\ParticleRenderSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interface\IPhysics.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interface\IPhysicsTypeSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
