@@ -17,12 +17,15 @@ namespace DizGame.Source.Enums
         GameSettings6,
         GameSettings7,
 
+        //These are needed by the client to set variables for the game in advance.
         HeightMapName,
         HeightMapTexture,
         HeightMapChunksPerSide,
 
         CountOfHouses,
         CountOfStaticObjects,
+
+        PlayerEntityId,
 
     }
 }

@@ -67,7 +67,7 @@
     <Compile Include="Communication\TalkToClients.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Protocol\InitialGameStateProtocol.cs" />
+    <Compile Include="Protocol\GameStateProtocol.cs" />
     <Compile Include="ServerLogic\Server.cs" />
   </ItemGroup>
   <ItemGroup>
