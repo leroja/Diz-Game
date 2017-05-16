@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DizGame.Source.Enums;
+using DizGame.Source.Settings;
 using GameEngine.Source.Communication;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
@@ -98,12 +99,13 @@ namespace ServerApplication.Protocol
         /// <returns>The length of the message in the array. The length may be less than the size of the input 
         /// array.
         /// </returns>
-        public static int InitialGameState(Byte[] messageArray)
+        public static int InitialGameState(Byte[] messageArray, GameSettingsType gameSetting)
         {
             int rangeStart = 0;
             int rangeEnd = 0;
             int messageLen = 0;
-
+            int numOfObjectsTotal = 0;
+            int partOfTotal = 0;
 
             //Part1 of message
             messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
@@ -118,7 +120,7 @@ namespace ServerApplication.Protocol
                 messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
 
                 //Part3 of message
-                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.GameSettings0);
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
 
 
 
@@ -129,9 +131,29 @@ namespace ServerApplication.Protocol
 
                 //Part5 of message will be the list of Vector3 positions that will be needed by client to
                 //build gamesettings0 gameMap.
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, GetStaticObjectPositions(gameSetting));
             }
 
             return messageLen;
+        }
+
+
+        private static List<Vector3> GetStaticObjectPositions(GameSettingsType gameSetting)
+        {
+            int numOfObjectsTotal = 0;
+            int partOfTotal = 0;
+
+            if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
+            {
+                numOfObjectsTotal += partOfTotal;
+                if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
+                {
+                    numOfObjectsTotal += partOfTotal;
+                    return DizGame.EntityFactory.GetModelPositions(numOfObjectsTotal);
+                }
+            }
+
+            return new List<Vector3>();
         }
     }
 }

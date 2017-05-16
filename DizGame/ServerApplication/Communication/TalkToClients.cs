@@ -61,7 +61,7 @@ namespace ServerApplication.Communication
                     switch(messageType)
                     {
                         case (byte)MessageType.GetInitialGameState:
-                            SendInitialGameState(message);
+                            SendInitialGameState(message, GameSettingsType.GameSettings0);
                             break;
                     }
                     break;
@@ -74,7 +74,7 @@ namespace ServerApplication.Communication
         /// <summary>
         /// This function shall send the initial game state when asked for by the clients.
         /// </summary>
-        private void SendInitialGameState(NetIncomingMessage message)
+        private void SendInitialGameState(NetIncomingMessage message, GameSettingsType gameSetting)
         {
             int messageLen = 0;
 
@@ -83,7 +83,7 @@ namespace ServerApplication.Communication
             NetOutgoingMessage outMessage = server.CreateMessage();
 
             //Building the message.
-            messageLen = GameStateProtocol.InitialGameState(messageArray);
+            messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
 
             Array.Resize(ref messageArray, messageLen);
 
