@@ -76,7 +76,7 @@ namespace DizGame.Source.AI_Behaviors
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
 
-            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance + AIComp.Hysteria)
+            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
@@ -89,7 +89,7 @@ namespace DizGame.Source.AI_Behaviors
 
             float x = nextWaypoint.X - AITransformComp.Position.X;
             float z = nextWaypoint.Y - AITransformComp.Position.Z;
-            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi; // + PI = fulhack
+            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
             
             return new Vector3(0, WrapAngle(desiredAngle), 0);
         }

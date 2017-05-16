@@ -50,7 +50,7 @@ namespace DizGame.Source.AI_Behaviors
                 currentTimeForRot = 0f;
             }
 
-            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed/* * (float)gameTime.ElapsedGameTime.TotalSeconds*/), 0);
+            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
 
             BehaviorStuff(AIComp, transformComp);
         }
@@ -60,11 +60,10 @@ namespace DizGame.Source.AI_Behaviors
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            if (AIComp.AttackingDistance + AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy)
+            if (AIComp.AttackingDistance> AIComp.CurrentBehaivior.DistanceToClosestEnemy)
             {
                 AIComp.ChangeBehavior("Attacking", transcomp.Rotation);
             }
         }
-
     }
 }

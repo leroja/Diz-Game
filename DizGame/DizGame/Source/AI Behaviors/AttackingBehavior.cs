@@ -66,7 +66,6 @@ namespace DizGame.Source.AI_Behaviors
 
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transformComp, WorldComponent worldComp)
         {
-            // todo, kanske inte ska ha den här, för att AIn blir enklare att undvika
             if (worldComp.Day % 2 == 0 && AIComp.AttackingDistance + AIComp.Hysteria < AIComp.CurrentBehaivior.DistanceToClosestEnemy)
             {
                 AIComp.ChangeBehavior("Chase", transformComp.Rotation);

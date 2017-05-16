@@ -30,8 +30,6 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-            // todo fix smooth rotation
-
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var pos = transformComp.Position;
 

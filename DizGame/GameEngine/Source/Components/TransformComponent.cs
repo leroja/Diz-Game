@@ -66,6 +66,7 @@ namespace GameEngine.Source.Components
         /// <param name="scale">The scale of the object which should be represented as a Vector3</param>
         public TransformComponent(Vector3 position, Vector3 scale)
         {
+            Rotation = Vector3.Zero;
             this.Position = position;
             this.Scale = scale;
             Dirrection = Vector3.Zero;

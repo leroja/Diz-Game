@@ -117,16 +117,11 @@ namespace DizGame.Source.AI_Behaviors
 
             float x = ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
             float z = ClosestEnemyTransFormComp.Position.Z - AITransformComp.Position.Z;
-            //float x1 = AITransformComp.Position.X - ClosestEnemyTransFormComp.Position.X;
-            //float z1 = AITransformComp.Position.Z - ClosestEnemyTransFormComp.Position.Z;
-            //float desiredAngle = (float)Math.Atan2(z, x);
-            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi; // + PI = fulhack
-            //float desiredAngle1 = (float)Math.Atan2(z1, x1);
+            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
 
             return new Vector3(0, WrapAngle(desiredAngle), 0);
         }
-
-       
+        
 
         /// <summary>
         /// Calculates the angle that an object should face, given 
@@ -183,6 +178,5 @@ namespace DizGame.Source.AI_Behaviors
 
             return WrapAngle(desiredAngle);
         }
-
     }
 }
