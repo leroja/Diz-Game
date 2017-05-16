@@ -126,6 +126,9 @@ namespace ServerApplication.Protocol
                 ReserveRangeEntityIds(playerEntityId++, ref rangeStart, ref rangeEnd);
                 messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
                 messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
+
+                //Part5 of message will be the list of Vector3 positions that will be needed by client to
+                //build gamesettings0 gameMap.
             }
 
             return messageLen;

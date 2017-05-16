@@ -20,7 +20,7 @@ namespace GameEngine.Source.Communication
         {
             Byte[] copiedValues = BitConverter.GetBytes(value);
 
-            Array.Copy(copiedValues, inputArray, copiedValues.Length);
+            Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
 
             return copiedValues.Length;
         }
