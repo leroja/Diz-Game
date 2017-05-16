@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DizGame.Source.AI_States
+namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// 
+    /// The abstract base class for the AI behaviors
     /// </summary>
     public abstract class AiBehavior
     {
@@ -20,7 +20,7 @@ namespace DizGame.Source.AI_States
         /// </summary>
         public int ClosestEnemy { get; set; }
         /// <summary>
-        /// 
+        /// Distance to the closest enemy
         /// </summary>
         public float DistanceToClosestEnemy { get; set; }
 
@@ -32,9 +32,15 @@ namespace DizGame.Source.AI_States
         /// <param name="gameTime"></param>
         public abstract void Update(AIComponent AIComp, GameTime gameTime);
 
-
         /// <summary>
         /// 
+        /// </summary>
+        /// <param name="rotation"> The current rotation of the AI </param>
+        public abstract void OnEnter(Vector3 rotation);
+
+
+        /// <summary>
+        /// Finds the closest enemy entity
         /// </summary>
         public void FindClosestEnemy(AIComponent AIComp)
         {
@@ -44,33 +50,29 @@ namespace DizGame.Source.AI_States
             var AiIds = ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>();
 
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
-            //float distance = float.MaxValue;
 
             // Find wich Enemy Entity is the closest one
-            //int closestEntity = AIComp.ID;
             foreach (var entityId in PlayerIds)
             {
-                //var playComp = ComponentManager.Instance.GetEntityComponent<PlayerComponent>(entityId);
                 var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityId);
 
                 var dist = Vector3.Distance(transformComp.Position, transComp.Position);
                 if (dist < DistanceToClosestEnemy)
                 {
-                    //closestEntity = entityId;
                     ClosestEnemy = entityId;
                     DistanceToClosestEnemy = dist;
                 }
             }
-
-            // todo ska vi kolla mot andra AI:s eller inte?
             foreach (var EntityId in AiIds)
             {
                 var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(EntityId);
 
+                if (AIComp.ID == EntityId)
+                    continue;
+                
                 var dist = Vector3.Distance(transformComp.Position, transComp.Position);
                 if (dist < DistanceToClosestEnemy)
                 {
-                    //closestEntity = EntityId;
                     ClosestEnemy = EntityId;
                     DistanceToClosestEnemy = dist;
                 }
@@ -78,14 +80,103 @@ namespace DizGame.Source.AI_States
         }
 
 
-        // todo, vad ska den returnera
         /// <summary>
-        /// 
+        /// Returns the current height based on the AI current position
         /// </summary>
-        public void GetRotation()
+        /// <param name="position">
+        /// The current Position of the AI
+        /// </param>
+        /// <returns></returns>
+        public float GetCurrentHeight(Vector3 position)
         {
+            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            if (temp.Count != 0)
+            {
+                HeightmapComponentTexture hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(temp.First());
 
+                int roundX = (int)Math.Round(position.X); int roundY = (int)Math.Round(position.Z);
+                if (roundX >= hmap.Width - 1 || roundY >= hmap.Height - 1)
+                {
+                    return 0;
+                }
+                if (roundY <= 0 && roundX >= 0)
+                    return hmap.HeightMapData[roundX, -roundY];
+            }
+            return 0;
+        }
+        
+        /// <summary>
+        /// Calculates the rotation to the closest enemy
+        /// </summary>
+        /// <param name="AIComp"> The current AI </param>
+        /// <returns> A new rotation Vector </returns>
+        public Vector3 GetRotationToClosestEnenmy(AIComponent AIComp)
+        {
+            var ClosestEnemyTransFormComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy);
+            var AITransformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+
+            float x = ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
+            float z = ClosestEnemyTransFormComp.Position.Z - AITransformComp.Position.Z;
+            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
+
+            return new Vector3(0, WrapAngle(desiredAngle), 0);
+        }
+        
+
+        /// <summary>
+        /// Calculates the angle that an object should face, given 
+        /// its desiredAngle, its current angle, and its maximum turning speed.
+        /// </summary>
+        public float TurnToFace(float desiredAngle, float currentAngle, float turnSpeed)
+        {
+            // first, figure out how much we want to turn, using WrapAngle to get our
+            // result from -Pi to Pi ( -180 degrees to 180 degrees )
+            float difference = WrapAngle(desiredAngle - currentAngle);
+
+            // clamp that between -turnSpeed and turnSpeed.
+            difference = MathHelper.Clamp(difference, -turnSpeed, turnSpeed);
+
+            // so, the closest we can get to our target is currentAngle + difference.
+            // return that, using WrapAngle again.
+            return WrapAngle(currentAngle + difference);
         }
 
+        /// <summary>
+        /// A function for keeping the rotation to be between -2PI and +2PI
+        /// </summary>
+        /// <param name="rotation"> The current rotation </param>
+        /// <returns> A rotation between -2PI and +2PI </returns>
+        public float WrapAngle(float rotation)
+        {
+            while (rotation < -MathHelper.Pi)
+            {
+                rotation += MathHelper.TwoPi;
+            }
+            while (rotation > MathHelper.Pi)
+            {
+                rotation -= MathHelper.TwoPi;
+            }
+            return rotation;
+        }
+        
+
+        /// <summary>
+        /// Gets the rotation needed for shooting at an enemy on different height level
+        /// </summary>
+        /// <param name="AIComp"> The current AI </param>
+        /// <returns></returns>
+        public float GetRotationForAimingAtEnemy(AIComponent AIComp)
+        {
+            var ClosestEnemyTransFormComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy);
+            var AITransformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+
+            var dist = Vector2.Distance(new Vector2(AITransformComp.Position.X, AITransformComp.Position.Z), new Vector2(ClosestEnemyTransFormComp.Position.X, ClosestEnemyTransFormComp.Position.Z));
+            
+            float y = ClosestEnemyTransFormComp.Position.Y - AITransformComp.Position.Y;
+
+            float desiredAngle = (float)Math.Atan2(y, dist);
+
+            return WrapAngle(desiredAngle);
+        }
     }
 }

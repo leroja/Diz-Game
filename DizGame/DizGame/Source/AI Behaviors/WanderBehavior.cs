@@ -9,126 +9,102 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using GameEngine.Source.Utils;
 
-namespace DizGame.Source.AI_States
+namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// 
+    /// A behavior for the AI that makes it wander around the map
     /// </summary>
     public class WanderBehavior : AiBehavior
     {
-        private Random _random;
-        private Vector3 wanderDir;
         private float currentTimeForDir;
+        private float desiredRotation;
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public WanderBehavior(Quaternion orienation)
+        public WanderBehavior()
         {
-            _random = new Random();
-            wanderDir = new Vector3();
             currentTimeForDir = 0f;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="ai"></param>
-        /// <param name="gameTime"></param>
-        public override void Update(AIComponent ai, GameTime gameTime)
+        /// <param name="rotation"> The current rotation of the AI </param>
+        public override void OnEnter(Vector3 rotation)
         {
-            //var heightmapId = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>()[0];
-            //var heightmapComp = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightmapId);
-            var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ai.ID);
-            var pos = transformComp.Position;
-
-            transformComp.Rotation = Vector3.Zero;
-            currentTimeForDir += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (currentTimeForDir > ai.DirectionDuration)
-            {
-                var rotation = (float)Util.GetRandomNumber(-ai.DirectionChangeRoation, ai.DirectionChangeRoation);
-                //var rotation = (float)_random.Next(-ai.DirectionChangeRoation, ai.DirectionChangeRoation);
-                Console.WriteLine(rotation);
-                //rotation /= 360f;
-                rotation /= MathHelper.TwoPi;
-                Console.WriteLine(rotation);
-                transformComp.Rotation = new Vector3(0, rotation, 0);
-                currentTimeForDir = 0f;
-            }
-
-            var height = GetCurrentHeight(transformComp.Position);
-            
-            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
-
-
-
-            t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (t.X >= ai.Bounds.Height)
-            {
-                t -= transformComp.Right * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //transformComp.Rotation = new Vector3(0, 180, 0);
-                transformComp.Rotation = new Vector3(0, MathHelper.Pi, 0);
-            }
-            if (t.X <= 3)
-            {
-                t -= transformComp.Right * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //transformComp.Rotation = new Vector3(0, 180, 0);
-                transformComp.Rotation = new Vector3(0, MathHelper.Pi, 0);
-            }
-            //else
-            //{
-            //    t += transformComp.Right * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //}
-            if (t.Z <= -ai.Bounds.Width)
-            {
-                t -= transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //transformComp.Rotation = new Vector3(0, 180, 0);
-                transformComp.Rotation = new Vector3(0, MathHelper.Pi, 0);
-            }
-            if (t.Z >= -3)
-            {
-                t -= transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                //transformComp.Rotation = new Vector3(0, 180, 0);
-                transformComp.Rotation = new Vector3(0, MathHelper.Pi, 0);
-            }
-            //else
-            //{
-            //    t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //}
-            //t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            transformComp.Position = t;
-
-
+            currentTimeForDir = 0f;
+            desiredRotation = rotation.Y;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="position">
-        /// The current Position of the AI
-        /// </param>
-        /// <returns></returns>
-        private float GetCurrentHeight(Vector3 position)
+        /// <param name="AIComp"></param>
+        /// <param name="gameTime"></param>
+        public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            if (temp.Count != 0)
+            var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+            
+            currentTimeForDir += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            if (currentTimeForDir > AIComp.DirectionDuration)
             {
-                HeightmapComponentTexture hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(temp.First());
-
-                int roundX = (int)Math.Round(position.X); int roundY = (int)Math.Round(position.Z);
-                if (roundX >= hmap.Width - 1 || roundY >= hmap.Height - 1)
-                {
-                    return 0;
-                }
-                if (roundY <= 0 && roundX >= 0)
-                    return hmap.HeightMapData[roundX, -roundY];
+                desiredRotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
+                desiredRotation = WrapAngle(desiredRotation);
+                currentTimeForDir = 0f;
             }
-            return 0;
+            var rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            
+            transformComp.Rotation = rotation;
+
+            var height = GetCurrentHeight(transformComp.Position);
+            
+            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
+            
+            if (t.X >= AIComp.Bounds.Height)
+            {
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            }
+            else if (t.X <= 3)
+            {
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            }
+            else if (t.Z <= -AIComp.Bounds.Width)
+            {
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            }
+            else if (t.Z >= -3)
+            {
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            }
+            else
+            {
+                t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            transformComp.Position = t;
+
+            BehaviorStuff(AIComp, transformComp);
         }
 
+        private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
+        {
+            var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
+            var worldComp = (WorldComponent)worldTemp.Values.First();
 
+            if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % 2 == 0 && worldComp.Day != 0)))
+            {
+                AIComp.ChangeBehavior("Evade", transcomp.Rotation);
+            }
+            else if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
+            {
+                AIComp.ChangeBehavior("Chase", transcomp.Rotation);
+            }
+        }
 
     }
 }

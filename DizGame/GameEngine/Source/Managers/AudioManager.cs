@@ -8,18 +8,25 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Managers
 {
+    /// <summary>
+    /// A manager that holds songs and soundeffects and manages the playing of them
+    /// Also controlls the volume of the sounds that are currently being played
+    /// </summary>
     public class AudioManager
     {
         private static AudioManager instance;
         private float prevVol = 1.0f;
-        Dictionary<string, Song> songDic = new Dictionary<string, Song>();
-        Dictionary<string, SoundEffectInstance> soundEffInstDic = new Dictionary<string, SoundEffectInstance>();
+        private Dictionary<string, Song> songDic = new Dictionary<string, Song>();
+        private Dictionary<string, SoundEffectInstance> soundEffInstDic = new Dictionary<string, SoundEffectInstance>();
 
 
         private AudioManager()
         {
         }
 
+        /// <summary>
+        /// the instance of the Audio Manager
+        /// </summary>
         public static AudioManager Instance
         {
             get
@@ -32,7 +39,9 @@ namespace GameEngine.Source.Managers
             }
         }
 
-
+        /// <summary>
+        /// Mutes the Game
+        /// </summary>
         public void GlobalMute()
         {
             MediaPlayer.IsMuted = true;
@@ -40,10 +49,22 @@ namespace GameEngine.Source.Managers
             SoundEffect.MasterVolume = 0;
         }
 
+        /// <summary>
+        /// UnMutes the Game
+        /// </summary>
         public void GlobalUnMute()
         {
             MediaPlayer.IsMuted = false;
             SoundEffect.MasterVolume = prevVol;
+        }
+
+        /// <summary>
+        /// Checks whether the mediaplayer is muted
+        /// </summary>
+        /// <returns> True if the mediaplayer is muted </returns>
+        public bool IsMuted()
+        {
+            return MediaPlayer.IsMuted;
         }
 
         /// <summary>
@@ -79,11 +100,11 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// removes the soundeffect from the dictionary
+        /// Removes the soundeffect from the dictionary
         /// if there is is a soundeffect with that name
         /// </summary>
         /// <param name="effectName">
-        /// name of the soundEffect
+        /// The name of the soundEffect
         /// </param>
         public void RemoveSoundEffect(string effectName)
         {
@@ -92,13 +113,12 @@ namespace GameEngine.Source.Managers
                 soundEffInstDic.Remove(effectName);
             }
         }
-
         /// <summary>
         /// Plays a specific soundeffect
         /// </summary>
-        /// <param name="SoundEffect">
-        /// the name of the soundEffect
-        /// </param>
+        /// <param name="SoundEffect"> name of the soundEffect</param>
+        /// <param name="pan"></param>
+        /// <param name="pitch"></param>
         public void PlaySoundEffect(string SoundEffect, float pan, float pitch)
         {
             if (soundEffInstDic.ContainsKey(SoundEffect))
@@ -127,20 +147,22 @@ namespace GameEngine.Source.Managers
             }
         }
 
-
-        public void ChangeRepeat(bool repeat)
+        /// <summary>
+        /// Changes the repeat states of the mediaplayer
+        /// </summary>
+        public void ChangeRepeat()
         {
-            MediaPlayer.IsRepeating = repeat;
+            MediaPlayer.IsRepeating = !MediaPlayer.IsMuted;
         }
 
         /// <summary>
-        /// adds the song to the song "pool"
+        /// Adds the song to the song "pool"
         /// </summary>
         /// <param name="songName">
-        /// name of the song
+        /// The name of the song
         /// </param>
         /// <param name="song">
-        /// the song
+        /// The song itself
         /// </param>
         public void AddSong(string songName, Song song)
         {
@@ -154,11 +176,11 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// remove a specific song
-        /// if there is song with that name
+        /// Removes a specific song
+        /// if there is song with that name in the Manager
         /// </summary>
         /// <param name="songName">
-        /// name of the song
+        /// Name of the song
         /// </param>
         public void RemoveSong(string songName)
         {
@@ -169,10 +191,10 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Plays the song if there is one with that name
+        /// Plays the song if there is one with that name in the manager
         /// </summary>
         /// <param name="name">
-        /// name of the song
+        /// Name of the song
         /// </param>
         public void PlaySong(string name)
         {
@@ -183,7 +205,9 @@ namespace GameEngine.Source.Managers
             }
         }
 
-
+        /// <summary>
+        /// Stops playing the song that is currently being played
+        /// </summary>
         public void StopSong()
         {
             MediaPlayer.Stop();

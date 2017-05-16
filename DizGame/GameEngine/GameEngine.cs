@@ -11,8 +11,17 @@ namespace GameEngine
     /// </summary>
     public class GameEngine : Game
     {
+        /// <summary>
+        /// The GraphicsDeviceManager
+        /// </summary>
         public GraphicsDeviceManager Graphics { get; set; }
+        /// <summary>
+        /// A SpriteBatch
+        /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
+        /// <summary>
+        /// A GraphicsDevice
+        /// </summary>
         public GraphicsDevice Device { get; set; } 
 
         /// <summary>
@@ -65,9 +74,9 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
-            SystemManager.Instance.GameTime = gameTime;
-            SystemManager.Instance.RunUpdateSystems();
+            SystemManager.Instance.RunUpdateSystems(gameTime);
+           
+            GameStateManager.Instance.UpdateGameState();
 
             base.Update(gameTime);
         }
@@ -79,9 +88,8 @@ namespace GameEngine
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            SystemManager.Instance.GameTime = gameTime;
-            SystemManager.Instance.RunRenderSystems();
+            
+            SystemManager.Instance.RunRenderSystems(gameTime);
 
             base.Draw(gameTime);
         }

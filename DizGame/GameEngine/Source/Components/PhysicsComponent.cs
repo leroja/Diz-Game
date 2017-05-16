@@ -4,13 +4,17 @@ using Microsoft.Xna.Framework;
 
 namespace GameEngine.Source.Components
 {
+    /// <summary>
+    /// PhysicComponent that contains vital attributes 
+    /// used for calculation physics eg. Velocity, acceleration etc.
+    /// </summary>
     public class PhysicsComponent : IComponent
     {
         #region Public Constants
+        /// <summary>
+        /// Default gravity (9.80665f)
+        /// </summary>
         public const float DEFAULT_GRAVITY = 9.80665f;
-        public const float DEFAULT_BICEPSFORCE = 500; // in Newton(in kilogram 50kg)
-        public const float DEFAULT_LEGFORCE = 3000;  //  in NewTon(in kilogram 3000kg)
-        public const float DEFAULT_WALKFORCE = 1000; 
         #endregion Public Constants
         #region Public Configuration
         /// <summary>
@@ -37,11 +41,11 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 InitialVelocity { get; set; }
         /// <summary>
-        /// Defines the physic objects max velocity
+        /// Defines the physic objects max velocity.
         /// </summary>
         public Vector3 MaxVelocity { get; set; }
         /// <summary>
-        /// Is defined by W = m * g;
+        /// Is defined by (W = m * g)
         /// </summary>
         public Vector3 Weight { get; set; }
         /// <summary>
@@ -53,9 +57,21 @@ namespace GameEngine.Source.Components
         /// Set 1 if true
         /// </summary>
         public Vector3 TerminalVelocity { get; set; }
+        /// <summary>
+        /// Sets the physicComponents PhysicType eg. Static, Rigid Projectile etc.
+        /// </summary>
         public PhysicsType PhysicsType { get; set; }
+        /// <summary>
+        /// Sets the objects material type eg. Skin, metal etc.
+        /// </summary>
         public MaterialType MaterialType { get; set; }
+        /// <summary>
+        /// Sets the objects drag type eg. Cylinder, Man up right etc.
+        /// </summary>
         public DragType DragType { get; set; }
+        /// <summary>
+        /// Sets the objects gravity type eg. World, Self or none.
+        /// </summary>
         public GravityType GravityType { get; set; }
         /// <summary>
         /// Defines mass in kilogram ex 1f = 1kg;
@@ -69,6 +85,9 @@ namespace GameEngine.Source.Components
         /// ReferenceArea should be set as m^2
         /// </summary>
         public float ReferenceArea { get; set; }
+        /// <summary>
+        /// This is only used if GravityType is (Self).
+        /// </summary>
         public float Gravity { get; set; }
         /// <summary>
         /// Should be used as kg/m^3 (1f = 1kg/m^3)
@@ -78,11 +97,26 @@ namespace GameEngine.Source.Components
         /// Should be used as m^3 (1f = 1m^3)
         /// </summary>
         public float Volume { get; set; }
+        /// <summary>
+        /// Float that sets the bounciness of the object.
+        /// </summary>
         public float Bounciness { get; set; }
+        /// <summary>
+        /// This is used as an negativ force on the acceleration
+        /// </summary>
         public float Friction { get; set; } // TODO: Temp
+        /// <summary>
+        /// Bool to check if the object is in air.
+        /// </summary>
         public bool IsInAir { get; set; }
+        /// <summary>
+        /// Bool to check if object is moving.
+        /// </summary>
         public bool IsMoving { get; set; }
         #endregion Public Configuration
+        /// <summary>
+        /// Basic constructor which sets all the attributes to default values.
+        /// </summary>
         public PhysicsComponent()
         {
             Density = 1f;

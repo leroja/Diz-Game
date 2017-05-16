@@ -154,13 +154,6 @@
       <FileName>Source\Factories\HeightMapFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GameEngine.Source.Objects.HeightMapObject" Collapsed="true">
-    <Position X="52.25" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAAAAAAAAAAAQACBAAAAAAAAAIAAAEBAA=</HashCode>
-      <FileName>Source\HeightMapObject.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="GameEngine.Source.Managers.AudioManager" Collapsed="true">
     <Position X="50.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>

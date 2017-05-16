@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace GameEngine.Source.Components.Abstract_Classes
     /// <summary>
     /// Each GameState in the game should inherit from this class and 
     /// implement the requested methods to succesfully use the GameStateManager
-    /// with each of the GameStates
+    /// with each of the GameStates. 
     /// </summary>
     public abstract class GameState
     {
@@ -43,6 +44,12 @@ namespace GameEngine.Source.Components.Abstract_Classes
         /// we might want to show the game as it was when the user last saw this state.
         /// </summary>
         public abstract void Revealed();
+
+        /// <summary>
+        /// Should contain the Gamestates logic incase of exiting,
+        /// pausing or entering a new state, this might depend on the gamestate itself
+        /// </summary>
+        public abstract void Update();
 
     }
 }

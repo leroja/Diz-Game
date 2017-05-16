@@ -1,4 +1,4 @@
-﻿using DizGame.Source.AI_States;
+﻿using DizGame.Source.AI_Behaviors;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using System;
@@ -10,10 +10,13 @@ using System.Threading.Tasks;
 namespace DizGame.Source.Components
 {
     /// <summary>
-    /// 
+    /// A component for the AI:s
     /// </summary>
     public class AIComponent : IComponent
     {
+        private Dictionary<string, AiBehavior> AiBehaviors;
+
+
         /// <summary>
         /// The current Behavior/state of the AI Entity
         /// </summary>
@@ -29,23 +32,96 @@ namespace DizGame.Source.Components
         /// <summary>
         /// A value in seconds for how long the AI will stick to its choosen direction
         /// </summary>
-        public float DirectionDuration { get; set; }
-        // todo
+        public float DirectionDuration { get; set; }     
         /// <summary>
-        /// 
+        /// In what range the new rotaionj can be. eg. -PI --- +PI
         /// </summary>
         public float DirectionChangeRoation { get; set; }
+        /// <summary>
+        /// How fast the AI will turn each update
+        /// </summary>
+        public float TurningSpeed { get; set; }
+        /// <summary>
+        /// How often the AI will update its rotation based on the closest enemy in seconds
+        /// </summary>
+        public float UpdateFrequency { get; set; }      
+        /// <summary>
+        /// The delay between the shoots for when the AI is shooting
+        /// Ideally somewhere between 0 and 1 second
+        /// </summary>
+        public float ShootingCooldown { get; set; }
+        /// <summary>
+        /// How far from the other AI/player the AI want to be at a minimum
+        /// </summary>
+        public float EvadeDistance { get; set; }
+        /// <summary>
+        /// From how far the AI will start shooting
+        /// </summary>
+        public float AttackingDistance { get; set; }
+        /// <summary>
+        /// In what distance the enemy have to be for the AI to chase it
+        /// </summary>
+        public float ChaseDistance { get; set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public AIComponent(float hysteria, Rectangle rec, float dur, float rot)
+        /// <param name="boundRec"></param>
+        /// <param name="shootingCoolDown"></param>
+        /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
+        public AIComponent(Rectangle boundRec, float shootingCoolDown, List<Vector2> waypoints)
         {
-            this.CurrentBehaivior = new WanderBehavior(Quaternion.Identity);
-            this.Hysteria = hysteria;
-            this.Bounds = rec;
-            this.DirectionDuration = dur;
-            this.DirectionChangeRoation = rot;
+            this.Bounds = boundRec;
+            this.Hysteria = 50;
+            this.DirectionDuration = 2f;
+            this.DirectionChangeRoation = MathHelper.Pi;
+            this.TurningSpeed = 0.8f;
+            this.UpdateFrequency = 1f;
+            this.ShootingCooldown = shootingCoolDown;
+            this.EvadeDistance = 50;
+            this.AttackingDistance = 25;
+
+            AiBehaviors = new Dictionary<string, AiBehavior>()
+            {
+                {"Wander", new WanderBehavior() },
+                {"Chase", new ChaseBehavior() },
+                {"Evade", new EvadeBehavior() },
+                {"Attacking", new AttackingBehavior(ShootingCooldown) }
+            };
+            this.CurrentBehaivior = AiBehaviors["Wander"];
+            if (waypoints != null)
+            {
+                AiBehaviors.Add("Patroll", new PatrollingBehavior(waypoints));
+                this.CurrentBehaivior = AiBehaviors["Patroll"];
+            }
+        }
+
+
+        private AiBehavior GetBehavior(string Behavior)
+        {
+            return AiBehaviors[Behavior];
+        }
+
+        /// <summary>
+        /// Checks if an AI has an behavior
+        /// </summary>
+        /// <param name="behavior"> The name of the behavior </param>
+        /// <returns> true if the AI have an instance of the specfied behavior </returns>
+        public bool HaveBehavior(string behavior)
+        {
+            return AiBehaviors.ContainsKey(behavior);
+        }
+
+        /// <summary>
+        /// Changes the behavior to the named behavior
+        /// </summary>
+        /// <param name="Behavior"> Name of behavior </param>
+        /// <param name="currentRoation"> The current rotation of the AI </param>
+        public void ChangeBehavior(string Behavior, Vector3 currentRoation)
+        {
+            var behave = GetBehavior(Behavior);
+            CurrentBehaivior = behave;
+            CurrentBehaivior.OnEnter(currentRoation);
         }
     }
 }

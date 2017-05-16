@@ -1,5 +1,7 @@
 ﻿
 using DizGame.Source.Components;
+using DizGame.Source.Enums;
+using DizGame.Source.Factories;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
@@ -23,22 +25,47 @@ namespace DizGame
     /// </summary>
     public class EntityFactory
     {
+        private static EntityFactory instance;
+
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
+        /// <summary>
+        /// Hud factory
+        /// </summary>
+        public HudFactory HudFactory { get; set; }
+        /// <summary>
+        /// A Bool that says whether the models are vivible or not
+        /// </summary>
+        public bool VisibleBullets { get; set; }
 
         /// <summary>
-        /// 
+        /// The instance of the Entity Factory
         /// </summary>
-        /// <param name="Content"></param>
-        /// <param name="Device"></param>
-        public EntityFactory(ContentManager Content, GraphicsDevice Device)
+        public static EntityFactory Instance
         {
-
-            hmFactory = new HeightMapFactory(Device);
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new EntityFactory();
+                }
+                return instance;
+            }
+        }
+        /// <summary>
+        /// Private constructor of the entityfactory
+        /// </summary>
+        private EntityFactory()
+        {
+            VisibleBullets = true;
+            hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             CreateWorldComp();
-            this.Content = Content;
+            this.Content = GameOne.Instance.Content;
+
+            HudFactory = new HudFactory(Content);
+
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
@@ -47,7 +74,7 @@ namespace DizGame
                 { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
-                { "Dude", Content.Load<Model>("Dude/dude")}
+                { "Dude", Content.Load<Model>("Dude/dude")},
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -67,8 +94,11 @@ namespace DizGame
             var worldEntId = ComponentManager.Instance.CreateID();
             var compList = new List<IComponent>() {
                 new WorldComponent(Matrix.Identity)
+                {
+                    IsSunActive = true
+                },
             };
-
+            FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
         }
         /// <summary>
@@ -85,18 +115,16 @@ namespace DizGame
             keys.AddActionAndKey("Right", Keys.D);
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
-
-            // temp
-            keys.AddActionAndKey("RotateY", Keys.Q);
-            keys.AddActionAndKey("RotateNegY", Keys.E);
-            // /temp
+            keys.AddActionAndKey("Mute", Keys.M);
+            
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
+            mouse.MouseSensitivity = 0.2f;
 
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,45,0), new Vector3(0.1f, 0.1f, 0.1f)),
+                new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(chuck),
                 keys,
                 mouse,
@@ -110,17 +138,15 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new TestComponent(),
             };
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
-
-
+            
             TestingTheAnimationsWithDude(entityID);
             return entityID;
-
         }
 
+        // Todo lägg till FOG
         /// <summary>
         /// Creates a house of given model
         /// </summary>
@@ -157,12 +183,13 @@ namespace DizGame
 
         }
 
+        // Todo lägg till FOG
         /// <summary>
         /// creates the static objects
         /// </summary>
         /// <param name="nameOfModel"></param>
         /// <param name="position"></param>
-        public void CreateStaticObject(string nameOfModel, Vector3 position)
+        public int CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
             Model model = ModelDic[nameOfModel];
@@ -195,6 +222,8 @@ namespace DizGame
                 comp
             };
             ComponentManager.Instance.AddAllComponents(entityID, components);
+
+            return entityID;
         }
 
         /// <summary>
@@ -202,8 +231,10 @@ namespace DizGame
         /// </summary>
         /// <param name="numberOfHouses"></param>
         /// <param name="numberOfStaticObjects"></param>
-        public void MakeMap(int numberOfHouses, int numberOfStaticObjects)
+        public List<int> MakeMap(int numberOfHouses, int numberOfStaticObjects)
         {
+            List<int> entityIdList = new List<int>();
+
             List<Vector3> positions = new List<Vector3>();
             List<Vector3> unablePositions = new List<Vector3>();
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
@@ -214,12 +245,12 @@ namespace DizGame
                 {
                     if (i % 2 == 0)
                     {
-                        CreateHouse("House_Wood", positions[i]);
+                        entityIdList.Add(CreateHouse("House_Wood", positions[i]));
                         unablePositions.Add(positions[i]);
                     }
                     else
                     {
-                        CreateHouse("House_Stone", positions[i]);
+                        entityIdList.Add(CreateHouse("House_Stone", positions[i]));
                         unablePositions.Add(positions[i]);
                     }
                 }
@@ -237,14 +268,16 @@ namespace DizGame
                     switch (modul)
                     {
                         case 0:
-                            CreateStaticObject("Tree", positions[j]);
+                            entityIdList.Add(CreateStaticObject("Tree", positions[j]));
                             break;
                         case 1:
-                            CreateStaticObject("Rock", positions[j]);
+                            entityIdList.Add(CreateStaticObject("Rock", positions[j]));
                             break;
                     }
                 }
             }
+
+            return entityIdList;
         }
 
         /// <summary>
@@ -335,43 +368,48 @@ namespace DizGame
             }
             return positions;
         }
-                    
+
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
         /// </summary>
         /// <param name="CameraPosition"> Position of the camera </param>
         /// <param name="lookAt"> A position that the camera should look at </param>
-        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
+        /// <param name="flareAble"></param>
+        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt, bool flareAble = false)
         {
             ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
                 new TransformComponent(CameraPosition, Vector3.One),
                 new CameraComponent(CameraType.StaticCam)
                 {
-                    LookAt = lookAt
+                    LookAt = lookAt,
+                    IsFlareable = flareAble
                 }
             });
         }
-
-        // Todo
+        
         /// <summary>
-        /// 
+        /// Removes the current camera
         /// </summary>
         public void RemoveCam()
         {
-
+            var temp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<CameraComponent>();
+            ComponentManager.Instance.RemoveComponentFromEntity(temp.Keys.First(), temp.Values.First());
         }
 
-        // todo fungerar inte riktigt
+
+        // todo, funkar inte
         /// <summary>
-        /// 
+        /// Adds a POV camera to an entity
         /// </summary>
-        /// <param name="entityID"></param>
-        public void AddPOVCamToEntity(int entityID)
+        /// <param name="entityID"> ID of the entity </param>
+        /// <param name="isFlareable"></param>
+        public void AddPOVCamToEntity(int entityID, bool isFlareable = false)
         {
-            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov) {
-                Offset = new Vector3(0, 10, 30)
+            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov)
+            {
+                Offset = new Vector3(0, 10, 30),
+                IsFlareable = isFlareable
             });
-                
         }
 
         /// <summary>
@@ -379,11 +417,13 @@ namespace DizGame
         /// </summary>
         /// <param name="EntityId"> The ID of the enitt that the camera should follow </param>
         /// <param name="Offset"> How far behind the camera should be </param>
-        public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
+        /// <param name="isFlareable"></param>
+        public void AddChaseCamToEntity(int EntityId, Vector3 Offset, bool isFlareable = false)
         {
             CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
             {
-                Offset = Offset
+                Offset = Offset,
+                IsFlareable = isFlareable
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
@@ -394,13 +434,13 @@ namespace DizGame
         /// </summary>
         /// <param name="modelName"></param>
         /// <param name="pos"></param>
-        /// <param name="Orientation"></param>
         /// <param name="scale"></param>
         /// <param name="forward"></param>
         /// <param name="MaxRange"></param>
         /// <param name="initialVelocity"></param>
+        /// <param name="rotation"></param>
         /// <returns> The enityId of the bullet in case someone would need it sometime </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity, Vector3 rotation)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -410,9 +450,11 @@ namespace DizGame
             {
                 new TransformComponent(pos, scale)
                 {
-                    QuaternionRotation = Orientation
+                    Rotation = rotation,
                 },
-                new  ModelComponent(model),
+                new  ModelComponent(model){
+                    IsVisible = VisibleBullets,
+                },
                 
                 new BulletComponent(){
                     StartPos = pos,
@@ -429,8 +471,9 @@ namespace DizGame
                     GravityType = GravityType.World,
                     ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
                     PhysicsType = PhysicsType.Projectiles,
-                    InitialVelocity = Matrix.CreateFromQuaternion(Orientation).Forward * initialVelocity,
-                },
+                    
+                    InitialVelocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity,
+                }, 
             };
 
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
@@ -444,34 +487,23 @@ namespace DizGame
         public void TestingTheAnimationsWithDude(int entityID)
         {
 
-            //Model model = Content.Load<Model>("Dude/dude");
-            //int entityID = ComponentManager.Instance.CreateID();
-
-
-            //Effect effect = Content.Load<Effect>("Effects/AnimationEffect");
-            
-
             ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
-
             
-
-            AnimationComponent anm = new AnimationComponent(mcp.Model.Tag);
+            AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 
             anm.StartClip("Take 001");
-
-          
         }
-
-        // todo finish comment
+        
         /// <summary>
         /// Creates an Height based on the specified heightMap
         /// </summary>
         /// <param name="heightmap"> Name of the heightMap texture that shall be used to build the hieghtMap </param>
-        /// <param name="heightTexture"> ... </param>
-        /// <param name="numberOfChunksPerSide"> .... eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
-        public void CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
+        /// <param name="heightTexture"> the texture that each chunk of the height map will have </param>
+        /// <param name="numberOfChunksPerSide"> number of chunks per side
+        /// eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
+        public int CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
         {
             int HeightmapEnt = ComponentManager.Instance.CreateID();
             var hmp = hmFactory.CreateTexturedHeightMap(Texture2dDic[heightmap], Texture2dDic[heightTexture], numberOfChunksPerSide);
@@ -481,19 +513,22 @@ namespace DizGame
                 new TransformComponent(new Vector3(0, 0, 0), new Vector3(1, 1, 1))
             };
             ComponentManager.Instance.AddAllComponents(HeightmapEnt, HeightmapCompList);
+
+            return HeightmapEnt;
         }
 
+        // todo write comment
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
 
             var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
-            
+
             List<IComponent> components = new List<IComponent>
             {
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
@@ -507,7 +542,16 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new AIComponent(hysteria, BoundRec, 3f, MathHelper.Pi),
+                new AIComponent(BoundRec, shootingCoolDown, waypoints){
+                    Hysteria = hysteria,
+                    AttackingDistance = attackingDistance,
+                    DirectionChangeRoation = rotation,
+                    DirectionDuration = DirectionDuration,
+                    EvadeDistance = evadeDist,
+                    TurningSpeed = turningSpeed,
+                    UpdateFrequency = updateFreq,
+                    ChaseDistance = chaseDist,
+                },
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);
@@ -517,5 +561,6 @@ namespace DizGame
 
             return AIEntityID;
         }
+        
     }
 }

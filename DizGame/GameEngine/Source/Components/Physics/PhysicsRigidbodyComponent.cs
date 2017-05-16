@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
+    /// <summary>
+    /// RigidbodyComponent used in the physicSystem
+    /// </summary>
     public class PhysicsRigidbodyComponent : IComponent
     {
         #region Public Configuration
@@ -22,6 +25,9 @@ namespace GameEngine.Source.Components
         /// Total Moments (Torque) in the body frame in Newton meters.
         /// </summary>
         public Vector3 TotalBodyTorque { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Matrix AngularVelocityTilde { get; set; }
         /// <summary>
         /// Transformation matrix from body frame to the local frame.
@@ -39,16 +45,27 @@ namespace GameEngine.Source.Components
         /// Given in the rigid body frame in the unit kilograms per meter^2.
         /// </summary>
         public Matrix BodyFrameInertiaTensor { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Matrix BodyFrameInvertedInertiaTensor { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Matrix WorldFrameInvertedInertiaTensor { get; set; }
+        /// <summary>
+        /// Bool to check if body is frozen
+        /// </summary>
         public bool Frozen { get; set; }
-        public bool Moved { get; set; }
         #endregion Public Configuration
 
+        /// <summary>
+        /// Basic constructor which sets default values
+        /// to the attributes
+        /// </summary>
         public PhysicsRigidbodyComponent()
         {
             Frozen = false;
-            Moved = false;
 
             AngularVelocity = Vector3.Zero;
             AngularMomentum = Vector3.Zero;

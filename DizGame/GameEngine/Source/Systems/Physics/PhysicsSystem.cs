@@ -7,20 +7,34 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
 using GameEngine.Source.Enums;
-using GameEngine.Source.Systems.Interface;
+using GameEngine.Source.Systems.Interfaces;
+using GameEngine.Source.Systems.AbstractClasses;
+using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
     //TODO: Fixa så alla siffror är korrekta efter metric.
-    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<BoundingSphereComponent, BoundingSphereComponent>>>
+    /// <summary>
+    /// PhysicSystem which handles all the physic
+    /// </summary>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<IBounding3D, IBounding3D>>>
     {
         private float frameCount = 0;
         private float timeSinceLastUpdate = 0;
         private float updateInterval = 1;
         private float framesPerSecond = 0;
 
+        /// <summary>
+        /// List which is then looped over and updates the systems
+        /// </summary>
         private List<IPhysicsTypeSystem> physicSystems;
-
+        /// <summary>
+        /// Constructor which adds the basic physicsystems 
+        /// (Rigid, particle, projectiles, ragdoll, soft and static)
+        /// in to the list.
+        /// The list is then looped over in the update function which then updates the corresponding 
+        /// system to the current component
+        /// </summary>
         public PhysicsSystem()
         {
             physicSystems = new List<IPhysicsTypeSystem>
@@ -33,10 +47,18 @@ namespace GameEngine.Source.Systems
                 new PhysicsStaticSystem(this)
         };
         }
+        /// <summary>
+        /// Function to add new PhysicTypeSystem into the list
+        /// </summary>
+        /// <param name="system"></param>
         public void AddIPhysicsTypeSystem(IPhysicsTypeSystem system)
         {
             physicSystems.Add(system);
         }
+        /// <summary>
+        /// Function to remove PhysicTypeSystems from the list
+        /// </summary>
+        /// <param name="system"></param>
         public void RemoveIPhysicsTypeSystem(IPhysicsTypeSystem system)
         {
             physicSystems.Remove(system);
@@ -316,10 +338,10 @@ namespace GameEngine.Source.Systems
         /// on collision (retrieves data from collision system)
         /// </summary>
         /// <param name="value"></param>
-        public void OnNext(List<Tuple<BoundingSphereComponent, BoundingSphereComponent>> value)
+        public void OnNext(List<Tuple<IBounding3D, IBounding3D>> value)
         {
             foreach (var val in value)
-                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.ID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.ID));
+                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.CompID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.CompID));
         }
         /// <summary>
         /// Does nothing atm

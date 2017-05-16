@@ -22,23 +22,29 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Information about the currently playing animation clip.
         /// </summary>
-        public AnimationClip currentClipValue { get; private set; }
+        public AnimationClip CurrentClipValue { get; private set; }
         /// <summary>
         /// The current time to controll where in the animation we are
         /// </summary>
-        public TimeSpan currentTimeValue { get; set; }
+        public TimeSpan CurrentTimeValue { get; set; }
         /// <summary>
         /// The current keyframe which is "playing"
         /// </summary>
-        public int currentKeyframe { get; set; }
+        public int CurrentKeyframe { get; set; }
 
 
         /// <summary>
         /// Arrays of matrices relevant for the transformations of the animations
         /// </summary>
-        public Matrix[] boneTransforms { get; set; }
-        public Matrix[] worldTransforms { get; set; }
-        public Matrix[] skinTransforms { get; set; }
+        public Matrix[] BoneTransforms { get; set; }
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
+        public Matrix[] WorldTransforms { get; set; }
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
+        public Matrix[] SkinTransforms { get; set; }
         /////////////////////////////////////////////////////////////////////////
 
         // Backlink to the bind pose and skeleton hierarchy data.
@@ -67,9 +73,9 @@ namespace GameEngine.Source.Components
 
 
 
-            boneTransforms = new Matrix[SkinningDataValue.BindPose.Count];
-            worldTransforms = new Matrix[SkinningDataValue.BindPose.Count];
-            skinTransforms = new Matrix[SkinningDataValue.BindPose.Count];
+            BoneTransforms = new Matrix[SkinningDataValue.BindPose.Count];
+            WorldTransforms = new Matrix[SkinningDataValue.BindPose.Count];
+            SkinTransforms = new Matrix[SkinningDataValue.BindPose.Count];
 
         }
 
@@ -81,13 +87,13 @@ namespace GameEngine.Source.Components
             if (clipName == null)
                 throw new ArgumentNullException("clipname is missing");
             
-            currentClipValue = (SkinningDataValue.AnimationClips[clipName]);
+            CurrentClipValue = (SkinningDataValue.AnimationClips[clipName]);
             
-            currentTimeValue = TimeSpan.Zero;
-            currentKeyframe = 0;
+            CurrentTimeValue = TimeSpan.Zero;
+            CurrentKeyframe = 0;
 
             // Initialize bone transforms to the bind pose.
-            SkinningDataValue.BindPose.CopyTo(boneTransforms, 0);
+            SkinningDataValue.BindPose.CopyTo(BoneTransforms, 0);
         }
 
 

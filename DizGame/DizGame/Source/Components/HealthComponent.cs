@@ -16,5 +16,13 @@ namespace DizGame.Source.Components
         /// the health of the entity
         /// </summary>
         public float Health { get; set; }
+
+        /// <summary>
+        /// Constructor which sets attributes to default values.
+        /// </summary>
+        public HealthComponent()
+        {
+            Health = 100;
+        }
     }
 }

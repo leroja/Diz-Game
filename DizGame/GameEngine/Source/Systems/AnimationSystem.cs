@@ -25,11 +25,11 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime">Takes a GameTime object which should represent the current elapsed gametime</param>
         public override void Update(GameTime gameTime)
         {
-            time = gameTime.ElapsedGameTime;
 
             List<int> entityList = ComponentManager.GetAllEntitiesWithComponentType<AnimationComponent>();
             foreach (int entity in entityList)
             {
+                time = gameTime.ElapsedGameTime;
                 anc = ComponentManager.GetEntityComponent<AnimationComponent>(entity);
                 TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(entity);
                 UpdateBoneTransforms(true);
@@ -50,47 +50,47 @@ namespace GameEngine.Source.Systems
         public void UpdateBoneTransforms(bool relativeToCurrentTime)
         {
 
-            if (anc.currentClipValue == null)
+            if (anc.CurrentClipValue == null)
                 throw new InvalidOperationException(
                             "AnimationPlayer.Update was called before StartClip");
 
             // Update the animation position.
             if (relativeToCurrentTime)
             {
-                time += anc.currentTimeValue;
+                time += anc.CurrentTimeValue;
 
                 // If we reached the end, loop back to the start.
-                while (time >= anc.currentClipValue.Duration)
-                    time -= anc.currentClipValue.Duration;
+                while (time >= anc.CurrentClipValue.Duration)
+                    time -= anc.CurrentClipValue.Duration;
             }
 
-            if ((time < TimeSpan.Zero) || (time >= anc.currentClipValue.Duration))
+            if ((time < TimeSpan.Zero) || (time >= anc.CurrentClipValue.Duration))
                 throw new ArgumentOutOfRangeException("time");
 
             // If the position moved backwards, reset the keyframe index.
-            if (time < anc.currentTimeValue)
+            if (time < anc.CurrentTimeValue)
             {
-                anc.currentKeyframe = 0;
-                anc.SkinningDataValue.BindPose.CopyTo(anc.boneTransforms, 0);
+                anc.CurrentKeyframe = 0;
+                anc.SkinningDataValue.BindPose.CopyTo(anc.BoneTransforms, 0);
             }
 
-            anc.currentTimeValue = time;
+            anc.CurrentTimeValue = time;
 
             // Read keyframe matrices.
-            IList<KeyFrame> keyframes = anc.currentClipValue.KeyFrames;
+            IList<KeyFrame> keyframes = anc.CurrentClipValue.KeyFrames;
 
-            while (anc.currentKeyframe < keyframes.Count)
+            while (anc.CurrentKeyframe < keyframes.Count)
             {
-                KeyFrame keyframe = keyframes[anc.currentKeyframe];
+                KeyFrame keyframe = keyframes[anc.CurrentKeyframe];
 
                 // Stop when we've read up to the current time position.
-                if (keyframe.Time > anc.currentTimeValue)
+                if (keyframe.Time > anc.CurrentTimeValue)
                     break;
 
                 // Use this keyframe.
-                anc.boneTransforms[keyframe.BoneIndex] = keyframe.Transform;
+                anc.BoneTransforms[keyframe.BoneIndex] = keyframe.Transform;
 
-                anc.currentKeyframe++;
+                anc.CurrentKeyframe++;
             }
         }
 
@@ -101,15 +101,15 @@ namespace GameEngine.Source.Systems
         public void UpdateWorldTransforms(TransformComponent tcp)
         {
             // Root bone.
-            anc.worldTransforms[0] = anc.boneTransforms[0] * tcp.ObjectMatrix;
+            anc.WorldTransforms[0] = anc.BoneTransforms[0] * tcp.ObjectMatrix;
 
             // Child bones.
-            for (int bone = 1; bone < anc.worldTransforms.Length; bone++)
+            for (int bone = 1; bone < anc.WorldTransforms.Length; bone++)
             {
                 int parentBone = anc.SkinningDataValue.SkeletonHierarchy[bone];
 
-                anc.worldTransforms[bone] = anc.boneTransforms[bone] *
-                                             anc.worldTransforms[parentBone];
+                anc.WorldTransforms[bone] = anc.BoneTransforms[bone] *
+                                             anc.WorldTransforms[parentBone];
             }
         }
 
@@ -118,10 +118,10 @@ namespace GameEngine.Source.Systems
         /// </summary>
         public void UpdateSkinTransforms()
         {
-            for (int bone = 0; bone < anc.skinTransforms.Length; bone++)
+            for (int bone = 0; bone < anc.SkinTransforms.Length; bone++)
             {
-                anc.skinTransforms[bone] = anc.SkinningDataValue.InverseBindPose[bone] *
-                                            anc.worldTransforms[bone];
+                anc.SkinTransforms[bone] = anc.SkinningDataValue.InverseBindPose[bone] *
+                                            anc.WorldTransforms[bone];
             }
         }
 

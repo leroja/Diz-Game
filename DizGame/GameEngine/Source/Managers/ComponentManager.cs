@@ -12,7 +12,6 @@ namespace GameEngine.Source.Managers
     /// </summary>
     public class ComponentManager
     {
-        // TODO rewrite comments
         private static ComponentManager instance;
 
         private List<int> entityIDs;
@@ -23,7 +22,10 @@ namespace GameEngine.Source.Managers
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
-        public List<int> currentTakenEntityIds { get; private set; }
+        /// <summary>
+        /// List which represents the current occupied id's for entities.
+        /// </summary>
+        public List<int> CurrentTakenEntityIds { get; private set; }
 
         private ComponentManager()
         {
@@ -32,12 +34,12 @@ namespace GameEngine.Source.Managers
             entityIDs.AddRange(Enumerable.Range(1, curMax));
             defaultList = new List<int>();
             defaultDictionary = new Dictionary<int, IComponent>();
-            currentTakenEntityIds = new List<int>();
+            CurrentTakenEntityIds = new List<int>();
         }
 
 
         /// <summary>
-        /// 
+        /// The instance of the component manager
         /// </summary>
         public static ComponentManager Instance
         {
@@ -52,7 +54,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// 
+        /// Creates a new unique ID
         /// </summary>
         /// <returns>
         /// A new Id 
@@ -67,7 +69,7 @@ namespace GameEngine.Source.Managers
             int id = entityIDs[entityIDs.Count - 1];
 
             entityIDs.Remove(id);
-            currentTakenEntityIds.Add(id);
+            CurrentTakenEntityIds.Add(id);
             return id;
         }
 
@@ -100,10 +102,10 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// 
+        /// "Links" a list of components to an entity
         /// </summary>
-        /// <param name="entityID"></param>
-        /// <param name="componentList"></param>
+        /// <param name="entityID"> ID of the entity </param>
+        /// <param name="componentList"> the list of components </param>
         public void AddAllComponents(int entityID, List<IComponent> componentList)
         {
             foreach (var comp in componentList)
@@ -290,7 +292,7 @@ namespace GameEngine.Source.Managers
         /// <returns>All current entityIds.</returns>
         public List<int> GetAllCurrentEntityIds()
         {
-            return currentTakenEntityIds;
+            return CurrentTakenEntityIds;
         }
     }
 }

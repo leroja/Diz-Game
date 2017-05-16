@@ -9,16 +9,23 @@ using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
+using GameEngine.Source.Managers;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// A system that updates various things for the players
+    /// </summary>
     public class PlayerSystem : IUpdate
     {
         private EntityFactory entFactory;
         
-        public PlayerSystem(EntityFactory entFac)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public PlayerSystem()
         {
-            this.entFactory = entFac;
+            this.entFactory = EntityFactory.Instance;
         }
 
         /// <summary>
@@ -36,39 +43,35 @@ namespace DizGame.Source.Systems
                 var playerComp = ComponentManager.GetEntityComponent<PlayerComponent>(playerId);
                 var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(playerId);
                 var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(playerId);
-                var testComp = ComponentManager.GetEntityComponent<TestComponent>(playerId);
                 var keyComp = ComponentManager.GetEntityComponent<KeyBoardComponent>(playerId);
                 
-                // Temporary
-                var rot = transformComp.Rotation;
-                rot.X = 0;
-                rot.Y = 0;
-                rot.Z = 0;
-
-                if (keyComp.GetState("RotateY") == ButtonStates.Hold)
+                if (keyComp.GetState("Mute") == ButtonStates.Pressed)
                 {
-                    rot.Y += 0.001f;
+                    if (AudioManager.Instance.IsMuted())
+                        AudioManager.Instance.GlobalUnMute();
+                    else
+                        AudioManager.Instance.GlobalMute();
                 }
-                if (keyComp.GetState("RotateNegY") == ButtonStates.Hold )
-                {
-                    rot.Y -= 0.001f;
-                }
-                transformComp.Rotation = rot;
-                // /T
+                
+                var m = UpdateInput(mouseComp);
 
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 3 == 0 && worldComp.Day != 0)
+                transformComp.Rotation += new Vector3(0, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                transformComp.Rotation = WrapAngle(transformComp.Rotation);
+
+                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 2 == 0 && worldComp.Day != 0)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position, transformComp.QuaternionRotation, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 100);
+                    entFactory.CreateBullet("Bullet", transformComp.Position, new Vector3(.1f, .1f, .1f), transformComp.Forward, 100, 200, transformComp.Rotation);
+                    AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }
         }
 
         /// <summary>
-        /// 
+        /// Calculates the mouse delta movement And sets the mouse to be in the middle of the screen
         /// </summary>
         /// <param name="mouseComp"></param>
-        /// <param name="testComp"></param>
-        private void UpdateInput(ref MouseComponent mouseComp, ref TestComponent testComp)
+        private Vector2 UpdateInput(MouseComponent mouseComp)
         {
             Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
 
@@ -78,9 +81,26 @@ namespace DizGame.Source.Systems
             float deltaY = centerY - mouseComp.Y;
 
             Mouse.SetPosition(centerX, centerY);
-            
-            testComp.SmoothedMouseMovement.X = deltaX;
-            testComp.SmoothedMouseMovement.Y = deltaY;
+
+            return new Vector2(deltaX, deltaY);
+        }
+
+        /// <summary>
+        /// A function for keeping the rotation to be between -2PI and +2PI
+        /// </summary>
+        /// <param name="rotation"> The current rotation </param>
+        /// <returns> A rotation between -2PI and +2PI </returns>
+        private Vector3 WrapAngle(Vector3 rotation)
+        {
+            while (rotation.Y < -MathHelper.Pi)
+            {
+                rotation.Y += MathHelper.TwoPi;
+            }
+            while (rotation.Y > MathHelper.Pi)
+            {
+                rotation.Y -= MathHelper.TwoPi;
+            }
+            return rotation;
         }
     }
 }

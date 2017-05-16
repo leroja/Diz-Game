@@ -29,7 +29,7 @@ namespace ContentProject
         /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-           
+            //System.Diagnostics.Debugger.Launch();
             //ValidateMesh(input, context, null);
 
             BoneContent skeleton = MeshHelper.FindSkeleton(input);
@@ -40,12 +40,12 @@ namespace ContentProject
 
             IList<BoneContent> bones = MeshHelper.FlattenSkeleton(skeleton);
 
-            if (bones.Count > SkinnedEffect.MaxBones)
-            {
-                throw new InvalidContentException(string.Format(
-                    "Skeleton has {0} bones, but the maximum supported is {1}.",
-                    bones.Count, SkinnedEffect.MaxBones));
-            }
+            //if (bones.Count > SkinnedEffect.MaxBones)
+            //{
+            //    throw new InvalidContentException(string.Format(
+            //        "Skeleton has {0} bones, but the maximum supported is {1}.",
+            //        bones.Count, SkinnedEffect.MaxBones));
+            //}
 
             List<Matrix> bindPose = new List<Matrix>();
             List<Matrix> inverseBindPose = new List<Matrix>();
@@ -64,10 +64,11 @@ namespace ContentProject
 
             // Chain to the base ModelProcessor class so it can convert the model data.
             ModelContent model = base.Process(input, context);
-
+            Dictionary<string, object> modeldict = new Dictionary<string, object>();
+            modeldict["SkinningData"] = new SkinningData(animationClips, bindPose,
+                                     inverseBindPose, skeletonHierarchy);
             // Store our custom animation data in the Tag property of the model.
-            model.Tag = new SkinningData(animationClips, bindPose,
-                                         inverseBindPose, skeletonHierarchy);
+            model.Tag = modeldict;
 
             return model;
         }

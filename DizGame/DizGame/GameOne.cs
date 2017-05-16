@@ -5,10 +5,13 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using DizGame.Source.ConfiguredSystems;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Components;
 using System.Collections.Generic;
+using DizGame.Source.GameStates;
+using DizGame.Source.LanguageBasedModels;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace DizGame
 {
@@ -21,8 +24,9 @@ namespace DizGame
 
         private static Game instance;
 
-        public static EntityTracingSystem entityTracingSystem { get; private set; }
-
+        /// <summary>
+        /// Basic constructor for the Game
+        /// </summary>
         public GameOne()
         {
             instance = this;
@@ -32,7 +36,9 @@ namespace DizGame
 
             
         }
-
+        /// <summary>
+        /// Instance of the game
+        /// </summary>
         public static Game Instance
         {
             get
@@ -50,35 +56,26 @@ namespace DizGame
         protected override void Initialize()
         {
             Device = Graphics.GraphicsDevice;
-            // test
-            //Graphics.PreferredBackBufferWidth = 1280;
-            //Graphics.PreferredBackBufferHeight = 720;
+
             Graphics.PreferredBackBufferHeight = Device.DisplayMode.Height / 2;
             Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
             Graphics.ApplyChanges();
-            //Graphics.IsFullScreen = true;
+
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+            SystemManager.Instance.SpriteBatch = SpriteBatch;
 
             client.DiscoverLocalPeers();
-            EntityFactory entf = new EntityFactory(Content, Device);
 
             var idC = entf.CreateDude();
             entf.CreateParticleEmiter();
 
-            //entf.CreateStaticCam(Vector3.Zero, new Vector3(0, 0, -20));
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 75, 100));
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 25, 25));
-            //entf.AddPOVCamToEntity(idC);
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 0, 2));
+            AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
+            AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
+            AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
 
-            entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
-
-            entf.MakeMap(10, 100);
-
-            entf.CreateAI("Dude", new Vector3(30,45,-10), 100f, 100, 100);
-
-            InitializeSystems(entf);
-
+            MainMenu startState = new MainMenu();
+            GameStateManager.Instance.Push(startState);
+            
             base.Initialize();
         }
 
@@ -120,15 +117,13 @@ namespace DizGame
             entityTracingSystem.RecordInitialEntities();
             SystemManager.Instance.AddSystem(entityTracingSystem);
 
-            
-        }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
         protected override void LoadContent()
         {
+            TreeModel tree = new TreeModel(Device, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
         }
 
         /// <summary>
@@ -140,28 +135,16 @@ namespace DizGame
 
         }
 
+        /// <summary>
+        /// Updateloop for the game, other stuff that's not updated in the Gameengine could be handled here.
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            //Mouse.SetPosition(Device.Viewport.Width / 2, Device.Viewport.Height / 2);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             base.Update(gameTime);
         }
-
-        //protected override void Update(GameTime gameTime)
-        //{
-        //    client.ReadMessages();
-        //    for(var i = 1; i < 10000; i++)
-        //    {
-        //        if(i % 4 == 0)
-        //        {
-        //            client.SendMessage("What's my name?");
-        //        }
-        //    }
-
-        //}
-
-
     }
 }

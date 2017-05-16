@@ -1,8 +1,8 @@
 
 #----------------------------- Global Properties ----------------------------#
 
-/outputDir:bin/$(Platform)
-/intermediateDir:obj/$(Platform)
+/outputDir:bin
+/intermediateDir:obj
 /platform:Windows
 /config:
 /profile:Reach
@@ -31,7 +31,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:bullet/bullet.obj
 
 #begin bullet/Cartridge.obj
@@ -50,7 +50,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:bullet/Cartridge.obj
 
 #begin HeightMapStuff/grass.png
@@ -104,7 +104,7 @@
 #begin Dude/dude.fbx
 /importer:FbxImporter
 /processor:AnimationProcessor
-/processorParam:DefaultEffect=BasicEffect
+/processorParam:DefaultEffect=SkinnedEffect
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:GenerateMipmaps=True
@@ -311,7 +311,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:MapObjects/WoodHouse/Cyprys_House.obj
 
 #begin MapObjects/Farmhouse/MedievalHouse1.obj
@@ -373,7 +373,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:MapObjects/Tree/lowpolytree.obj
 
 #begin MapObjects/Rock/Rock.obj
@@ -392,7 +392,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Compressed
 /build:MapObjects/Rock/Rock.obj
 
 #begin MapObjects/Rock/Stone texture.jpg
@@ -418,6 +418,43 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff/Map3.jpg
+
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/MenuFont.spritefont
+
+#begin Icons/squareTest.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Icons/squareTest.png
+
+#begin Songs/MenuSong.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/MenuSong.mp3
+
+#begin SoundEffects/Gun-Shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Gun-Shot.wav
+
+#begin Songs/GameSong.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/GameSong.mp3
 
 #begin Effect/ParticleEffect.fx
 /importer:EffectImporter
