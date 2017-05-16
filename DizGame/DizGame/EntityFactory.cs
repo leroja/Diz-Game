@@ -370,9 +370,8 @@ namespace DizGame
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
         
-        // todo write comment
         /// <summary>
-        /// Creates an bullet .... 
+        /// Creates a new bullet
         /// </summary>
         /// <param name="modelName"></param>
         /// <param name="pos"></param>
@@ -381,7 +380,7 @@ namespace DizGame
         /// <param name="MaxRange"></param>
         /// <param name="initialVelocity"></param>
         /// <param name="rotation"></param>
-        /// <returns> The enityId of the bullet in case someone would need it sometime </returns>
+        /// <returns> The enityId of the bullet incase someone would need it </returns>
         public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity, Vector3 rotation)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
@@ -461,9 +460,23 @@ namespace DizGame
 
         // todo write comment
         /// <summary>
-        /// 
+        /// Createsa new AI Entity
         /// </summary>
-        /// <returns></returns>
+        /// <param name="ModelName"></param>
+        /// <param name="position"></param>
+        /// <param name="hysteria"></param>
+        /// <param name="widthBound"></param>
+        /// <param name="heightBound"></param>
+        /// <param name="DirectionDuration"></param>
+        /// <param name="rotation"></param>
+        /// <param name="shootingCoolDown"></param>
+        /// <param name="attackingDistance"></param>
+        /// <param name="evadeDist"></param>
+        /// <param name="turningSpeed"></param>
+        /// <param name="updateFreq"></param>
+        /// <param name="waypoints"></param>
+        /// <param name="chaseDist"></param>
+        /// <returns> The ID of the new AI Entity  </returns>
         public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
@@ -503,6 +516,5 @@ namespace DizGame
 
             return AIEntityID;
         }
-        
     }
 }

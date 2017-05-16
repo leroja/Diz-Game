@@ -72,6 +72,7 @@
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
     <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
+    <Compile Include="Source\Systems\HealthSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
