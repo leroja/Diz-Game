@@ -6,6 +6,8 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
+using GameEngine.Source.Systems;
+using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -80,6 +82,7 @@ namespace DizGame
                 {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
                 {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
                 {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
+                { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
                 {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
             };
         }
@@ -277,7 +280,60 @@ namespace DizGame
 
             return entityIdList;
         }
-        
+
+        /// <summary>
+        /// Creates a parrical emmiter and sets positions and options
+        /// </summary>
+        /// <param name="Position"> Position of emiter</param>
+        /// <param name="TextureName">Name of texture</param>
+        /// <param name="nParticles">maximum number of particles in emiter. used for size of vectors</param>
+        /// <param name="Particlelifetime"> life of particke</param>
+        /// <param name="FadeTime">Fade time on particles</param>
+        /// <param name="direction">Direction of particles</param>
+        /// <param name="scale">Scale on Particle</param>
+        /// <param name="EmitterLifeTime">Life time on emitter</param>
+        public void CreateParticleEmiter(Vector3 Position,String TextureName,int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale,int EmitterLifeTime)
+        {
+            TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
+            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction);
+            emiter.EmiterLife = EmitterLifeTime;
+            emiter.effect = Content.Load<Effect>("Effect/ParticleEffect");
+            int id = ComponentManager.Instance.CreateID();
+            GenerateParticle(emiter);
+
+            ComponentManager.Instance.AddComponentToEntity(id, tran);
+            ComponentManager.Instance.AddComponentToEntity(id, emiter);
+        }
+        /// <summary>
+        /// Called for instancning vectore to store particles in
+        /// </summary>
+        /// <param name="emiter"> ParticleEmitterComponent</param>
+        public void GenerateParticle(ParticleEmiterComponent emiter)
+        {
+            emiter.particle = new ParticleVertex[emiter.nParticles * 4];
+            emiter.indices = new int[emiter.nParticles * 6];
+
+            var z = Vector3.Zero;
+            int x = 0;
+            for (int i = 0; i < emiter.nParticles * 4; i += 4)
+            {
+                emiter.particle[i + 0] = new ParticleVertex(z, new Vector2(0, 0),
+                z, 0, -1);
+                emiter.particle[i + 1] = new ParticleVertex(z, new Vector2(0, 1),
+                z, 0, -1);
+                emiter.particle[i + 2] = new ParticleVertex(z, new Vector2(1, 1),
+                z, 0, -1);
+                emiter.particle[i + 3] = new ParticleVertex(z, new Vector2(1, 0),
+                z, 0, -1);
+
+                emiter.indices[x++] = i + 0;
+                emiter.indices[x++] = i + 3;
+                emiter.indices[x++] = i + 2;
+                emiter.indices[x++] = i + 2;
+                emiter.indices[x++] = i + 1;
+                emiter.indices[x++] = i + 0;
+            }
+        }
         /// <summary>
         /// Gets target number of potitions on heightmap
         /// </summary>

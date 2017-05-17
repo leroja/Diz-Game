@@ -145,7 +145,9 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
-            
+
+            SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new SmokePaticleSystemcs());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
@@ -197,7 +199,8 @@ namespace DizGame.Source.GameStates
             //Add all static objects to this state i.e rocks, houses etc.
             List<int> entityIdList = entf.MakeMap(10, 100);
             GameStateEntities.AddRange(entityIdList);
-            
+
+            entf.CreateParticleEmiter(new Vector3(1,2000,1),"Smoke",400,20,20,Vector3.One,1,120);
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),

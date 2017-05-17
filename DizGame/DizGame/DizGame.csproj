@@ -76,6 +76,7 @@
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
+    <Compile Include="Source\Systems\SmokePaticleSystemcs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
@@ -90,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Effect\ParticleEffect.fx" />
     <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\grass.png" />
@@ -101,6 +103,7 @@
     <Content Include="Content\Songs\GameSong.mp3" />
     <Content Include="Content\Songs\MenuSong.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
+    <Content Include="Content\ParticleTexture\Smoke.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -63,7 +63,7 @@ namespace DizGame
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
             client.DiscoverLocalPeers();
-
+            
 
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
