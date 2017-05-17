@@ -82,8 +82,9 @@ namespace DizGame
                 //{"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
                 {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/Map3")},
                 {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
-                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") }
-            };
+                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
+                { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") }
+        };
         }
        
         /// <summary>
@@ -289,14 +290,13 @@ namespace DizGame
         /// <param name="Particlelifetime"> life of particke</param>
         /// <param name="FadeTime">Fade time on particles</param>
         /// <param name="direction">Direction of particles</param>
-        public void CreateParticleEmiter(Vector3 Position,String TextureName,int nParticles, float Particlelifetime, float FadeTime, Vector3 direction)
+        /// <param name="scale">Scale on Particle</param>
+        /// <param name="EmitterLifeTime">Life time on emitter</param>
+        public void CreateParticleEmiter(Vector3 Position,String TextureName,int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale,int EmitterLifeTime)
         {
-            Vector3 pos = new Vector3(0, 0, 0);
-            Texture2D texture = Content.Load<Texture2D>("ParticleTexture/Smoke");
-            
-            TransformComponent tran = new TransformComponent(pos,new Vector3(10,10,10));
-            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, texture, FadeTime, direction);
-            emiter.EmiterLife = 60;
+            TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
+            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction);
+            emiter.EmiterLife = EmitterLifeTime;
             emiter.effect = Content.Load<Effect>("Effect/ParticleEffect");
             int id = ComponentManager.Instance.CreateID();
             GenerateParticle(emiter);
@@ -310,8 +310,6 @@ namespace DizGame
         /// <param name="emiter"> ParticleEmitterComponent</param>
         public void GenerateParticle(ParticleEmiterComponent emiter)
         {
-            
-
             emiter.particle = new ParticleVertex[emiter.nParticles * 4];
             emiter.indices = new int[emiter.nParticles * 6];
 

@@ -58,9 +58,10 @@ namespace DizGame.Source.Systems
             var pot = SetRandomPos(new Vector3(10 , 0, 10), new Vector3(-10, 0, -10));
 
 
+
             for (int i = 0; i < 4; i++)
             {
-                emiter.particle[emiter.StartIndex + i].startPosition = pot;
+                emiter.particle[emiter.StartIndex + i].startPosition = tran.Position;
                 emiter.particle[emiter.StartIndex + i].direction = emiter.Direction;
                 emiter.particle[emiter.StartIndex + i].speed = emiter.speed;
                 emiter.particle[emiter.StartIndex + i].startTime = startTime;
