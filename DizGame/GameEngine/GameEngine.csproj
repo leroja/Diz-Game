@@ -132,8 +132,6 @@
     <Content Include="Content\Flare\glow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\HeightMaps\grass.png" />
-    <Content Include="Content\HeightMaps\heightmap.png" />
     <Content Include="Content\Shaders\AllEff.fx" />
     <Content Include="Content\Shaders\Shadow.fx" />
     <Content Include="Content\Shaders\WaterShader.fx" />
@@ -143,6 +141,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="Content\Fonts\font.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">

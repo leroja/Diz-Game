@@ -74,7 +74,7 @@ namespace DizGame
                 { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
-                { "Dude", Content.Load<Model>("Dude/dude")},
+                { "Dude", Content.Load<Model>("Dude/Dude72")},
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -295,9 +295,11 @@ namespace DizGame
         public void CreateParticleEmiter(Vector3 Position,String TextureName,int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale,int EmitterLifeTime)
         {
             TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
-            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction);
-            emiter.EmiterLife = EmitterLifeTime;
-            emiter.effect = Content.Load<Effect>("Effect/ParticleEffect");
+            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction)
+            {
+                EmiterLife = EmitterLifeTime,
+                effect = Content.Load<Effect>("Effects/ParticleEffect"),
+            };
             int id = ComponentManager.Instance.CreateID();
             GenerateParticle(emiter);
 
@@ -491,7 +493,9 @@ namespace DizGame
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 
-            anm.StartClip("Take 001");
+            var sk = anm.SkinningDataValue.AnimationClips.Keys;
+
+            anm.StartClip(sk.First());
         }
         
         /// <summary>

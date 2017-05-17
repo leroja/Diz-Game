@@ -112,7 +112,7 @@
     <None Include="app.manifest" />
     <None Include="Content\bullet\Bullet.obj" />
     <None Include="Content\bullet\Cartridge.obj" />
-    <None Include="Content\Dude\dude.fbx" />
+    <None Include="Content\Dude\Dude72.fbx" />
     <None Include="Content\Dude\head.tga" />
     <None Include="Content\Dude\headN.tga" />
     <None Include="Content\Dude\headS.tga" />
@@ -137,6 +137,7 @@
     <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
     <None Include="Content\MapObjects\WoodHouse\Cyprys_House.mtl" />
     <None Include="Content\MapObjects\WoodHouse\Cyprys_House.obj" />
+    <None Include="Content\WierdDude\Body.fbx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
