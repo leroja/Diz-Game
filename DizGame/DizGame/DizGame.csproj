@@ -133,6 +133,7 @@
     <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.obj" />
     <None Include="Content\MapObjects\Farmhouse\roof.tga" />
     <None Include="Content\MapObjects\Farmhouse\wall.tga" />
+    <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />
     <None Include="Content\MapObjects\Rock\Rock.obj" />
     <None Include="Content\MapObjects\Tree\lowpolytree.mtl" />
