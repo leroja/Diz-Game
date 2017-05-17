@@ -6,6 +6,8 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
+using GameEngine.Source.Systems;
+using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -72,15 +74,16 @@ namespace DizGame
                 { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
-                { "Dude", Content.Load<Model>("Dude/dude")},
+                { "Dude", Content.Load<Model>("Dude/Dude72")},
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
                 {"BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
-                //{"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
-                {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/Map3")},
+                {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
                 {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
-                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") }
+                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
+                { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
+                {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
             };
         }
        
@@ -277,7 +280,62 @@ namespace DizGame
 
             return entityIdList;
         }
-        
+
+        /// <summary>
+        /// Creates a parrical emmiter and sets positions and options
+        /// </summary>
+        /// <param name="Position"> Position of emiter</param>
+        /// <param name="TextureName">Name of texture</param>
+        /// <param name="nParticles">maximum number of particles in emiter. used for size of vectors</param>
+        /// <param name="Particlelifetime"> life of particke</param>
+        /// <param name="FadeTime">Fade time on particles</param>
+        /// <param name="direction">Direction of particles</param>
+        /// <param name="scale">Scale on Particle</param>
+        /// <param name="EmitterLifeTime">Life time on emitter</param>
+        public void CreateParticleEmiter(Vector3 Position,String TextureName,int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale,int EmitterLifeTime)
+        {
+            TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
+            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction)
+            {
+                EmiterLife = EmitterLifeTime,
+                effect = Content.Load<Effect>("Effects/ParticleEffect"),
+            };
+            int id = ComponentManager.Instance.CreateID();
+            GenerateParticle(emiter);
+
+            ComponentManager.Instance.AddComponentToEntity(id, tran);
+            ComponentManager.Instance.AddComponentToEntity(id, emiter);
+        }
+        /// <summary>
+        /// Called for instancning vectore to store particles in
+        /// </summary>
+        /// <param name="emiter"> ParticleEmitterComponent</param>
+        public void GenerateParticle(ParticleEmiterComponent emiter)
+        {
+            emiter.particle = new ParticleVertex[emiter.nParticles * 4];
+            emiter.indices = new int[emiter.nParticles * 6];
+
+            var z = Vector3.Zero;
+            int x = 0;
+            for (int i = 0; i < emiter.nParticles * 4; i += 4)
+            {
+                emiter.particle[i + 0] = new ParticleVertex(z, new Vector2(0, 0),
+                z, 0, -1);
+                emiter.particle[i + 1] = new ParticleVertex(z, new Vector2(0, 1),
+                z, 0, -1);
+                emiter.particle[i + 2] = new ParticleVertex(z, new Vector2(1, 1),
+                z, 0, -1);
+                emiter.particle[i + 3] = new ParticleVertex(z, new Vector2(1, 0),
+                z, 0, -1);
+
+                emiter.indices[x++] = i + 0;
+                emiter.indices[x++] = i + 3;
+                emiter.indices[x++] = i + 2;
+                emiter.indices[x++] = i + 2;
+                emiter.indices[x++] = i + 1;
+                emiter.indices[x++] = i + 0;
+            }
+        }
         /// <summary>
         /// Gets target number of potitions on heightmap
         /// </summary>
@@ -369,19 +427,19 @@ namespace DizGame
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
-        
+
         /// <summary>
         /// Creates a new bullet
         /// </summary>
-        /// <param name="modelName"></param>
-        /// <param name="pos"></param>
-        /// <param name="scale"></param>
-        /// <param name="forward"></param>
-        /// <param name="MaxRange"></param>
-        /// <param name="initialVelocity"></param>
-        /// <param name="rotation"></param>
+        /// <param name="modelName"> Name of the bullet model to use </param>
+        /// <param name="pos"> The starting position of the bullet </param>
+        /// <param name="scale"> How much to scale the bullet </param>
+        /// <param name="MaxRange"> The max range of the bullet </param>
+        /// <param name="initialVelocity"> The initial velocity of the bullet </param>
+        /// <param name="rotation"> The rotation oi the bullet </param>
+        /// <param name="damage"> How much damage the bullet does </param>
         /// <returns> The enityId of the bullet incase someone would need it </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity, Vector3 rotation)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -400,6 +458,7 @@ namespace DizGame
                 new BulletComponent(){
                     StartPos = pos,
                     MaxRange = MaxRange,
+                    Damage = damage,
                 },
                 new PhysicsComponent()
                 {
@@ -434,7 +493,9 @@ namespace DizGame
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
 
-            anm.StartClip("Take 001");
+            var sk = anm.SkinningDataValue.AnimationClips.Keys;
+
+            anm.StartClip(sk.First());
         }
         
         /// <summary>
@@ -458,26 +519,27 @@ namespace DizGame
             return HeightmapEnt;
         }
 
-        // todo write comment
         /// <summary>
-        /// Createsa new AI Entity
+        /// Creates a new AI Entity
         /// </summary>
-        /// <param name="ModelName"></param>
-        /// <param name="position"></param>
-        /// <param name="hysteria"></param>
-        /// <param name="widthBound"></param>
-        /// <param name="heightBound"></param>
-        /// <param name="DirectionDuration"></param>
-        /// <param name="rotation"></param>
-        /// <param name="shootingCoolDown"></param>
-        /// <param name="attackingDistance"></param>
-        /// <param name="evadeDist"></param>
-        /// <param name="turningSpeed"></param>
-        /// <param name="updateFreq"></param>
-        /// <param name="waypoints"></param>
-        /// <param name="chaseDist"></param>
+        /// <param name="ModelName"> The name of the model the AI sjould use </param>
+        /// <param name="position"> The initial position of the AI </param>
+        /// <param name="hysteria">  </param>
+        /// <param name="widthBound">  </param>
+        /// <param name="heightBound">  </param>
+        /// <param name="DirectionDuration"> A value in seconds for how long the AI will stick to its choosen direction </param>
+        /// <param name="rotation"> In what range the new rotaion can be. eg. -PI --- +PI </param>
+        /// <param name="shootingCoolDown"> The delay between the shoots for when the AI is shooting
+        /// Ideally somewhere between 0 and 1 second </param>
+        /// <param name="attackingDistance"> From how far the AI will start shooting </param>
+        /// <param name="evadeDist"> How far from the other AIs/players the AI want to be at a minimum </param>
+        /// <param name="turningSpeed"> How fast the AI will turn each update </param>
+        /// <param name="updateFreq"> How often the AI will update its rotation based on the closest enemy in seconds </param>
+        /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
+        /// <param name="chaseDist"> In what distance the enemy have to be for the AI to chase it </param>
+        /// <param name="DamagePerShot"> How much damage the AI does per shot </param>
         /// <returns> The ID of the new AI Entity  </returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
@@ -506,12 +568,12 @@ namespace DizGame
                     TurningSpeed = turningSpeed,
                     UpdateFrequency = updateFreq,
                     ChaseDistance = chaseDist,
+                    DamagePerShot = DamagePerShot,
                 },
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);
-
-
+            
             TestingTheAnimationsWithDude(AIEntityID);
 
             return AIEntityID;

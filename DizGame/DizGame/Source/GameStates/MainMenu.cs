@@ -31,6 +31,7 @@ namespace DizGame.Source.GameStates
         private int SelectedItem;
         private SpriteFont SpriteFont;
         private KeyboardState oldState;
+        private KeyboardState newState;
         private TextSystem TextSystem;
         #endregion
 
@@ -60,8 +61,7 @@ namespace DizGame.Source.GameStates
 
             int y = 30;
             Color color;
-             
-
+            
             for(int i = 0; i < itemNames.Length; i++)
             {
                 Vector2 position = new Vector2(80, y);
@@ -78,7 +78,9 @@ namespace DizGame.Source.GameStates
             }
             AudioManager.Instance.PlaySong("MenuSong");
             AudioManager.Instance.ChangeRepeat();
+            AudioManager.Instance.ChangeSongVolume(0.5f);
         }
+
         /// <summary>
         /// Removes all the entities created in this state which is not needed anymore.
         /// </summary>
@@ -117,13 +119,12 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Update()
         {
-            KeyboardState newState;
+            oldState = newState;
             newState = Keyboard.GetState();
             TextComponent txc;
 
             if (newState.IsKeyDown(Keys.Up))
             {
-                
                 if (!oldState.IsKeyDown(Keys.Up))
                 {
                     if (SelectedItem > 0)
@@ -139,7 +140,6 @@ namespace DizGame.Source.GameStates
                         txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
                         txc.Color = Color.DeepPink;
                     }
-                    
                 }
             }
             if (newState.IsKeyDown(Keys.Down))
@@ -155,12 +155,18 @@ namespace DizGame.Source.GameStates
                         index = GameStateEntities.ElementAt(SelectedItem);
                         txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
                         txc.Color = Color.DeepPink;
-                    }
-                        
+                    }   
                 }
             }
+            if (newState.IsKeyDown(Keys.M) && !oldState.IsKeyDown(Keys.M))
+            {
+                if (AudioManager.Instance.IsMuted())
+                    AudioManager.Instance.GlobalUnMute();
+                else
+                    AudioManager.Instance.GlobalMute();
+            }
 
-            if(newState.IsKeyDown(Keys.Enter))
+            if (newState.IsKeyDown(Keys.Enter))
             {
                 switch (SelectedItem)
                 {
@@ -181,9 +187,6 @@ namespace DizGame.Source.GameStates
                 }
             }
             oldState = newState;
-
         }
-
-        
     }
 }

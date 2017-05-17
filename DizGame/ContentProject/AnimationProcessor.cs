@@ -40,12 +40,12 @@ namespace ContentProject
 
             IList<BoneContent> bones = MeshHelper.FlattenSkeleton(skeleton);
 
-            //if (bones.Count > SkinnedEffect.MaxBones)
-            //{
-            //    throw new InvalidContentException(string.Format(
-            //        "Skeleton has {0} bones, but the maximum supported is {1}.",
-            //        bones.Count, SkinnedEffect.MaxBones));
-            //}
+            if (bones.Count > SkinnedEffect.MaxBones)
+            {
+                throw new InvalidContentException(string.Format(
+                    "Skeleton has {0} bones, but the maximum supported is {1}.",
+                    bones.Count, SkinnedEffect.MaxBones));
+            }
 
             List<Matrix> bindPose = new List<Matrix>();
             List<Matrix> inverseBindPose = new List<Matrix>();

@@ -101,25 +101,6 @@
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff\canyonHeightMap.jpg
 
-#begin Dude/dude.fbx
-/importer:FbxImporter
-/processor:AnimationProcessor
-/processorParam:DefaultEffect=SkinnedEffect
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
-/build:Dude/dude.fbx
-
 #begin Dude/head.tga
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -275,25 +256,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Dude/upBodyS.tga
-
-#begin Body.fbx
-/importer:FbxImporter
-/processor:ModelProcessor
-/processorParam:ColorKeyColor=0,0,0,0
-/processorParam:ColorKeyEnabled=True
-/processorParam:DefaultEffect=BasicEffect
-/processorParam:GenerateMipmaps=True
-/processorParam:GenerateTangentFrames=False
-/processorParam:PremultiplyTextureAlpha=True
-/processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
-/processorParam:RotationY=0
-/processorParam:RotationZ=0
-/processorParam:Scale=1
-/processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
-/build:Body.fbx
 
 #begin MapObjects/WoodHouse/Cyprys_House.obj
 /importer:OpenAssetImporter
@@ -455,4 +417,72 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Songs/GameSong.mp3
+
+#begin ParticleTexture/Smoke.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ParticleTexture/Smoke.png
+
+#begin ParticleTexture/Fire.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ParticleTexture/Fire.png
+
+#begin WierdDude/Body.fbx
+/importer:FbxImporter
+/processor:ModelProcessor
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:DefaultEffect=BasicEffect
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:WierdDude/Body.fbx
+
+#begin Effects/ParticleEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/ParticleEffect.fx
+
+#begin Dude/Dude72.fbx
+/importer:FbxImporter
+/processor:AnimationProcessor
+/processorParam:DefaultEffect=SkinnedEffect
+/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=True
+/processorParam:GenerateTangentFrames=False
+/processorParam:PremultiplyTextureAlpha=True
+/processorParam:PremultiplyVertexColors=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
+/processorParam:RotationX=0
+/processorParam:RotationY=0
+/processorParam:RotationZ=0
+/processorParam:Scale=1
+/processorParam:SwapWindingOrder=False
+/processorParam:TextureFormat=Compressed
+/build:Dude/Dude72.fbx
 

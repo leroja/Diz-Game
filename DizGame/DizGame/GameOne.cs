@@ -32,9 +32,7 @@ namespace DizGame
             instance = this;
             client = new NetworkSystem();
             client.RunClient();
-            this.IsMouseVisible = true;
-
-            
+            //this.IsMouseVisible = true;
         }
         /// <summary>
         /// Instance of the game
@@ -65,7 +63,7 @@ namespace DizGame
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
             client.DiscoverLocalPeers();
-
+            
 
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));

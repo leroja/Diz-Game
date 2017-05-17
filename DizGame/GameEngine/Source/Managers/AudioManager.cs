@@ -123,12 +123,9 @@ namespace GameEngine.Source.Managers
         {
             if (soundEffInstDic.ContainsKey(SoundEffect))
             {
-                if (soundEffInstDic[SoundEffect].State != SoundState.Playing)
-                {
-                    soundEffInstDic[SoundEffect].Pan = pan;
-                    soundEffInstDic[SoundEffect].Pitch = pitch;
-                    soundEffInstDic[SoundEffect].Play();
-                }
+                soundEffInstDic[SoundEffect].Pan = pan;
+                soundEffInstDic[SoundEffect].Pitch = pitch;
+                soundEffInstDic[SoundEffect].Play();
             }
         }
 

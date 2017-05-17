@@ -60,6 +60,7 @@ namespace DizGame.Source.GameStates
             }
             AudioManager.Instance.PlaySong("GameSong");
             AudioManager.Instance.ChangeSongVolume(0.25f);
+            AudioManager.Instance.ChangeGlobalSoundEffectVolume(0.75f);
         }
 
         /// <summary>
@@ -111,7 +112,6 @@ namespace DizGame.Source.GameStates
                     hmct.IsVisible = true;
 
                 EntityFactory.Instance.VisibleBullets = true;
-                
             }
         }
 
@@ -134,7 +134,6 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
-
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new TransformSystem());
@@ -146,7 +145,9 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
-            
+
+            SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new SmokePaticleSystemcs());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
@@ -160,6 +161,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
         }
+
         /// <summary>
         /// Function for initializing the entities which are needed for a single player game 
         /// against AI
@@ -168,7 +170,7 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory entf = EntityFactory.Instance;
 
-            var l = new List<Vector2>()
+            var waypointList = new List<Vector2>()
             {
                 new Vector2(5, -5),
                 new Vector2(290, -5),
@@ -178,10 +180,10 @@ namespace DizGame.Source.GameStates
 
             List<int> aiEntityList = new List<int>
             {
-                entf.CreateAI("Dude", new Vector3(30, 45, -80), 5, 300, 300, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150),
-                entf.CreateAI("Dude", new Vector3(65, 39, -10), 5, 300, 300, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150),
-                entf.CreateAI("Dude", new Vector3(135, 45, -50), 5, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150),
-                entf.CreateAI("Dude", new Vector3(45, 39, -30), 5, 300, 300, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.2f, 1f, l, 90),
+                entf.CreateAI("Dude", new Vector3(30, 45, -80), 5, 300, 300, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9),
+                entf.CreateAI("Dude", new Vector3(65, 39, -10), 5, 300, 300, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7),
+                entf.CreateAI("Dude", new Vector3(135, 45, -50), 5, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5),
+                entf.CreateAI("Dude", new Vector3(45, 39, -30), 5, 300, 300, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.2f, 1f, waypointList, 90, 2),
             };
             GameStateEntities.AddRange(aiEntityList);
 
@@ -189,22 +191,23 @@ namespace DizGame.Source.GameStates
             entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);
-
-            int heightmapID = entf.CreateHeightMap("canyonHeightMap", "BetterGrass", 10);
+            
+            int heightmapID = entf.CreateHeightMap("Map3", "BetterGrass", 10);
             //Add hightmap entityid to this state
             GameStateEntities.Add(heightmapID);
 
             //Add all static objects to this state i.e rocks, houses etc.
             List<int> entityIdList = entf.MakeMap(10, 100);
             GameStateEntities.AddRange(entityIdList);
-            
+
+            entf.CreateParticleEmiter(new Vector3(1,2000,1),"Smoke",400,20,20,Vector3.One,1,120);
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(0, 0), new List<Vector2>());
-
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
+
             var ids = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
             foreach (var modelEnt in ids)
             {
@@ -215,6 +218,7 @@ namespace DizGame.Source.GameStates
             }
 
         }
+
         /// <summary>
         /// Function for initializing all the entities which are needed for a 
         /// multiplayer game.

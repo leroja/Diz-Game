@@ -77,6 +77,7 @@
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
+    <Compile Include="Source\Systems\SmokePaticleSystemcs.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,21 +93,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Effect\ParticleEffect.fx" />
     <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
+    <Content Include="Content\HeightMapStuff\Map3.jpg" />
     <Content Include="Content\Icons\squareTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Songs\GameSong.mp3" />
+    <Content Include="Content\Songs\MenuSong.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
+    <Content Include="Content\ParticleTexture\Smoke.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
-    <None Include="Content\Dude\dude.fbx" />
+    <None Include="Content\bullet\Bullet.obj" />
+    <None Include="Content\bullet\Cartridge.obj" />
+    <None Include="Content\Dude\Dude72.fbx" />
     <None Include="Content\Dude\head.tga" />
     <None Include="Content\Dude\headN.tga" />
     <None Include="Content\Dude\headS.tga" />
@@ -120,6 +128,7 @@
     <None Include="Content\Dude\upBodyC2.tga" />
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
+    <None Include="Content\Fonts\MenuFont.spritefont" />
     <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.mtl" />
     <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.obj" />
     <None Include="Content\MapObjects\Farmhouse\roof.tga" />
@@ -130,6 +139,7 @@
     <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
     <None Include="Content\MapObjects\WoodHouse\Cyprys_House.mtl" />
     <None Include="Content\MapObjects\WoodHouse\Cyprys_House.obj" />
+    <None Include="Content\WierdDude\Body.fbx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
@@ -146,9 +156,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\bullet\" />
     <Folder Include="Content\Characters\" />
-    <Folder Include="Content\Songs\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
