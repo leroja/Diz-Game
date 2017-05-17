@@ -607,6 +607,7 @@ namespace DizGame
 
             return AIEntityID;
         }
+
         public void CreateHealthResource(Vector3 position)
         {
             int newEntityId = ComponentManager.Instance.CreateID();
@@ -635,11 +636,11 @@ namespace DizGame
                 new ResourceComponent(ResourceType.Health),
                 tcp,
                 mcp,
-                // add the model here
             };
 
             ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
         }
+
         public void CreateAmmoResource(Vector3 position)
         {
             int newEntityId = ComponentManager.Instance.CreateID();
@@ -652,13 +653,20 @@ namespace DizGame
             {
                 IsVisible = VisibleBullets
             };
-
+            foreach (var modelpart in mcp.Model.Meshes)
+            {
+                BasicEffect effect = (BasicEffect)modelpart.Effects[0];
+                effect.EnableDefaultLighting();
+                effect.FogEnabled = true;
+                effect.FogColor = Color.LightGray.ToVector3();
+                effect.FogStart = 10;
+                effect.FogEnd = 400;
+            }
             List<IComponent> resourceCompList = new List<IComponent>
             {
                 new ResourceComponent(ResourceType.Ammo),
                 tcp,
                 mcp,
-                // add the model here
             };
 
             ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
