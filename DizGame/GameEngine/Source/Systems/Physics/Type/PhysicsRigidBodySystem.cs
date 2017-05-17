@@ -29,10 +29,8 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         public override void Update(PhysicsComponent physic, float dt)
         {
-            PhysicsSystem.UpdateAcceleration(physic);
             PhysicsSystem.UpdateMass(physic);
             PhysicsSystem.UpdateGravity(physic, dt);
-            PhysicsSystem.UpdateForce(physic);
             PhysicsSystem.UpdateVelocity(physic, dt);
 
             // Creates and send this throught instead of creating globas that takes memory

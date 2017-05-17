@@ -36,7 +36,7 @@ namespace DizGame.Source.Systems
                     if (key.GetState("Forward") == ButtonStates.Hold)
                     {
                         if (phys != null)
-                            move += trans.Forward * +phys.Mass * 100; //+ new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
+                            move += trans.Forward * 10; //+ new Vector3(0,0,-(phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                         else
                             //Console.WriteLine(trans.Position);
                             trans.Position += trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
@@ -45,7 +45,7 @@ namespace DizGame.Source.Systems
                     if (key.GetState("Backwards") == ButtonStates.Hold)
                     {
                         if (phys != null)
-                            move += -trans.Forward * +phys.Mass * 100;// + new Vector3(0, 0, (phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
+                            move += -trans.Forward * 10;// + new Vector3(0, 0, (phys.Mass * phys.Acceleration.Z) * (float)gameTime.ElapsedGameTime.TotalSeconds) * PhysicsComponent.DEFAULT_WALKFORCE;
                         else
                             trans.Position -= trans.Forward * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                         trans.Dirrection = -trans.Forward;
@@ -53,7 +53,7 @@ namespace DizGame.Source.Systems
                     if (key.GetState("Left") == ButtonStates.Hold)
                     {
                         if (phys != null)
-                            move += -trans.Right * +phys.Mass * 100;// + new Vector3(-(phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
+                            move += -trans.Right * 10;// + new Vector3(-(phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
                         else
                             trans.Position -= trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                         trans.Dirrection = -trans.Right;
@@ -61,7 +61,7 @@ namespace DizGame.Source.Systems
                     if (key.GetState("Right") == ButtonStates.Hold)
                     {
                         if (phys != null)
-                            move += trans.Right * +phys.Mass * 100;// + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
+                            move += trans.Right * 10;// + new Vector3((phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0, 0) * PhysicsComponent.DEFAULT_WALKFORCE;
                         else
                             trans.Position += trans.Right * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
                         trans.Dirrection = trans.Right;
@@ -73,31 +73,24 @@ namespace DizGame.Source.Systems
                             if (!phys.IsInAir)
                             {
                                 phys.IsInAir = true;
-                                move += trans.Up * 8.91f * 1000;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
+                                move += trans.Up * 8.91f * 250;// + new Vector3(0, (phys.Mass * phys.Acceleration.X) * (float)gameTime.ElapsedGameTime.TotalSeconds, 0) * PhysicsComponent.DEFAULT_LEGFORCE/1000;
                             }
                         }
                         trans.Dirrection = trans.Up;
                     }
                 }
-                float he = BASICGETHEIGTH(trans.Position);
+                float he = BasicGetHeight(trans.Position);
                 if (phys != null)
                 {
-                    //Console.WriteLine("Force: " + phys.Forces);
-                    //Console.WriteLine("Velocity: " + phys.Velocity);
-                    move.Y += phys.Forces.Y;
                     trans.Dirrection = new Vector3(trans.Dirrection.X, Vector3.Down.Y, trans.Dirrection.Z);
-                    phys.Forces = move;
-                    CheckAndSetMaxVelocity(trans, phys);
+                    phys.Acceleration = move;
+                    //phys.Acceleration = CheckMaxVelocityAndGetVector(phys, move);
 
-                    //Console.WriteLine("Move: " + phys.Acceleration);
 
 
                     if (he != trans.Position.Y && !phys.IsInAir)
                     {
-                        phys.Forces = new Vector3(phys.Forces.X, 0, phys.Forces.Z);
-                        if (phys != null)
-                            TempFloor(entity.Key);
-                        //Console.WriteLine(phys.Forces);
+                        phys.Acceleration = new Vector3(phys.Acceleration.X, 0, phys.Acceleration.Z);
                     }
 
                     if (he >= trans.Position.Y)
@@ -110,19 +103,20 @@ namespace DizGame.Source.Systems
                 {
                     trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                 }
-                //Console.WriteLine(phys.Velocity);
             }
         }
-        private void CheckAndSetMaxVelocity(TransformComponent trans, PhysicsComponent physic)
+        private Vector3 CheckMaxVelocityAndGetVector(PhysicsComponent physic, Vector3 move)
         {
-                if (physic.Velocity.X >= physic.MaxVelocity.X || physic.Velocity.X <= -physic.MaxVelocity.X)
-                    physic.Velocity *= -trans.Rotation;
+            float X = move.X, Y = move.Y, Z = move.Z;
+            if (physic.Velocity.X >= physic.MaxVelocity.X || physic.Velocity.X <= -physic.MaxVelocity.X)
+                X = 0;
 
-                if (physic.Velocity.Z >= physic.MaxVelocity.Z || physic.Velocity.Z <= -physic.MaxVelocity.Z)
-                    physic.Velocity *= -trans.Rotation;
+            if (physic.Velocity.Z >= physic.MaxVelocity.Z || physic.Velocity.Z <= -physic.MaxVelocity.Z)
+                Z = 0;
+            return new Vector3(X, Y, Z);
         }
 
-        private float BASICGETHEIGTH(Vector3 position)
+        private float BasicGetHeight(Vector3 position)
         {
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             if (temp.Count != 0)
@@ -138,24 +132,6 @@ namespace DizGame.Source.Systems
                     return hmap.HeightMapData[roundX, -roundY];
             }
                 return 0;
-        }
-
-        private void TempFloor(int entityID)
-        {
-            //ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity = new Vector3(
-            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.X,
-            //    0,
-            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Velocity.Z);
-
-            //ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces = new Vector3(
-            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.X,
-            //    0,
-            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Forces.Z);
-
-            //ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration = new Vector3(
-            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.X,
-            //    0,
-            //    ComponentManager.GetEntityComponent<PhysicsComponent>(entityID).Acceleration.Z);
         }
     }
 }

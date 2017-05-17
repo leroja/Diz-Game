@@ -46,51 +46,15 @@ namespace GameEngine.Source.Systems
                 p = AirCoefficients.GetAirSoundSpeedAndDensity(world.Temperatur).Item2;
             else
                 p = (float)fluid;
-            //p = (float)DensityType.Water_Pure;
 
+            Vector3 V = phy.Velocity;
+            V.Normalize();
             float Cd = (float)phy.DragType;                                                     // drag coefficent eg 0.25 to 0.45 for car
-            Vector3 V = -transform.Dirrection;                                                   // V unit vector indicating the direction of the velocity (negativ to indicate drag opposite the velocity)
             float A = phy.ReferenceArea;                                                        // reference area
             Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                       // speed of the object relativ to the fluid???
 
-            //Vector3 Fd = -0.5f * p * Vector3Pow(v, 2) * A * Cd * V;                             // 1/2pv^2ACdV = force of drag
             Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
-            //CheckAndSetTerminalVelocity(phy, Fd); //TODO: FIX THIS SHIT Rotationen gör allt weird
-            //phy.Forces = Fd - phy.Weight;
-            //Console.WriteLine("Drag: " + Fd);
-            phy.Forces += Fd;
-        }
-        private void UpdateDownwardAcceleration(PhysicsComponent physic, Vector3 Drag)
-        {
-            Vector3 temp = (physic.Weight - Drag) / physic.Mass;
-            temp.X = physic.Acceleration.X;
-            temp.Z = physic.Acceleration.Z;
-            physic.Acceleration = temp;
-        }
-        private void TerminalVelocity(PhysicsComponent physic, float Cd, float p, float A)
-        {
-            Vector3 temp = physic.Weight;
-            temp.X = (float)Math.Sqrt((2 * physic.Weight.X) / (Cd * p * A));
-            temp.Y = (float)Math.Sqrt((2 * physic.Weight.Y) / (Cd * p * A));
-            temp.Z = (float)Math.Sqrt((2 * physic.Weight.Z) / (Cd * p * A));
-            physic.Velocity = temp;
-        }
-        private void CheckAndSetTerminalVelocity(PhysicsComponent physic, Vector3 dragForce)
-        {
-            if (dragForce.X >= physic.Mass)
-                physic.TerminalVelocity = new Vector3(1, physic.TerminalVelocity.Y, physic.TerminalVelocity.Z);
-            else
-                physic.TerminalVelocity = new Vector3(0, physic.TerminalVelocity.Y, physic.TerminalVelocity.Z);
-
-            if (dragForce.Y >= physic.Mass)
-                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, 1, physic.TerminalVelocity.Z);
-            else
-                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, 0, physic.TerminalVelocity.Z);
-
-            if (dragForce.Z >= physic.Mass)
-                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, physic.TerminalVelocity.Y, 1);
-            else
-                physic.TerminalVelocity = new Vector3(physic.TerminalVelocity.X, physic.TerminalVelocity.Y, 0);
+            phy.Acceleration += (Fd / phy.Mass); // A = F / M
         }
         private void UpdateWind()
         {

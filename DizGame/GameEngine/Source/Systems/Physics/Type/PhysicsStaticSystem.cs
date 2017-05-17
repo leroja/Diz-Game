@@ -32,9 +32,7 @@ namespace GameEngine.Source.Systems
         public override void Update(PhysicsComponent physic, float dt)
         {
             //TODO: StaticSystem
-            PhysicsSystem.UpdateAcceleration(physic);
             PhysicsSystem.UpdateMass(physic);
-            PhysicsSystem.UpdateGravity(physic, dt);
             PhysicsSystem.UpdateForce(physic);
             PhysicsSystem.UpdateVelocity(physic, dt);
             UpdatePosition(physic, dt);
