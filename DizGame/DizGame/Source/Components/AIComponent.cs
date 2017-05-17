@@ -35,7 +35,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public float DirectionDuration { get; set; }     
         /// <summary>
-        /// In what range the new rotaionj can be. eg. -PI --- +PI
+        /// In what range the new rotaion can be. eg. -PI --- +PI
         /// </summary>
         public float DirectionChangeRoation { get; set; }
         /// <summary>
@@ -52,7 +52,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public float ShootingCooldown { get; set; }
         /// <summary>
-        /// How far from the other AI/player the AI want to be at a minimum
+        /// How far from the other AIs/players the AI want to be at a minimum
         /// </summary>
         public float EvadeDistance { get; set; }
         /// <summary>
@@ -63,6 +63,11 @@ namespace DizGame.Source.Components
         /// In what distance the enemy have to be for the AI to chase it
         /// </summary>
         public float ChaseDistance { get; set; }
+        /// <summary>
+        /// How much damage the AI does per shot
+        /// </summary>
+        public float DamagePerShot { get; set; }
+
 
         /// <summary>
         /// Constructor
@@ -81,6 +86,7 @@ namespace DizGame.Source.Components
             this.ShootingCooldown = shootingCoolDown;
             this.EvadeDistance = 50;
             this.AttackingDistance = 25;
+            this.DamagePerShot = 5;
 
             AiBehaviors = new Dictionary<string, AiBehavior>()
             {

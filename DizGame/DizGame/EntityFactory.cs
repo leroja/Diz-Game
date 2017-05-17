@@ -77,10 +77,10 @@ namespace DizGame
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
                 {"BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
-                //{"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
-                {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/Map3")},
+                {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
                 {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
-                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") }
+                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
+                {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
             };
         }
        
@@ -369,19 +369,19 @@ namespace DizGame
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
-        
+
         /// <summary>
         /// Creates a new bullet
         /// </summary>
-        /// <param name="modelName"></param>
-        /// <param name="pos"></param>
-        /// <param name="scale"></param>
-        /// <param name="forward"></param>
-        /// <param name="MaxRange"></param>
-        /// <param name="initialVelocity"></param>
-        /// <param name="rotation"></param>
+        /// <param name="modelName"> Name of the bullet model to use </param>
+        /// <param name="pos"> The starting position of the bullet </param>
+        /// <param name="scale"> How much to scale the bullet </param>
+        /// <param name="MaxRange"> The max range of the bullet </param>
+        /// <param name="initialVelocity"> The initial velocity of the bullet </param>
+        /// <param name="rotation"> The rotation oi the bullet </param>
+        /// <param name="damage"> How much damage the bullet does </param>
         /// <returns> The enityId of the bullet incase someone would need it </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity, Vector3 rotation)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -400,6 +400,7 @@ namespace DizGame
                 new BulletComponent(){
                     StartPos = pos,
                     MaxRange = MaxRange,
+                    Damage = damage,
                 },
                 new PhysicsComponent()
                 {
@@ -458,26 +459,27 @@ namespace DizGame
             return HeightmapEnt;
         }
 
-        // todo write comment
         /// <summary>
-        /// Createsa new AI Entity
+        /// Creates a new AI Entity
         /// </summary>
-        /// <param name="ModelName"></param>
-        /// <param name="position"></param>
-        /// <param name="hysteria"></param>
-        /// <param name="widthBound"></param>
-        /// <param name="heightBound"></param>
-        /// <param name="DirectionDuration"></param>
-        /// <param name="rotation"></param>
-        /// <param name="shootingCoolDown"></param>
-        /// <param name="attackingDistance"></param>
-        /// <param name="evadeDist"></param>
-        /// <param name="turningSpeed"></param>
-        /// <param name="updateFreq"></param>
-        /// <param name="waypoints"></param>
-        /// <param name="chaseDist"></param>
+        /// <param name="ModelName"> The name of the model the AI sjould use </param>
+        /// <param name="position"> The initial position of the AI </param>
+        /// <param name="hysteria">  </param>
+        /// <param name="widthBound">  </param>
+        /// <param name="heightBound">  </param>
+        /// <param name="DirectionDuration"> A value in seconds for how long the AI will stick to its choosen direction </param>
+        /// <param name="rotation"> In what range the new rotaion can be. eg. -PI --- +PI </param>
+        /// <param name="shootingCoolDown"> The delay between the shoots for when the AI is shooting
+        /// Ideally somewhere between 0 and 1 second </param>
+        /// <param name="attackingDistance"> From how far the AI will start shooting </param>
+        /// <param name="evadeDist"> How far from the other AIs/players the AI want to be at a minimum </param>
+        /// <param name="turningSpeed"> How fast the AI will turn each update </param>
+        /// <param name="updateFreq"> How often the AI will update its rotation based on the closest enemy in seconds </param>
+        /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
+        /// <param name="chaseDist"> In what distance the enemy have to be for the AI to chase it </param>
+        /// <param name="DamagePerShot"> How much damage the AI does per shot </param>
         /// <returns> The ID of the new AI Entity  </returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
@@ -506,12 +508,12 @@ namespace DizGame
                     TurningSpeed = turningSpeed,
                     UpdateFrequency = updateFreq,
                     ChaseDistance = chaseDist,
+                    DamagePerShot = DamagePerShot,
                 },
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);
-
-
+            
             TestingTheAnimationsWithDude(AIEntityID);
 
             return AIEntityID;

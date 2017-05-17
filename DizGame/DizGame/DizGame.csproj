@@ -94,9 +94,12 @@
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
+    <Content Include="Content\HeightMapStuff\Map3.jpg" />
     <Content Include="Content\Icons\squareTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Songs\GameSong.mp3" />
+    <Content Include="Content\Songs\MenuSong.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
     <Content Include="Icon.ico" />
   </ItemGroup>
@@ -104,6 +107,8 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Content\bullet\Bullet.obj" />
+    <None Include="Content\bullet\Cartridge.obj" />
     <None Include="Content\Dude\dude.fbx" />
     <None Include="Content\Dude\head.tga" />
     <None Include="Content\Dude\headN.tga" />
@@ -118,6 +123,7 @@
     <None Include="Content\Dude\upBodyC2.tga" />
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
+    <None Include="Content\Fonts\MenuFont.spritefont" />
     <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.mtl" />
     <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.obj" />
     <None Include="Content\MapObjects\Farmhouse\roof.tga" />
@@ -144,9 +150,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\bullet\" />
     <Folder Include="Content\Characters\" />
-    <Folder Include="Content\Songs\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

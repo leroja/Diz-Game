@@ -32,9 +32,7 @@ namespace DizGame
             instance = this;
             client = new NetworkSystem();
             client.RunClient();
-            this.IsMouseVisible = true;
-
-            
+            //this.IsMouseVisible = true;
         }
         /// <summary>
         /// Instance of the game
