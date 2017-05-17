@@ -34,8 +34,7 @@ namespace GameEngine.Source.Systems
         {
             CreationTime = DateTime.Now;
             device = gd;
-            List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
-            defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+           
         }
         /// <summary>
         /// Draws particles.
@@ -43,7 +42,9 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            
+            List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
+            defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+
             var comp = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmiterComponent>();
             foreach (var i in comp)
             {

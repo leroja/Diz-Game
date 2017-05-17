@@ -65,9 +65,7 @@ namespace DizGame
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
             client.DiscoverLocalPeers();
-
-            var idC = entf.CreateDude();
-            entf.CreateParticleEmiter();
+            
 
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
@@ -79,43 +77,6 @@ namespace DizGame
             base.Initialize();
         }
 
-        /// <summary>
-        /// Initializes the systems and adds them to the system manager
-        /// </summary>
-        /// <param name="entf"></param>
-        private void InitializeSystems(EntityFactory entf)
-        {
-            SystemManager.Instance.AddSystem(new WorldSystem(this));
-            //entf.CreateHeightMap("heightmap", "BetterGrass");
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(this));
-            SystemManager.Instance.AddSystem(new TransformSystem());
-            SystemManager.Instance.AddSystem(new ModelBoundingSphereSystem());
-            SystemManager.Instance.AddSystem(new ModelSystem());
-            SystemManager.Instance.AddSystem(new KeyBoardSystem());
-            SystemManager.Instance.AddSystem(new MovingSystem());
-            SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem());
-            SystemManager.Instance.AddSystem(new EnvironmentSystem());
-            SystemManager.Instance.AddSystem(new MouseSystem());
-            SystemManager.Instance.AddSystem(new BulletSystem());
-            SystemManager.Instance.AddSystem(new PlayerSystem(entf));
-
-            
-            SystemManager.Instance.AddSystem(new ParticleRenderSystem(Device));
-            SystemManager.Instance.AddSystem(new SmokePaticleSystemcs());
-            SystemManager.Instance.AddSystem(new HeightmapSystemTexture(Device));
-            SystemManager.Instance.AddSystem(new AnimationSystem());
-            SystemManager.Instance.AddSystem(new AISystem());
-            SystemManager.Instance.AddSystem(new TextSystem(SpriteBatch));
-
-            entityTracingSystem = new EntityTracingSystem();
-            entityTracingSystem.RecordInitialEntities();
-            SystemManager.Instance.AddSystem(entityTracingSystem);
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
