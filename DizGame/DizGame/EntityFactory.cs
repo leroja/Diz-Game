@@ -344,17 +344,18 @@ namespace DizGame
             emiter.indices = new int[emiter.nParticles * 6];
 
             var z = Vector3.Zero;
+            var pos = new Vector3(10, 10, 10);
             int x = 0;
             for (int i = 0; i < emiter.nParticles * 4; i += 4)
             {
-                emiter.particle[i + 0] = new ParticleVertex(z, new Vector2(0, 0),
-                z, 0, -1);
-                emiter.particle[i + 1] = new ParticleVertex(z, new Vector2(0, 1),
-                z, 0, -1);
-                emiter.particle[i + 2] = new ParticleVertex(z, new Vector2(1, 1),
-                z, 0, -1);
-                emiter.particle[i + 3] = new ParticleVertex(z, new Vector2(1, 0),
-                z, 0, -1);
+                emiter.particle[i + 0] = new ParticleVertex(pos, new Vector2(0, 0),
+                pos, 0, -1);
+                emiter.particle[i + 1] = new ParticleVertex(pos, new Vector2(0, 1),
+                pos, 0, -1);
+                emiter.particle[i + 2] = new ParticleVertex(pos, new Vector2(1, 1),
+                pos, 0, -1);
+                emiter.particle[i + 3] = new ParticleVertex(pos, new Vector2(1, 0),
+                pos, 0, -1);
 
                 emiter.indices[x++] = i + 0;
                 emiter.indices[x++] = i + 3;

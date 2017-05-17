@@ -44,7 +44,7 @@ namespace DizGame.Source.Systems
         /// <param name="time"></param>
         public void AddParticle(int id, GameTime time)
         {
-
+            Vector3 pos = new Vector3(1, 40, 1);
             ParticleEmiterComponent emiter = ComponentManager.GetEntityComponent<ParticleEmiterComponent>(id);
             TransformComponent tran = ComponentManager.GetEntityComponent<TransformComponent>(id);
 
@@ -56,12 +56,12 @@ namespace DizGame.Source.Systems
 
             float startTime = emiter.lifeTime;
             var pot = SetRandomPos(new Vector3(10 , 0, 10), new Vector3(-10, 0, -10));
-
+            
 
 
             for (int i = 0; i < 4; i++)
             {
-                emiter.particle[emiter.StartIndex + i].startPosition = tran.Position;
+                emiter.particle[emiter.StartIndex + i].startPosition = pos;
                 emiter.particle[emiter.StartIndex + i].direction = emiter.Direction;
                 emiter.particle[emiter.StartIndex + i].speed = emiter.speed;
                 emiter.particle[emiter.StartIndex + i].startTime = startTime;

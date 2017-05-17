@@ -201,7 +201,7 @@ namespace DizGame.Source.GameStates
             List<int> entityIdList = entf.MakeMap(10, 100);
             GameStateEntities.AddRange(entityIdList);
 
-            entf.CreateParticleEmiter(new Vector3(1,2000,1),"Smoke",400,20,20,Vector3.One,1,120);
+            entf.CreateParticleEmiter(new Vector3(1, 2000, 1), "Smoke", 400, 10, 30, new Vector3(0, 1, 0), 5, 120);
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
