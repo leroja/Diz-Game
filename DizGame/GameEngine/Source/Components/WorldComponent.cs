@@ -32,6 +32,11 @@ namespace GameEngine.Source.Components
 
         #region Public Properties
         /// <summary>
+        /// A value that could be used for different relevant things that 
+        /// needs to be commonly implemented throughout different systems.
+        /// </summary>
+        public int ModulusValue { get; set; }
+        /// <summary>
         /// This is used if Notation is set as 12hour clock,
         /// to change the day when "24 hours has past eg. 2x12"
         /// </summary>
@@ -92,6 +97,7 @@ namespace GameEngine.Source.Components
         /// <param name="world"></param>
         public WorldComponent(Matrix world)
         {
+            ModulusValue = 3;
             World = world;
             Noon = true;
             Notation = ClockNotation.HOURS24;
