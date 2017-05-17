@@ -587,23 +587,56 @@ namespace DizGame
             int newEntityId = ComponentManager.Instance.CreateID();
 
             //adjust the scales differently for the models if needed
-            TransformComponent tcp = new TransformComponent(position, new Vector3(1, 1, 1));
-            tcp.Rotation = new Vector3(0.1f, 0, 0);
+            TransformComponent tcp = new TransformComponent(position, new Vector3(0.04f, 0.04f, 0.04f));
+            Model model = ModelDic["Heart"];
+            foreach(var modelpart in model.Meshes)
+            {
+                BasicEffect effect = (BasicEffect)modelpart.Effects[0];
+                effect.EnableDefaultLighting();
+                effect.DiffuseColor = Color.DeepPink.ToVector3();
+                effect.AmbientLightColor = Color.AntiqueWhite.ToVector3();
+                effect.FogEnabled = true;
+                effect.FogColor = Color.LightGray.ToVector3();
+                effect.FogStart = 10;
+                effect.FogEnd = 400;
+            }
+            ModelComponent mcp = new ModelComponent(model)
+            {
+                IsVisible = VisibleBullets
+            };
             
-            
-            
-            //Also create the model component for the entity + check visabillity
-
             List<IComponent> resourceCompList = new List<IComponent>
             {
                 new ResourceComponent(ResourceType.Health),
                 tcp,
+                mcp,
                 // add the model here
             };
-        }
-        public void CreateAmmoResource()
-        {
 
+            ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
+        }
+        public void CreateAmmoResource(Vector3 position)
+        {
+            int newEntityId = ComponentManager.Instance.CreateID();
+            var newPosY = position.Y + 5;
+            Vector3 newTotalPos = new Vector3(position.X, newPosY, position.Z);
+            //adjust the scales differently for the models if needed
+            TransformComponent tcp = new TransformComponent(newTotalPos, new Vector3(1, 1, 1));
+
+            ModelComponent mcp = new ModelComponent(ModelDic["Cartridge"])
+            {
+                IsVisible = VisibleBullets
+            };
+
+            List<IComponent> resourceCompList = new List<IComponent>
+            {
+                new ResourceComponent(ResourceType.Ammo),
+                tcp,
+                mcp,
+                // add the model here
+            };
+
+            ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
         }
     }
 }

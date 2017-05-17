@@ -45,7 +45,7 @@
 /processorParam:PremultiplyTextureAlpha=True
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
-/processorParam:RotationX=0
+/processorParam:RotationX=-90
 /processorParam:RotationY=180
 /processorParam:RotationZ=0
 /processorParam:Scale=1
@@ -489,7 +489,7 @@
 #begin MapObjects/Heart/Heart.fbx
 /importer:FbxImporter
 /processor:ModelProcessor
-/processorParam:ColorKeyColor=0,0,0,0
+/processorParam:ColorKeyColor=255,4,172,175
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
 /processorParam:GenerateMipmaps=True

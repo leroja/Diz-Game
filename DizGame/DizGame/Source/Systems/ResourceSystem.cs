@@ -55,7 +55,7 @@ namespace DizGame.Source.Systems
             int worldid = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>().First();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(worldid);
 
-            if(world.Day % world.ModulusValue != 0)
+            if(world.Day % world.ModulusValue != 1)
             {
 
                 foreach (int entity in entitylist)
@@ -83,14 +83,17 @@ namespace DizGame.Source.Systems
             while (currentNumberOfResources != 50)
             {
                 
-                if(keepTrack % healthAmmoRatio == 0)
+                if(keepTrack % healthAmmoRatio == 1)
                 {
                     EntityFactory.Instance.CreateHealthResource(positions.ElementAt(keepTrack));
                     keepTrack++;
+                    currentNumberOfResources++;
                 }
                 else
                 {
-                    
+                    EntityFactory.Instance.CreateAmmoResource(positions.ElementAt(keepTrack));
+                    keepTrack++;
+                    currentNumberOfResources++;
                 }
                     
             }
