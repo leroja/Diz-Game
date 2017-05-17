@@ -123,6 +123,7 @@ namespace DizGame.Source.Systems
             //TODO: add functionallity for the different messagetypes, some information might be needed to be broadcasted to other clients
             while (true)
             {
+                //This should be moved to some better place.
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && sendRequest == true)
                 {
                     talkToServer.SendRequestInitialGameState();

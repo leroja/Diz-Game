@@ -14,6 +14,7 @@ namespace GameEngine.Source.Enums
         GetInitialGameState = 1,
 
         //Client's created objects
+        CreatedNewEntity, //Test with sending a whole new entity as a list of components.
         CreatedNewPlayer,
         CreatedNewBullet,
 
@@ -24,6 +25,7 @@ namespace GameEngine.Source.Enums
         //Server to Client
 
         //Create objects
+        CreateNewEntity, //Test to send a whole new entity as a list of components.
         CreatePlayer,    //start positions
         CreateInitialGameState,        //Used instead for createboulder etc (they are included in the vector as positions).
         //CreatedBoulder, //Vector with positions instead e.g 10 first positions are boulders 

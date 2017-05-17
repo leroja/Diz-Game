@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Source.Communication;
+using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
+using GameEngine.Source.Managers;
 using Lidgren.Network;
+using Microsoft.Xna.Framework;
 
 namespace DizGame.Source.Communication
 {
@@ -15,15 +18,15 @@ namespace DizGame.Source.Communication
         private NetOutgoingMessage broadcastMessage;
         private NetIncomingMessage incommingMessage;
 
-        private NetClient client;
+        private static NetClient client;
 
         private int WAIT_MAX_MILLIS = 100;
-        private int MAX_MESSAGE_SIZE = 100;
+        private static int MAX_MESSAGE_SIZE = 100;
 
 
         public TalkToServer(NetClient client)
         {
-            this.client = client;
+            TalkToServer.client = client;
 
         }
 
@@ -94,6 +97,40 @@ namespace DizGame.Source.Communication
             message.Write(messageArray);
             client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
             client.FlushSendQueue();
+        }
+
+
+        /// <summary>
+        /// This function is used for sending a newly created entity as a list of components.
+        /// </summary>
+        /// <param name="entityIds">The entities' component lists to send to server.</param>
+        public static void SendCreatedNewEntities(List<int> entityIds)
+        {
+            NetOutgoingMessage message = client.CreateMessage();
+
+            foreach(int entityId in entityIds)
+            {
+                //message.Write(ComponentManager.Instance.GetAllEntityComponents(entityId));
+                List<IComponent> components = ComponentManager.Instance.GetAllEntityComponents(entityId);
+
+                //This does not work as IComponent is not known to Lidgrens network. Vector3 does
+                //not work too to send...
+                //message.WriteAllFields(components);
+
+                client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+                client.FlushSendQueue();
+            }
+
+            //Should send with Reflection if possible instead of building and converting.
+            //Byte[] messageArray = new Byte[MAX_MESSAGE_SIZE];
+
+            //int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.GetInitialGameState);
+
+            //Array.Resize(ref messageArray, arrLength);
+
+            
+            //message.Write(messageArray);
+
         }
     }
 }
