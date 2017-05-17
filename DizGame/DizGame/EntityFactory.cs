@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static DizGame.Source.Components.ResourceComponent;
 
 namespace DizGame
 {
@@ -577,6 +578,29 @@ namespace DizGame
             TestingTheAnimationsWithDude(AIEntityID);
 
             return AIEntityID;
+        }
+        public void CreateHealthResource(Vector3 position)
+        {
+            int newEntityId = ComponentManager.Instance.CreateID();
+
+            //adjust the scales differently for the models if needed
+            TransformComponent tcp = new TransformComponent(position, new Vector3(1, 1, 1));
+            tcp.Rotation = new Vector3(0.1f, 0, 0);
+            
+            
+            
+            //Also create the model component for the entity + check visabillity
+
+            List<IComponent> resourceCompList = new List<IComponent>
+            {
+                new ResourceComponent(ResourceType.Health),
+                tcp,
+                // add the model here
+            };
+        }
+        public void CreateAmmoResource()
+        {
+
         }
     }
 }

@@ -76,43 +76,23 @@ namespace DizGame.Source.Systems
         private void AddNewResources(int currentNumberOfResources)
         {
             int keepTrack = 0;
-            Vector3 scale;
-            ResourceComponent resource;
+            
+            
             List<Vector3> positions = GetMapPositions(maxNumberOfResourcesInPlay - currentNumberOfResources);
 
             while (currentNumberOfResources != 50)
             {
-                int newEntityId = ComponentManager.CreateID();
+                
                 if(keepTrack % healthAmmoRatio == 0)
                 {
-                    resource = new ResourceComponent(ResourceType.Health);
-                    //adjust the scales differently for the models if needed
-                    scale = new Vector3(1, 1, 1);
-                    //Also create the model component for the entity + check visabillity
+                    EntityFactory.Instance.CreateHealthResource(positions.ElementAt(keepTrack));
+                    keepTrack++;
                 }
                 else
                 {
-                    resource = new ResourceComponent(ResourceType.Ammo);
-                    //adjust the scales differently for the models if needed
-                    scale = new Vector3(1, 1, 1);
-                    //Also create the model component for the entity + check visabillity
+                    
                 }
                     
-
-                TransformComponent cmp = new TransformComponent(positions.ElementAt(keepTrack), scale);
-                //Make the model rotate a little so that it's more viable to the player
-                cmp.Rotation = new Vector3(0.1f, 0, 0);
-
-                List<IComponent> resourceCompList = new List<IComponent>
-                {
-                    resource,
-                    cmp,
-                    // add the model here
-                };
-
-                ComponentManager.AddAllComponents(newEntityId, resourceCompList);
-                keepTrack++;
-                
             }
         }
         private void RemoveOldResources(int entity)
