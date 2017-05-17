@@ -61,6 +61,7 @@
     <Compile Include="Source\Components\HealthComponent.cs" />
     <Compile Include="Source\Components\AmmunitionComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
+    <Compile Include="Source\Components\ResourceComponent.cs" />
     <Compile Include="Source\Components\ScoreComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\Factories\HudFactory.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
+    <Compile Include="Source\Systems\ResourceSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
