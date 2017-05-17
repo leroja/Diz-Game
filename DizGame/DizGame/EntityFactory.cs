@@ -74,7 +74,8 @@ namespace DizGame
                 { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
-                { "Dude", Content.Load<Model>("Dude/Dude72")},
+                { "Dude", Content.Load<Model>("Dude/Dude72") },
+                { "Heart", Content.Load<Model>("MapObjects/Heart/Heart") },
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -88,7 +89,7 @@ namespace DizGame
         }
        
         /// <summary>
-        /// 
+        /// Creates the World Component
         /// </summary>
         public void CreateWorldComp()
         {
@@ -96,7 +97,9 @@ namespace DizGame
             var compList = new List<IComponent>() {
                 new WorldComponent(Matrix.Identity)
                 {
-                    IsSunActive = true
+                    IsSunActive = true,
+                    DefineHour = 2,
+                    
                 },
             };
             FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
