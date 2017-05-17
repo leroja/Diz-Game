@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Components
 {
+    // todo använd fysiken för rörelse
     /// <summary>
     /// A component for the AI:s
     /// </summary>
@@ -95,13 +96,7 @@ namespace DizGame.Source.Components
                 this.CurrentBehaivior = AiBehaviors["Patroll"];
             }
         }
-
-
-        private AiBehavior GetBehavior(string Behavior)
-        {
-            return AiBehaviors[Behavior];
-        }
-
+        
         /// <summary>
         /// Checks if an AI has an behavior
         /// </summary>
@@ -119,7 +114,7 @@ namespace DizGame.Source.Components
         /// <param name="currentRoation"> The current rotation of the AI </param>
         public void ChangeBehavior(string Behavior, Vector3 currentRoation)
         {
-            var behave = GetBehavior(Behavior);
+            var behave = AiBehaviors[Behavior];
             CurrentBehaivior = behave;
             CurrentBehaivior.OnEnter(currentRoation);
         }

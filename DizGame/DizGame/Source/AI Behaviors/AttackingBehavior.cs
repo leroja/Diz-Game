@@ -64,6 +64,13 @@ namespace DizGame.Source.AI_Behaviors
             BehaviorStuff(AIComp, transformComp, worldComp);            
         }
 
+        /// <summary>
+        /// Check whether the AI chould change behavior
+        /// If it should then the method changes the behavior
+        /// </summary>
+        /// <param name="AIComp"> The AI component of the AI </param>
+        /// <param name="transformComp"> The transorm component of the AI </param>
+        /// <param name="worldComp"> The world component </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transformComp, WorldComponent worldComp)
         {
             if (worldComp.Day % 2 == 0 && AIComp.AttackingDistance + AIComp.Hysteria < AIComp.CurrentBehaivior.DistanceToClosestEnemy)

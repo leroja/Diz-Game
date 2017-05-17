@@ -22,6 +22,8 @@ namespace GameEngine.Source.Systems
         public override void Update(GameTime gameTime)
         {
             Dictionary<int, IComponent> mc = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TransformComponent>();
+
+
             foreach (var entity in mc)
             {
                 TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);

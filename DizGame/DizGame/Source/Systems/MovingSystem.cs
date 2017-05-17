@@ -25,7 +25,7 @@ namespace DizGame.Source.Systems
         {
             Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
 
-            foreach(var entity in EntityDict)
+            foreach (var entity in EntityDict)
             {
                 KeyBoardComponent key = ComponentManager.GetEntityComponent<KeyBoardComponent>(entity.Key);
                 TransformComponent trans = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
@@ -79,38 +79,38 @@ namespace DizGame.Source.Systems
                         trans.Dirrection = trans.Up;
                     }
                 }
-                    float he = BASICGETHEIGTH(trans.Position);
-                    if (phys != null)
+                float he = BASICGETHEIGTH(trans.Position);
+                if (phys != null)
+                {
+                    //Console.WriteLine("Force: " + phys.Forces);
+                    //Console.WriteLine("Velocity: " + phys.Velocity);
+                    move.Y += phys.Forces.Y;
+                    trans.Dirrection = new Vector3(trans.Dirrection.X, Vector3.Down.Y, trans.Dirrection.Z);
+                    phys.Forces = move;
+                    CheckAndSetMaxVelocity(trans, phys);
+
+                    //Console.WriteLine("Move: " + phys.Acceleration);
+
+
+                    if (he != trans.Position.Y && !phys.IsInAir)
                     {
-                        //Console.WriteLine("Force: " + phys.Forces);
-                        //Console.WriteLine("Velocity: " + phys.Velocity);
-                        move.Y += phys.Forces.Y;
-                        trans.Dirrection = new Vector3(trans.Dirrection.X, Vector3.Down.Y, trans.Dirrection.Z);
-                        phys.Forces = move;
-                        CheckAndSetMaxVelocity(trans, phys);
-
-                        //Console.WriteLine("Move: " + phys.Acceleration);
-
-
-                        if (he != trans.Position.Y && !phys.IsInAir)
-                        {
-                            phys.Forces = new Vector3(phys.Forces.X, 0, phys.Forces.Z);
-                            if (phys != null)
-                                TempFloor(entity.Key);
-                            //Console.WriteLine(phys.Forces);
-                        }
-
-                        if (he >= trans.Position.Y)
-                        {
-                            phys.IsInAir = false;
-                            trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
-                        }
+                        phys.Forces = new Vector3(phys.Forces.X, 0, phys.Forces.Z);
+                        if (phys != null)
+                            TempFloor(entity.Key);
+                        //Console.WriteLine(phys.Forces);
                     }
-                    else
+
+                    if (he >= trans.Position.Y)
                     {
+                        phys.IsInAir = false;
                         trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                     }
-                    //Console.WriteLine(phys.Velocity);
+                }
+                else
+                {
+                    trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
+                }
+                //Console.WriteLine(phys.Velocity);
             }
         }
         private void CheckAndSetMaxVelocity(TransformComponent trans, PhysicsComponent physic)
