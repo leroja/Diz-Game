@@ -171,6 +171,16 @@ namespace DizGame
             {
                 scale = new Vector3(4f, 4f, 4f);
             }
+            foreach (ModelMesh mesh in house.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.FogEnabled = true;
+                    effect.FogColor = Color.LightGray.ToVector3();
+                    effect.FogStart = 10;
+                    effect.FogEnd = 400;
+                }
+            }
             int entityID = ComponentManager.Instance.CreateID();
             ModelComponent mod = new ModelComponent(house)
             {
@@ -209,11 +219,25 @@ namespace DizGame
                         {
                             effect.TextureEnabled = true;
                             effect.Texture = Texture2dDic["RockTexture"];
+                            effect.FogEnabled = true;
+                            effect.FogColor = Color.LightGray.ToVector3();
+                            effect.FogStart = 10;
+                            effect.FogEnd = 400;
                         }
                     }
                     break;
                 case "Tree":
-                    scale = new Vector3(5,5,5);
+                    foreach (ModelMesh mesh in model.Meshes)
+                    {
+                        scale = new Vector3(5, 5, 5);
+                        foreach (BasicEffect effect in mesh.Effects)
+                        {
+                            effect.FogEnabled = true;
+                            effect.FogColor = Color.LightGray.ToVector3();
+                            effect.FogStart = 10;
+                            effect.FogEnd = 400;
+                        }
+                    }
                     break;
             }
             int entityID = ComponentManager.Instance.CreateID();
