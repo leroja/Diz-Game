@@ -71,6 +71,7 @@ namespace GameEngine.Source.Systems
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
                 physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
             }
+            CheckCollision(dt);
         }
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity
@@ -188,23 +189,7 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateForce(PhysicsComponent physic)
         {
-            // TODO: Använda inversemass eller mass 
-            //Console.WriteLine("For1': " + physic.Forces);
-            //physic.Forces =  physic.Mass * physic.Acceleration;
-            float X, Y, Z;
-             X = (physic.InverseMass * physic.Acceleration.X);
-            Y = (physic.InverseMass * physic.Acceleration.Y);
-            Z = (physic.InverseMass * physic.Acceleration.Z);
-            //Console.WriteLine("Fo: " + X + " " + Y + " " + Z);
-
-            float Q, W, E;
-            Q = (physic.Mass * physic.Acceleration.X);
-            W = (physic.Mass * physic.Acceleration.Y);
-            E = (physic.Mass * physic.Acceleration.Z);
-
-            physic.Forces = new Vector3(Q, W, E);
-            
-           // Console.WriteLine("For': " + Q + " " + W + " " + E);
+            physic.Forces = physic.Mass * physic.Acceleration;
         }
         /// <summary>
         /// Updates the Acceleration using formula 
@@ -214,7 +199,6 @@ namespace GameEngine.Source.Systems
         public virtual void UpdateAcceleration(PhysicsComponent physic)
         {
             physic.Acceleration = (physic.Forces / physic.Mass);
-            //Console.WriteLine(physic.Acceleration);
         }
         /// <summary>
         /// Updates the gravity depending on physics gravity type
@@ -245,17 +229,90 @@ namespace GameEngine.Source.Systems
         /// <param name="hit"></param>
         public virtual void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
         {
-           int N = 1; //dunno
-           int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
+            if (target != null && hit != null)
+            {
+                int N = 1; //dunno
+                int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
 
 
-            float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
-            float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
-            Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
-            Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
+                float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
+                float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
+                Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
+                Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
 
-            target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
-            hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
+                target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
+                hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
+            }
+        }
+        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit, float dt)
+        {
+            if (target != null && hit != null)
+            {
+                if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
+                {
+                    float tmp = 1.0f / (target.Mass + hit.Mass);
+                    float e = 0.0f;
+
+                    Vector3 velocity1 = (
+                        (e + 1.0f) * hit.Mass * hit.Velocity +
+                        target.Velocity * (target.Mass - (e * hit.Mass))
+                        ) * tmp;
+
+                    Vector3 velocity2 = (
+                        (e + 1.0f) * target.Mass * target.Velocity +
+                        hit.Velocity * (hit.Mass - (e * target.Mass))
+                        ) * tmp;
+
+                    target.Velocity = velocity1;
+                    hit.Velocity = velocity2;
+                }
+                else if(target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
+                {
+                    Vector3 dir = target.Velocity;
+                    dir.Normalize();
+                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
+                    target.Velocity = Vector3.Zero;
+
+                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position = 
+                    //    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).PreviousPosition;
+                    // TODO: Fixa collisionen
+                }
+            }
+        }
+        private void CheckCollision(float dt)
+        {
+            foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            {
+                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
+                if (model.BoundingVolume == null)
+                    continue;
+                foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+                {
+                    if (entityIDUno == entityIDDos)
+                        continue;
+
+                    ModelComponent model2 = ComponentManager.GetEntityComponent<ModelComponent>(entityIDDos);
+                    if (model2.BoundingVolume == null)
+                        continue;
+
+                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding))
+                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
+
+}
+            }
+        }
+        private bool IsPointInsideAABB(TransformComponent transform, BoundingBox box)
+        {
+            return (transform.Position.X >= box.Min.X && transform.Position.X <= box.Max.X) &&
+                (transform.Position.Y >= box.Min.Y && transform.Position.Y <= box.Max.Y) &&
+                (transform.Position.Z >= box.Min.Z && transform.Position.Z <= box.Max.Z);
+        }
+        private bool IsPointInsideSphere(TransformComponent tranform, BoundingSphere sphere)
+        {
+            var distance = Math.Sqrt((tranform.Position.X - sphere.Center.X) * (tranform.Position.X - sphere.Center.X) +
+                (tranform.Position.Y - sphere.Center.Y) * (tranform.Position.Y - sphere.Center.Y) +
+                (tranform.Position.Z - sphere.Center.Z) * (tranform.Position.Z - sphere.Center.Z));
+            return distance < sphere.Radius;
         }
         /// <summary>
         /// Observer funktion, Updates the reflection on two objects 

@@ -12,7 +12,6 @@ namespace GameEngine.Source.Utils
     public static class Util
     {
         private static Random _random = new Random();
-
         /// <summary>
         /// Returns a random double between minumim and maximun
         /// </summary>

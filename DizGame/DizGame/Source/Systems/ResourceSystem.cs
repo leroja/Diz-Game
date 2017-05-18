@@ -85,13 +85,13 @@ namespace DizGame.Source.Systems
                 
                 if(keepTrack % healthAmmoRatio == 1)
                 {
-                    EntityFactory.Instance.CreateHealthResource(positions.ElementAt(keepTrack));
+                    EntityFactory.Instance.ResourceFactory.CreateHealthResource(positions.ElementAt(keepTrack));
                     keepTrack++;
                     currentNumberOfResources++;
                 }
                 else
                 {
-                    EntityFactory.Instance.CreateAmmoResource(positions.ElementAt(keepTrack));
+                    EntityFactory.Instance.ResourceFactory.CreateAmmoResource(positions.ElementAt(keepTrack));
                     keepTrack++;
                     currentNumberOfResources++;
                 }
