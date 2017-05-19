@@ -61,6 +61,7 @@ namespace DizGame.Source.GameStates
             AudioManager.Instance.PlaySong("GameSong");
             AudioManager.Instance.ChangeSongVolume(0.25f);
             AudioManager.Instance.ChangeGlobalSoundEffectVolume(0.75f);
+
         }
 
         /// <summary>
@@ -217,7 +218,7 @@ namespace DizGame.Source.GameStates
                 modelComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(
                     new BoundingSphere(new Vector3(transComp.Position.X, transComp.Position.Y, transComp.Position.Z), 3)));
             }
-
+            entf.SpawnProtection();
         }
 
         /// <summary>
