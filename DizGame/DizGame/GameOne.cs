@@ -12,6 +12,7 @@ using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using GameEngine.Source.Utils;
 
 namespace DizGame
 {
@@ -84,7 +85,6 @@ namespace DizGame
         {
             TreeModel tree = new TreeModel(Device, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
         }
-
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.

@@ -64,9 +64,11 @@ namespace ContentProject
 
             // Chain to the base ModelProcessor class so it can convert the model data.
             ModelContent model = base.Process(input, context);
-            Dictionary<string, object> modeldict = new Dictionary<string, object>();
-            modeldict["SkinningData"] = new SkinningData(animationClips, bindPose,
-                                     inverseBindPose, skeletonHierarchy);
+            Dictionary<string, object> modeldict = new Dictionary<string, object>
+            {
+                ["SkinningData"] = new SkinningData(animationClips, bindPose,
+                                     inverseBindPose, skeletonHierarchy)
+            };
             // Store our custom animation data in the Tag property of the model.
             model.Tag = modeldict;
 

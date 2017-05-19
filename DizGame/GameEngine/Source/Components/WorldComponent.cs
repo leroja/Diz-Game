@@ -90,6 +90,10 @@ namespace GameEngine.Source.Components
         /// bool if sun is "on"
         /// </summary>
         public bool IsSunActive { get; set; }
+        /// <summary>
+        /// Global light direction such as the sun
+        /// </summary>
+        public Vector3 LightDirection { get; set; }
         #endregion Public Properties
         /// <summary>
         /// Basic constructor which sets all the attributes to default value.
@@ -116,6 +120,7 @@ namespace GameEngine.Source.Components
                 { DensityType.Automobile_Oils, new List<Tuple<Vector3,Vector3>>() }
             };
             IsSunActive = true;
+            LightDirection = Vector3.Zero;
         }
 
     }

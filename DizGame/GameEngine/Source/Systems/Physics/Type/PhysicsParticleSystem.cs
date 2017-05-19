@@ -28,8 +28,6 @@ namespace GameEngine.Source.Systems
         {
             PhysicsSystem.UpdateMass(physic);
             PhysicsSystem.UpdateGravity(physic, dt);
-            PhysicsSystem.UpdateForce(physic);
-            PhysicsSystem.UpdateEulerAcceleration(physic);
             UpdatePosition(physic, dt);
             //TODO: ParticleSystem
             // Code here:
