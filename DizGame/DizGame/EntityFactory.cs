@@ -1,4 +1,5 @@
 ﻿
+using AnimationContentClasses;
 using DizGame.Source.Components;
 using DizGame.Source.Enums;
 using DizGame.Source.Factories;
@@ -93,7 +94,7 @@ namespace DizGame
 
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
-            ResourceFactory = new ResourceFactory(Content, ModelDic, VisibleBullets);
+            ResourceFactory = new ResourceFactory(ModelDic, VisibleBullets);
         }
         /// <summary>
         /// Creates the World Component
@@ -132,11 +133,15 @@ namespace DizGame
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
             mouse.MouseSensitivity = 0.2f;
-
+            TransformComponent tComp = new TransformComponent(new Vector3(20, 45, -10), new Vector3(0.1f, 0.1f, 0.1f));
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
-                new ModelComponent(chuck),
+                tComp,
+                new ModelComponent(chuck){
+                    //BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY * 3, 4))),
+                    BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(GetModelSphere(chuck, 0.05f))),
+                    MiddlePosition = Vector3.UnitY * 4
+                },
                 keys,
                 mouse,
                 new PlayerComponent(),
@@ -217,12 +222,14 @@ namespace DizGame
         public int CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
+            Vector3 middlePoint = Vector3.UnitY;
             Model model = ModelDic[nameOfModel];
-
             switch (nameOfModel)
             {
                 case "Rock":
                     scale = new Vector3(5, 5, 5);
+                    middlePoint *= 2;
+                    
                     foreach (ModelMesh mesh in model.Meshes)
                     {
                         foreach( BasicEffect effect in mesh.Effects)
@@ -272,7 +279,53 @@ namespace DizGame
 
             return entityID;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private BoundingBox GetStaticModelBox(Model model, float scale)
+        {
+            List<Vector3> positions = new List<Vector3>(); 
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    Vector3[] vertices = new Vector3[part.VertexBuffer.VertexCount];
+                    part.VertexBuffer.GetData(vertices);
+                    //foreach(VertexPositionNormalTexture vertice in vertices)
+                    //{
+                    //    positions.Add(vertice.Position);
+                    //}
+                    positions.AddRange(vertices);
+                }
+            }
+            BoundingBox box = BoundingBox.CreateFromPoints(positions);
+            box.Min *= scale;
+            box.Max *= scale;
+            return box;
+        }
 
+        private BoundingSphere GetModelSphere(Model model, float scale)
+        {
+            List<Vector3> positions = new List<Vector3>();
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    Vector3[] vertices = new Vector3[part.VertexBuffer.VertexCount];
+                    part.VertexBuffer.GetData(vertices);
+                    //foreach(VertexPositionNormalTexture vertice in vertices)
+                    //{
+                    //    positions.Add(vertice.Position);
+                    //}
+                    positions.AddRange(vertices);
+                }
+            }
+            BoundingSphere sphere = BoundingSphere.CreateFromPoints(positions);
+            sphere.Radius *= scale;
+            return sphere;
+        }
         /// <summary>
         /// Randomizes a map 
         /// </summary>
@@ -301,10 +354,6 @@ namespace DizGame
                         unablePositions.Add(positions[i]);
                     }
                 }
-                else
-                {
-                    i--;
-                }
             }
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
@@ -323,10 +372,40 @@ namespace DizGame
                     }
                 }
             }
-
             return entityIdList;
         }
+        /// <summary>
+        /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
+        /// </summary>
+         public void SpawnProtection()
+        {
+            List<int> spawnPositions = new List<int>();
+            List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            
+            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
+            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
+            foreach (var id in spawnPositions)
+            {
+                TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id);
+                float minX = tran.Position.X - 10;
+                float minZ = tran.Position.Z + 10;
+                float maxX = tran.Position.X + 10;
+                float maxZ = tran.Position.Z - 10;
 
+                foreach (var model in modelId)
+                {
+                    ModelComponent mod = ComponentManager.Instance.GetEntityComponent<ModelComponent>(model);
+                    TransformComponent Comp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(model);
+                    if (Comp != null && mod.IsStatic == true )
+                    {
+                        if ((Comp.Position.X >= minX && Comp.Position.X <= maxX) && (Comp.Position.Z <= minZ && Comp.Position.Z >= maxZ))
+                        {
+                            ComponentManager.Instance.RemoveEntity(model);
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Creates a parrical emmiter and sets positions and options
         /// </summary>
@@ -394,13 +473,17 @@ namespace DizGame
             Random r = new Random();
             int mapWidht;
             int mapHeight;
+
+            List<Vector3> SpawnProtection = new List<Vector3>();
             List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
+
             mapWidht = heigt.Width;
             mapHeight = heigt.Height;
             for (int i = 0; i < numberOfPositions; i++)
             {
-                var pot = new Vector3(r.Next(mapWidht-10), 0,r.Next(mapHeight-10));
+                var pot = new Vector3(r.Next(mapWidht-20), 0,r.Next(mapHeight-20));
+
                 pot.Y = heigt.HeightMapData[(int)pot.X,(int)pot.Z];
                 if (pot.X < 10)
                 {
@@ -415,6 +498,7 @@ namespace DizGame
             }
             return positions;
         }
+
 
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
@@ -492,14 +576,18 @@ namespace DizGame
             int BulletEntity = ComponentManager.Instance.CreateID();
 
             Model model = ModelDic[modelName];
+            TransformComponent tComp = new TransformComponent(pos, scale)
+            {
+                Rotation = rotation,
+            };
             List<IComponent> componentList = new List<IComponent>()
             {
-                new TransformComponent(pos, scale)
-                {
-                    Rotation = rotation,
-                },
+                tComp,
                 new  ModelComponent(model){
+                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY, 1))),
+                    BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(GetModelSphere(model, scale.X))),
                     IsVisible = VisibleBullets,
+                    MiddlePosition = Vector3.UnitY
                 },
                 
                 new BulletComponent(){
@@ -598,11 +686,15 @@ namespace DizGame
             Model model = ModelDic[ModelName];
 
             var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
-
+            TransformComponent tComp = new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f));
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
-                new ModelComponent(model),
+                tComp,
+                new ModelComponent(model)
+                {
+                    MiddlePosition = Vector3.UnitY * 4,
+                    BoundingVolume = new BoundingVolume(AIEntityID, new BoundingSphere3D(GetModelSphere(model, 0.05f)))
+                },
                 new PhysicsComponent()
                 {
                     Volume = 22.5f,

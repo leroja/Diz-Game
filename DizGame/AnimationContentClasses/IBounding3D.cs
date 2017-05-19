@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace AnimationContentClasses
 {
+    /// <summary>
+    /// Abstract class IBounding3D. Used to handle boundings in the same way
+    /// </summary>
     public abstract class IBounding3D
     {
         /// <summary>
         /// ID for the component this IBounding3D belongs to
         /// </summary>
-        public int CompID { get; set; }
-
+        //public int CompID { get; set; }
+        
         /// <summary>
         /// Check if this IBounding3D intersects with another IBounding3D
         /// </summary>

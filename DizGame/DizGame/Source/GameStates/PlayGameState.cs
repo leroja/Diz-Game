@@ -5,6 +5,7 @@ using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
+using GameEngine.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -61,6 +62,7 @@ namespace DizGame.Source.GameStates
             AudioManager.Instance.PlaySong("GameSong");
             AudioManager.Instance.ChangeSongVolume(0.25f);
             AudioManager.Instance.ChangeGlobalSoundEffectVolume(0.75f);
+
         }
 
         /// <summary>
@@ -114,7 +116,10 @@ namespace DizGame.Source.GameStates
                 EntityFactory.Instance.VisibleBullets = true;
             }
         }
-
+        /// <summary>
+        /// Method to run durring the update part of the game, should contain logic
+        /// for exiting the gamestate.
+        /// </summary>
         public override void Update()
         {
             //Bara för att testa så att obscuring och revealed metoderna fungerar.
@@ -134,20 +139,23 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
+            CollisionSystem cSys = new CollisionSystem();
+            PhysicsSystem pSys = new PhysicsSystem();
+            cSys.Subscribe(pSys);
+            SystemManager.Instance.AddSystem(pSys);
+            SystemManager.Instance.AddSystem(cSys);
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new GameTransformSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
-
             SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
-            SystemManager.Instance.AddSystem(new SmokePaticleSystemcs());
+            SystemManager.Instance.AddSystem(new PaticleUppdateSystemcs());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
@@ -161,6 +169,8 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new ResourceSystem());
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
         }
 
         /// <summary>
@@ -217,7 +227,7 @@ namespace DizGame.Source.GameStates
                 modelComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(
                     new BoundingSphere(new Vector3(transComp.Position.X, transComp.Position.Y, transComp.Position.Z), 3)));
             }
-
+            entf.SpawnProtection();
         }
 
         /// <summary>
