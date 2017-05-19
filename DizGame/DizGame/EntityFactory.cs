@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DizGame.Source.Components.ResourceComponent;
+using AnimationContentClasses;
 
 namespace DizGame
 {
@@ -36,6 +37,10 @@ namespace DizGame
         /// Hud factory
         /// </summary>
         public HudFactory HudFactory { get; set; }
+        /// <summary>
+        /// Factory to create resources
+        /// </summary>
+        public ResourceFactory ResourceFactory { get; set; }
         /// <summary>
         /// A Bool that says whether the models are vivible or not
         /// </summary>
@@ -61,11 +66,9 @@ namespace DizGame
         private EntityFactory()
         {
             VisibleBullets = true;
-            hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
+            
             CreateWorldComp();
             this.Content = GameOne.Instance.Content;
-
-            HudFactory = new HudFactory(Content);
 
             ModelDic = new Dictionary<string, Model>
             {
@@ -87,8 +90,11 @@ namespace DizGame
                 { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
                 {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
             };
+
+            hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
+            HudFactory = new HudFactory(Content);
+            ResourceFactory = new ResourceFactory(Content, ModelDic, VisibleBullets);
         }
-       
         /// <summary>
         /// Creates the World Component
         /// </summary>
@@ -121,7 +127,7 @@ namespace DizGame
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
             keys.AddActionAndKey("Mute", Keys.M);
-            
+           
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
@@ -180,16 +186,22 @@ namespace DizGame
                     effect.FogEnd = 400;
                 }
             }
+            List<BoundingSphere> bList = (List<BoundingSphere>)house.Tag;
             int entityID = ComponentManager.Instance.CreateID();
             ModelComponent mod = new ModelComponent(house)
             {
-                IsStatic = true
+                IsStatic = true,
+                BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(bList[0]))
+            };
+            PhysicsComponent phy = new PhysicsComponent()
+            {
+                PhysicsType = PhysicsType.Static,
             };
             List<IComponent> components = new List<IComponent>
             {
             new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
-                mod
-                
+                mod,
+                phy
                 };
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
@@ -223,6 +235,7 @@ namespace DizGame
                             effect.FogEnd = 400;
                         }
                     }
+                    
                     break;
                 case "Tree":
                     foreach (ModelMesh mesh in model.Meshes)
@@ -238,15 +251,22 @@ namespace DizGame
                     }
                     break;
             }
+            List<BoundingSphere> bList = (List < BoundingSphere >) model.Tag;
             int entityID = ComponentManager.Instance.CreateID();
             ModelComponent comp = new ModelComponent(model)
             {
-                IsStatic = true
+                IsStatic = true,
+                BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(bList[0]))
+            };
+            PhysicsComponent phy = new PhysicsComponent()
+            {
+                PhysicsType = PhysicsType.Static
             };
             List<IComponent> components = new List<IComponent>
             {
             new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
-                comp
+                comp,
+                phy
             };
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
@@ -523,6 +543,12 @@ namespace DizGame
             var sk = anm.SkinningDataValue.AnimationClips.Keys;
 
             anm.StartClip(sk.First());
+
+            Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
+            List<BoundingSphere> bList = (List<BoundingSphere>)dict["BoundingVolume"];
+
+            mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(bList[0]));
+
         }
         
         /// <summary>
@@ -604,70 +630,6 @@ namespace DizGame
             TestingTheAnimationsWithDude(AIEntityID);
 
             return AIEntityID;
-        }
-
-        public void CreateHealthResource(Vector3 position)
-        {
-            int newEntityId = ComponentManager.Instance.CreateID();
-
-            //adjust the scales differently for the models if needed
-            TransformComponent tcp = new TransformComponent(position, new Vector3(0.04f, 0.04f, 0.04f));
-            Model model = ModelDic["Heart"];
-            foreach(var modelpart in model.Meshes)
-            {
-                BasicEffect effect = (BasicEffect)modelpart.Effects[0];
-                effect.EnableDefaultLighting();
-                effect.DiffuseColor = Color.DeepPink.ToVector3();
-                effect.AmbientLightColor = Color.AntiqueWhite.ToVector3();
-                effect.FogEnabled = true;
-                effect.FogColor = Color.LightGray.ToVector3();
-                effect.FogStart = 10;
-                effect.FogEnd = 400;
-            }
-            ModelComponent mcp = new ModelComponent(model)
-            {
-                IsVisible = VisibleBullets
-            };
-            
-            List<IComponent> resourceCompList = new List<IComponent>
-            {
-                new ResourceComponent(ResourceType.Health),
-                tcp,
-                mcp,
-            };
-
-            ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
-        }
-
-        public void CreateAmmoResource(Vector3 position)
-        {
-            int newEntityId = ComponentManager.Instance.CreateID();
-            var newPosY = position.Y + 5;
-            Vector3 newTotalPos = new Vector3(position.X, newPosY, position.Z);
-            //adjust the scales differently for the models if needed
-            TransformComponent tcp = new TransformComponent(newTotalPos, new Vector3(1, 1, 1));
-
-            ModelComponent mcp = new ModelComponent(ModelDic["Cartridge"])
-            {
-                IsVisible = VisibleBullets
-            };
-            foreach (var modelpart in mcp.Model.Meshes)
-            {
-                BasicEffect effect = (BasicEffect)modelpart.Effects[0];
-                effect.EnableDefaultLighting();
-                effect.FogEnabled = true;
-                effect.FogColor = Color.LightGray.ToVector3();
-                effect.FogStart = 10;
-                effect.FogEnd = 400;
-            }
-            List<IComponent> resourceCompList = new List<IComponent>
-            {
-                new ResourceComponent(ResourceType.Ammo),
-                tcp,
-                mcp,
-            };
-
-            ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
         }
     }
 }

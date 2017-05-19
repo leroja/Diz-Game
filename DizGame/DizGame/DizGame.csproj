@@ -65,6 +65,7 @@
     <Compile Include="Source\Components\ScoreComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\Factories\HudFactory.cs" />
+    <Compile Include="Source\Factories\ResourceFactory.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\GameStates\PlayGameState.cs" />
     <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
@@ -157,7 +158,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Characters\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

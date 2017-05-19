@@ -47,7 +47,7 @@ namespace GameEngine.Source.Systems
             rigidBody.LocalToBody = Matrix.Invert(rigidBody.BodyToLocal);
             IntegrateStateVariables(transform, rigidBody, dt);
 
-            PhysicsSystem.UpdateDeceleration(physic);
+            //PhysicsSystem.UpdateDeceleration(physic);
         }
         /// <summary>
         /// Updates the object position using its velocity * dt
@@ -56,6 +56,7 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         private void UpdatePosition(PhysicsComponent physic, float dt)
         {
+            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).PreviousPosition = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position;
             //ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
             //        += physic.Velocity * dt + physic.Acceleration * dt * dt * 0.5f;
 

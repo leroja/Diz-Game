@@ -33,15 +33,11 @@ namespace GameEngine.Source.Systems
         {
             //TODO: StaticSystem
             PhysicsSystem.UpdateMass(physic);
-            PhysicsSystem.UpdateForce(physic);
-            PhysicsSystem.UpdateVelocity(physic, dt);
-            UpdatePosition(physic, dt);
             //TODO: StaticSystem
             // Code here:
 
             //
-            PhysicsSystem.UpdateVelocity(physic, dt);
-            PhysicsSystem.UpdateDeceleration(physic);
+            
         }
         /// <summary>
         /// Updates the object position using its velocity * dt

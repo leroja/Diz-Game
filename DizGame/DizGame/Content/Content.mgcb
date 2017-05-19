@@ -103,7 +103,7 @@
 
 #begin MapObjects/WoodHouse/Cyprys_House.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:ModelBoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -113,7 +113,7 @@
 /processorParam:PremultiplyVertexColors=True
 /processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
-/processorParam:RotationY=90
+/processorParam:RotationY=0
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
@@ -122,7 +122,7 @@
 
 #begin MapObjects/Farmhouse/MedievalHouse1.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:ModelBoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -130,13 +130,13 @@
 /processorParam:GenerateTangentFrames=False
 /processorParam:PremultiplyTextureAlpha=True
 /processorParam:PremultiplyVertexColors=True
-/processorParam:ResizeTexturesToPowerOfTwo=True
+/processorParam:ResizeTexturesToPowerOfTwo=False
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=DxtCompressed
+/processorParam:TextureFormat=Color
 /build:MapObjects/Farmhouse/MedievalHouse1.obj
 
 #begin MapObjects/Farmhouse/roof.tga
@@ -165,7 +165,7 @@
 
 #begin MapObjects/Tree/lowpolytree.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:ModelBoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -184,7 +184,7 @@
 
 #begin MapObjects/Rock/Rock.obj
 /importer:FbxImporter
-/processor:ModelProcessor
+/processor:ModelBoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -313,7 +313,7 @@
 
 #begin Dude/Dude72.fbx
 /importer:FbxImporter
-/processor:AnimationProcessor
+/processor:ModelBoxesAndAnimationProcessor
 /processorParam:DefaultEffect=SkinnedEffect
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
