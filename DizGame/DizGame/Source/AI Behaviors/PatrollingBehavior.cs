@@ -32,7 +32,6 @@ namespace DizGame.Source.AI_Behaviors
 
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
             transformComp.Rotation = GetRotationToNextWayPoint(AIComp.ID);
@@ -53,7 +52,6 @@ namespace DizGame.Source.AI_Behaviors
             }
 
             BehaviorStuff(AIComp, transformComp);
-
         }
 
 

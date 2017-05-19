@@ -4,6 +4,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
+using GameEngine.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -137,12 +138,15 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
-            
+            CollisionSystem cSys = new CollisionSystem();
+            PhysicsSystem pSys = new PhysicsSystem();
+            cSys.Subscribe(pSys);
+            SystemManager.Instance.AddSystem(pSys);
+            //SystemManager.Instance.AddSystem(new CollisionSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
@@ -154,6 +158,9 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
+            
         }
         /// <summary>
         /// Function for initializing the entities which are needed for a single player game 
@@ -201,15 +208,6 @@ namespace DizGame.Source.GameStates
 
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
-            var ids = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            foreach (var modelEnt in ids)
-            {
-                var modelComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modelEnt);
-                var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(modelEnt);
-                modelComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(
-                    new BoundingSphere(new Vector3(transComp.Position.X, transComp.Position.Y, transComp.Position.Z), 3)));
-            }
-
         }
         /// <summary>
         /// Function for initializing all the entities which are needed for a 

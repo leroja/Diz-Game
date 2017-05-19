@@ -30,16 +30,32 @@ namespace GameEngine.Source.Systems
             {
                 var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
 
-                GetModelBoundingVolume(modelComp, modelEnt);
+                UpdateModelBoundingVolume(modelComp, modelEnt);
             }
         }
-
-        private void GetModelBoundingVolume(ModelComponent modComp, int entityId)
+        /// <summary>
+        /// Updates the BoundingVolume of the model to its position in the world
+        /// </summary>
+        /// <param name="modComp"></param>
+        /// <param name="entityId"></param>
+        private void UpdateModelBoundingVolume(ModelComponent modComp, int entityId)
         {
-            var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(entityId);
-            var sphere = new BoundingSphere(transformComp.Position, 0);
-            var box = new BoundingBox();
-            modComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(new BoundingSphere(new Vector3(transformComp.Position.X, transformComp.Position.Y, transformComp.Position.Z), 3)));
+            if (modComp.BoundingVolume != null)
+            {
+                var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(entityId);
+
+                if (modComp.BoundingVolume.Bounding is BoundingSphere3D)
+                {
+                    BoundingSphere3D bounding = modComp.BoundingVolume.Bounding as BoundingSphere3D;
+                    bounding.Sphere = new BoundingSphere(transformComp.Position + modComp.MiddlePosition, bounding.Sphere.Radius);
+                }
+            }
+            //else if (modComp.BoundingVolume.Bounding is BoundingBox3D)
+            //{
+            //    BoundingBox3D bounding = modComp.BoundingVolume.Bounding as BoundingBox3D;
+            //    bounding.Box = new BoundingBox(bounding.Box.Min + transformComp.Position, bounding.Box.Max + transformComp.Position);
+            //}
+            //modComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(new BoundingSphere(new Vector3(transformComp.Position.X, transformComp.Position.Y, transformComp.Position.Z), 3)));
             //if (volume.Volume.FirstOrDefault().Bounding is BoundingSphere3D)
             //{
             //    volume.Bounding = new BoundingSphere3D(sphere);

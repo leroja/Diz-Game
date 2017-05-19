@@ -16,7 +16,11 @@ namespace AnimationContentClasses
         {
             Sphere = ball;
         }
-
+        /// <summary>
+        /// Checks if this Sphere intersects with another IBounding3D
+        /// </summary>
+        /// <param name="bounding"></param>
+        /// <returns></returns>
         public override bool Intersects(IBounding3D bounding)
         {
             if (bounding is BoundingBox3D)
@@ -30,6 +34,11 @@ namespace AnimationContentClasses
             return false;
         }
 
+        /// <summary>
+        /// Merges this sphere with an other IBounding3D
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <returns></returns>
         public override IBounding3D CreateMerged(IBounding3D bound)
         {
             if (bound is BoundingBox3D)
