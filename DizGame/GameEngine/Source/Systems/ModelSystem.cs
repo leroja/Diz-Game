@@ -62,7 +62,7 @@ namespace GameEngine.Source.Systems
                         {
                             foreach (BasicEffect effect in mesh.Effects)
                             {
-                                effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ObjectMatrix * world.World;
+                                effect.World = model.MeshWorldMatrices[mesh.ParentBone.Index] * transform.ModelMatrix * world.World;
 
                                 effect.View = defaultCam.View;
                                 effect.Projection = defaultCam.Projection;
