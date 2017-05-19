@@ -26,7 +26,7 @@ namespace DizGame.Source.Systems
         /// </summary>
         public ResourceSystem()
         {
-            maxNumberOfResourcesInPlay = 50;
+            maxNumberOfResourcesInPlay = 25;
             healthAmmoRatio = 3;
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace DizGame.Source.Systems
                         RemoveOldResources(entity);
 
                 }
-                if (entitylist.Count + numberOfRemovedResources < 50)
+                if (entitylist.Count + numberOfRemovedResources < maxNumberOfResourcesInPlay)
                     AddNewResources(entitylist.Count + numberOfRemovedResources);
             }
 
@@ -80,7 +80,7 @@ namespace DizGame.Source.Systems
             
             List<Vector3> positions = GetMapPositions(maxNumberOfResourcesInPlay - currentNumberOfResources);
 
-            while (currentNumberOfResources != 50)
+            while (currentNumberOfResources != maxNumberOfResourcesInPlay)
             {
                 
                 if(keepTrack % healthAmmoRatio == 1)

@@ -114,7 +114,10 @@ namespace DizGame.Source.GameStates
                 EntityFactory.Instance.VisibleBullets = true;
             }
         }
-
+        /// <summary>
+        /// Method to run durring the update part of the game, should contain logic
+        /// for exiting the gamestate.
+        /// </summary>
         public override void Update()
         {
             //Bara för att testa så att obscuring och revealed metoderna fungerar.

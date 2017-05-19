@@ -18,16 +18,25 @@ namespace DizGame.Source.Factories
     /// </summary>
     public class ResourceFactory
     {
-        private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private bool VisibleBullets;
-
-        public ResourceFactory(ContentManager Content, Dictionary<string, Model> ModelDic, bool VisibleBullets)
+        /// <summary>
+        /// Constructor for creating the ResourceFactory
+        /// </summary>
+        /// <param name="ModelDic">Dictoionary containing the models which should represent 
+        /// the different types of resources</param>
+        /// <param name="VisibleBullets">Should be true if the models should be rendered by the render system
+        /// or false if they should be temporarily hidden</param>
+        public ResourceFactory(Dictionary<string, Model> ModelDic, bool VisibleBullets)
         {
-            this.Content = Content;
             this.ModelDic = ModelDic;
             this.VisibleBullets = VisibleBullets;
         }
+        /// <summary>
+        /// Method for creating health resources
+        /// </summary>
+        /// <param name="position">This parameter should represent the position in which the 
+        /// resource should be spawned</param>
         public void CreateHealthResource(Vector3 position)
         {
             int newEntityId = ComponentManager.Instance.CreateID();
@@ -60,7 +69,11 @@ namespace DizGame.Source.Factories
 
             ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
         }
-
+        /// <summary>
+        /// Method for creating the ammunition resources.
+        /// </summary>
+        /// <param name="position">This parameter should represent the position for which the resource 
+        /// should be spawned.</param>
         public void CreateAmmoResource(Vector3 position)
         {
             int newEntityId = ComponentManager.Instance.CreateID();
