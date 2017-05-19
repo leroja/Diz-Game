@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Source.Utils;
 
 namespace DizGame.Source.Components
 {
@@ -49,7 +50,7 @@ namespace DizGame.Source.Components
         public ResourceComponent(ResourceType type)
         {
             thisType = type;
-            durration = TimeSpan.FromSeconds(20);
+            durration = TimeSpan.FromSeconds(Util.GetRandomNumber(15, 25));
         }
         /// <summary>
         /// Alternate constructor for the ResourceComponent

@@ -17,7 +17,7 @@
 
 #begin bullet/bullet.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:ModelBoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect

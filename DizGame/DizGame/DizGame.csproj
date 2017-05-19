@@ -94,7 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Effect\ParticleEffect.fx" />
+    <Content Include="Content\Effects\ParticleEffect.fx" />
     <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\grass.png" />

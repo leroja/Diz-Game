@@ -105,7 +105,8 @@ namespace DizGame
                 new WorldComponent(Matrix.Identity)
                 {
                     IsSunActive = true,
-                    DefineHour = 2,
+                    DefineHour = 1,
+                    Day = 2,
                     
                 },
             };
@@ -454,7 +455,6 @@ namespace DizGame
         {
             ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov)
             {
-                Offset = new Vector3(0, 10, 30),
                 IsFlareable = isFlareable
             });
         }
@@ -492,14 +492,17 @@ namespace DizGame
             int BulletEntity = ComponentManager.Instance.CreateID();
 
             Model model = ModelDic[modelName];
+            List<BoundingSphere> bList = (List<BoundingSphere>)model.Tag;
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
                 {
                     Rotation = rotation,
                 },
+                
                 new  ModelComponent(model){
                     IsVisible = VisibleBullets,
+                     BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(bList[0]))
                 },
                 
                 new BulletComponent(){
@@ -519,7 +522,8 @@ namespace DizGame
                     ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
                     PhysicsType = PhysicsType.Projectiles,
                     
-                    Velocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity * 100,
+                    Velocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity,
+                    
                 }, 
             };
 

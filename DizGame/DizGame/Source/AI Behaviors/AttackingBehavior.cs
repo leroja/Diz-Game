@@ -52,16 +52,17 @@ namespace DizGame.Source.AI_Behaviors
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             
             transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
+            transformComp.Position = new Vector3(transformComp.Position.X, GetCurrentHeight(transformComp.Position), transformComp.Position.Z);
             
             if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
             {
                 var rot = GetRotationForAimingAtEnemy(AIComp);
 
-                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position, new Vector3(.1f, .1f, .1f), 100, 10, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot);
+                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 20, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot);
                 time = AIComp.ShootingCooldown;
             }
 
-            BehaviorStuff(AIComp, transformComp, worldComp);            
+            //BehaviorStuff(AIComp, transformComp, worldComp);
         }
 
         /// <summary>
