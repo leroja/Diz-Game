@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GameEngine.Source.Systems
 {
     /// <summary>
-    /// An abtrct class for updating systems
+    /// An abstract class for updating systems
     /// </summary>
     public abstract class IUpdate : ISystem
     {

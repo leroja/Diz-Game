@@ -95,7 +95,5 @@ namespace GameEngine.Source.Components
             // Initialize bone transforms to the bind pose.
             SkinningDataValue.BindPose.CopyTo(BoneTransforms, 0);
         }
-
-
     }
 }

@@ -150,8 +150,7 @@ namespace DizGame
             TestingTheAnimationsWithDude(entityID);
             return entityID;
         }
-
-        // Todo lägg till FOG
+        
         /// <summary>
         /// Creates a house of given model
         /// </summary>
@@ -197,8 +196,7 @@ namespace DizGame
             return entityID;
 
         }
-
-        // Todo lägg till FOG
+        
         /// <summary>
         /// creates the static objects
         /// </summary>
