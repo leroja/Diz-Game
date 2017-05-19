@@ -20,6 +20,10 @@ namespace DizGame.Source.Communication
 
         private static NetClient client;
 
+        private static NetOutgoingMessage message;
+
+        private static Byte[] messageArray;
+
         private int WAIT_MAX_MILLIS = 100;
         private static int MAX_MESSAGE_SIZE = 100;
 
@@ -81,22 +85,17 @@ namespace DizGame.Source.Communication
             ////Send Players as entities.
         }
 
+
         /// <summary>
         /// This function is temporary - dont use it for now other than for testing purposes.
         /// </summary>
         public void SendRequestInitialGameState()
         {
-            NetOutgoingMessage message = client.CreateMessage();
-
-            Byte[] messageArray = new Byte[MAX_MESSAGE_SIZE];
+            InitMessage();
 
             int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.GetInitialGameState);
 
-            Array.Resize(ref messageArray, arrLength);
-
-            message.Write(messageArray);
-            client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
-            client.FlushSendQueue();
+            SendMessage(arrLength);
         }
 
 
@@ -106,46 +105,56 @@ namespace DizGame.Source.Communication
         /// <param name="entityIds">The entities' component lists to send to server.</param>
         public static void SendCreatedNewEntities(List<int> entityIds)
         {
-            NetOutgoingMessage message = client.CreateMessage();
             IComponent component = null;
 
             foreach(int entityId in entityIds)
             {
-                //message.Write(ComponentManager.Instance.GetAllEntityComponents(entityId));
-                //List<IComponent> components = ComponentManager.Instance.GetAllEntityComponents(entityId);
-
                 foreach (ComponentType type in Enum.GetValues(typeof(ComponentType)))
                 {
+                    component = null;
+
                     switch(type)
                     {
                         case ComponentType.TransformComponent:
-                            component = ComponentManager.Instance.GetEntityComponent<TextComponent>(entityId);
-                            
+                            component = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityId);
+                            if(component != null) //Not sure if this always will be null when componentManager fails...
+                                SendCreatedNewTransformComponent(entityId, component);
                             break;
 
                         default:
                             break;
                     }
                 }
-
-                //This does not work as IComponent is not known to Lidgrens network. Vector3 does
-                //not work too to send...
-                //message.WriteAllFields(components);
-
-                client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
-                client.FlushSendQueue();
             }
-
-            //Should send with Reflection if possible instead of building and converting.
-            //Byte[] messageArray = new Byte[MAX_MESSAGE_SIZE];
-
-            //int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.GetInitialGameState);
-
-            //Array.Resize(ref messageArray, arrLength);
-
-            
-            //message.Write(messageArray);
-
         }
+
+
+        private static void SendCreatedNewTransformComponent(int entityId, IComponent component)
+        {
+            InitMessage();
+
+
+
+            SendMessage(9);
+        }
+
+
+        private static void InitMessage()
+        {
+            message = client.CreateMessage();
+
+            messageArray = new Byte[MAX_MESSAGE_SIZE];
+        }
+
+
+        private static void SendMessage(int arrLength)
+        {
+            Array.Resize(ref messageArray, arrLength);
+
+            message.Write(messageArray);
+            client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+            client.FlushSendQueue();
+        }
+
     }
 }
