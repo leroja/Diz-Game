@@ -70,6 +70,7 @@
     <Compile Include="Source\Systems\ModelBoundingSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
     <Compile Include="Source\Systems\ParticleRenderSystem.cs" />
+    <Compile Include="Source\Systems\PaticleUppdateSystemcs.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interfaces\IPhysics.cs" />
     <Compile Include="Source\Systems\Physics\Type\AbstractClasses\IPhysicsTypeSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />

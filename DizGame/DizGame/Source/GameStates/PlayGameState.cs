@@ -62,6 +62,7 @@ namespace DizGame.Source.GameStates
             AudioManager.Instance.PlaySong("GameSong");
             AudioManager.Instance.ChangeSongVolume(0.25f);
             AudioManager.Instance.ChangeGlobalSoundEffectVolume(0.75f);
+
         }
 
         /// <summary>
@@ -115,7 +116,10 @@ namespace DizGame.Source.GameStates
                 EntityFactory.Instance.VisibleBullets = true;
             }
         }
-
+        /// <summary>
+        /// Method to run durring the update part of the game, should contain logic
+        /// for exiting the gamestate.
+        /// </summary>
         public override void Update()
         {
             //Bara för att testa så att obscuring och revealed metoderna fungerar.
@@ -151,7 +155,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
             SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
-            SystemManager.Instance.AddSystem(new SmokePaticleSystemcs());
+            SystemManager.Instance.AddSystem(new PaticleUppdateSystemcs());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
@@ -223,7 +227,7 @@ namespace DizGame.Source.GameStates
                 modelComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(
                     new BoundingSphere(new Vector3(transComp.Position.X, transComp.Position.Y, transComp.Position.Z), 3)));
             }
-
+            entf.SpawnProtection();
         }
 
         /// <summary>
