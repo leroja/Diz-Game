@@ -93,7 +93,7 @@ namespace DizGame
 
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
-            ResourceFactory = new ResourceFactory(Content, ModelDic, VisibleBullets);
+            ResourceFactory = new ResourceFactory(ModelDic, VisibleBullets);
         }
         /// <summary>
         /// Creates the World Component
