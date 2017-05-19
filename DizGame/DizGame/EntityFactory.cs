@@ -301,10 +301,6 @@ namespace DizGame
                         unablePositions.Add(positions[i]);
                     }
                 }
-                else
-                {
-                    i--;
-                }
             }
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
@@ -323,10 +319,40 @@ namespace DizGame
                     }
                 }
             }
-
             return entityIdList;
         }
+        /// <summary>
+        /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
+        /// </summary>
+         public void SpawnProtection()
+        {
+            List<int> spawnPositions = new List<int>();
+            List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            
+            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
+            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
+            foreach (var id in spawnPositions)
+            {
+                TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id);
+                float minX = tran.Position.X - 10;
+                float minZ = tran.Position.Z + 10;
+                float maxX = tran.Position.X + 10;
+                float maxZ = tran.Position.Z - 10;
 
+                foreach (var model in modelId)
+                {
+                    ModelComponent mod = ComponentManager.Instance.GetEntityComponent<ModelComponent>(model);
+                    TransformComponent Comp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(model);
+                    if (Comp != null && mod.IsStatic == true )
+                    {
+                        if ((Comp.Position.X >= minX && Comp.Position.X <= maxX) && (Comp.Position.Z <= minZ && Comp.Position.Z >= maxZ))
+                        {
+                            ComponentManager.Instance.RemoveEntity(model);
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Creates a parrical emmiter and sets positions and options
         /// </summary>
@@ -394,13 +420,17 @@ namespace DizGame
             Random r = new Random();
             int mapWidht;
             int mapHeight;
+
+            List<Vector3> SpawnProtection = new List<Vector3>();
             List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
+
             mapWidht = heigt.Width;
             mapHeight = heigt.Height;
             for (int i = 0; i < numberOfPositions; i++)
             {
-                var pot = new Vector3(r.Next(mapWidht-10), 0,r.Next(mapHeight-10));
+                var pot = new Vector3(r.Next(mapWidht-20), 0,r.Next(mapHeight-20));
+
                 pot.Y = heigt.HeightMapData[(int)pot.X,(int)pot.Z];
                 if (pot.X < 10)
                 {
@@ -415,6 +445,7 @@ namespace DizGame
             }
             return positions;
         }
+
 
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
