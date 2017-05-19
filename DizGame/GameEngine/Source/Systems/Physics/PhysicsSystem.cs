@@ -270,17 +270,20 @@ namespace GameEngine.Source.Systems
                 {
                     Vector3 dir = target.Velocity;
                     dir.Normalize();
-                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
-                    target.Velocity = Vector3.Zero;
-
-                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position = 
-                    //    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).PreviousPosition;
+                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
+                                        //target.Velocity = Vector3.Zero;
+                    target.Velocity *= -dir * new Vector3(1, 0, 1);
+                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position *= target.Velocity * dt;
+                                        //Console.WriteLine(ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position);
+                    
+                                        //Console.WriteLine(target.Velocity);
                     // TODO: Fixa collisionen
                 }
             }
         }
         private void CheckCollision(float dt)
         {
+            List<int> done = new List<int>();
             foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
             {
                 ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
@@ -295,10 +298,10 @@ namespace GameEngine.Source.Systems
                     if (model2.BoundingVolume == null)
                         continue;
 
-                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding))
+                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
                         UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
-
-}
+                }
+                done.Add(entityIDUno);
             }
         }
         private bool IsPointInsideAABB(TransformComponent transform, BoundingBox box)

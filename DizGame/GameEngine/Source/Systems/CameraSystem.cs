@@ -43,8 +43,8 @@ namespace GameEngine.Source.Systems
                 // Todo något fel i POV
                 case Enums.CameraType.Pov:
                     Vector3 lookAtOffset = Vector3.Transform(Vector3.UnitZ, Matrix.CreateRotationX(transform.Rotation.X) * Matrix.CreateRotationY(transform.Rotation.Y));
-                    camera.LookAt = transform.Position + lookAtOffset;
-                    camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
+                    camera.LookAt = transform.Position + camera.Offset - lookAtOffset;
+                    camera.View = Matrix.CreateLookAt(transform.Position + camera.Offset, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.StaticCam:
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);

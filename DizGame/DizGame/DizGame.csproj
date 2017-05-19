@@ -72,6 +72,7 @@
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
+    <Compile Include="Source\Systems\GameTransformSystem.cs" />
     <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />

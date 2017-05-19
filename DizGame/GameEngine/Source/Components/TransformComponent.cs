@@ -59,6 +59,10 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Matrix ObjectMatrix { get; set; }
         /// <summary>
+        /// Matrix which is the ModelMatrix for an object
+        /// </summary>
+        public Matrix ModelMatrix { get; set; }
+        /// <summary>
         /// Matrix for describing a rotation of an object.
         /// </summary>
         public Matrix RotationMatrix { get; set; }
@@ -77,6 +81,7 @@ namespace GameEngine.Source.Components
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;
             this.RotationMatrix = Matrix.Identity;
+            this.ModelMatrix = Matrix.Identity;
         }
         /// <summary>
         /// Alternative Constructor for a TransformComponent
@@ -92,6 +97,7 @@ namespace GameEngine.Source.Components
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;
             this.RotationMatrix = rotationMatrix;
+            this.ModelMatrix = Matrix.Identity;
         }
     }
 }

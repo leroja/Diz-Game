@@ -1,4 +1,5 @@
 ﻿using GameEngine.Source.Components;
+using GameEngine.Source.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace DizGame.Source.Components
         public ResourceComponent(ResourceType type)
         {
             thisType = type;
-            durration = TimeSpan.FromSeconds(20);
+            durration = TimeSpan.FromSeconds(Util.GetRandomNumber(15, 25));
         }
         /// <summary>
         /// Alternate constructor for the ResourceComponent
