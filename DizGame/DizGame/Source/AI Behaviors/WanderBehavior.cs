@@ -86,9 +86,9 @@ namespace DizGame.Source.AI_Behaviors
             {
                 t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-            transformComp.Position = t;
+            //transformComp.Position = t;
 
-            BehaviorStuff(AIComp, transformComp);
+            //BehaviorStuff(AIComp, transformComp);
         }
         
         /// <summary>

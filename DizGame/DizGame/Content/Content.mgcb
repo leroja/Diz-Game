@@ -48,7 +48,7 @@
 /processorParam:RotationX=-90
 /processorParam:RotationY=180
 /processorParam:RotationZ=0
-/processorParam:Scale=1
+/processorParam:Scale=0.35
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:bullet/Cartridge.obj
@@ -344,7 +344,7 @@
 /processorParam:RotationX=0
 /processorParam:RotationY=0
 /processorParam:RotationZ=0
-/processorParam:Scale=1
+/processorParam:Scale=0.55
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:MapObjects/Heart/Heart.fbx

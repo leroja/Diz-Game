@@ -55,6 +55,10 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 Scale { get; set; }
         /// <summary>
+        /// Matrix which is the ModelMatrix for an object
+        /// </summary>
+        public Matrix ModelMatrix { get; set; }
+        /// <summary>
         /// Matrix which is the ObjectMatrix for an object
         /// </summary>
         public Matrix ObjectMatrix { get; set; }

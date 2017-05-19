@@ -72,13 +72,14 @@
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
+    <Compile Include="Source\Systems\GameTransformSystem.cs" />
     <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
-    <Compile Include="Source\Systems\SmokePaticleSystemcs.cs" />
+    <Compile Include="Source\Systems\PaticleUppdateSystemcs.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
   </ItemGroup>
   <ItemGroup>
