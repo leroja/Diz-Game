@@ -111,6 +111,7 @@
     <Compile Include="Source\Systems\WorldSystem.cs" />
     <Compile Include="Source\Utils\Debug.cs" />
     <Compile Include="Source\Utils\Util.cs" />
+    <Compile Include="Tools\BoundingBoxRenderer.cs" />
     <Compile Include="Tools\BoundingSphereRenderer.cs" />
   </ItemGroup>
   <ItemGroup>

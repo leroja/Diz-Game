@@ -5,6 +5,7 @@ using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
+using GameEngine.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -138,18 +139,21 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
+            CollisionSystem cSys = new CollisionSystem();
+            PhysicsSystem pSys = new PhysicsSystem();
+            cSys.Subscribe(pSys);
+            SystemManager.Instance.AddSystem(pSys);
+            SystemManager.Instance.AddSystem(cSys);
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new GameTransformSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
-
             SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new PaticleUppdateSystemcs());
             SystemManager.Instance.AddSystem(new AnimationSystem());
@@ -165,6 +169,8 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new ResourceSystem());
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
         }
 
         /// <summary>
@@ -193,7 +199,8 @@ namespace DizGame.Source.GameStates
             GameStateEntities.AddRange(aiEntityList);
 
             var idC = entf.CreateDude();
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
+            //entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
+            entf.AddPOVCamToEntity(idC, true);
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);
             

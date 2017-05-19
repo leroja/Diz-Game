@@ -17,7 +17,7 @@ namespace GameEngine.Source.Systems
     /// <summary>
     /// PhysicSystem which handles all the physic
     /// </summary>
-    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<IBounding3D, IBounding3D>>>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<Tuple<int, int>>
     {
         /// <summary>
         /// List which is then looped over and updates the systems
@@ -250,6 +250,7 @@ namespace GameEngine.Source.Systems
             {
                 if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
                 {
+                    //if (target.PhysicsType == PhysicsType.Projectiles && hit.ID != target.ID)
                     float tmp = 1.0f / (target.Mass + hit.Mass);
                     float e = 0.0f;
 
@@ -322,10 +323,9 @@ namespace GameEngine.Source.Systems
         /// on collision (retrieves data from collision system)
         /// </summary>
         /// <param name="value"></param>
-        public void OnNext(List<Tuple<IBounding3D, IBounding3D>> value)
+        public void OnNext(Tuple<int, int> value)
         {
-            foreach (var val in value)
-                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.CompID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.CompID));
+            UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>(value.Item2));
         }
         /// <summary>
         /// Does nothing atm
