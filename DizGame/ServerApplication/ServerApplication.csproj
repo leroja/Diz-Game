@@ -82,6 +82,10 @@
       <Project>{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}</Project>
       <Name>GameEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServerSupportedCommunication\ServerSupportedCommunication.csproj">
+      <Project>{72D628AE-D696-472C-B147-368D3E5FACFD}</Project>
+      <Name>ServerSupportedCommunication</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

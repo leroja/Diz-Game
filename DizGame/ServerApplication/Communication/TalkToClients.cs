@@ -7,6 +7,7 @@ using GameEngine.Source.Enums;
 using GameEngine.Source.Communication;
 using DizGame.Source.Enums;
 using ServerApplication.Protocol;
+using ServerSupportedCommunication.Enums;
 
 namespace ServerApplication.Communication
 {

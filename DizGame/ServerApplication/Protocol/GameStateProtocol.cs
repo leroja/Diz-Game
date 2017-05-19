@@ -8,6 +8,7 @@ using DizGame.Source.Settings;
 using GameEngine.Source.Communication;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
+using ServerSupportedCommunication.Enums;
 
 namespace ServerApplication.Protocol
 {
