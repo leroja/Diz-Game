@@ -121,6 +121,10 @@
       <Project>{beb5aa74-8cd7-4ded-86d9-693fa6e9aaf0}</Project>
       <Name>GameEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServerSupportedCommunication\ServerSupportedCommunication.csproj">
+      <Project>{72d628ae-d696-472c-b147-368d3e5facfd}</Project>
+      <Name>ServerSupportedCommunication</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\bullet\" />

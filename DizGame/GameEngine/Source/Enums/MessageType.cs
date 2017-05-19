@@ -1,41 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//Moved to Serverapplication.Enums
 
-namespace GameEngine.Source.Enums
-{
-    public enum MessageType : byte
-    {
-        //Client to Server
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-        //Ask server
-        GetInitialGameState = 1,
+//namespace GameEngine.Source.Enums
+//{
+//    public enum MessageType : byte
+//    {
+//        //Client to Server
 
-        //Client's created objects
-        CreatedNewEntity, //Test with sending a whole new entity as a list of components.
-        CreatedNewPlayer,
-        CreatedNewBullet,
+//        //Ask server
+//        GetInitialGameState = 1,
 
-
-
-
-
-        //Server to Client
-
-        //Create objects
-        CreateNewEntity, //Test to send a whole new entity as a list of components.
-        CreatePlayer,    //start positions
-        CreateInitialGameState,        //Used instead for createboulder etc (they are included in the vector as positions).
-        //CreatedBoulder, //Vector with positions instead e.g 10 first positions are boulders 
-        //CreatedTree,    //next 20 are trees and
-        //CreatedHouse,   // the rest are houses.
-        CreateBullet,
+//        //Client's created objects
+//        CreatedNewEntity, //Test with sending a whole new entity as a list of components.
+//        CreatedNewPlayer,
+//        CreatedNewBullet,
 
 
-        //Moved objects
-        MoveEntity,
 
-    }
-}
+
+
+//        //Server to Client
+
+//        //Create objects
+//        CreateNewEntity, //Test to send a whole new entity as a list of components.
+//        CreatePlayer,    //start positions
+//        CreateInitialGameState,        //Used instead for createboulder etc (they are included in the vector as positions).
+//        //CreatedBoulder, //Vector with positions instead e.g 10 first positions are boulders 
+//        //CreatedTree,    //next 20 are trees and
+//        //CreatedHouse,   // the rest are houses.
+//        CreateBullet,
+
+
+//        //Moved objects
+//        MoveEntity,
+
+//    }
+//}

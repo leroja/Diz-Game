@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Source.Communication;
 using GameEngine.Source.Components;
-using GameEngine.Source.Enums;
+//using ServerApplication.Enums;
 using GameEngine.Source.Managers;
 using Lidgren.Network;
-using Microsoft.Xna.Framework;
+using ServerSupportedCommunication.Enums;
 
 namespace DizGame.Source.Communication
 {
@@ -107,11 +107,26 @@ namespace DizGame.Source.Communication
         public static void SendCreatedNewEntities(List<int> entityIds)
         {
             NetOutgoingMessage message = client.CreateMessage();
+            IComponent component = null;
 
             foreach(int entityId in entityIds)
             {
                 //message.Write(ComponentManager.Instance.GetAllEntityComponents(entityId));
-                List<IComponent> components = ComponentManager.Instance.GetAllEntityComponents(entityId);
+                //List<IComponent> components = ComponentManager.Instance.GetAllEntityComponents(entityId);
+
+                foreach (ComponentType type in Enum.GetValues(typeof(ComponentType)))
+                {
+                    switch(type)
+                    {
+                        case ComponentType.TransformComponent:
+                            component = ComponentManager.Instance.GetEntityComponent<TextComponent>(entityId);
+                            
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
 
                 //This does not work as IComponent is not known to Lidgrens network. Vector3 does
                 //not work too to send...
