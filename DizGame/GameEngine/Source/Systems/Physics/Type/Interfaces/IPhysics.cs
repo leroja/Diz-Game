@@ -29,12 +29,6 @@ namespace GameEngine.Source.Systems.Interfaces
         /// <param name="physic"></param>
         void UpdateDeceleration(PhysicsComponent physic);
         /// <summary>
-        /// Used to update the weight eg.(W = m * g)
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="gravity"></param>
-        void UpdateWeight(PhysicsComponent physic, float gravity);
-        /// <summary>
         /// Used to apply gravity 
         /// </summary>
         /// <param name="physic"></param>

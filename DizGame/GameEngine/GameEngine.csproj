@@ -44,26 +44,32 @@
   <ItemGroup>
     <Compile Include="Source\Components\Abstract Classes\GameState.cs" />
     <Compile Include="Source\Components\AnimationComponent.cs" />
+    <Compile Include="Source\Components\FlareComponent.cs" />
     <Compile Include="Source\Components\HeightmapComponentTexture.cs" />
     <Compile Include="Source\Components\MouseComponent.cs" />
+    <Compile Include="Source\Components\ParticleEmiterComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsParticleComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
-    <Compile Include="Source\Components\ParticleComponent .cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />
     <Compile Include="Source\Components\SkyBoxComponent.cs" />
     <Compile Include="Source\Components\TextComponent.cs" />
     <Compile Include="Source\Components\Texture2DComponent.cs" />
     <Compile Include="Source\Enums\MessageType.cs" />
     <Compile Include="Source\Enums\Element.cs" />
+    <Compile Include="Source\Factories\FlareFactory.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
+    <Compile Include="Source\RandomStuff\ParticleVertex.cs" />
+    <Compile Include="Source\RandomStuff\Flare.cs" />
     <Compile Include="Source\Systems\2DSystem.cs" />
     <Compile Include="Source\Systems\AnimationSystem.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />
+    <Compile Include="Source\Systems\FlareSystem.cs" />
     <Compile Include="Source\Systems\HeightmapSystemTexture.cs" />
     <Compile Include="Source\Systems\ModelBoundingSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
+    <Compile Include="Source\Systems\ParticleRenderSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interfaces\IPhysics.cs" />
     <Compile Include="Source\Systems\Physics\Type\AbstractClasses\IPhysicsTypeSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
@@ -102,6 +108,7 @@
     <Compile Include="Source\Systems\TransformSystem.cs" />
     <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />
     <Compile Include="Source\Systems\WorldSystem.cs" />
+    <Compile Include="Source\Utils\Debug.cs" />
     <Compile Include="Source\Utils\Util.cs" />
     <Compile Include="Tools\BoundingBoxRenderer.cs" />
     <Compile Include="Tools\BoundingSphereRenderer.cs" />
@@ -115,14 +122,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\HeightMaps\grass.png" />
-    <Content Include="Content\HeightMaps\heightmap.png" />
+    <Content Include="Content\Flare\flare1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Flare\flare2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Flare\flare3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Flare\glow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Shaders\AllEff.fx" />
+    <Content Include="Content\Shaders\Shadow.fx" />
+    <Content Include="Content\Shaders\WaterShader.fx" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="Content\Fonts\font.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">

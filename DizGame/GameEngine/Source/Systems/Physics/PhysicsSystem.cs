@@ -19,11 +19,6 @@ namespace GameEngine.Source.Systems
     /// </summary>
     public class PhysicsSystem : IUpdate, IPhysics, IObserver<Tuple<int, int>>
     {
-        private float frameCount = 0;
-        private float timeSinceLastUpdate = 0;
-        private float updateInterval = 1;
-        private float framesPerSecond = 0;
-
         /// <summary>
         /// List which is then looped over and updates the systems
         /// </summary>
@@ -70,13 +65,13 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            CountFPS(gameTime);
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
                 physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
             }
+            CheckCollision(dt);
         }
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity
@@ -87,7 +82,6 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         private void UpdateEulerOrder(PhysicsComponent physic, float dt)
         {
-            UpdateMaxAcceleration(physic);
             UpdateMass(physic);
             UpdateGravity(physic, dt);
             UpdateForce(physic);
@@ -108,7 +102,6 @@ namespace GameEngine.Source.Systems
         private void UpdateNonEulerOrder(PhysicsComponent physic, float dt)
         {
             UpdateAcceleration(physic);
-            UpdateMaxAcceleration(physic);
             UpdateMass(physic);
             UpdateGravity(physic, dt);
             UpdateForce(physic);
@@ -130,15 +123,6 @@ namespace GameEngine.Source.Systems
                 physic.InverseMass = 1 / physic.Mass;
         }
         /// <summary>
-        /// Updates the objects weigth W = m * g
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="gravity"></param>
-        public virtual void UpdateWeight(PhysicsComponent physic, float gravity)
-        {
-            physic.Weight = Vector3.Down * (physic.Mass * gravity);
-        }
-        /// <summary>
         /// Updates the objects Euler acceleration
         /// This function should be updated BEFORE position,
         /// and position updating should use LastAcceleration
@@ -146,38 +130,10 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateEulerAcceleration(PhysicsComponent physic)
         {
-            // Creating more vectors than necessary for an understanding of what is what.
-            UpdateAccelerationIfTerminal(physic);
-            UpdateForceIfTerminal(physic);
             physic.LastAcceleration = physic.Acceleration;
             Vector3 new_acceleration = physic.Forces / physic.Mass;
             Vector3 avg_acceleration = (physic.LastAcceleration + new_acceleration) / 2;
             physic.Acceleration = avg_acceleration;
-            //Vector3 new_ay = physic.Forces / physic.Mass;
-            //Vector3 avg_ay = 0.5f * new_ay;
-            //physic.Acceleration = avg_ay;
-        }
-        private void UpdateAccelerationIfTerminal(PhysicsComponent physic)
-        {
-            float X = physic.Acceleration.X, Y = physic.Acceleration.Y, Z = physic.Acceleration.Z;
-            if (physic.TerminalVelocity.X == 1)
-                X = 0;
-            if (physic.TerminalVelocity.Y == 1)
-                Y = 0;
-            if (physic.TerminalVelocity.Z == 1)
-                Z = 0;
-            physic.Acceleration = new Vector3(X, Y, Z);
-        }
-        private void UpdateForceIfTerminal(PhysicsComponent physic)
-        {
-            float X = physic.Forces.X, Y = physic.Forces.Y, Z = physic.Forces.Z;
-            if (physic.TerminalVelocity.X == 1)
-                X = 0;
-            if (physic.TerminalVelocity.Y == 1)
-                Y = 0;
-            if (physic.TerminalVelocity.Z == 1)
-                Z = 0;
-            physic.Forces = new Vector3(X, Y, Z);
         }
         /// <summary>
         /// Calculates the physic objects Deaceleration
@@ -187,11 +143,11 @@ namespace GameEngine.Source.Systems
         {
             if (!physic.IsInAir)
             {
-                if (physic.Forces.X == 0)
+                if (physic.Acceleration.X == 0)
                     physic.Velocity = new Vector3(0, physic.Velocity.Y, physic.Velocity.Z);
-                if (physic.Forces.Y == 0)
+                if (physic.Acceleration.Y == 0)
                     physic.Velocity = new Vector3(physic.Velocity.X, 0, physic.Velocity.Z);
-                if (physic.Forces.Z == 0)
+                if (physic.Acceleration.Z == 0)
                     physic.Velocity = new Vector3(physic.Velocity.X, physic.Velocity.Y, 0);
             }
             if(!physic.IsMoving)
@@ -223,7 +179,7 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         public virtual void UpdateVelocity(PhysicsComponent physic, float dt)
         {
-            physic.Velocity += physic.InitialVelocity + (physic.Acceleration * dt);
+            physic.Velocity += physic.Acceleration * dt;
             //TODO: physic.Velocity += physic.InitialVelocity + ((physic.Acceleration - frictio) * dt);
             //Console.WriteLine(physic.Velocity);
         }
@@ -233,23 +189,7 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateForce(PhysicsComponent physic)
         {
-            // TODO: Använda inversemass eller mass 
-            //Console.WriteLine("For1': " + physic.Forces);
-            //physic.Forces =  physic.Mass * physic.Acceleration;
-            float X, Y, Z;
-             X = (physic.InverseMass * physic.Acceleration.X);
-            Y = (physic.InverseMass * physic.Acceleration.Y);
-            Z = (physic.InverseMass * physic.Acceleration.Z);
-            //Console.WriteLine("Fo: " + X + " " + Y + " " + Z);
-
-            float Q, W, E;
-            Q = (physic.Mass * physic.Acceleration.X);
-            W = (physic.Mass * physic.Acceleration.Y);
-            E = (physic.Mass * physic.Acceleration.Z);
-
-            physic.Forces = new Vector3(Q, W, E);
-            
-           // Console.WriteLine("For': " + Q + " " + W + " " + E);
+            physic.Forces = physic.Mass * physic.Acceleration;
         }
         /// <summary>
         /// Updates the Acceleration using formula 
@@ -258,10 +198,7 @@ namespace GameEngine.Source.Systems
         /// <param name="physic"></param>
         public virtual void UpdateAcceleration(PhysicsComponent physic)
         {
-            UpdateAccelerationIfTerminal(physic);
-            UpdateForceIfTerminal(physic);
             physic.Acceleration = (physic.Forces / physic.Mass);
-            //Console.WriteLine(physic.Acceleration);
         }
         /// <summary>
         /// Updates the gravity depending on physics gravity type
@@ -272,19 +209,15 @@ namespace GameEngine.Source.Systems
         {
             switch(physic.GravityType)
             {
-                case GravityType.None:
-                    physic.Forces += new Vector3(physic.Forces.X, 0, physic.Forces.Z);
-                    UpdateWeight(physic, 0);
-                    break;
                 case GravityType.Self:
-                    physic.Forces += Vector3.Down * physic.Gravity;
-                    UpdateWeight(physic, physic.Gravity);
+                    physic.Acceleration = new Vector3(physic.Acceleration.X, physic.Gravity, physic.Acceleration.Z);
                     break;
                 case GravityType.World:
                     List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
                     WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
-                    physic.Forces += world.Gravity;
-                    UpdateWeight(physic, world.Gravity.Y);
+                    physic.Acceleration = new Vector3(physic.Acceleration.X + world.Gravity.X, 
+                        physic.Acceleration.Y + world.Gravity.Y, 
+                        physic.Acceleration.Z + world.Gravity.Z);
                     break;
             }
                 
@@ -296,42 +229,90 @@ namespace GameEngine.Source.Systems
         /// <param name="hit"></param>
         public virtual void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
         {
-           int N = 1; //dunno
-           int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
-
-
-            float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
-            float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
-            Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
-            Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
-
-            target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
-            hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
-        }
-        /// <summary>
-        /// Updates maxacceleration in Meters per second each second 
-        /// divided by FPS to give meters per second each frame.
-        /// </summary>
-        /// <param name="physic"></param>
-        public virtual void UpdateMaxAcceleration(PhysicsComponent physic)
-        {
-                physic.MaxAcceleration = (physic.Forces / physic.Mass) / framesPerSecond;
-        }
-        /// <summary>
-        /// Counts the frames per second
-        /// </summary>
-        /// <param name="gameTime"></param>
-        private void CountFPS(GameTime gameTime)
-        {
-            frameCount++;
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            timeSinceLastUpdate += elapsed;
-            if (timeSinceLastUpdate > updateInterval)
+            if (target != null && hit != null)
             {
-                framesPerSecond = frameCount / timeSinceLastUpdate;
-                frameCount = 0;
-                timeSinceLastUpdate -= updateInterval;
+                int N = 1; //dunno
+                int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
+
+
+                float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
+                float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
+                Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
+                Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
+
+                target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
+                hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
             }
+        }
+        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit, float dt)
+        {
+            if (target != null && hit != null)
+            {
+                if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
+                {
+                    float tmp = 1.0f / (target.Mass + hit.Mass);
+                    float e = 0.0f;
+
+                    Vector3 velocity1 = (
+                        (e + 1.0f) * hit.Mass * hit.Velocity +
+                        target.Velocity * (target.Mass - (e * hit.Mass))
+                        ) * tmp;
+
+                    Vector3 velocity2 = (
+                        (e + 1.0f) * target.Mass * target.Velocity +
+                        hit.Velocity * (hit.Mass - (e * target.Mass))
+                        ) * tmp;
+
+                    target.Velocity = velocity1;
+                    hit.Velocity = velocity2;
+                }
+                else if(target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
+                {
+                    Vector3 dir = target.Velocity;
+                    dir.Normalize();
+                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
+                    target.Velocity = Vector3.Zero;
+
+                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position = 
+                    //    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).PreviousPosition;
+                    // TODO: Fixa collisionen
+                }
+            }
+        }
+        private void CheckCollision(float dt)
+        {
+            foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            {
+                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
+                if (model.BoundingVolume == null)
+                    continue;
+                foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+                {
+                    if (entityIDUno == entityIDDos)
+                        continue;
+
+                    ModelComponent model2 = ComponentManager.GetEntityComponent<ModelComponent>(entityIDDos);
+                    if (model2.BoundingVolume == null)
+                        continue;
+
+                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding))
+                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
+
+}
+            }
+        }
+        private bool IsPointInsideAABB(TransformComponent transform, BoundingBox box)
+        {
+            return (transform.Position.X >= box.Min.X && transform.Position.X <= box.Max.X) &&
+                (transform.Position.Y >= box.Min.Y && transform.Position.Y <= box.Max.Y) &&
+                (transform.Position.Z >= box.Min.Z && transform.Position.Z <= box.Max.Z);
+        }
+        private bool IsPointInsideSphere(TransformComponent tranform, BoundingSphere sphere)
+        {
+            var distance = Math.Sqrt((tranform.Position.X - sphere.Center.X) * (tranform.Position.X - sphere.Center.X) +
+                (tranform.Position.Y - sphere.Center.Y) * (tranform.Position.Y - sphere.Center.Y) +
+                (tranform.Position.Z - sphere.Center.Z) * (tranform.Position.Z - sphere.Center.Z));
+            return distance < sphere.Radius;
         }
         /// <summary>
         /// Observer funktion, Updates the reflection on two objects 

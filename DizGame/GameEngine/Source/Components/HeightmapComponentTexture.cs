@@ -31,7 +31,9 @@ namespace GameEngine.Source.Components
         /// The height of the Heightmap
         /// </summary>
         public int Height { get; set; }
-
+        /// <summary>
+        /// A Bool that says whether the model is vivible or not
+        /// </summary>
         public bool IsVisible { get; set; }
 
         /// <summary>

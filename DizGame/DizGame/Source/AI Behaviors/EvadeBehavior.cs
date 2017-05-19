@@ -11,7 +11,7 @@ using GameEngine.Source.Components;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// 
+    /// A behavior that makes the AI evade all enemies that are within the specified distance
     /// </summary>
     public class EvadeBehavior : AiBehavior
     {
@@ -21,7 +21,6 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="rotation"> The current rotation of the AI </param>
         public override void OnEnter(Vector3 rotation)
         {
-
         }
 
         /// <summary>
@@ -31,8 +30,6 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-            // todo fix smooth rotation
-
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var pos = transformComp.Position;
 
@@ -40,7 +37,6 @@ namespace DizGame.Source.AI_Behaviors
             var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
             var rotation = GetRotationToClosestEnenmy(AIComp);
-            
             
             transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0);
 
@@ -77,6 +73,12 @@ namespace DizGame.Source.AI_Behaviors
             BehaviorStuff(AIComp, transformComp);
         }
 
+        /// <summary>
+        /// Check whether the AI chould change behavior
+        /// If it should then the method changes the behavior
+        /// </summary>
+        /// <param name="AIComp"> The AI component of the AI </param>
+        /// <param name="transcomp"> The transorm component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
         {
             if (AIComp.EvadeDistance + AIComp.Hysteria < AIComp.CurrentBehaivior.DistanceToClosestEnemy)

@@ -17,7 +17,10 @@ namespace GameEngine.Source.Components
         /// Vector3 representing the position for an object
         /// </summary>
         public Vector3 Position { get; set; }
-
+        /// <summary>
+        /// Vector3 representing the prevoius position
+        /// </summary>
+        public Vector3 PreviousPosition { get; set; }
         /// <summary>
         /// Vector3 which represents the rotation for an object
         /// </summary>
@@ -66,7 +69,9 @@ namespace GameEngine.Source.Components
         /// <param name="scale">The scale of the object which should be represented as a Vector3</param>
         public TransformComponent(Vector3 position, Vector3 scale)
         {
+            Rotation = Vector3.Zero;
             this.Position = position;
+            this.PreviousPosition = position;
             this.Scale = scale;
             Dirrection = Vector3.Zero;
             this.QuaternionRotation = Quaternion.Identity;
@@ -82,6 +87,7 @@ namespace GameEngine.Source.Components
         public TransformComponent(Vector3 position, Vector3 scale, Matrix rotationMatrix)
         {
             this.Position = position;
+            this.PreviousPosition = position;
             this.Scale = scale;
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;

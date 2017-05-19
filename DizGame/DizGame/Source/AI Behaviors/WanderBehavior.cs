@@ -12,7 +12,7 @@ using GameEngine.Source.Utils;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// 
+    /// A behavior for the AI that makes it wander around the map
     /// </summary>
     public class WanderBehavior : AiBehavior
     {
@@ -90,21 +90,26 @@ namespace DizGame.Source.AI_Behaviors
 
             //BehaviorStuff(AIComp, transformComp);
         }
-
+        
+        /// <summary>
+        /// Check whether the AI chould change behavior
+        /// If it should then the method changes the behavior
+        /// </summary>
+        /// <param name="AIComp"> The AI component of the AI </param>
+        /// <param name="transcomp"> The transorm component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            if (AIComp.EvadeDistance + AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % 2 == 0 && worldComp.Day != 0)))
+            if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % 2 == 0 && worldComp.Day != 0)))
             {
                 AIComp.ChangeBehavior("Evade", transcomp.Rotation);
             }
-            else if (worldComp.Day % 2 == 0 && worldComp.Day != 0)
+            else if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
         }
-
     }
 }

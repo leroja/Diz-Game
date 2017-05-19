@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 namespace GameEngine.Source.Utils
 {
     /// <summary>
-    /// 
+    /// A Class that contains utility functions
     /// </summary>
     public static class Util
     {
         private static Random _random = new Random();
-
         /// <summary>
-        /// 
+        /// Returns a random double between minumim and maximun
         /// </summary>
-        /// <param name="minimum"></param>
-        /// <param name="maximum"></param>
+        /// <param name="minimum"> Minimum Value </param>
+        /// <param name="maximum"> Maximun Value </param>
         /// <returns></returns>
         public static double GetRandomNumber(double minimum, double maximum)
         {

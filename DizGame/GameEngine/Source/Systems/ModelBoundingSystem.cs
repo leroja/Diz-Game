@@ -18,11 +18,16 @@ namespace GameEngine.Source.Systems
     public class ModelBoundingSystem : IUpdate
     {
         /// <summary>
-        /// 
+        /// Constructor
         /// </summary>
         public ModelBoundingSystem()
         {
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var ids = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();

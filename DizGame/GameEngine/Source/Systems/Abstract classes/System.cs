@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GameEngine.Source.Systems
 {
     /// <summary>
-    /// An abstact class for the systems in the game engine and the game
+    /// An abstract class for the systems in the game engine and the game
     /// </summary>
     public abstract class ISystem
     {

@@ -10,11 +10,18 @@ using GameEngine.Source.Components;
 
 namespace DizGame.Source.AI_Behaviors
 {
+    /// <summary>
+    /// A behavior that makes the AI patroll between some specified waypoint
+    /// </summary>
     public class PatrollingBehavior : AiBehavior
     {
         private Queue<Vector2> waypoints;
         private float atDestinationLimit = 5f;
 
+        /// <summary>
+        /// A Constructor
+        /// </summary>
+        /// <param name="waypointList"> A list of Vector2 waypoints </param>
         public PatrollingBehavior(List<Vector2> waypointList)
         {
             waypoints = new Queue<Vector2>();
@@ -25,11 +32,19 @@ namespace DizGame.Source.AI_Behaviors
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rotation"></param>
         public override void OnEnter(Vector3 rotation)
         {
-            Console.WriteLine("hej");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AIComp"></param>
+        /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
@@ -54,19 +69,29 @@ namespace DizGame.Source.AI_Behaviors
             BehaviorStuff(AIComp, transformComp);
         }
 
-
+        /// <summary>
+        /// Check whether the AI chould change behavior
+        /// If it should then the method changes the behavior
+        /// </summary>
+        /// <param name="AIComp"> The AI component of the AI </param>
+        /// <param name="transcomp"> The transorm component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
 
-            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance + AIComp.Hysteria)
+            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
         }
 
+        /// <summary>
+        /// Gets the rotaion to next waypoint for the AI
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         private Vector3 GetRotationToNextWayPoint(int ID)
         {
             var nextWaypoint = waypoints.Peek();
@@ -74,7 +99,7 @@ namespace DizGame.Source.AI_Behaviors
 
             float x = nextWaypoint.X - AITransformComp.Position.X;
             float z = nextWaypoint.Y - AITransformComp.Position.Z;
-            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi; // + PI = fulhack
+            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
             
             return new Vector3(0, WrapAngle(desiredAngle), 0);
         }

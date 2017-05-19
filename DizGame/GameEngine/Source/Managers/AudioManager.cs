@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 namespace GameEngine.Source.Managers
 {
     /// <summary>
-    /// A manager the holds songs and soundeffects and manages the playing of them
+    /// A manager that holds songs and soundeffects and manages the playing of them
     /// Also controlls the volume of the sounds that are currently being played
     /// </summary>
     public class AudioManager
     {
         private static AudioManager instance;
         private float prevVol = 1.0f;
-        Dictionary<string, Song> songDic = new Dictionary<string, Song>();
-        Dictionary<string, SoundEffectInstance> soundEffInstDic = new Dictionary<string, SoundEffectInstance>();
+        private Dictionary<string, Song> songDic = new Dictionary<string, Song>();
+        private Dictionary<string, SoundEffectInstance> soundEffInstDic = new Dictionary<string, SoundEffectInstance>();
 
 
         private AudioManager()
@@ -56,6 +56,15 @@ namespace GameEngine.Source.Managers
         {
             MediaPlayer.IsMuted = false;
             SoundEffect.MasterVolume = prevVol;
+        }
+
+        /// <summary>
+        /// Checks whether the mediaplayer is muted
+        /// </summary>
+        /// <returns> True if the mediaplayer is muted </returns>
+        public bool IsMuted()
+        {
+            return MediaPlayer.IsMuted;
         }
 
         /// <summary>
@@ -114,12 +123,9 @@ namespace GameEngine.Source.Managers
         {
             if (soundEffInstDic.ContainsKey(SoundEffect))
             {
-                if (soundEffInstDic[SoundEffect].State != SoundState.Playing)
-                {
-                    soundEffInstDic[SoundEffect].Pan = pan;
-                    soundEffInstDic[SoundEffect].Pitch = pitch;
-                    soundEffInstDic[SoundEffect].Play();
-                }
+                soundEffInstDic[SoundEffect].Pan = pan;
+                soundEffInstDic[SoundEffect].Pitch = pitch;
+                soundEffInstDic[SoundEffect].Play();
             }
         }
 

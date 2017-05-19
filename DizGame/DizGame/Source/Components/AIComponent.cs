@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Components
 {
+    // todo använd fysiken för rörelse
     /// <summary>
-    /// 
+    /// A component for the AI:s
     /// </summary>
     public class AIComponent : IComponent
     {
@@ -26,7 +27,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public Rectangle Bounds { get; set; }
         /// <summary>
-        /// todo
+        /// 
         /// </summary>
         public float Hysteria { get; set; }
         /// <summary>
@@ -34,7 +35,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public float DirectionDuration { get; set; }     
         /// <summary>
-        /// todo
+        /// In what range the new rotaion can be. eg. -PI --- +PI
         /// </summary>
         public float DirectionChangeRoation { get; set; }
         /// <summary>
@@ -51,7 +52,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public float ShootingCooldown { get; set; }
         /// <summary>
-        /// todo
+        /// How far from the other AIs/players the AI want to be at a minimum
         /// </summary>
         public float EvadeDistance { get; set; }
         /// <summary>
@@ -62,6 +63,11 @@ namespace DizGame.Source.Components
         /// In what distance the enemy have to be for the AI to chase it
         /// </summary>
         public float ChaseDistance { get; set; }
+        /// <summary>
+        /// How much damage the AI does per shot
+        /// </summary>
+        public float DamagePerShot { get; set; }
+
 
         /// <summary>
         /// Constructor
@@ -80,6 +86,7 @@ namespace DizGame.Source.Components
             this.ShootingCooldown = shootingCoolDown;
             this.EvadeDistance = 50;
             this.AttackingDistance = 25;
+            this.DamagePerShot = 5;
 
             AiBehaviors = new Dictionary<string, AiBehavior>()
             {
@@ -95,13 +102,12 @@ namespace DizGame.Source.Components
                 this.CurrentBehaivior = AiBehaviors["Patroll"];
             }
         }
-
-
-        private AiBehavior GetBehavior(string Behavior)
-        {
-            return AiBehaviors[Behavior];
-        }
-
+        
+        /// <summary>
+        /// Checks if an AI has an behavior
+        /// </summary>
+        /// <param name="behavior"> The name of the behavior </param>
+        /// <returns> true if the AI have an instance of the specfied behavior </returns>
         public bool HaveBehavior(string behavior)
         {
             return AiBehaviors.ContainsKey(behavior);
@@ -114,7 +120,7 @@ namespace DizGame.Source.Components
         /// <param name="currentRoation"> The current rotation of the AI </param>
         public void ChangeBehavior(string Behavior, Vector3 currentRoation)
         {
-            var behave = GetBehavior(Behavior);
+            var behave = AiBehaviors[Behavior];
             CurrentBehaivior = behave;
             CurrentBehaivior.OnEnter(currentRoation);
         }

@@ -32,6 +32,11 @@ namespace GameEngine.Source.Components
 
         #region Public Properties
         /// <summary>
+        /// A value that could be used for different relevant things that 
+        /// needs to be commonly implemented throughout different systems.
+        /// </summary>
+        public int ModulusValue { get; set; }
+        /// <summary>
         /// This is used if Notation is set as 12hour clock,
         /// to change the day when "24 hours has past eg. 2x12"
         /// </summary>
@@ -81,7 +86,14 @@ namespace GameEngine.Source.Components
         /// big chance of removing.
         /// </summary>
         public Dictionary<DensityType, List<Tuple<Vector3, Vector3>>> WorldFluids { get; set; }
-
+        /// <summary>
+        /// bool if sun is "on"
+        /// </summary>
+        public bool IsSunActive { get; set; }
+        /// <summary>
+        /// Global light direction such as the sun
+        /// </summary>
+        public Vector3 LightDirection { get; set; }
         #endregion Public Properties
         /// <summary>
         /// Basic constructor which sets all the attributes to default value.
@@ -89,6 +101,7 @@ namespace GameEngine.Source.Components
         /// <param name="world"></param>
         public WorldComponent(Matrix world)
         {
+            ModulusValue = 3;
             World = world;
             Noon = true;
             Notation = ClockNotation.HOURS24;
@@ -97,7 +110,7 @@ namespace GameEngine.Source.Components
             Second = 0;
             Millisecond = 0;
             Day = 0;
-            DefineHour = 1; // TODO: Definera en timme i sekunder
+            DefineHour = 1;
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
             WorldFluids = new Dictionary<DensityType, List<Tuple<Vector3,Vector3>>>
@@ -106,6 +119,8 @@ namespace GameEngine.Source.Components
                 { DensityType.Water_Heavy, new List<Tuple<Vector3,Vector3>>() },
                 { DensityType.Automobile_Oils, new List<Tuple<Vector3,Vector3>>() }
             };
+            IsSunActive = true;
+            LightDirection = Vector3.Zero;
         }
 
     }

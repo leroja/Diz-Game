@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // todo reerite all comments on all behaviors
     /// <summary>
-    /// 
+    /// The abstract base class for the AI behaviors
     /// </summary>
     public abstract class AiBehavior
     {
@@ -32,6 +31,7 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="AIComp"></param>
         /// <param name="gameTime"></param>
         public abstract void Update(AIComponent AIComp, GameTime gameTime);
+
         /// <summary>
         /// 
         /// </summary>
@@ -108,7 +108,7 @@ namespace DizGame.Source.AI_Behaviors
         /// <summary>
         /// Calculates the rotation to the closest enemy
         /// </summary>
-        /// <param name="AIComp"></param>
+        /// <param name="AIComp"> The current AI </param>
         /// <returns> A new rotation Vector </returns>
         public Vector3 GetRotationToClosestEnenmy(AIComponent AIComp)
         {
@@ -117,16 +117,11 @@ namespace DizGame.Source.AI_Behaviors
 
             float x = ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
             float z = ClosestEnemyTransFormComp.Position.Z - AITransformComp.Position.Z;
-            //float x1 = AITransformComp.Position.X - ClosestEnemyTransFormComp.Position.X;
-            //float z1 = AITransformComp.Position.Z - ClosestEnemyTransFormComp.Position.Z;
-            //float desiredAngle = (float)Math.Atan2(z, x);
-            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi; // + PI = fulhack
-            //float desiredAngle1 = (float)Math.Atan2(z1, x1);
+            float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
 
             return new Vector3(0, WrapAngle(desiredAngle), 0);
         }
-
-       
+        
 
         /// <summary>
         /// Calculates the angle that an object should face, given 
@@ -166,11 +161,11 @@ namespace DizGame.Source.AI_Behaviors
         
 
         /// <summary>
-        /// 
+        /// Gets the rotation needed for shooting at an enemy on different height level
         /// </summary>
-        /// <param name="AIComp"></param>
+        /// <param name="AIComp"> The current AI </param>
         /// <returns></returns>
-        public float GetUpwardsRotationToClosestEnenmy(AIComponent AIComp)
+        public float GetRotationForAimingAtEnemy(AIComponent AIComp)
         {
             var ClosestEnemyTransFormComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy);
             var AITransformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
@@ -183,6 +178,5 @@ namespace DizGame.Source.AI_Behaviors
 
             return WrapAngle(desiredAngle);
         }
-
     }
 }

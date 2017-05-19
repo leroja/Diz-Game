@@ -22,11 +22,6 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 Acceleration { get; set; }
         /// <summary>
-        /// Defines maxacceleration in Meters per second each second 
-        /// divided by FPS to give meters per second each frame.
-        /// </summary>
-        public Vector3 MaxAcceleration { get; set; }
-        /// <summary>
         /// Used to calculate an higher accuracy of velocity,
         /// position using Euler method.
         /// </summary>
@@ -36,27 +31,14 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 Velocity { get; set; }
         /// <summary>
-        /// Defines the Initial velocity the object started with
-        /// eg. used for projectiles (gun) etc.
-        /// </summary>
-        public Vector3 InitialVelocity { get; set; }
-        /// <summary>
         /// Defines the physic objects max velocity.
         /// </summary>
         public Vector3 MaxVelocity { get; set; }
-        /// <summary>
-        /// Is defined by (W = m * g)
-        /// </summary>
-        public Vector3 Weight { get; set; }
         /// <summary>
         /// Maximum force in X,Y,Z in newtones (kilogram meter per second each second).
         /// 1N = 1kg-m/s^2
         /// </summary>
         public Vector3 Forces { get; set; }
-        /// <summary>
-        /// Set 1 if true
-        /// </summary>
-        public Vector3 TerminalVelocity { get; set; }
         /// <summary>
         /// Sets the physicComponents PhysicType eg. Static, Rigid Projectile etc.
         /// </summary>
@@ -136,11 +118,8 @@ namespace GameEngine.Source.Components
             MaxVelocity = new Vector3(14,14,14);
             LastAcceleration = Vector3.Zero;
             Velocity = Vector3.Zero;
-            InitialVelocity = Vector3.Zero;
-            TerminalVelocity = Vector3.Zero;
 
             Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
-            Weight = Mass * Vector3.One;
 
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;

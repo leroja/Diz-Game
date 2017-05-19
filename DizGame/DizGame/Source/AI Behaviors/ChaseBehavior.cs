@@ -50,21 +50,26 @@ namespace DizGame.Source.AI_Behaviors
                 currentTimeForRot = 0f;
             }
 
-            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed/* * (float)gameTime.ElapsedGameTime.TotalSeconds*/), 0);
+            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
 
             BehaviorStuff(AIComp, transformComp);
         }
 
+        /// <summary>
+        /// Check whether the AI chould change behavior
+        /// If it should then the method changes the behavior
+        /// </summary>
+        /// <param name="AIComp"> The AI component of the AI </param>
+        /// <param name="transcomp"> The transorm component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            if (AIComp.AttackingDistance + AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy)
+            if (AIComp.AttackingDistance> AIComp.CurrentBehaivior.DistanceToClosestEnemy)
             {
                 AIComp.ChangeBehavior("Attacking", transcomp.Rotation);
             }
         }
-
     }
 }
