@@ -77,7 +77,7 @@ namespace DizGame.Source.Factories
         public void CreateAmmoResource(Vector3 position)
         {
             int newEntityId = ComponentManager.Instance.CreateID();
-            var newPosY = position.Y + 5;
+            var newPosY = position.Y + 2;
             Vector3 newTotalPos = new Vector3(position.X, newPosY, position.Z);
             //adjust the scales differently for the models if needed
             TransformComponent tcp = new TransformComponent(newTotalPos, new Vector3(1, 1, 1));
