@@ -78,7 +78,7 @@
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
-    <Compile Include="Source\Systems\SmokePaticleSystemcs.cs" />
+    <Compile Include="Source\Systems\PaticleUppdateSystemcs.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Effect\ParticleEffect.fx" />
+    <Content Include="Content\Effects\ParticleEffect.fx" />
     <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\grass.png" />

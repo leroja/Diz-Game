@@ -10,7 +10,7 @@ using GameEngine.Source.RandomStuff;
 
 namespace DizGame.Source.Systems
 {
-    class SmokePaticleSystemcs : IUpdate
+    class PaticleUppdateSystemcs : IUpdate
     {
         /// <summary>
         /// Uppdates Particles of a serten type
