@@ -59,10 +59,6 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Matrix ObjectMatrix { get; set; }
         /// <summary>
-        /// Matrix which is the ModelMatrix for an object
-        /// </summary>
-        public Matrix ModelMatrix { get; set; }
-        /// <summary>
         /// Matrix for describing a rotation of an object.
         /// </summary>
         public Matrix RotationMatrix { get; set; }
