@@ -131,7 +131,7 @@ namespace GameEngine.Source.Systems
 
         public override void Update(GameTime gameTime)
         {
-            CollisionDetection();
+            //CollisionDetection();
         }
     }
 }

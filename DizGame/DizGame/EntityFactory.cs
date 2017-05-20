@@ -609,7 +609,6 @@ namespace DizGame
                     //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY, 1))),
                     //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(GetModelSphere(model, scale.X))),
                     IsVisible = VisibleBullets,
-                    BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(bList[0])),
                 },
 
                 new BulletComponent(){

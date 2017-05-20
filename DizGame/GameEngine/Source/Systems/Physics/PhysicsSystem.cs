@@ -250,7 +250,6 @@ namespace GameEngine.Source.Systems
             {
                 if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
                 {
-                    //if (target.PhysicsType == PhysicsType.Projectiles && hit.ID != target.ID)
                     float tmp = 1.0f / (target.Mass + hit.Mass);
                     float e = 0.0f;
 
@@ -278,7 +277,7 @@ namespace GameEngine.Source.Systems
                                         //Console.WriteLine(ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position);
                     
                                         //Console.WriteLine(target.Velocity);
-                    // TODO: Fixa collisionen
+                     // TODO: Fixa collisionen
                 }
             }
         }
@@ -301,6 +300,7 @@ namespace GameEngine.Source.Systems
 
                     if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
                         UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
+
                 }
                 done.Add(entityIDUno);
             }

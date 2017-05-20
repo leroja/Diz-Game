@@ -60,8 +60,8 @@ namespace DizGame.Source.Systems
                 foreach (int entity in entitylist)
                 {
                     resource = ComponentManager.GetEntityComponent<ResourceComponent>(entity);
-                    resource.durration -= gameTime.ElapsedGameTime;
-                    if (resource.durration.Seconds <= 0)
+                    resource.duration -= gameTime.ElapsedGameTime;
+                    if (resource.duration.Seconds <= 0)
                         RemoveOldResources(entity);
 
                 }

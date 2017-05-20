@@ -1,11 +1,11 @@
-﻿using GameEngine.Source.Components;
-using GameEngine.Source.Systems;
-using Microsoft.Xna.Framework;
+﻿using GameEngine.Source.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using GameEngine.Source.Components;
 
 namespace DizGame.Source.Systems
 {
@@ -34,8 +34,8 @@ namespace DizGame.Source.Systems
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
                     * Matrix.CreateTranslation(tfc.Position);
 
-
-                rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, 0, 0);
+                // TODO: THIS SHIT
+                rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, 0,0);
 
                 tfc.QuaternionRotation = rotationQuaternion;
                 tfc.Forward = Vector3.Transform(Vector3.Forward, tfc.QuaternionRotation);
@@ -45,10 +45,7 @@ namespace DizGame.Source.Systems
                 tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale) * tfc.RotationMatrix
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
                     * Matrix.CreateTranslation(tfc.Position);
-
-                // TODO :
             }
-
         }
     }
 }

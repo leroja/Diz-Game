@@ -36,7 +36,7 @@ namespace DizGame.Source.Components
         /// the component is placed within the world, which also could be 
         /// a unlimited ammount of time. This time is described in seconds.
         /// </summary>
-        public TimeSpan durration;
+        public TimeSpan duration;
         #endregion
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace DizGame.Source.Components
         public ResourceComponent(ResourceType type)
         {
             thisType = type;
-            durration = TimeSpan.FromSeconds(Util.GetRandomNumber(15, 25));
+            duration = TimeSpan.FromSeconds(Util.GetRandomNumber(15, 25));
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace DizGame.Source.Components
         public ResourceComponent(ResourceType type, TimeSpan duration)
         {
             thisType = type;
-            this.durration = duration;
+            this.duration = duration;
         }
     }
 }

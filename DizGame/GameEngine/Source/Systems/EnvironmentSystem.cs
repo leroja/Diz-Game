@@ -49,13 +49,16 @@ namespace GameEngine.Source.Systems
                 p = (float)fluid;
 
             Vector3 V = phy.Velocity;
-            V.Normalize();
-            float Cd = (float)phy.DragType;                                                     // drag coefficent eg 0.25 to 0.45 for car
-            float A = phy.ReferenceArea;                                                        // reference area
-            Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                       // speed of the object relativ to the fluid???
+            if (V != Vector3.Zero)
+            {
+                V.Normalize();
+                float Cd = (float)phy.DragType;                                                     // drag coefficent eg 0.25 to 0.45 for car
+                float A = phy.ReferenceArea;                                                        // reference area
+                Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                       // speed of the object relativ to the fluid???
 
-            Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
-            phy.Acceleration += (Fd / phy.Mass); // A = F / M
+                Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
+                phy.Acceleration += (Fd / phy.Mass); // A = F / M
+            }
         }
 
         private void UpdateWind()

@@ -47,7 +47,6 @@ namespace DizGame.Source.AI_Behaviors
 
             transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
             transformComp.Position = new Vector3(transformComp.Position.X, GetCurrentHeight(transformComp.Position), transformComp.Position.Z);
-
             if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && time < 0)
             {
                 var rot = GetRotationForAimingAtEnemy(AIComp);
