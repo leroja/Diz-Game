@@ -71,7 +71,7 @@ namespace GameEngine.Source.Systems
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
                 physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
             }
-            CheckCollision(dt);
+            //CheckCollision(dt);
         }
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity

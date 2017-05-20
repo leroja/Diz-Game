@@ -8,12 +8,13 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.RandomStuff;
 
-namespace DizGame.Source.Systems
+namespace GameEngine.Source.Systems
 {
+    // Todo Alexander användes den här ens? --Lennart
     class SmokePaticleSystemcs : IUpdate
     {
         /// <summary>
-        /// Uppdates Particles of a serten type
+        /// Updates Particles of a certain type
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
@@ -33,7 +34,6 @@ namespace DizGame.Source.Systems
                 {
                     AddParticle(id,gameTime);
                 }
-
             }
         }
 
@@ -48,25 +48,24 @@ namespace DizGame.Source.Systems
             ParticleEmiterComponent emiter = ComponentManager.GetEntityComponent<ParticleEmiterComponent>(id);
             TransformComponent tran = ComponentManager.GetEntityComponent<TransformComponent>(id);
 
-            if (emiter.numberOfActiveParticles + 4 == emiter.nParticles * 4)
+            if (emiter.NumberOfActiveParticles + 4 == emiter.NumberOfParticles * 4)
                 return;
 
-            offsetIndex(emiter);
-            emiter.numberOfActiveParticles += 4;
+            OffsetIndex(emiter);
+            emiter.NumberOfActiveParticles += 4;
 
-            float startTime = emiter.lifeTime;
+            float startTime = emiter.LifeTime;
             var pot = SetRandomPos(new Vector3(10 , 0, 10), new Vector3(-10, 0, -10));
             
-
-
             for (int i = 0; i < 4; i++)
             {
-                emiter.particle[emiter.StartIndex + i].startPosition = pos;
-                emiter.particle[emiter.StartIndex + i].direction = emiter.Direction;
-                emiter.particle[emiter.StartIndex + i].speed = emiter.speed;
-                emiter.particle[emiter.StartIndex + i].startTime = startTime;
+                emiter.Particles[emiter.StartIndex + i].StartPosition = pos;
+                emiter.Particles[emiter.StartIndex + i].Direction = emiter.Direction;
+                emiter.Particles[emiter.StartIndex + i].Speed = emiter.Speed;
+                emiter.Particles[emiter.StartIndex + i].StartTime = startTime;
             }
         }
+
         /// <summary>
         /// setts random position inside of bounds
         /// </summary>
@@ -80,22 +79,20 @@ namespace DizGame.Source.Systems
                 min.X + (float)r.NextDouble() * (max.X - min.X),
                 min.Y + (float)r.NextDouble() * (max.Y - min.Y),
                 min.Z + (float)r.NextDouble() * (max.Z - min.Z));
-
-
         }
+
         /// <summary>
         /// Sets index for Particle
         /// </summary>
         /// <param name="emiter"></param>
-        void offsetIndex(ParticleEmiterComponent emiter)
+        void OffsetIndex(ParticleEmiterComponent emiter)
         {
-            for (int i = 0; i < emiter.numberOfActiveParticles; i++)
+            for (int i = 0; i < emiter.NumberOfActiveParticles; i++)
             {
                 emiter.StartIndex++;
-                if (emiter.StartIndex == emiter.particle.Length)
+                if (emiter.StartIndex == emiter.Particles.Length)
                     emiter.StartIndex = 0;
             }
         }
-
     }
 }

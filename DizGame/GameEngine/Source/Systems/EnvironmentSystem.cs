@@ -25,6 +25,7 @@ namespace GameEngine.Source.Systems
                 UpdateDrag(entityID, gameTime);
             }
         }
+
         /// <summary>
         /// Calculates the physic objects DragForce
         /// using the worlds parameters
@@ -56,10 +57,12 @@ namespace GameEngine.Source.Systems
             Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
             phy.Acceleration += (Fd / phy.Mass); // A = F / M
         }
+
         private void UpdateWind()
         {
 
         }
+
         /// <summary>
         /// Checks if worlds fluid dictionary contains the objects
         /// position and returns the corresponding fluid density kg/m^3
@@ -71,11 +74,12 @@ namespace GameEngine.Source.Systems
         private DensityType GetFluid(WorldComponent world, Vector3 Position)
         {
             foreach (var fluid in world.WorldFluids)
-                foreach(var pos in fluid.Value)
-                    if(Vector3BiggerOrEquals(Position, pos.Item1) && Vector3SmallerOrEquals(Position, pos.Item2))
-                    return fluid.Key;
+                foreach (var pos in fluid.Value)
+                    if (Vector3BiggerOrEquals(Position, pos.Item1) && Vector3SmallerOrEquals(Position, pos.Item2))
+                        return fluid.Key;
             return DensityType.Air;
         }
+
         /// <summary>
         /// Just an private method to check Smaller or equals by two vector3
         /// </summary>
@@ -90,6 +94,7 @@ namespace GameEngine.Source.Systems
                         return true;
             return false;
         }
+
         /// <summary>
         /// Just an private method to check bigger or equals by two vector3
         /// </summary>
@@ -104,6 +109,7 @@ namespace GameEngine.Source.Systems
                         return true;
             return false;
         }
+
         /// <summary>
         /// Funktion to power an Vector3
         /// </summary>

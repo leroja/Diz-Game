@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameEngine.Source.Enums
+﻿namespace GameEngine.Source.Enums
 {
     /// <summary>
     /// Enum to define the different CameraTypes

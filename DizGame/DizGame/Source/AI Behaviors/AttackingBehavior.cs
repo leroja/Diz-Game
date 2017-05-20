@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
@@ -17,7 +13,6 @@ namespace DizGame.Source.AI_Behaviors
     {
         private float time;
         private float coolDown;
-
 
         /// <summary>
         /// Constructor
@@ -47,10 +42,9 @@ namespace DizGame.Source.AI_Behaviors
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
-            
 
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
+
             transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
             transformComp.Position = new Vector3(transformComp.Position.X, GetCurrentHeight(transformComp.Position), transformComp.Position.Z);
 
@@ -58,11 +52,11 @@ namespace DizGame.Source.AI_Behaviors
             {
                 var rot = GetRotationForAimingAtEnemy(AIComp);
 
-                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 20, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot);
+                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot);
                 time = AIComp.ShootingCooldown;
             }
 
-            //BehaviorStuff(AIComp, transformComp, worldComp);            
+            BehaviorStuff(AIComp, transformComp, worldComp);
         }
 
         /// <summary>

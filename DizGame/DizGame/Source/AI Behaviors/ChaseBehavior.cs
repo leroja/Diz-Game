@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
-using Microsoft.Xna.Framework.Input;
 
 namespace DizGame.Source.AI_Behaviors
 {
@@ -39,8 +35,9 @@ namespace DizGame.Source.AI_Behaviors
             currentTimeForRot += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+            var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
             var pos = transformComp.Position;
-            
+
             var height = GetCurrentHeight(pos);
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -51,6 +48,7 @@ namespace DizGame.Source.AI_Behaviors
             }
 
             transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
 
             BehaviorStuff(AIComp, transformComp);
         }
@@ -66,7 +64,7 @@ namespace DizGame.Source.AI_Behaviors
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            if (AIComp.AttackingDistance> AIComp.CurrentBehaivior.DistanceToClosestEnemy)
+            if (AIComp.AttackingDistance > AIComp.CurrentBehaivior.DistanceToClosestEnemy)
             {
                 AIComp.ChangeBehavior("Attacking", transcomp.Rotation);
             }

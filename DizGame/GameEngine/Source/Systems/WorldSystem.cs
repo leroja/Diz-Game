@@ -30,6 +30,7 @@ namespace GameEngine.Source.Systems
                 game.Content.Load<SpriteFont>("Fonts/font"), 
                 true));
         }
+
         /// <summary>
         /// Updates the worldComponents.
         /// </summary>
@@ -43,6 +44,7 @@ namespace GameEngine.Source.Systems
                 UpdateSun(entityID, dt);
             }
         }
+
         /// <summary>
         /// Update the World time using the gameTime
         /// </summary>
@@ -82,6 +84,7 @@ namespace GameEngine.Source.Systems
             }
             UpdateClockText(world);
         }
+
         private void UpdateClockText(WorldComponent world)
         {
             TextComponent text = ComponentManager.GetEntityComponent<TextComponent>(world.ID);
@@ -95,6 +98,7 @@ namespace GameEngine.Source.Systems
 
             text.Text = "Day: " + world.Day + "\n" + hour + ":" + minute + ":" + second;
         }
+
         /// <summary>
         /// Updates the sun rotation
         /// </summary>

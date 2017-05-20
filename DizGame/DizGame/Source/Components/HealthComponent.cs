@@ -1,19 +1,13 @@
 ﻿using GameEngine.Source.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DizGame.Source.Components
 {
     /// <summary>
-    /// 
+    /// A component that contains the health of entities
     /// </summary>
     public class HealthComponent : IComponent
     {
         /// <summary>
-        /// the health of the entity
+        /// The health of the entity
         /// </summary>
         public float Health { get; set; }
 

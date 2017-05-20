@@ -1,11 +1,6 @@
 ﻿using GameEngine.Source.Components;
 using GameEngine.Source.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameEngine.Source.Utils;
 
 namespace DizGame.Source.Components
 {
@@ -43,6 +38,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public TimeSpan durration;
         #endregion
+
         /// <summary>
         /// Basic constructor for the ResourceComponent class
         /// </summary>
@@ -53,6 +49,7 @@ namespace DizGame.Source.Components
             thisType = type;
             durration = TimeSpan.FromSeconds(Util.GetRandomNumber(15, 25));
         }
+
         /// <summary>
         /// Alternate constructor for the ResourceComponent
         /// </summary>

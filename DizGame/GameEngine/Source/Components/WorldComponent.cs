@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Enums;
 
@@ -95,6 +92,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 LightDirection { get; set; }
         #endregion Public Properties
+
         /// <summary>
         /// Basic constructor which sets all the attributes to default value.
         /// </summary>
@@ -113,7 +111,7 @@ namespace GameEngine.Source.Components
             DefineHour = 1;
             Temperatur = AirTemperature.Plus20;
             Gravity = PhysicsComponent.DEFAULT_GRAVITY * Vector3.Down;
-            WorldFluids = new Dictionary<DensityType, List<Tuple<Vector3,Vector3>>>
+            WorldFluids = new Dictionary<DensityType, List<Tuple<Vector3, Vector3>>>
             {
                 { DensityType.Air, new List<Tuple<Vector3,Vector3>>() },
                 { DensityType.Water_Heavy, new List<Tuple<Vector3,Vector3>>() },
@@ -122,6 +120,5 @@ namespace GameEngine.Source.Components
             IsSunActive = true;
             LightDirection = Vector3.Zero;
         }
-
     }
 }

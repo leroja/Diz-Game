@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
@@ -31,13 +27,14 @@ namespace DizGame.Source.AI_Behaviors
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+            var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
             var pos = transformComp.Position;
 
             var height = GetCurrentHeight(pos);
             var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
             var rotation = GetRotationToClosestEnenmy(AIComp);
-            
+
             transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0);
 
             if (t.X >= AIComp.Bounds.Height)
@@ -69,6 +66,7 @@ namespace DizGame.Source.AI_Behaviors
                 t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             transformComp.Position = t;
+            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
 
             BehaviorStuff(AIComp, transformComp);
         }
@@ -86,6 +84,5 @@ namespace DizGame.Source.AI_Behaviors
                 AIComp.ChangeBehavior("Wander", transcomp.Rotation);
             }
         }
-
     }
 }

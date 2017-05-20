@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,6 +10,7 @@ namespace GameEngine.Source.Systems
     public class _2DSystem : IRender
     {
         private SpriteBatch spriteBatch;
+
         /// <summary>
         /// Constructor that takes spritebatch as parameter.
         /// </summary>
@@ -23,6 +19,7 @@ namespace GameEngine.Source.Systems
         {
             this.spriteBatch = spriteBatch;
         }
+
         /// <summary>
         /// Function to draw 2D Textures
         /// </summary>
@@ -37,10 +34,11 @@ namespace GameEngine.Source.Systems
                     Draw2DTexture(texture, dt);
             }
         }
+
         private void Draw2DTexture(Texture2DComponent texture, float dt)
         {
             texture.ElapsedTime += (int)dt;
-            if(texture.ElapsedTime > texture.FrameTime)
+            if (texture.ElapsedTime > texture.FrameTime)
             {
                 texture.CurrentFrame++;
                 if (texture.CurrentFrame == texture.Frames)
@@ -48,9 +46,9 @@ namespace GameEngine.Source.Systems
                 texture.ElapsedTime = 0;
             }
             texture.SourceRect = new Rectangle(
-                texture.CurrentFrame * texture.Width, 
-                0, 
-                texture.Width, 
+                texture.CurrentFrame * texture.Width,
+                0,
+                texture.Width,
                 texture.Height);
 
             spriteBatch.Begin();

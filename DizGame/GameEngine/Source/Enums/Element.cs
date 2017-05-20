@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Enums
 {
@@ -65,6 +61,7 @@ namespace GameEngine.Source.Enums
         /// </summary>
         Plus35 = 35
     }
+
     /// <summary>
     /// Returns an long represending the chosen objects
     /// drag value.
@@ -94,11 +91,11 @@ namespace GameEngine.Source.Enums
         /// <summary>
         /// Returns 0.80
         /// </summary>
-        Angle45Cube = (long) 0.80,
+        Angle45Cube = (long)0.80,
         /// <summary>
         /// Returns 0.82
         /// </summary>
-        LongCylinder = (long) 0.82,
+        LongCylinder = (long)0.82,
         /// <summary>
         /// Returns 1.15
         /// </summary>
@@ -106,52 +103,53 @@ namespace GameEngine.Source.Enums
         /// <summary>
         /// Returns 0.04
         /// </summary>
-        StreamLinedBody = (long) 0.04,
+        StreamLinedBody = (long)0.04,
         /// <summary>
         /// Returns 0.09
         /// </summary>
-        StreamLinedHalf_Body = (long) 0.09,
+        StreamLinedHalf_Body = (long)0.09,
         /// <summary>
         /// Returns 0.9
         /// </summary>
-        BiCycleWithCyclist = (long) 0.9,
+        BiCycleWithCyclist = (long)0.9,
         /// <summary>
         /// Returns 0.25
         /// </summary>
-        LowestCar = (long) 0.25,
+        LowestCar = (long)0.25,
         /// <summary>
         /// Returns 0.295
         /// </summary>
-        Bullet = (long) 0.295,
+        Bullet = (long)0.295,
         /// <summary>
         /// Returns 1.15
         /// </summary>
-        ManUpright = (long) 1.15,
+        ManUpright = (long)1.15,
         /// <summary>
         /// Returns 1.05
         /// </summary>
-        Skier = (long) 1.05,
+        Skier = (long)1.05,
         /// <summary>
         /// Returns 1.15
         /// </summary>
-        WiresAndCables = (long) 1.15,
+        WiresAndCables = (long)1.15,
         /// <summary>
         /// Returns 1.2
         /// </summary>
-        SkiJumper = (long) 1.2,
+        SkiJumper = (long)1.2,
         /// <summary>
         /// Returns 1.4
         /// </summary>
-        EmpireStateBuilding = (long) 1.4,
+        EmpireStateBuilding = (long)1.4,
         /// <summary>
         /// Returns 1.9
         /// </summary>
-        EiffelTower = (long) 1.9,
+        EiffelTower = (long)1.9,
         /// <summary>
         /// Returns 2.1
         /// </summary>
-        SmoothBrick = (long) 2.1
+        SmoothBrick = (long)2.1
     }
+
     /// <summary>
     /// Returns the materials kg/m^3 
     /// </summary>
@@ -164,100 +162,101 @@ namespace GameEngine.Source.Enums
         /// <summary>
         /// Returns 1010
         /// </summary>
-        Beer = (long) 1010,
+        Beer = (long)1010,
         /// <summary>
         /// Returns 785.1
         /// </summary>
-        Ethanol = (long) 785.1,
+        Ethanol = (long)785.1,
         /// <summary>
         /// Returns 910
         /// </summary>
-        Automobile_Oils = (long) 910,
+        Automobile_Oils = (long)910,
         /// <summary>
         /// Returns 599
         /// </summary>
-        Butane = (long) 599,
+        Butane = (long)599,
         /// <summary>
         /// Returns 924
         /// </summary>
-        Coconut_oil = (long) 924,
+        Coconut_oil = (long)924,
         /// <summary>
         /// Returns 1024
         /// </summary>
-        Cresol = (long) 1024,
+        Cresol = (long)1024,
         /// <summary>
         /// Returns 915
         /// </summary>
-        Crude_Oil_California = (long) 915,
+        Crude_Oil_California = (long)915,
         /// <summary>
         /// Returns 973
         /// </summary>
-        Crude_Oil_Mexican = (long) 973,
+        Crude_Oil_Mexican = (long)973,
         /// <summary>
         /// Returns 873
         /// </summary>
-        Crude_Oil_Texas = (long) 873,
+        Crude_Oil_Texas = (long)873,
         /// <summary>
         /// Returns 885
         /// </summary>
-        Diesel_Fuel = (long) 885,
+        Diesel_Fuel = (long)885,
         /// <summary>
         /// Returns 737
         /// </summary>
-        Vehicle_Gasoline = (long) 737,
+        Vehicle_Gasoline = (long)737,
         /// <summary>
         /// Returns 13590
         /// </summary>
-        Mercury = (long) 13590,
+        Mercury = (long)13590,
         /// <summary>
         /// Returns 791
         /// </summary>
-        Methanol = (long) 791,
+        Methanol = (long)791,
         /// <summary>
         /// Returns 1035
         /// </summary>
-        Milk = (long) 1035,
+        Milk = (long)1035,
         /// <summary>
         /// Returns 1560
         /// </summary>
-        Nitric_Acid = (long) 1560,
+        Nitric_Acid = (long)1560,
         /// <summary>
         /// Returns 860
         /// </summary>
-        Olive_Oil = (long) 860,
+        Olive_Oil = (long)860,
         /// <summary>
         /// Returns 1140
         /// </summary>
-        Oxygen_Liquid = (long) 1140,
+        Oxygen_Liquid = (long)1140,
         /// <summary>
         /// Returns 800
         /// </summary>
-        Paraffin = (long) 800,
+        Paraffin = (long)800,
         /// <summary>
         /// Returns 493.5
         /// </summary>
-        Propane = (long) 493.5,
+        Propane = (long)493.5,
         /// <summary>
         /// Returns 1839
         /// </summary>
-        Sulfuric_Acid_95 = (long) 1839,
+        Sulfuric_Acid_95 = (long)1839,
         /// <summary>
         /// Returns 1105
         /// </summary>
-        Water_Heavy = (long) 1105,
+        Water_Heavy = (long)1105,
         /// <summary>
         /// Returns 1000
         /// </summary>
-        Water_Pure = (long) 1000,
+        Water_Pure = (long)1000,
         /// <summary>
         /// Returns 1022
         /// </summary>
-        Water_Sea = (long) 1022,
+        Water_Sea = (long)1022,
         /// <summary>
         /// Returns 925
         /// </summary>
-        Whale_Oil = (long) 925
+        Whale_Oil = (long)925
     }
+
     /// <summary>
     /// Static class for AirCoefficients
     /// </summary>
@@ -271,12 +270,12 @@ namespace GameEngine.Source.Enums
         /// <returns></returns>
         public static Tuple<float, float> GetAirSoundSpeedAndDensity(AirTemperature type)
         {
-            switch(type)
+            switch (type)
             {
                 case AirTemperature.Minus25:
                     return new Tuple<float, float>(315.5f, 1.423f);
                 case AirTemperature.Minus20:
-                    return new Tuple<float, float>(318.9f,1.395f);
+                    return new Tuple<float, float>(318.9f, 1.395f);
                 case AirTemperature.Minus15:
                     return new Tuple<float, float>(322.1f, 1.368f);
                 case AirTemperature.Minus10:

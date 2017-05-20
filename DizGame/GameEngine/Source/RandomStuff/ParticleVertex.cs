@@ -24,31 +24,31 @@ namespace GameEngine.Source.RandomStuff
         /// <summary>
         /// Starting Position for Particle
         /// </summary>
-        public Vector3 startPosition
+        public Vector3 StartPosition
         {
             get { return vertexPosition; }
             set { vertexPosition = value; }
         }
         /// <summary>
-        /// Cordinate, Used in shader for texture
+        /// Coordinate, Used in shader for texture
         /// </summary>
-        public Vector2 uv
+        public Vector2 UV
         {
             get { return vertexUV; }
             set { vertexUV = value; }
         }
         /// <summary>
-        /// Movment direction
+        /// Movement direction
         /// </summary>
-        public Vector3 direction
+        public Vector3 Direction
         {
             get { return vertexDirection; }
             set { vertexDirection = value; }
         }
         /// <summary>
-        /// Movment speed
+        /// Movement speed
         /// </summary>
-        public float speed
+        public float Speed
         {
             get { return vertsxSpeed; }
             set { vertsxSpeed = value; }
@@ -56,7 +56,7 @@ namespace GameEngine.Source.RandomStuff
         /// <summary>
         /// Creation time for particle
         /// </summary>
-        public float startTime
+        public float StartTime
         {
             get { return vertexStartTime; }
             set { vertexStartTime = value; }
@@ -87,9 +87,5 @@ namespace GameEngine.Source.RandomStuff
             this.vertsxSpeed = speed;
             this.vertexStartTime = startingTime;
         }
-
-        
-        
-        
     }
 }

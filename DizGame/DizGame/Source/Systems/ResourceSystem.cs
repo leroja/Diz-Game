@@ -2,18 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
-using static DizGame.Source.Components.ResourceComponent;
 
 namespace DizGame.Source.Systems
 {
     /// <summary>
     /// System to manage the different kinds of resources placed within the game
-    /// world. These are available for players to pick up and gaign additional resources.
+    /// world. These are available for players to pick up and gain additional resources.
     /// </summary>
     public class ResourceSystem : IUpdate
     {
@@ -29,6 +26,7 @@ namespace DizGame.Source.Systems
             maxNumberOfResourcesInPlay = 25;
             healthAmmoRatio = 3;
         }
+
         /// <summary>
         /// Alternate constructor for the resorce system if different settings
         /// are desired.
@@ -42,6 +40,7 @@ namespace DizGame.Source.Systems
             this.maxNumberOfResourcesInPlay = maxNumberOfResourcesInPlay;
             this.healthAmmoRatio = healthAmmoRatio;
         }
+
         /// <summary>
         /// Update function to administrate the removal of old resources and
         /// create additional resources untill there is a maximal number of resources in play
@@ -55,7 +54,7 @@ namespace DizGame.Source.Systems
             int worldid = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>().First();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(worldid);
 
-            if(world.Day % world.ModulusValue != 1)
+            if (world.Day % world.ModulusValue != 1)
             {
 
                 foreach (int entity in entitylist)
@@ -69,21 +68,17 @@ namespace DizGame.Source.Systems
                 if (entitylist.Count + numberOfRemovedResources < maxNumberOfResourcesInPlay)
                     AddNewResources(entitylist.Count + numberOfRemovedResources);
             }
-
-            
         }
 
         private void AddNewResources(int currentNumberOfResources)
         {
             int keepTrack = 0;
-            
-            
+
             List<Vector3> positions = GetMapPositions(maxNumberOfResourcesInPlay - currentNumberOfResources);
 
             while (currentNumberOfResources != maxNumberOfResourcesInPlay)
             {
-                
-                if(keepTrack % healthAmmoRatio == 1)
+                if (keepTrack % healthAmmoRatio == 1)
                 {
                     EntityFactory.Instance.ResourceFactory.CreateHealthResource(positions.ElementAt(keepTrack));
                     keepTrack++;
@@ -95,9 +90,9 @@ namespace DizGame.Source.Systems
                     keepTrack++;
                     currentNumberOfResources++;
                 }
-                    
             }
         }
+
         private void RemoveOldResources(int entity)
         {
             numberOfRemovedResources++;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
@@ -17,7 +13,7 @@ namespace GameEngine.Source.Factories
     public class HeightMapFactory
     {
         private GraphicsDevice graphicsDevice;
-        
+
         private Texture2D heightMap;
         private Texture2D heightMapTexture;
         private VertexPositionNormalTexture[] VerticesTexture;
@@ -27,11 +23,11 @@ namespace GameEngine.Source.Factories
         private int fractions_per_side;
         private int chunk_width;
         private int chunk_height;
-        
+
         private int[] Indices;
-        
+
         private float[,] heightMapData;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -58,7 +54,7 @@ namespace GameEngine.Source.Factories
             SetHeightMapData(ref heightMapComponent);
             return heightMapComponent;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -123,7 +119,7 @@ namespace GameEngine.Source.Factories
                 }
             }
         }
-               
+
         /// <summary>
         /// 
         /// </summary>
@@ -140,7 +136,7 @@ namespace GameEngine.Source.Factories
                 }
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -174,14 +170,14 @@ namespace GameEngine.Source.Factories
         private void SetUpHeightMapChunks(ref HeightmapComponentTexture heightMapComp)
         {
             for (int x = 0; x < Width - chunk_width; x += chunk_width)
-            { 
+            {
                 for (int y = 0; y < Height - chunk_height; y += chunk_height)
                 {
                     Rectangle clipRect = new Rectangle(x, y, chunk_width + 1, chunk_height + 1);
                     var offsetpos = new Vector3(x, 0, -y);
-                    
+
                     HeightMapChunk chunk = CreateHeightMapChunk(heightMap, clipRect, offsetpos, GetVertexTextureNormals(clipRect), heightMapTexture);
-                    
+
                     heightMapComp.HeightMapChunks.Add(chunk);
                 }
             }
@@ -205,7 +201,7 @@ namespace GameEngine.Source.Factories
             }
             return terrainVerts;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -242,7 +238,7 @@ namespace GameEngine.Source.Factories
             CopyNormals(vertexNormals, chunkVertices);
 
             PrepareBuffers(ref chunk, indices, chunkVertices);
-            
+
             chunk.Effect = effect;
             chunk.BoundingBox = boundingBox;
             return chunk;
@@ -271,10 +267,10 @@ namespace GameEngine.Source.Factories
         {
             var width = terrainMap.Width;
             var height = terrainMap.Height;
-            
+
             Color[] colors = new Color[width * height];
             terrainMap.GetData(colors);
-            
+
             var heightInfo = new float[terrainRect.Width, terrainRect.Height];
             for (int x = terrainRect.X; x < terrainRect.X + terrainRect.Width; ++x)
             {

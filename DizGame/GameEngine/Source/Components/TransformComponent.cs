@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace GameEngine.Source.Components
 {
@@ -12,7 +7,6 @@ namespace GameEngine.Source.Components
     /// </summary>
     public class TransformComponent : IComponent
     {
-
         /// <summary>
         /// Vector3 representing the position for an object
         /// </summary>
@@ -62,14 +56,15 @@ namespace GameEngine.Source.Components
         /// Matrix which is the ObjectMatrix for an object
         /// </summary>
         public Matrix ObjectMatrix { get; set; }
-        /// <summary>
-        /// Matrix which is the ModelMatrix for an object
-        /// </summary>
-        public Matrix ModelMatrix { get; set; }
+        ///// <summary>
+        ///// Matrix which is the ModelMatrix for an object
+        ///// </summary>
+        //public Matrix ModelMatrix { get; set; }
         /// <summary>
         /// Matrix for describing a rotation of an object.
         /// </summary>
         public Matrix RotationMatrix { get; set; }
+
         /// <summary>
         /// Basic Constructor for a TransformComponent
         /// </summary>
@@ -87,6 +82,7 @@ namespace GameEngine.Source.Components
             this.RotationMatrix = Matrix.Identity;
             this.ModelMatrix = Matrix.Identity;
         }
+
         /// <summary>
         /// Alternative Constructor for a TransformComponent
         /// </summary>

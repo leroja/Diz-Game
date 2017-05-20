@@ -20,6 +20,7 @@ namespace DizGame.Source.Factories
     {
         private Dictionary<string, Model> ModelDic;
         private bool VisibleBullets;
+
         /// <summary>
         /// Constructor for creating the ResourceFactory
         /// </summary>
@@ -32,6 +33,7 @@ namespace DizGame.Source.Factories
             this.ModelDic = ModelDic;
             this.VisibleBullets = VisibleBullets;
         }
+
         /// <summary>
         /// Method for creating health resources
         /// </summary>
@@ -69,6 +71,7 @@ namespace DizGame.Source.Factories
 
             ComponentManager.Instance.AddAllComponents(newEntityId, resourceCompList);
         }
+
         /// <summary>
         /// Method for creating the ammunition resources.
         /// </summary>

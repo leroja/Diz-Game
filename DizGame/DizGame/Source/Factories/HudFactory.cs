@@ -7,9 +7,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.Factories
 {
@@ -44,7 +41,6 @@ namespace DizGame.Source.Factories
             };
             slot1.Position = new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2 - ((slot1.Width * slot1.Scale.X) / 2), GameOne.Instance.GraphicsDevice.Viewport.Height);
 
-
             List<TextComponent> textComponents = new List<TextComponent>
             {
                 new TextComponent(health.Health.ToString(), healthPosition, Color.Pink, font, true, Color.WhiteSmoke, true, 0.3f), // health
@@ -62,7 +58,6 @@ namespace DizGame.Source.Factories
             {
 
             }
-
 
             List<IComponent> components = new List<IComponent>
             {

@@ -10,7 +10,6 @@ using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
-
     /// <summary>
     /// Recalculates the models bounding Spheres if it is necessary.
     /// If the model is static it is not needed to recalculte the bounding sphere
@@ -38,6 +37,7 @@ namespace GameEngine.Source.Systems
                 UpdateModelBoundingVolume(modelComp, modelEnt);
             }
         }
+
         /// <summary>
         /// Updates the BoundingVolume of the model to its position in the world
         /// </summary>

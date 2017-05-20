@@ -1,11 +1,6 @@
 ﻿using AnimationContentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -39,7 +34,6 @@ namespace GameEngine.Source.Components
         public bool IsVisible { get; set; }
 
         #endregion Public Properties
-        
 
         /// <summary>
         /// Constructor which takes model as parameter
@@ -50,6 +44,5 @@ namespace GameEngine.Source.Components
             Model = model;
             IsVisible = true;
         }
-
     }
 }

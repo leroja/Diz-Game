@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,15 +25,20 @@ namespace GameEngine.Source.Systems
             this.device = spriteBatch.GraphicsDevice;
             this.spriteBatch = spriteBatch;
         }
+
+        /// <summary>
+        /// Draws the active flares
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<FlareComponent>())
             {
                 FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(entityID);
-                foreach(int cameraID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
+                foreach (int cameraID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
                 {
                     CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(cameraID);
-                    if(camera.IsFlareable)
+                    if (camera.IsFlareable)
                         if (flare.IsActive)
                         {
                             DrawOcclusion(flare, camera);
@@ -102,7 +105,7 @@ namespace GameEngine.Source.Systems
 
                     flare.OcclusionAlpha = Math.Min(flare.OcclusionQuery.PixelCount / queryArea, 1);
                 }
-                
+
                 // Set renderstates for drawing the occlusion query geometry. We want depth
                 // tests enabled, but depth writes disabled, and we disable color writes
                 // to prevent this query polygon actually showing up on the screen.
@@ -125,6 +128,7 @@ namespace GameEngine.Source.Systems
                 flare.OcclusionQueryActive = true;
             }
         }
+
         /// <summary>
         /// Draws a large circular glow sprite, centered on the sun.
         /// </summary>
@@ -144,6 +148,7 @@ namespace GameEngine.Source.Systems
 
             spriteBatch.End();
         }
+
         /// <summary>
         /// Draws the lensflare sprites, computing the position
         /// of each one based on the current angle of the sun.
@@ -186,6 +191,7 @@ namespace GameEngine.Source.Systems
 
             spriteBatch.End();
         }
+
         /// <summary>
         /// Sets renderstates back to their default values after we finish drawing
         /// the lensflare, to avoid messing up the 3D terrain rendering.

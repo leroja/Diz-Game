@@ -1,11 +1,6 @@
 ﻿using AnimationContentClasses;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -94,6 +89,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public bool IsFlareable { get; set; }
         #endregion Public Propterties
+
         /// <summary>
         /// Basic constructor which sets default values
         /// to the attributes

@@ -17,6 +17,7 @@ namespace GameEngine.Source.Systems.AbstractClasses
         /// Returns an enum of the classtype
         /// </summary>
         public PhysicsType PhysicsType { get; set; }
+
         /// <summary>
         /// Base constructor
         /// </summary>
@@ -25,6 +26,7 @@ namespace GameEngine.Source.Systems.AbstractClasses
         {
             this.PhysicsSystem = physicsSystem;
         }
+
         /// <summary>
         /// Abstract update function
         /// </summary>

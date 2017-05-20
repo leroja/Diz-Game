@@ -18,5 +18,4 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public abstract void Update(GameTime gameTime);
     }
-
 }

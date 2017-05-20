@@ -14,7 +14,6 @@ namespace GameEngine.Source.Systems
     /// </summary>
     public class TransformSystem : IUpdate
     {
-
         /// <summary>
         /// the system for this component should handle the objects world matrix calculation
         /// i.e objectWorld = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
@@ -40,7 +39,6 @@ namespace GameEngine.Source.Systems
 
                 tfc.ModelMatrix = tfc.ObjectMatrix;
             }
-
         }
     }
 }

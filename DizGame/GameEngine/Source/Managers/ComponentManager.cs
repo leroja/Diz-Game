@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Managers
 {
@@ -137,7 +135,7 @@ namespace GameEngine.Source.Managers
                 }
             }
         }
-        
+
 
         /// <summary>
         /// Returns a component if the Entity has one "linked" to it
@@ -258,7 +256,7 @@ namespace GameEngine.Source.Managers
 
             if (compDic.ContainsKey(type))
             {
-                return compDic[type]; 
+                return compDic[type];
             }
             return defaultDictionary;
         }

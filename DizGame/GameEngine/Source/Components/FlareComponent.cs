@@ -1,11 +1,6 @@
 ﻿using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -75,6 +70,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Flare[] Flares { get; set; }
         #endregion
+
         /// <summary>
         /// Basic constructor which sets parameters to default values.
         /// </summary>
@@ -83,6 +79,7 @@ namespace GameEngine.Source.Components
             LightDirection = Vector3.Normalize(new Vector3(-1, -0.1f, 0.3f));
             SetupDefaultQueryVertices();
         }
+
         /// <summary>
         /// Constructor which takes in lightDirection to set it's direction
         /// </summary>

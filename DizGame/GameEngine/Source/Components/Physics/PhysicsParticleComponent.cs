@@ -30,6 +30,7 @@ namespace GameEngine.Source.Components
         public Texture2D Tetxure { get; set; }
         public float LifeTime { get; set; }
         #endregion Public Configuration
+
         /// <summary>
         /// Basic constructor which sets default values
         /// to the attributes

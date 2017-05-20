@@ -12,6 +12,7 @@ namespace GameEngine.Tools
 {
     public class BoundingSphereRenderer : IRender
     {
+        // Todo du vet att Mathhelp.piOver2 och PiOver4 finns va?
         public static float RADIANS_FOR_90DEGREES = MathHelper.ToRadians(90);//(float)(Math.PI / 2.0);
         public static float RADIANS_FOR_180DEGREES = RADIANS_FOR_90DEGREES * 2;
 

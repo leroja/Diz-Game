@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Components;
@@ -25,9 +21,10 @@ namespace GameEngine.Source.Systems
         {
             this.device = device;
         }
+
         // Todo:
         /// <summary>
-        /// Methos for drawing the heightmaps
+        /// Method for drawing the heightmap
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
@@ -69,7 +66,7 @@ namespace GameEngine.Source.Systems
             }
         }
         
-        //todo
+        // todo borde bara behöva göra en gång
         /// <summary>
         /// Recalculates/moves the boudning box to its correct placemnet in the world
         /// </summary>

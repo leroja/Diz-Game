@@ -1,9 +1,5 @@
 ﻿using GameEngine.Source.Systems;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
@@ -19,7 +15,7 @@ namespace DizGame.Source.Systems
     public class PlayerSystem : IUpdate
     {
         private EntityFactory entFactory;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,7 +49,7 @@ namespace DizGame.Source.Systems
                     else
                         AudioManager.Instance.GlobalMute();
                 }
-                
+
                 var m = UpdateInput(mouseComp);
 
                 transformComp.Rotation += new Vector3(-m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -62,7 +58,7 @@ namespace DizGame.Source.Systems
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed /*&& worldComp.Day % 2 == 0 && worldComp.Day != 0*/)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 20, new Vector3(.1f, .1f, .1f), 100, 600, transformComp.Rotation, 10);
+                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 600, transformComp.Rotation, 10);
                     AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }
@@ -100,6 +96,15 @@ namespace DizGame.Source.Systems
             while (rotation.Y > MathHelper.Pi)
             {
                 rotation.Y -= MathHelper.TwoPi;
+            }
+
+            while (rotation.X < -MathHelper.PiOver4 * 0.5f)
+            {
+                rotation.X += MathHelper.PiOver4 * 0.01f;
+            }
+            while (rotation.X > MathHelper.PiOver4 * 0.5f)
+            {
+                rotation.X -= MathHelper.PiOver4 * 0.01f;
             }
             return rotation;
         }

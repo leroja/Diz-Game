@@ -1,9 +1,5 @@
 ﻿using GameEngine.Source.Systems;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
@@ -27,7 +23,7 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var compIds = ComponentManager.GetAllEntitiesWithComponentType<BulletComponent>();
-            
+
             foreach (var id in compIds)
             {
                 var bulletComponent = ComponentManager.GetEntityComponent<BulletComponent>(id);
@@ -40,7 +36,7 @@ namespace DizGame.Source.Systems
                 if (curRange > bulletComponent.MaxRange)
                 {
                     toDelete.Add(id);
-                }                
+                }
             }
 
             foreach (var id in toDelete)

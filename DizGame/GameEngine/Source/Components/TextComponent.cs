@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -55,6 +51,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float BackgroundOpacity { get; set; }
         #endregion Public Configuration
+
         /// <summary>
         /// Constructor which takes in all the nessecary parameters
         /// and the sets them.
@@ -79,6 +76,7 @@ namespace GameEngine.Source.Components
             IsBackgroundVisible = isBackgroundVisible;
             BackgroundOpacity = backgroundOpacity;
         }
+
         /// <summary>
         /// Is used if multiple text is wanted
         /// </summary>

@@ -1,18 +1,12 @@
 ﻿using DizGame.Source.Systems;
-using Lidgren.Network;
 using GameEngine.Source.Managers;
-using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using GameEngine.Source.Factories;
-using GameEngine.Source.Components;
-using System.Collections.Generic;
 using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-using GameEngine.Source.Utils;
 
 namespace DizGame
 {
@@ -35,6 +29,7 @@ namespace DizGame
             client.RunClient();
             //this.IsMouseVisible = true;
         }
+
         /// <summary>
         /// Instance of the game
         /// </summary>
@@ -75,8 +70,7 @@ namespace DizGame
             
             base.Initialize();
         }
-
-
+        
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -85,6 +79,7 @@ namespace DizGame
         {
             TreeModel tree = new TreeModel(Device, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
         }
+
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.

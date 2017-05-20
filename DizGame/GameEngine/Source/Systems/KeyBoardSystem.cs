@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Components;
@@ -56,7 +52,6 @@ namespace GameEngine.Source.Systems
         /// <param name="keyboardComp"></param>
         private void UpdateActionStates(KeyBoardComponent keyboardComp)
         {
-
             foreach (string action in keyboardComp.KeyBoardActions.Keys)
             {
                 Keys key = keyboardComp.KeyBoardActions[action];
