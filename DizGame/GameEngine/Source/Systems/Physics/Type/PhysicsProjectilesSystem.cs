@@ -36,7 +36,7 @@ namespace GameEngine.Source.Systems
             PhysicsSystem.UpdateGravity(physic, dt);
             PhysicsSystem.UpdateVelocity(physic, dt);
 
-            
+
             //TODO: ProjectilesSystem
             PhysicsProjectileComponent projectile = ComponentManager.GetEntityComponent<PhysicsProjectileComponent>(physic.ID);
             if (projectile == null)

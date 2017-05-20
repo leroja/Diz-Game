@@ -16,7 +16,11 @@ namespace AnimationContentClasses
         {
             Frustum = frustum;
         }
-
+        /// <summary>
+        /// Checks if this Frustum intersects with another IBounding3D
+        /// </summary>
+        /// <param name="bounding"></param>
+        /// <returns></returns>
         public override bool Intersects(IBounding3D bounding)
         {
             if (bounding is BoundingBox3D)
@@ -30,6 +34,11 @@ namespace AnimationContentClasses
             return false;
         }
 
+        /// <summary>
+        /// This function should not be used
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <returns></returns>
         public override IBounding3D CreateMerged(IBounding3D bound)
         {
             return default(IBounding3D);

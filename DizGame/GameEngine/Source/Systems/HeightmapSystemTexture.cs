@@ -25,7 +25,7 @@ namespace GameEngine.Source.Systems
         {
             this.device = device;
         }
-
+        // Todo:
         /// <summary>
         /// Methos for drawing the heightmaps
         /// </summary>
@@ -69,6 +69,7 @@ namespace GameEngine.Source.Systems
             }
         }
         
+        //todo
         /// <summary>
         /// Recalculates/moves the boudning box to its correct placemnet in the world
         /// </summary>
