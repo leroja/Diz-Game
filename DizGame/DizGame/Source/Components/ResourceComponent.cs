@@ -1,4 +1,5 @@
 ﻿using GameEngine.Source.Components;
+using GameEngine.Source.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace DizGame.Source.Components
         /// the component is placed within the world, which also could be 
         /// a unlimited ammount of time. This time is described in seconds.
         /// </summary>
-        public TimeSpan durration;
+        public TimeSpan duration;
         #endregion
         /// <summary>
         /// Basic constructor for the ResourceComponent class
@@ -49,7 +50,7 @@ namespace DizGame.Source.Components
         public ResourceComponent(ResourceType type)
         {
             thisType = type;
-            durration = TimeSpan.FromSeconds(20);
+            duration = TimeSpan.FromSeconds(Util.GetRandomNumber(15, 25));
         }
         /// <summary>
         /// Alternate constructor for the ResourceComponent
@@ -61,7 +62,7 @@ namespace DizGame.Source.Components
         public ResourceComponent(ResourceType type, TimeSpan duration)
         {
             thisType = type;
-            this.durration = duration;
+            this.duration = duration;
         }
     }
 }

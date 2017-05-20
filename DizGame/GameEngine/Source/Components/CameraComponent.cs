@@ -41,7 +41,7 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Default personal view offset Vector3(0,2,0)
         /// </summary>
-        public readonly static Vector3 DEFAULT_POV = new Vector3(0, 2, 0);
+        public readonly static Vector3 DEFAULT_POV = new Vector3(0, 7, 0);
         /// <summary>
         /// Default static cam offset Vector3(0,0,0)
         /// </summary>

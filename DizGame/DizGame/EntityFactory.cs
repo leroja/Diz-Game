@@ -106,7 +106,7 @@ namespace DizGame
                 {
                     IsSunActive = true,
                     DefineHour = 2,
-                    
+                    Day = 2, // TODO: REMOVE
                 },
             };
             FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
@@ -492,6 +492,7 @@ namespace DizGame
             int BulletEntity = ComponentManager.Instance.CreateID();
 
             Model model = ModelDic[modelName];
+            List<BoundingSphere> bList = (List<BoundingSphere>)model.Tag;
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
@@ -500,6 +501,7 @@ namespace DizGame
                 },
                 new  ModelComponent(model){
                     IsVisible = VisibleBullets,
+                    BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(bList[0]))
                 },
                 
                 new BulletComponent(){
@@ -518,8 +520,7 @@ namespace DizGame
                     GravityType = GravityType.World,
                     ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
                     PhysicsType = PhysicsType.Projectiles,
-                    
-                    Velocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity * 100,
+                    Velocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity,
                 }, 
             };
 

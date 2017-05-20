@@ -56,14 +56,13 @@ namespace DizGame.Source.Systems
                 
                 var m = UpdateInput(mouseComp);
 
-                transformComp.Rotation += new Vector3(0, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+                transformComp.Rotation += new Vector3(-m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation = WrapAngle(transformComp.Rotation);
 
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 2 == 0 && worldComp.Day != 0)
-                {
-                    entFactory.CreateBullet("Bullet", transformComp.Position, new Vector3(.1f, .1f, .1f), 100, 200, transformComp.Rotation, 10);
-                    AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
+                if (mouseComp.GetState("Fire") == ButtonStates.Pressed /*&& worldComp.Day % 2 == 0 && worldComp.Day != 0*/) if (mouseComp.GetState("Fire") == ButtonStates.Pressed /*&& worldComp.Day % 2 == 0 && worldComp.Day != 0*/)
+                    {
+                        entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 20, new Vector3(.1f, .1f, .1f), 100, 600, transformComp.Rotation, 10);
+                        AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }
         }
@@ -74,16 +73,20 @@ namespace DizGame.Source.Systems
         /// <param name="mouseComp"></param>
         private Vector2 UpdateInput(MouseComponent mouseComp)
         {
-            Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
+            if (GameOne.Instance.Window != null)
+            {
+                Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
 
-            int centerX = clientBounds.Width / 2;
-            int centerY = clientBounds.Height / 2;
-            float deltaX = centerX - mouseComp.X;
-            float deltaY = centerY - mouseComp.Y;
+                int centerX = clientBounds.Width / 2;
+                int centerY = clientBounds.Height / 2;
+                float deltaX = centerX - mouseComp.X;
+                float deltaY = centerY - mouseComp.Y;
 
-            Mouse.SetPosition(centerX, centerY);
+                Mouse.SetPosition(centerX, centerY);
 
-            return new Vector2(deltaX, deltaY);
+                return new Vector2(deltaX, deltaY);
+            }
+            return Vector2.Zero;
         }
 
         /// <summary>

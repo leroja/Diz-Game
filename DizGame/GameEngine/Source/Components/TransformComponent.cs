@@ -35,10 +35,6 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Quaternion Orientation { get; set; }
         /// <summary>
-        /// Vector3 which represents the dirrection of an object
-        /// </summary>
-        public Vector3 Dirrection { get; set; }
-        /// <summary>
         /// Vector3 which represents the forward motion of an object
         /// </summary>
         public Vector3 Forward { get; set; }
@@ -77,7 +73,6 @@ namespace GameEngine.Source.Components
             this.Position = position;
             this.PreviousPosition = position;
             this.Scale = scale;
-            Dirrection = Vector3.Zero;
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;
             this.RotationMatrix = Matrix.Identity;

@@ -30,14 +30,21 @@ namespace DizGame.Source.Systems
                 tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
                 tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
 
-                tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale) * tfc.RotationMatrix
+                tfc.ModelMatrix = Matrix.CreateScale(tfc.Scale) * tfc.RotationMatrix
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
                     * Matrix.CreateTranslation(tfc.Position);
 
-                tfc.Orientation *= Quaternion.CreateFromRotationMatrix(tfc.ObjectMatrix); // TODO: vill få fram heading vet ej om detta är korrekt
+                // TODO: THIS SHIT
+                rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, 0,0);
 
-                tfc.ModelMatrix = tfc.ObjectMatrix;
-                //TODO:
+                tfc.QuaternionRotation = rotationQuaternion;
+                tfc.Forward = Vector3.Transform(Vector3.Forward, tfc.QuaternionRotation);
+                tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
+                tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
+
+                tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale) * tfc.RotationMatrix
+                    * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
+                    * Matrix.CreateTranslation(tfc.Position);
             }
         }
     }

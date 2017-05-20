@@ -17,7 +17,7 @@
 
 #begin bullet/bullet.obj
 /importer:OpenAssetImporter
-/processor:ModelProcessor
+/processor:ModelBoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect
@@ -31,7 +31,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=DxtCompressed
 /build:bullet/bullet.obj
 
 #begin bullet/Cartridge.obj
@@ -228,7 +228,6 @@
 #begin Fonts/MenuFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/MenuFont.spritefont
 
