@@ -38,12 +38,12 @@ namespace GameEngine.Source.Systems
                 foreach (int cameraID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
                 {
                     CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(cameraID);
-                    if (camera.IsFlareable)
                         if (flare.IsActive)
                         {
                             DrawOcclusion(flare, camera);
                             DrawGlow(flare);
-                            DrawFlares(flare);
+                            if (camera.IsFlareable)
+                                DrawFlares(flare);
                             RestoreRenderStates();
                         }
                 }

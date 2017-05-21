@@ -198,7 +198,7 @@ namespace DizGame.Source.GameStates
 
             var idC = entf.CreateDude();
             //entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
-            entf.AddPOVCamToEntity(idC, true);
+            entf.AddPOVCamToEntity(idC);
             //entf.CreateStaticCam(new Vector3(-20, 45, 20), new Vector3(45, 50, -30));
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);
