@@ -25,7 +25,7 @@ namespace DizGame.Source.Communication
         private static Byte[] messageArray;
 
         private int WAIT_MAX_MILLIS = 100;
-        private static int MAX_MESSAGE_SIZE = 100;
+        private static int MAX_MESSAGE_SIZE = 10000;
 
 
         public TalkToServer(NetClient client)
@@ -118,7 +118,7 @@ namespace DizGame.Source.Communication
                         case ComponentType.TransformComponent:
                             component = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityId);
                             if(component != null) //Not sure if this always will be null when componentManager fails...
-                                SendCreatedNewTransformComponent(entityId, component);
+                                SendCreatedNewTransformComponent(entityId, (TransformComponent)component);
                             break;
 
                         default:
@@ -129,13 +129,14 @@ namespace DizGame.Source.Communication
         }
 
 
-        private static void SendCreatedNewTransformComponent(int entityId, IComponent component)
+        private static void SendCreatedNewTransformComponent(int entityId, TransformComponent component)
         {
             InitMessage();
 
+            int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreatedNewTransformComponent);
+            arrLength += ConvertToByteArray.ConvertValue(ref  messageArray, arrLength, component);
 
-
-            SendMessage(9);
+            SendMessage(arrLength);
         }
 
 

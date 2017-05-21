@@ -17,7 +17,7 @@ namespace ServerSupportedCommunication.Enums
         CreatedNewEntity, //Test with sending a whole new entity as a list of components.
         CreatedNewPlayer,
         CreatedNewBullet,
-
+        CreatedNewTransformComponent,
 
 
 
