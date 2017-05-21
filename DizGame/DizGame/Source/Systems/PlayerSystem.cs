@@ -52,12 +52,12 @@ namespace DizGame.Source.Systems
 
                 var m = UpdateInput(mouseComp);
 
-                transformComp.Rotation += new Vector3(-m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation = WrapAngle(transformComp.Rotation);
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed /*&& worldComp.Day % 2 == 0 && worldComp.Day != 0*/)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 600, transformComp.Rotation, 10);
+                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation, 10);
                     AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }
