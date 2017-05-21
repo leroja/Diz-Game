@@ -10,10 +10,17 @@ using System.Collections.Generic;
 
 namespace DizGame.Source.Factories
 {
+    /// <summary>
+    /// A factory for creation HUD related things
+    /// </summary>
     public class HudFactory
     {
         private ContentManager Content;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Content"></param>
         public HudFactory(ContentManager Content)
         {
             this.Content = Content;

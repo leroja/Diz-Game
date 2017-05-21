@@ -103,8 +103,9 @@ namespace DizGame
                 {
                     IsSunActive = true,
                     DefineHour = 1,
-                    Day = 1,
-                    Hour = 0,
+                    Day = 0,
+                    Hour = 16,
+                    ModulusValue = 2,
                 },
             };
             FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);

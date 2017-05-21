@@ -101,14 +101,24 @@ namespace DizGame.Source.AI_Behaviors
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % 2 == 0 && worldComp.Day != 0)))
+            if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)))
             {
                 AIComp.ChangeBehavior("Evade", transcomp.Rotation);
             }
-            else if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
+            else if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance - AIComp.Hysteria)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
+        }
+
+        /// <summary>
+        /// Override of object.ToString
+        /// Returns the name of the behavior
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "Wander";
         }
     }
 }

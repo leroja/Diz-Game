@@ -47,7 +47,7 @@ namespace DizGame.Source.Components
         public ResourceComponent(ResourceType type)
         {
             thisType = type;
-            duration = TimeSpan.FromSeconds(Util.GetRandomNumber(15, 25));
+            duration = TimeSpan.FromSeconds(Util.GetRandomNumber(25, 35));
         }
 
         /// <summary>

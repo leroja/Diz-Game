@@ -84,5 +84,15 @@ namespace DizGame.Source.AI_Behaviors
                 AIComp.ChangeBehavior("Wander", transcomp.Rotation);
             }
         }
+
+        /// <summary>
+        /// Override of object.ToString
+        /// Returns the name of the behavior
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "Evade";
+        }
     }
 }
