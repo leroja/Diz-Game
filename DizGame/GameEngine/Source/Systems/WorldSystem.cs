@@ -8,6 +8,7 @@ using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Factories;
 using GameEngine.Source.RandomStuff;
+using System.Threading;
 
 namespace GameEngine.Source.Systems
 {
@@ -17,12 +18,14 @@ namespace GameEngine.Source.Systems
     /// </summary>
     public class WorldSystem : IUpdate
     {
+        private Game game;
         /// <summary>
         /// Basic constructor.
         /// </summary>
         /// <param name="game"></param>
         public WorldSystem(Game game)
         {
+            this.game = game;
             ComponentManager.AddComponentToEntity(ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>()[0],
                 new TextComponent("WorldTime", 
                 new Vector2(game.GraphicsDevice.Viewport.Width/2 - 50, 0), 
@@ -98,7 +101,8 @@ namespace GameEngine.Source.Systems
 
             text.Text = "Day: " + world.Day + "\n" + hour + ":" + minute + ":" + second;
         }
-
+        private float c = 0;
+        private bool reverse = false;
         /// <summary>
         /// Updates the sun rotation
         /// </summary>
@@ -110,10 +114,35 @@ namespace GameEngine.Source.Systems
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(entityID);
             FlareComponent flare = null;
             if (world.IsSunActive)
-                flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
-            if (flare != null)
             {
+                flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
+                if (flare != null)
+                {
+                    if (c > 2)
+                    {
+                        flare.LightDirection = new Vector3(flare.LightDirection.X,
+                            flare.LightDirection.Y * 1.001f,
+                            flare.LightDirection.Z * 1.001f);
+                        //flare.LightDirection.Normalize();
+                        //Console.WriteLine(flare.LightDirection);
+                    }
+                    c += dt;
+                    if (flare.LightDirection.Z > 10)
+                    {
+                        flare.LightDirection = new Vector3(flare.LightDirection.X,
+                            flare.StartLightDirection.Y,
+                            flare.StartLightDirection.Z);
+                    }
 
+                }
+            }
+            else
+            {
+                flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
+                if (flare != null)
+                {
+                    flare.IsActive = false;
+                }
             }
         }
     }

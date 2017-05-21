@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.RandomStuff;
+using Microsoft.Xna.Framework.Input;
 
 namespace GameEngine.Source.Systems
 {
@@ -52,6 +53,7 @@ namespace GameEngine.Source.Systems
 
         private void DrawOcclusion(FlareComponent flare, CameraComponent camera)
         {
+            KeyboardState s = Keyboard.GetState();
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
             float aspectRatio = device.Viewport.AspectRatio;
@@ -91,6 +93,7 @@ namespace GameEngine.Source.Systems
                 }
 
                 flare.LightPosition = new Vector2(projectedPosition.X, projectedPosition.Y);
+
                 flare.LightBehindCamera = false;
 
                 if (flare.OcclusionQueryActive)
@@ -101,7 +104,7 @@ namespace GameEngine.Source.Systems
 
                     // Use the occlusion query pixel count to work
                     // out what percentage of the sun is visible.
-                    const float queryArea = FlareComponent.QuerySize * FlareComponent.QuerySize;
+                    float queryArea = flare.QuerySize * flare.QuerySize;
 
                     flare.OcclusionAlpha = Math.Min(flare.OcclusionQuery.PixelCount / queryArea, 1);
                 }
@@ -139,7 +142,7 @@ namespace GameEngine.Source.Systems
 
             Color color = Color.White * flare.OcclusionAlpha;
             Vector2 origin = new Vector2(flare.GlowSprite.Width, flare.GlowSprite.Height) / 2;
-            float scale = FlareComponent.GlowSize * 2 / flare.GlowSprite.Width;
+            float scale = flare.GlowSize * 2 / flare.GlowSprite.Width;
 
             spriteBatch.Begin();
 
