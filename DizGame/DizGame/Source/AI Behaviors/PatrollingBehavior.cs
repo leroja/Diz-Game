@@ -82,7 +82,7 @@ namespace DizGame.Source.AI_Behaviors
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
 
-            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
+            if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
@@ -103,6 +103,16 @@ namespace DizGame.Source.AI_Behaviors
             float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
 
             return new Vector3(0, WrapAngle(desiredAngle), 0);
+        }
+
+        /// <summary>
+        /// Override of object.ToString
+        /// Returns the name of the behavior
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "Patroll";
         }
     }
 }

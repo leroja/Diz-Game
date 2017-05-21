@@ -194,7 +194,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.AddRange(aiEntityList);
 
 
-            GameStateEntities.Add(entf.PlaceCrossHair(new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2, GameOne.Instance.GraphicsDevice.Viewport.Height / 2)));
+            GameStateEntities.Add(entf.PlaceCrossHair(new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2, GameOne.Instance.GraphicsDevice.Viewport.Height / 2 + 20f)));
 
             var idC = entf.CreateDude();
             //entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);

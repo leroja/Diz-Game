@@ -39,18 +39,87 @@ namespace DizGame.Source.AI_Behaviors
             var pos = transformComp.Position;
 
             var height = GetCurrentHeight(pos);
-            transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (currentTimeForRot > AIComp.UpdateFrequency)
+            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
+
+            if (t.X >= AIComp.Bounds.Height)
             {
-                desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
-                currentTimeForRot = 0f;
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                if (AIComp.HaveBehavior("Patroll"))
+                {
+                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                }
+                else
+                {
+                    AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                }
             }
-
-            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            else if (t.X <= 3)
+            {
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                if (AIComp.HaveBehavior("Patroll"))
+                {
+                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                }
+                else
+                {
+                    AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                }
+            }
+            else if (t.Z <= -AIComp.Bounds.Width)
+            {
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                if (AIComp.HaveBehavior("Patroll"))
+                {
+                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                }
+                else
+                {
+                    AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                }
+            }
+            else if (t.Z >= -3)
+            {
+                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                if (AIComp.HaveBehavior("Patroll"))
+                {
+                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                }
+                else
+                {
+                    AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                }
+            }
+            else
+            {
+                t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (currentTimeForRot > AIComp.UpdateFrequency)
+                {
+                    desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
+                    currentTimeForRot = 0f;
+                }
+                transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+                BehaviorStuff(AIComp, transformComp);
+            }
+            transformComp.Position = t;
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
 
-            BehaviorStuff(AIComp, transformComp);
+            //transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //if (currentTimeForRot > AIComp.UpdateFrequency)
+            //{
+            //    desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
+            //    currentTimeForRot = 0f;
+            //}
+
+            //transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
+
+            //BehaviorStuff(AIComp, transformComp);
         }
 
         /// <summary>
@@ -58,16 +127,37 @@ namespace DizGame.Source.AI_Behaviors
         /// If it should then the method changes the behavior
         /// </summary>
         /// <param name="AIComp"> The AI component of the AI </param>
-        /// <param name="transcomp"> The transorm component of the AI </param>
-        private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
+        /// <param name="transComp"> The transorm component of the AI </param>
+        private void BehaviorStuff(AIComponent AIComp, TransformComponent transComp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
             if (AIComp.AttackingDistance > AIComp.CurrentBehaivior.DistanceToClosestEnemy)
             {
-                AIComp.ChangeBehavior("Attacking", transcomp.Rotation);
+                AIComp.ChangeBehavior("Attacking", transComp.Rotation);
             }
+            else if (DistanceToClosestEnemy > AIComp.ChaseDistance + AIComp.Hysteria)
+            {
+                if (AIComp.HaveBehavior("Patroll"))
+                {
+                    AIComp.ChangeBehavior("Patroll", transComp.Rotation);
+                }
+                else
+                {
+                    AIComp.ChangeBehavior("Wander", transComp.Rotation);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Override of object.ToString
+        /// Returns the name of the behavior
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "Chase";
         }
     }
 }

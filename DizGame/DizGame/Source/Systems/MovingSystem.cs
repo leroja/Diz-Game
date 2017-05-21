@@ -32,8 +32,7 @@ namespace DizGame.Source.Systems
                 PhysicsComponent phys = ComponentManager.GetEntityComponent<PhysicsComponent>(entity.Key);
                 var animComp = ComponentManager.GetEntityComponent<AnimationComponent>(entity.Key);
                 Vector3 move = Vector3.Zero;
-
-                //Console.WriteLine(trans.Position);
+                
                 if (!phys.IsInAir)
                 {
                     if (key.GetState("Forward") == ButtonStates.Hold)
@@ -93,10 +92,6 @@ namespace DizGame.Source.Systems
                     float he = GetHeight(trans.Position);
                     trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                 }
-                
-                //Console.WriteLine(trans.Position);
-                //Console.WriteLine(phys.Velocity);
-                //Console.WriteLine(phys.Acceleration);
             }
         }
         private Vector3 CheckMaxVelocityAndGetVector(PhysicsComponent physic, Vector3 move)

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 namespace DizGame.Source.Components
 {
     // todo använd fysiken för rörelse i de olika beteenderna
+    // todo gör så at AI:n inte kan hamna utanför bounds
     /// <summary>
     /// A component for the AI:s
     /// </summary>
