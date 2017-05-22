@@ -101,6 +101,60 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
+        /// Function to get the height of the current position
+        /// using BarryCentric for an exact height in the current 
+        /// triangle
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public float GetHeight(Vector3 position)
+        {
+            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            if (temp.Count != 0)
+            {
+                HeightmapComponentTexture hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(temp.First());
+                float gridSquareSize = (hmap.Width * hmap.Height) / ((float)hmap.HeightMapData.Length - 1);
+                int gridX = (int)Math.Floor(position.X / gridSquareSize);
+                int gridZ = -(int)Math.Floor(position.Z / gridSquareSize);
+
+                if (gridX >= hmap.HeightMapData.Length - 1 || gridZ >= hmap.HeightMapData.Length - 1 || gridX < 0 || gridZ < 0)
+                {
+                    return 0;
+                }
+                float xCoord = (position.X % gridSquareSize) / gridSquareSize;
+                float zCoord = (position.Z % gridSquareSize) / gridSquareSize;
+                float answer = 0;
+
+                if (xCoord <= (1 - zCoord))
+                {
+                    answer = BarryCentric(
+                        new Vector3(0, hmap.HeightMapData[gridX, gridZ], 0),
+                        new Vector3(1, hmap.HeightMapData[gridX + 1, gridZ], 0),
+                        new Vector3(0, hmap.HeightMapData[gridX, gridZ + 1], 1),
+                        new Vector2(xCoord, zCoord));
+                }
+                else
+                {
+                    answer = BarryCentric(
+                        new Vector3(1, hmap.HeightMapData[gridX + 1, gridZ], 0),
+                        new Vector3(1, hmap.HeightMapData[gridX + 1, gridZ + 1], 1),
+                        new Vector3(0, hmap.HeightMapData[gridX, gridZ + 1], 1),
+                        new Vector2(xCoord, zCoord));
+                }
+                return answer;
+            }
+            return 0;
+        }
+        private float BarryCentric(Vector3 p1, Vector3 p2, Vector3 p3, Vector2 pos)
+        {
+            float det = (p2.Z - p3.Z) * (p1.X - p3.X) + (p3.X - p2.X) * (p1.Z - p3.Z);
+            float l1 = ((p2.Z - p3.Z) * (pos.X - p3.X) + (p3.X - p2.X) * (pos.Y - p3.Z)) / det;
+            float l2 = ((p3.Z - p1.Z) * (pos.X - p3.X) + (p1.X - p3.X) * (pos.Y - p3.Z)) / det;
+            float l3 = 1.0f - l1 - l2;
+            return l1 * p1.Y + l2 * p2.Y + l3 * p3.Y;
+        }
+
+        /// <summary>
         /// Calculates the rotation to the closest enemy
         /// </summary>
         /// <param name="AIComp"> The current AI </param>

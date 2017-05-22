@@ -360,22 +360,22 @@ namespace DizGame
             List<Vector3> unablePositions = new List<Vector3>();
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             positions = GetModelPositions(numberOfHouses);
-            for (int i = 0; i < numberOfHouses; i++)
-            {
-                if (!unablePositions.Contains(positions[i]))
-                {
-                    if (i % 2 == 0)
-                    {
-                        entityIdList.Add(CreateHouse("House_Wood", positions[i]));
-                        unablePositions.Add(positions[i]);
-                    }
-                    else
-                    {
-                        entityIdList.Add(CreateHouse("House_Stone", positions[i]));
-                        unablePositions.Add(positions[i]);
-                    }
-                }
-            }
+            //for (int i = 0; i < numberOfHouses; i++)
+            //{
+            //    if (!unablePositions.Contains(positions[i]))
+            //    {
+            //        if (i % 2 == 0)
+            //        {
+            //            entityIdList.Add(CreateHouse("House_Wood", positions[i]));
+            //            unablePositions.Add(positions[i]);
+            //        }
+            //        else
+            //        {
+            //            entityIdList.Add(CreateHouse("House_Stone", positions[i]));
+            //            unablePositions.Add(positions[i]);
+            //        }
+            //    }
+            //}
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
             {
