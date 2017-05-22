@@ -1,15 +1,14 @@
 ﻿using GameEngine.Source.Systems;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// A system that controlls the deletion of bullets taht has exceeded their maximun range
+    /// </summary>
     public class BulletSystem : IUpdate
     {
         /// <summary>
@@ -18,13 +17,13 @@ namespace DizGame.Source.Systems
         private List<int> toDelete = new List<int>();
 
         /// <summary>
-        /// Currently this system only checks if any of the bullets have exceeded their max range
+        /// Currently this system only checks if any of the bullets have exceeded their maximum range
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var compIds = ComponentManager.GetAllEntitiesWithComponentType<BulletComponent>();
-            
+
             foreach (var id in compIds)
             {
                 var bulletComponent = ComponentManager.GetEntityComponent<BulletComponent>(id);
@@ -38,9 +37,6 @@ namespace DizGame.Source.Systems
                 {
                     toDelete.Add(id);
                 }
-
-                // Todo, temp
-                //transformComp.Position += transformComp.Forward *(float)10 *(float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
             foreach (var id in toDelete)

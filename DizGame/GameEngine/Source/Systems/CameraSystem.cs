@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// System to update the CameraComponents
+    /// derived from IUpdate
+    /// </summary>
     public class CameraSystem : IUpdate
     {
         /// <summary>
@@ -17,16 +16,17 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            foreach(int entityID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
             {
                 CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-                
+
                 UpdateCameraAfterType(camera, transform);
                 camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
                 camera.CameraFrustrum = new BoundingFrustum3D(new BoundingFrustum(camera.View * camera.Projection));
             }
         }
+
         /// <summary>
         /// Updates the cameras LookAt and View based by CameraType
         /// </summary>
@@ -34,12 +34,21 @@ namespace GameEngine.Source.Systems
         /// <param name="transform"></param>
         private void UpdateCameraAfterType(CameraComponent camera, TransformComponent transform)
         {
-            switch(camera.CameraType)
+            switch (camera.CameraType)
             {
+                // Todo något fel i POV
                 case Enums.CameraType.Pov:
+                    var rotTest = Matrix.CreateFromQuaternion(transform.QuaternionRotation);
+                    Vector3 transformedOffsetTest = Vector3.Transform(camera.Offset, rotTest);
+                    Vector3 cameraPos = transform.Position + transformedOffsetTest;
+                    Vector3 upTest = Vector3.Transform(Vector3.Up, rotTest);
+
                     Vector3 lookAtOffset = Vector3.Transform(Vector3.UnitZ, Matrix.CreateRotationX(transform.Rotation.X) * Matrix.CreateRotationY(transform.Rotation.Y));
-                    camera.LookAt = transform.Position + lookAtOffset;
-                    camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);
+                    camera.LookAt = cameraPos - lookAtOffset;
+                    camera.View = Matrix.CreateLookAt(cameraPos, camera.LookAt, upTest);
+                    //Vector3 lookAtOffset = Vector3.Transform(Vector3.UnitZ, Matrix.CreateRotationX(transform.Rotation.X) * Matrix.CreateRotationY(transform.Rotation.Y));
+                    //camera.LookAt = transform.Position + camera.Offset - lookAtOffset;
+                    //camera.View = Matrix.CreateLookAt(transform.Position + camera.Offset, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.StaticCam:
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);

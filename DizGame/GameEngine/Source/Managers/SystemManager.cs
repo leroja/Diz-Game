@@ -4,8 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Managers
 {
@@ -16,10 +14,11 @@ namespace GameEngine.Source.Managers
     {
         private static SystemManager instance;
 
-        public GameTime GameTime { get; set; }
+        /// <summary>
+        /// A spritebatch
+        /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
-        public GraphicsDevice Device { get; set; }
-        
+
         List<IRender> renderSystems = new List<IRender>();
         List<IUpdate> updateSystems = new List<IUpdate>();
 
@@ -27,6 +26,9 @@ namespace GameEngine.Source.Managers
         {
         }
 
+        /// <summary>
+        /// The instance of the Manager
+        /// </summary>
         public static SystemManager Instance
         {
             get
@@ -75,7 +77,12 @@ namespace GameEngine.Source.Managers
             }
         }
 
-
+        /// <summary>
+        /// A method for retrieving a specific system
+        /// </summary>
+        /// <typeparam name="T"> The type of the system. eg Update or Render </typeparam>
+        /// <param name="system"> the name of the system. eg CameraSystem </param>
+        /// <returns></returns>
         public ISystem RetrieveSystem<T>(string system) where T : ISystem
         {
             Type type = typeof(T);
@@ -98,22 +105,22 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// Runs all updateable systems
         /// </summary>
-        public void RunUpdateSystems()
+        public void RunUpdateSystems(GameTime gameTime)
         {
             foreach (IUpdate system in updateSystems)
             {
-                system.Update(GameTime);
+                system.Update(gameTime);
             }
         }
 
         /// <summary>
         /// Runs all rendering systems
         /// </summary>
-        public void RunRenderSystems()
+        public void RunRenderSystems(GameTime gameTime)
         {
             foreach (IRender system in renderSystems)
             {
-                system.Draw(GameTime);
+                system.Draw(gameTime);
             }
         }
     }

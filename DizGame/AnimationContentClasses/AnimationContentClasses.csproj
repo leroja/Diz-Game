@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\AnimationContentClasses.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -63,13 +64,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationData.cs" />
-    <Compile Include="AnimationModelData.cs" />
+    <Compile Include="AnimationClip.cs" />
     <Compile Include="BoundingBox3D.cs" />
     <Compile Include="BoundingFrustum3D.cs" />
     <Compile Include="BoundingSphere3D.cs" />
     <Compile Include="BoundingVolume.cs" />
     <Compile Include="IBounding3D.cs" />
+    <Compile Include="SkinningData.cs" />
     <Compile Include="KeyFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

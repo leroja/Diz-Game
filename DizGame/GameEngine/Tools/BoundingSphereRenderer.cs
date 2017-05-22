@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
+using AnimationContentClasses;
 
 namespace GameEngine.Tools
 {
@@ -44,7 +45,7 @@ namespace GameEngine.Tools
         {
             double angle = MathHelper.TwoPi / CIRCLE_NUM_POINTS;
 
-            _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS + 1];
+            _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS * 3 + 4];
 
             _vertices[0] = new VertexPositionNormalTexture(
                 Vector3.Zero, Vector3.Forward, Vector2.One);
@@ -56,7 +57,39 @@ namespace GameEngine.Tools
                 Vector3 point = new Vector3(
                                  x,
                                  y,
-                                  0.0f);
+                                 0.0f);
+
+
+
+                _vertices[i] = new VertexPositionNormalTexture(
+                    point,
+                    Vector3.Forward,
+                    new Vector2());
+            }
+            for (int i = CIRCLE_NUM_POINTS + 1; i <= CIRCLE_NUM_POINTS*2 + 1; i++)
+            {
+                float z = (float)Math.Round(Math.Sin(angle * i), 4);
+                float x = (float)Math.Round(Math.Cos(angle * i), 4);
+                Vector3 point = new Vector3(
+                                 x,
+                                 0.0f,
+                                 z);
+
+
+
+                _vertices[i] = new VertexPositionNormalTexture(
+                    point,
+                    Vector3.Forward,
+                    new Vector2());
+            }
+            for (int i = CIRCLE_NUM_POINTS * 2 + 2; i <= CIRCLE_NUM_POINTS * 3 + 3; i++)
+            {
+                float y = (float)Math.Round(Math.Sin(angle * i), 4);
+                float z = (float)Math.Round(Math.Cos(angle * i), 4);
+                Vector3 point = new Vector3(
+                                 0.0f,
+                                 y,
+                                 z);
 
 
 
@@ -74,7 +107,7 @@ namespace GameEngine.Tools
 
 
             // Set the vertex buffer data to the array of vertices
-            buffer.SetData<VertexPositionNormalTexture>(_vertices);
+            buffer.SetData(_vertices);
 
             InitializeLineStrip();
         }
@@ -82,10 +115,10 @@ namespace GameEngine.Tools
         private void InitializeLineStrip()
         {
             // Initialize an array of indices of type short
-            short[] lineStripIndices = new short[CIRCLE_NUM_POINTS + 1];
+            short[] lineStripIndices = new short[CIRCLE_NUM_POINTS*3 + 1];
 
             // Populate the array with references to indices in the vertex buffer
-            for (int i = 0; i < CIRCLE_NUM_POINTS; i++)
+            for (int i = 0; i < CIRCLE_NUM_POINTS*3; i++)
             {
                 lineStripIndices[i] = (short)(i + 1);
             }
@@ -105,20 +138,18 @@ namespace GameEngine.Tools
 
         }
 
-        public void Draw(ModelMesh mm, Color color)
+        public void DrawSpheres(BoundingVolume volume, Color color)
         {
-            if (mm.BoundingSphere != null)
+            if (volume != null)
             {
                 
-                Matrix scaleMatrix = Matrix.CreateScale(mm.BoundingSphere.Radius);
-                Matrix translateMat = Matrix.CreateTranslation(mm.BoundingSphere.Center);
-                Matrix rotateYMatrix = Matrix.CreateRotationY(RADIANS_FOR_90DEGREES);
-                Matrix rotateXMatrix = Matrix.CreateRotationX(RADIANS_FOR_90DEGREES);
+                Matrix scaleMatrix = Matrix.CreateScale(((BoundingSphere3D)volume.Bounding).Sphere.Radius);
+                Matrix translateMat = Matrix.CreateTranslation(((BoundingSphere3D)volume.Bounding).Sphere.Center);
 
                 // effect is a compiled effect created and compiled elsewhere
                 // in the application
-                int ent = ComponentManager.Instance.GetAllEntitiesWithComponentType<CameraComponent>()[0];
-                CameraComponent cc = ComponentManager.Instance.GetEntityComponent<CameraComponent>(ent);
+                int ent = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>()[0];
+                CameraComponent cc = ComponentManager.GetEntityComponent<CameraComponent>(ent);
                 basicEffect.EnableDefaultLighting();
                 basicEffect.View = cc.View;
                 basicEffect.Projection = cc.Projection;
@@ -138,26 +169,7 @@ namespace GameEngine.Tools
                         PrimitiveType.LineStrip,
                         0,  // vertex buffer offset to add to each element of the index buffer
                         0,  // first index element to read
-                        CIRCLE_NUM_POINTS); // number of primitives to draw
-
-                    //basicEffect.World =  scaleMatrix * rotateYMatrix * translateMat;
-                    basicEffect.World =  translateMat * rotateYMatrix * scaleMatrix;
-                    basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
-
-                    graphicsDevice.DrawIndexedPrimitives(
-                        PrimitiveType.LineStrip,
-                        0,  // vertex buffer offset to add to each element of the index buffer
-                        0,  // first index element to read
-                        CIRCLE_NUM_POINTS); // number of primitives to draw
-
-                    basicEffect.World = rotateXMatrix * scaleMatrix * translateMat;
-                    basicEffect.DiffuseColor = color.ToVector3() * 0.5f;
-
-                    graphicsDevice.DrawIndexedPrimitives(
-                        PrimitiveType.LineStrip,
-                        0,  // vertex buffer offset to add to each element of the index buffer
-                        0,  // first index element to read
-                        CIRCLE_NUM_POINTS); // number of primitives to draw
+                        CIRCLE_NUM_POINTS * 3 + 1); // number of primitives to draw
                 }
             }
         }
@@ -168,9 +180,12 @@ namespace GameEngine.Tools
             foreach(int ent in entities)
             {
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
-                foreach(ModelMesh mm in mc.Model.Meshes)
+                if (mc.BoundingVolume != null)
                 {
-                    Draw(mm, new Color(new Vector3(255, 0, 0)));
+                    if (mc.BoundingVolume.Bounding is BoundingSphere3D)
+                    {
+                        DrawSpheres(mc.BoundingVolume, Color.Red);
+                    }
                 }
             }
         }

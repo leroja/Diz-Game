@@ -9,14 +9,30 @@ namespace AnimationContentClasses
 {
     public class BoundingBox3D : IBounding3D
     {
+        /// <summary>
+        /// The BoundingBox
+        /// </summary>
         public BoundingBox Box { get; set; }
 
+        /// <summary>
+        /// Private constructor needed for the processor
+        /// </summary>
+        private BoundingBox3D() { }
+
+        /// <summary>
+        /// Creates new BoundingBox3D and takes a BoundingBox as a parameter
+        /// </summary>
+        /// <param name="box"></param>
         public BoundingBox3D(BoundingBox box)
         {
             Box = box;
         }
-
-        public bool Intersects(IBounding3D bounding)
+        /// <summary>
+        /// Checks if this Box intersect with another IBounding3D
+        /// </summary>
+        /// <param name="bounding"></param>
+        /// <returns></returns>
+        public override bool Intersects(IBounding3D bounding)
         {
             if (bounding is BoundingBox3D)
             {
@@ -32,8 +48,12 @@ namespace AnimationContentClasses
             }
             return false;
         }
-
-        public IBounding3D CreateMerged(IBounding3D bound)
+        /// <summary>
+        /// Merges this Box with another IBounding3D
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <returns></returns>
+        public override IBounding3D CreateMerged(IBounding3D bound)
         {
             if (bound is BoundingBox3D)
             {

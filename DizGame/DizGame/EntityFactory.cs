@@ -1,9 +1,11 @@
 ﻿using AnimationContentClasses;
 using DizGame.Source.Components;
+using DizGame.Source.Factories;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
+using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,84 +13,152 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentProject;
-    
+
 namespace DizGame
 {
+    /// <summary>
+    /// Factory for creating various entities which might be used by the game in the end.
+    /// </summary>
     public class EntityFactory
     {
+        private static EntityFactory instance;
+
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
-        public EntityFactory(ContentManager Content, GraphicsDevice Device)
-        {
+        /// <summary>
+        /// Hud factory
+        /// </summary>
+        public HudFactory HudFactory { get; set; }
+        /// <summary>
+        /// Factory to create resources
+        /// </summary>
+        public ResourceFactory ResourceFactory { get; set; }
+        /// <summary>
+        /// A Bool that says whether the models are vivible or not
+        /// </summary>
+        public bool VisibleBullets { get; set; }
 
-            hmFactory = new HeightMapFactory(Device);
+        /// <summary>
+        /// The instance of the Entity Factory
+        /// </summary>
+        public static EntityFactory Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new EntityFactory();
+                }
+                return instance;
+            }
+        }
+
+        /// <summary>
+        /// Private constructor of the entityfactory
+        /// </summary>
+        private EntityFactory()
+        {
+            VisibleBullets = true;
+
             CreateWorldComp();
-            this.Content = Content;
-            Content.Load<Texture2D>("HeightMapStuff/BetterGrass");
-            //Model mod = Content.Load<Model>("House/WoodHouse/Cyprys_House");
-            //Content.Load<Model>("Bullet/Cartridge");
-            //Content.Load<Model>("Dude/dude");
-            Content.Load<Model>("Dude/dude");
+            this.Content = GameOne.Instance.Content;
+
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
                 { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
-                { "House_Wood", Content.Load<Model>("House/Farmhouse/medievalHouse1") } ,
-                { "House_Stone", Content.Load<Model>("House/WoodHouse/Cyprys_House") } ,
-                { "Tree", Content.Load<Model>("House/Tree/lowpolytree") },
-                { "Rock", Content.Load<Model>("House/Rock/Rock") },
-                { "Dude", Content.Load<Model>("Dude/dude")}
+                { "House_Wood", Content.Load<Model>("MapObjects/Farmhouse/medievalHouse1") } ,
+                { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
+                { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
+                { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
+                { "Dude", Content.Load<Model>("Dude/Dude72") },
+                { "Heart", Content.Load<Model>("MapObjects/Heart/Heart") },
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
                 {"BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
                 {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
-                {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") }
+                {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
+                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
+                { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
+                {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
+                {"CrossHair", Content.Load<Texture2D>("Icons/crosshairTrans") },
             };
+
+            hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
+            HudFactory = new HudFactory(Content);
+            ResourceFactory = new ResourceFactory(ModelDic, VisibleBullets);
         }
-       
+
         /// <summary>
-        /// 
+        /// Creates the World Component
         /// </summary>
         public void CreateWorldComp()
         {
             var worldEntId = ComponentManager.Instance.CreateID();
             var compList = new List<IComponent>() {
                 new WorldComponent(Matrix.Identity)
+                {
+                    IsSunActive = true,
+                    DefineHour = 1,
+                    Day = 0,
+                    Hour = 16,
+                    ModulusValue = 2,
+                },
             };
-
+            FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
         }
 
+        // todo gör så att mitten av croshair är på position itället för ena hörnet som det nu
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"> Position of the crosshair on the screen </param>
+        /// <returns></returns>
+        public int PlaceCrossHair(Vector2 position)
+        {
+            var Id = ComponentManager.Instance.CreateID();
+
+            var textureComp = new Texture2DComponent(Texture2dDic["CrossHair"])
+            {
+                Position = position,
+                Scale = new Vector2(0.1f, 0.1f),
+            };
+
+            ComponentManager.Instance.AddComponentToEntity(Id, textureComp);
+
+            return Id;
+        }
+
+        /// <summary>
+        /// Function to add the entity which might be the model for the different players
+        /// </summary>
+        /// <returns>return a int which represents the entity id for the object</returns>
         public int CreateDude()
         {
             int entityID = ComponentManager.Instance.CreateID();
-            Model dude= ModelDic["Dude"];
+
+            Model chuck = ModelDic["Dude"];
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.AddActionAndKey("Forward", Keys.W);
             keys.AddActionAndKey("Backwards", Keys.S);
             keys.AddActionAndKey("Right", Keys.D);
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
+            keys.AddActionAndKey("Mute", Keys.M);
 
-            // temp
-            keys.AddActionAndKey("RotateY", Keys.E);
-            keys.AddActionAndKey("RotateNegY", Keys.Q);
-            // /temp
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
+            mouse.MouseSensitivity = 0.2f;
 
-            Dictionary<string, object> temp = (Dictionary<string, object>)dude.Tag;
             List<IComponent> components = new List<IComponent>
             {
-                new TransformComponent(new Vector3(0,45,0), Vector3.One),
-                new ModelComponent(dude, (BoundingVolume)temp["BoundingVolume"]),
+                new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
+                new ModelComponent(chuck),
                 keys,
                 mouse,
                 new PlayerComponent(),
@@ -101,16 +171,14 @@ namespace DizGame
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new TestComponent()
             };
 
-
-            
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
+            TestingTheAnimationsWithDude(entityID);
             return entityID;
-
         }
+
         /// <summary>
         /// Creates a house of given model
         /// </summary>
@@ -121,7 +189,6 @@ namespace DizGame
         {
             Vector3 scale = new Vector3();
             Model house = ModelDic[nameOfModel];
-            Dictionary<string, object> temp = (Dictionary<string, object>)house.Tag;
 
             if (nameOfModel == "House_Wood")
             {
@@ -131,16 +198,34 @@ namespace DizGame
             {
                 scale = new Vector3(4f, 4f, 4f);
             }
-            int entityID = ComponentManager.Instance.CreateID();
-            ModelComponent mod = new ModelComponent(house, (BoundingVolume)temp["BoundingVolume"])
+            foreach (ModelMesh mesh in house.Meshes)
             {
-                IsStatic = true
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.FogEnabled = true;
+                    effect.FogColor = Color.LightGray.ToVector3();
+                    effect.FogStart = 10;
+                    effect.FogEnd = 400;
+                }
+            }
+            BoundingVolume volume = (BoundingVolume)house.Tag;
+            int entityID = ComponentManager.Instance.CreateID();
+            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
+            BoundingBox box = new BoundingBox(min, max);
+            ModelComponent mod = new ModelComponent(house)
+            {
+                IsStatic = true,
+                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
+            };
+            PhysicsComponent phy = new PhysicsComponent()
+            {
+                PhysicsType = PhysicsType.Static,
             };
             List<IComponent> components = new List<IComponent>
             {
-            new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
-                mod
-                
+            new TransformComponent(position, scale),
+                mod,
+                phy
                 };
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
@@ -149,69 +234,147 @@ namespace DizGame
         }
 
         /// <summary>
-        /// 
+        /// creates the static objects
         /// </summary>
         /// <param name="nameOfModel"></param>
         /// <param name="position"></param>
-        public void CreateStaticObject(string nameOfModel, Vector3 position)
+        public int CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
+            Vector3 middlePoint = Vector3.UnitY;
             Model model = ModelDic[nameOfModel];
-            Dictionary<string, object> temp = (Dictionary<string, object>)model.Tag;
-
             switch (nameOfModel)
             {
                 case "Rock":
                     scale = new Vector3(5, 5, 5);
+                    middlePoint *= 2;
+
+                    foreach (ModelMesh mesh in model.Meshes)
+                    {
+                        foreach (BasicEffect effect in mesh.Effects)
+                        {
+                            effect.TextureEnabled = true;
+                            effect.Texture = Texture2dDic["RockTexture"];
+                            effect.FogEnabled = true;
+                            effect.FogColor = Color.LightGray.ToVector3();
+                            effect.FogStart = 10;
+                            effect.FogEnd = 400;
+                        }
+                    }
+
                     break;
                 case "Tree":
-                    scale = new Vector3(5,5,5);
+                    foreach (ModelMesh mesh in model.Meshes)
+                    {
+                        //scale = new Vector3(5, 5, 5);
+                        foreach (BasicEffect effect in mesh.Effects)
+                        {
+                            effect.FogEnabled = true;
+                            effect.FogColor = Color.LightGray.ToVector3();
+                            effect.FogStart = 10;
+                            effect.FogEnd = 400;
+                            //effect.EnableDefaultLighting();
+                        }
+                    }
+                    scale = new Vector3(5, 5, 5);
                     break;
             }
+            BoundingVolume volume = (BoundingVolume) model.Tag;
             int entityID = ComponentManager.Instance.CreateID();
-            ModelComponent comp = new ModelComponent(model, (BoundingVolume)temp["BoundingVolume"])
+
+            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
+            //Vector3 mid = Vector3.Cross(min, max) / 2;
+            //BoundingBox box1 = new BoundingBox(position - mid, position + mid);
+            BoundingBox box = new BoundingBox(min, max);
+            ModelComponent comp = new ModelComponent(model)
             {
-                IsStatic = true
+                IsStatic = true,
+                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
+            };
+            PhysicsComponent phy = new PhysicsComponent()
+            {
+                PhysicsType = PhysicsType.Static
             };
             List<IComponent> components = new List<IComponent>
             {
-            new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
-                comp
+                new TransformComponent(position, scale),
+                comp,
+                phy
             };
             ComponentManager.Instance.AddAllComponents(entityID, components);
-        }
 
+            return entityID;
+        }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="numberOfPlayers"></param>
-        /// <param name="numberOfStaticObjects"></param>
-        public void MakeMap(int numberOfPlayers, int numberOfStaticObjects)
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private BoundingBox GetStaticModelBox(Model model, float scale)
         {
+            List<Vector3> positions = new List<Vector3>();
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    Vector3[] vertices = new Vector3[part.VertexBuffer.VertexCount];
+                    part.VertexBuffer.GetData(vertices);
+                    //foreach(VertexPositionNormalTexture vertice in vertices)
+                    //{
+                    //    positions.Add(vertice.Position);
+                    //}
+                    positions.AddRange(vertices);
+                }
+            }
+            BoundingBox box = BoundingBox.CreateFromPoints(positions);
+            box.Min *= scale;
+            box.Max *= scale;
+            return box;
+        }
+
+        private void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
+        {
+            min = box.Min * scale;
+            max = box.Max * scale;
+            float xDelta = (max - min).X;
+            float zDelta = (max - min).Z;
+            float yDelta = (max - min).Y;
+            min.Y = position.Y;
+            min.X = position.X - xDelta / 2;
+            min.Z = position.Z - zDelta / 2;
+            max.Y = position.Y + yDelta;
+            max.X = position.X + xDelta / 2;
+            max.Z = position.Z + zDelta / 2;
+        }
+        /// <summary>
+        /// Randomizes a map 
+        /// </summary>
+        /// <param name="numberOfHouses"></param>
+        /// <param name="numberOfStaticObjects"></param>
+        public List<int> MakeMap(int numberOfHouses, int numberOfStaticObjects)
+        {
+            List<int> entityIdList = new List<int>();
+
             List<Vector3> positions = new List<Vector3>();
             List<Vector3> unablePositions = new List<Vector3>();
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            positions = GetModelPositions(numberOfPlayers);
-            for (int i = 0; i < numberOfPlayers; i++)
-            {
-                if (!unablePositions.Contains(positions[i]))
-                {
-                    if (i % 2 == 0)
-                    {
-                        CreateHouse("House_Wood", positions[i]);
-                        unablePositions.Add(positions[i]);
-                    }
-                    else
-                    {
-                        CreateHouse("House_Stone", positions[i]);
-                        unablePositions.Add(positions[i]);
-                    }
-                }
-                else
-                {
-                    i--;
-                }
-            }
+            positions = GetModelPositions(numberOfHouses);
+            //for (int i = 0; i < numberOfHouses; i++)
+            //{
+            //    if (!unablePositions.Contains(positions[i]))
+            //    {
+            //        if (i % 2 == 0)
+            //        {
+            //            entityIdList.Add(CreateHouse("House_Wood", positions[i]));
+            //            unablePositions.Add(positions[i]);
+            //        }
+            //        else
+            //        {
+            //            entityIdList.Add(CreateHouse("House_Stone", positions[i]));
+            //            unablePositions.Add(positions[i]);
+            //        }
+            //    }
+            //}
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
             {
@@ -221,18 +384,110 @@ namespace DizGame
                     switch (modul)
                     {
                         case 0:
-                            CreateStaticObject("Tree", positions[j]);
+                            entityIdList.Add(CreateStaticObject("Tree", positions[j]));
                             break;
                         case 1:
-                            CreateStaticObject("Rock", positions[j]);
+                            entityIdList.Add(CreateStaticObject("Rock", positions[j]));
                             break;
                     }
                 }
             }
+            return entityIdList;
         }
-        
+
         /// <summary>
-        /// 
+        /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
+        /// </summary>
+        public void SpawnProtection()
+        {
+            List<int> spawnPositions = new List<int>();
+            List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+
+            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
+            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
+            foreach (var id in spawnPositions)
+            {
+                TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id);
+                float minX = tran.Position.X - 10;
+                float minZ = tran.Position.Z + 10;
+                float maxX = tran.Position.X + 10;
+                float maxZ = tran.Position.Z - 10;
+
+                foreach (var model in modelId)
+                {
+                    ModelComponent mod = ComponentManager.Instance.GetEntityComponent<ModelComponent>(model);
+                    TransformComponent Comp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(model);
+                    if (Comp != null && mod.IsStatic == true)
+                    {
+                        if ((Comp.Position.X >= minX && Comp.Position.X <= maxX) && (Comp.Position.Z <= minZ && Comp.Position.Z >= maxZ))
+                        {
+                            ComponentManager.Instance.RemoveEntity(model);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates a parrical emmiter and sets positions and options
+        /// </summary>
+        /// <param name="Position"> Position of emiter</param>
+        /// <param name="TextureName">Name of texture</param>
+        /// <param name="nParticles">maximum number of particles in emiter. used for size of vectors</param>
+        /// <param name="Particlelifetime"> life of particke</param>
+        /// <param name="FadeTime">Fade time on particles</param>
+        /// <param name="direction">Direction of particles</param>
+        /// <param name="scale">Scale on Particle</param>
+        /// <param name="EmitterLifeTime">Life time on emitter</param>
+        public void CreateParticleEmiter(Vector3 Position, String TextureName, int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale, int EmitterLifeTime)
+        {
+            TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
+            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction)
+            {
+                EmiterLife = EmitterLifeTime,
+                Effect = Content.Load<Effect>("Effects/ParticleEffect"),
+            };
+            int id = ComponentManager.Instance.CreateID();
+            GenerateParticle(emiter);
+
+            ComponentManager.Instance.AddComponentToEntity(id, tran);
+            ComponentManager.Instance.AddComponentToEntity(id, emiter);
+        }
+
+        /// <summary>
+        /// Called for instancning a vector to store the particles in
+        /// </summary>
+        /// <param name="emiter"> ParticleEmitterComponent</param>
+        public void GenerateParticle(ParticleEmiterComponent emiter)
+        {
+            emiter.Particles = new ParticleVertex[emiter.NumberOfParticles * 4];
+            emiter.Indices = new int[emiter.NumberOfParticles * 6];
+
+            var z = Vector3.Zero;
+            var pos = new Vector3(10, 10, 10);
+            int x = 0;
+            for (int i = 0; i < emiter.NumberOfParticles * 4; i += 4)
+            {
+                emiter.Particles[i + 0] = new ParticleVertex(pos, new Vector2(0, 0),
+                pos, 0, -1);
+                emiter.Particles[i + 1] = new ParticleVertex(pos, new Vector2(0, 1),
+                pos, 0, -1);
+                emiter.Particles[i + 2] = new ParticleVertex(pos, new Vector2(1, 1),
+                pos, 0, -1);
+                emiter.Particles[i + 3] = new ParticleVertex(pos, new Vector2(1, 0),
+                pos, 0, -1);
+
+                emiter.Indices[x++] = i + 0;
+                emiter.Indices[x++] = i + 3;
+                emiter.Indices[x++] = i + 2;
+                emiter.Indices[x++] = i + 2;
+                emiter.Indices[x++] = i + 1;
+                emiter.Indices[x++] = i + 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets target number of potitions on heightmap
         /// </summary>
         /// <param name="numberOfPositions"></param>
         /// <returns></returns>
@@ -242,52 +497,72 @@ namespace DizGame
             Random r = new Random();
             int mapWidht;
             int mapHeight;
+
+            List<Vector3> SpawnProtection = new List<Vector3>();
             List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
+
             mapWidht = heigt.Width;
             mapHeight = heigt.Height;
             for (int i = 0; i < numberOfPositions; i++)
             {
-                var pot = new Vector3(r.Next(mapWidht-100), 0,r.Next(mapHeight-100));
-                pot.Y = heigt.HeightMapData[(int)pot.X,(int)pot.Z];
-                if (pot.X < 100)
-                {
-                    pot.X = pot.X + 100;
-                }
-                if (pot.Z < -100)
-                {
-                    pot.Z = pot.Z - 100;
-                }
+                var pot = new Vector3(r.Next(mapWidht - 20), 0, r.Next(mapHeight - 20));
 
+                pot.Y = heigt.HeightMapData[(int)pot.X, (int)pot.Z];
+                if (pot.X < 10)
+                {
+                    pot.X = pot.X + 10;
+                }
+                if (pot.Z < 10)
+                {
+                    pot.Z = pot.Z - 10;
+                }
                 pot.Z = -pot.Z;
                 positions.Add(pot);
             }
             return positions;
         }
-                    
+
+
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
         /// </summary>
         /// <param name="CameraPosition"> Position of the camera </param>
         /// <param name="lookAt"> A position that the camera should look at </param>
-        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt)
+        /// <param name="flareAble"></param>
+        public void CreateStaticCam(Vector3 CameraPosition, Vector3 lookAt, bool flareAble = false)
         {
             ComponentManager.Instance.AddAllComponents(ComponentManager.Instance.CreateID(), new List<IComponent>() {
                 new TransformComponent(CameraPosition, Vector3.One),
                 new CameraComponent(CameraType.StaticCam)
                 {
-                    LookAt = lookAt
+                    LookAt = lookAt,
+                    IsFlareable = flareAble
                 }
             });
         }
 
-        // Todo
         /// <summary>
-        /// 
+        /// Removes the current camera
         /// </summary>
         public void RemoveCam()
         {
+            var temp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<CameraComponent>();
+            ComponentManager.Instance.RemoveComponentFromEntity(temp.Keys.First(), temp.Values.First());
+        }
 
+
+        /// <summary>
+        /// Adds a POV camera to an entity
+        /// </summary>
+        /// <param name="entityID"> ID of the entity </param>
+        /// <param name="isFlareable"></param>
+        public void AddPOVCamToEntity(int entityID, bool isFlareable = false)
+        {
+            ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov)
+            {
+                IsFlareable = isFlareable
+            });
         }
 
         /// <summary>
@@ -295,45 +570,53 @@ namespace DizGame
         /// </summary>
         /// <param name="EntityId"> The ID of the enitt that the camera should follow </param>
         /// <param name="Offset"> How far behind the camera should be </param>
-        public void AddChaseCamToEntity(int EntityId, Vector3 Offset)
+        /// <param name="isFlareable"></param>
+        public void AddChaseCamToEntity(int EntityId, Vector3 Offset, bool isFlareable = false)
         {
             CameraComponent chaseCam = new CameraComponent(CameraType.Chase)
             {
-                Offset = Offset
+                Offset = Offset,
+                IsFlareable = isFlareable
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
-        
-        // todo write comment
+
         /// <summary>
-        /// Creates an bullet .... 
+        /// Creates a new bullet
         /// </summary>
-        /// <param name="modelName"></param>
-        /// <param name="pos"></param>
-        /// <param name="Orientation"></param>
-        /// <param name="scale"></param>
-        /// <param name="forward"></param>
-        /// <param name="MaxRange"></param>
-        /// <param name="initialVelocity"></param>
-        /// <returns> The enityId of the bullet in case someone would need it sometime </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Quaternion Orientation, Vector3 scale, Vector3 forward, float MaxRange, float initialVelocity)
+        /// <param name="modelName"> Name of the bullet model to use </param>
+        /// <param name="pos"> The starting position of the bullet </param>
+        /// <param name="scale"> How much to scale the bullet </param>
+        /// <param name="MaxRange"> The max range of the bullet </param>
+        /// <param name="initialVelocity"> The initial velocity of the bullet </param>
+        /// <param name="rotation"> The rotation oi the bullet </param>
+        /// <param name="damage"> How much damage the bullet does </param>
+        /// <returns> The enityId of the bullet incase someone would need it </returns>
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
-
             Model model = ModelDic[modelName];
-            Dictionary<string, object> temp = (Dictionary<string, object>)model.Tag;
+            List<BoundingSphere> bList = (List<BoundingSphere>)model.Tag;
+            BoundingSphere sphere = new BoundingSphere(pos, bList[0].Radius);
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
                 {
-                    QuaternionRotation = Orientation
+                    Rotation = rotation,
                 },
-                new  ModelComponent(model, (BoundingVolume)temp["BoundingVolume"]),
-                
+
+                new  ModelComponent(model){
+                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY, 1))),
+                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(GetModelSphere(model, scale.X))),
+                    IsVisible = VisibleBullets,
+                    BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(sphere))
+                },
+
                 new BulletComponent(){
                     StartPos = pos,
                     MaxRange = MaxRange,
+                    Damage = damage,
                 },
                 new PhysicsComponent()
                 {
@@ -346,7 +629,8 @@ namespace DizGame
                     GravityType = GravityType.World,
                     ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
                     PhysicsType = PhysicsType.Projectiles,
-                    InitialVelocity = Matrix.CreateFromQuaternion(Orientation).Forward * initialVelocity,
+
+                    Velocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity,
                 },
             };
 
@@ -355,36 +639,41 @@ namespace DizGame
             return BulletEntity;
         }
 
-        public void TestingTheAnimationsWithWolf()
+        /// <summary>
+        /// A temporary class responsible for adding a 
+        /// </summary>
+        /// <param name="entityID"></param>
+        public void TestingTheAnimationsWithDude(int entityID)
         {
+            TransformComponent tcp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityID);
+            ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
+
+            AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
+
+            ComponentManager.Instance.AddComponentToEntity(entityID, anm);
+
+            var sk = anm.SkinningDataValue.AnimationClips.Keys;
+
+            anm.StartClip(sk.First());
+            Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
+            List<BoundingSphere> bList = (List<BoundingSphere>)dict["BoundingVolume"];
+            BoundingSphere b = bList[0];
             
-            Model model = Content.Load<Model>("Wolf/Wolf");
-            Dictionary<string, object> temp = (Dictionary<string, object>)model.Tag;
-            int entityID = ComponentManager.Instance.CreateID();
-            AnimationComponent anm = new AnimationComponent(entityID);
+            b.Radius = tcp.Scale.X * b.Radius;
+            b.Center = tcp.Position;
+            b.Center.Y += b.Radius;
+            mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(b));
 
-            List<IComponent> componentList = new List<IComponent>()
-            {
-                //Add transformcomponent when ready to test
-                new TransformComponent(new Vector3(0,0,-20), new Vector3(1f,1f,1f)),
-
-
-                new ModelComponent(model, (BoundingVolume)temp["BoundingVolume"]),
-                anm,
-            };
-            ComponentManager.Instance.AddAllComponents(entityID, componentList);
-
-            anm.CreateAnimationData();
         }
 
-        // todo finish comment
         /// <summary>
         /// Creates an Height based on the specified heightMap
         /// </summary>
         /// <param name="heightmap"> Name of the heightMap texture that shall be used to build the hieghtMap </param>
-        /// <param name="heightTexture"> ... </param>
-        /// <param name="numberOfChunksPerSide"> .... eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
-        public void CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
+        /// <param name="heightTexture"> the texture that each chunk of the height map will have </param>
+        /// <param name="numberOfChunksPerSide"> number of chunks per side
+        /// eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
+        public int CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
         {
             int HeightmapEnt = ComponentManager.Instance.CreateID();
             var hmp = hmFactory.CreateTexturedHeightMap(Texture2dDic[heightmap], Texture2dDic[heightTexture], numberOfChunksPerSide);
@@ -394,6 +683,68 @@ namespace DizGame
                 new TransformComponent(new Vector3(0, 0, 0), new Vector3(1, 1, 1))
             };
             ComponentManager.Instance.AddAllComponents(HeightmapEnt, HeightmapCompList);
+
+            return HeightmapEnt;
+        }
+
+        /// <summary>
+        /// Creates a new AI Entity
+        /// </summary>
+        /// <param name="ModelName"> The name of the model the AI sjould use </param>
+        /// <param name="position"> The initial position of the AI </param>
+        /// <param name="hysteria">  </param>
+        /// <param name="widthBound">  </param>
+        /// <param name="heightBound">  </param>
+        /// <param name="DirectionDuration"> A value in seconds for how long the AI will stick to its choosen direction </param>
+        /// <param name="rotation"> In what range the new rotaion can be. eg. -PI --- +PI </param>
+        /// <param name="shootingCoolDown"> The delay between the shoots for when the AI is shooting
+        /// Ideally somewhere between 0 and 1 second </param>
+        /// <param name="attackingDistance"> From how far the AI will start shooting </param>
+        /// <param name="evadeDist"> How far from the other AIs/players the AI want to be at a minimum </param>
+        /// <param name="turningSpeed"> How fast the AI will turn each update </param>
+        /// <param name="updateFreq"> How often the AI will update its rotation based on the closest enemy in seconds </param>
+        /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
+        /// <param name="chaseDist"> In what distance the enemy have to be for the AI to chase it </param>
+        /// <param name="DamagePerShot"> How much damage the AI does per shot </param>
+        /// <returns> The ID of the new AI Entity  </returns>
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot)
+        {
+            int AIEntityID = ComponentManager.Instance.CreateID();
+            Model model = ModelDic[ModelName];
+
+            var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
+
+            List<IComponent> components = new List<IComponent>
+            {
+                new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
+                new ModelComponent(model),
+                new PhysicsComponent()
+                {
+                    Volume = 22.5f,
+                    Density = 2.66f,
+                    PhysicsType = PhysicsType.Rigid,
+                    MaterialType = MaterialType.Skin,
+                    GravityType = GravityType.World,
+                    DragType = DragType.ManUpright
+                },
+                new AIComponent(BoundRec, shootingCoolDown, waypoints){
+                    Hysteria = hysteria,
+                    AttackingDistance = attackingDistance,
+                    DirectionChangeRoation = rotation,
+                    DirectionDuration = DirectionDuration,
+                    EvadeDistance = evadeDist,
+                    TurningSpeed = turningSpeed,
+                    UpdateFrequency = updateFreq,
+                    ChaseDistance = chaseDist,
+                    DamagePerShot = DamagePerShot,
+                },
+            };
+
+            ComponentManager.Instance.AddAllComponents(AIEntityID, components);
+
+            TestingTheAnimationsWithDude(AIEntityID);
+
+            return AIEntityID;
         }
     }
 }

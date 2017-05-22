@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <DocumentationFile>bin\Debug\ContentProject.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -65,24 +67,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReadersAndWriters\AnimatedModelDataReader.cs" />
-    <Compile Include="ReadersAndWriters\AnimationDataReader.cs" />
-    <Compile Include="ReadersAndWriters\AnimationDataWriter.cs" />
-    <Compile Include="ReadersAndWriters\AnimationModelDataWriter.cs" />
+    <Compile Include="ModelBoundingBoxProcessor.cs" />
+    <Compile Include="ModelBoundingSphereProcessor.cs" />
     <Compile Include="AnimationProcessor.cs" />
     <Compile Include="BoundingBoxProcessor.cs" />
-    <Compile Include="ReadersAndWriters\BoundingBox3DReader.cs" />
-    <Compile Include="ReadersAndWriters\BoundingBox3DWriter.cs" />
-    <Compile Include="ReadersAndWriters\BoundingVolumeReader.cs" />
     <Compile Include="BoundingSphereProcessor.cs" />
-    <Compile Include="ReadersAndWriters\BoundingVolumeWriter.cs" />
     <Compile Include="ContentImporter.cs" />
-    <Compile Include="ReadersAndWriters\BoundingSphere3DReader.cs" />
-    <Compile Include="ReadersAndWriters\BoundingSphere3DWriter.cs" />
-    <Compile Include="ReadersAndWriters\IBounding3DReader.cs" />
-    <Compile Include="ReadersAndWriters\IBounding3DWriter.cs" />
-    <Compile Include="ReadersAndWriters\KeyframeReader.cs" />
-    <Compile Include="ReadersAndWriters\KeyframeWriter.cs" />
     <Compile Include="ModelBoxesAndAnimationProcessor.cs" />
     <Compile Include="ModelSpheresAndAnimationProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,7 +81,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TestModelProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Content.mgcb" />
@@ -107,10 +96,6 @@
     <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
       <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
       <Name>AnimationContentClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GameEngine\GameEngine.csproj">
-      <Project>{beb5aa74-8cd7-4ded-86d9-693fa6e9aaf0}</Project>
-      <Name>GameEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

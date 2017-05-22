@@ -10,14 +10,23 @@ namespace AnimationContentClasses
 {
     public class BoundingSphere3D : IBounding3D
     {
-        public BoundingSphere Sphere { get; set; }
-        
+        public BoundingSphere Sphere;
+
+        private BoundingSphere3D() { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ball"></param>
         public BoundingSphere3D(BoundingSphere ball)
         {
             Sphere = ball;
         }
-
-        public bool Intersects(IBounding3D bounding)
+        /// <summary>
+        /// Checks if this Sphere intersects with another IBounding3D
+        /// </summary>
+        /// <param name="bounding"></param>
+        /// <returns></returns>
+        public override bool Intersects(IBounding3D bounding)
         {
             if (bounding is BoundingBox3D)
             {
@@ -30,7 +39,12 @@ namespace AnimationContentClasses
             return false;
         }
 
-        public IBounding3D CreateMerged(IBounding3D bound)
+        /// <summary>
+        /// Merges this sphere with an other IBounding3D
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <returns></returns>
+        public override IBounding3D CreateMerged(IBounding3D bound)
         {
             if (bound is BoundingBox3D)
             {

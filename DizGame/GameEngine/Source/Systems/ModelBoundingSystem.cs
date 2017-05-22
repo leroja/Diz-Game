@@ -10,59 +10,64 @@ using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
-
     /// <summary>
     /// Recalculates the models bounding Spheres if it is necessary.
     /// If the model is static it is not needed to recalculte the bounding sphere
     /// </summary>
     public class ModelBoundingSystem : IUpdate
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ModelBoundingSystem()
         {
-            var ids = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();
-            foreach (var modelEnt in ids)
-            {
-                var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
-            }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var ids = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();
-            foreach (var modelEnt in ids)
+            var dict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
+            foreach (var modelEnt in dict)
             {
-                var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
-                BoundingVolume volume = modelComp.BoundingVolume;
-                if (volume != null)
-                {
-                    var sphere = GetModelBoundingSphere(volume, modelEnt);
-                }
+                //var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
+                //var tcs = ComponentManager.GetEntityComponent<TransformComponent>(modelEnt.Key);
+                GetModelBoundingVolume((ModelComponent)modelEnt.Value, modelEnt.Key);
             }
         }
 
-        private BoundingVolume GetModelBoundingSphere(BoundingVolume volume, int entityId)
+        /// <summary>
+        /// Updates the BoundingVolume of the model to its position in the world
+        /// </summary>
+        /// <param name="modComp"></param>
+        /// <param name="entityId"></param>
+        private void GetModelBoundingVolume(ModelComponent modComp, int entityId)
         {
             var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(entityId);
-            var sphere = new BoundingSphere(transformComp.Position, 0);
-            var box = new BoundingBox();
-            foreach (var bVolume in volume.Volume)
+            //var box = new BoundingBox();
+            if (modComp.BoundingVolume != null)
             {
-                var s = bVolume.Bounding;
-                if (s is BoundingSphere3D)
-                    sphere = BoundingSphere.CreateMerged(sphere, ((BoundingSphere3D)s).Sphere);
-                if (s is BoundingBox3D)
-                    box = BoundingBox.CreateMerged(box, ((BoundingBox3D)s).Box);
+                if (modComp.BoundingVolume.Bounding is BoundingSphere3D)
+                {
+                    BoundingSphere sphere = ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere;
+                    ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Center = transformComp.Position;
+                    ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Center.Y = transformComp.Position.Y + sphere.Radius;
+
+                    //ModelComponent mComp = ComponentManager.GetEntityComponent<ModelComponent>(entityId);
+                    //var sphere = new BoundingSphere(transformComp.Position + 
+                    //    new Vector3(0, ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Radius, 0), 
+                    //    ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Radius);
+                    //modComp.BoundingVolume.Bounding = new BoundingSphere3D(sphere);
+                }
+                //if (modComp.BoundingVolume.Bounding is BoundingBox3D)
+                //{
+                //    BoundingBox box = new BoundingBox(((BoundingBox3D)modComp.BoundingVolume.Bounding).Box.Min + transformComp.Position, ((BoundingBox3D)modComp.BoundingVolume.Bounding).Box.Max + transformComp.Position);
+                //    modComp.BoundingVolume.Bounding = new BoundingBox3D(box);
+                //}
             }
-            //if (volume.Volume.FirstOrDefault().Bounding is BoundingSphere3D)
-            //{
-            //    volume.Bounding = new BoundingSphere3D(sphere);
-            //    volume.BoundingID = -1;
-            //}
-            //if (volume.Volume.FirstOrDefault().Bounding is BoundingBox3D)
-            //{
-            //    volume.Bounding = new BoundingBox3D(box);
-            //    volume.BoundingID = -1;
-            //}
-                return volume;
         }
     }
 }

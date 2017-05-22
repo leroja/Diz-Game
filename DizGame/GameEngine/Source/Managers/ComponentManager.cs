@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Managers
 {
@@ -12,7 +10,6 @@ namespace GameEngine.Source.Managers
     /// </summary>
     public class ComponentManager
     {
-        // TODO rewrite comments
         private static ComponentManager instance;
 
         private List<int> entityIDs;
@@ -23,6 +20,11 @@ namespace GameEngine.Source.Managers
 
         private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
 
+        /// <summary>
+        /// List which represents the current occupied id's for entities.
+        /// </summary>
+        public List<int> CurrentTakenEntityIds { get; private set; }
+
         private ComponentManager()
         {
             curMax = step;
@@ -30,9 +32,13 @@ namespace GameEngine.Source.Managers
             entityIDs.AddRange(Enumerable.Range(1, curMax));
             defaultList = new List<int>();
             defaultDictionary = new Dictionary<int, IComponent>();
+            CurrentTakenEntityIds = new List<int>();
         }
 
 
+        /// <summary>
+        /// The instance of the component manager
+        /// </summary>
         public static ComponentManager Instance
         {
             get
@@ -46,7 +52,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// 
+        /// Creates a new unique ID
         /// </summary>
         /// <returns>
         /// A new Id 
@@ -61,6 +67,7 @@ namespace GameEngine.Source.Managers
             int id = entityIDs[entityIDs.Count - 1];
 
             entityIDs.Remove(id);
+            CurrentTakenEntityIds.Add(id);
             return id;
         }
 
@@ -78,7 +85,7 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// "links" the component to the entity
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entityID"></param>
         /// <param name="component"></param>
         public void AddComponentToEntity(int entityID, IComponent component)
         {
@@ -89,20 +96,14 @@ namespace GameEngine.Source.Managers
             {
                 compDic.Add(type, new Dictionary<int, IComponent>());
             }
-            try
-            {
-                compDic[type].Add(entityID, component);
-            }
-            catch (Exception)
-            {
-            }
+            compDic[type].Add(entityID, component);
         }
 
         /// <summary>
-        /// 
+        /// "Links" a list of components to an entity
         /// </summary>
-        /// <param name="entityID"></param>
-        /// <param name="componentList"></param>
+        /// <param name="entityID"> ID of the entity </param>
+        /// <param name="componentList"> the list of components </param>
         public void AddAllComponents(int entityID, List<IComponent> componentList)
         {
             foreach (var comp in componentList)
@@ -113,20 +114,14 @@ namespace GameEngine.Source.Managers
                 {
                     compDic.Add(type, new Dictionary<int, IComponent>());
                 }
-                try
-                {
-                    compDic[type].Add(entityID, comp);
-                }
-                catch (Exception)
-                {
-                }
+                compDic[type].Add(entityID, comp);
             }
         }
 
         /// <summary>
         /// Removes the component from the entity
         /// </summary>
-        /// <param name="entity"> The entity that has the component </param>
+        /// <param name="entityID"> The entity that has the component </param>
         /// <param name="component"> The component to be removed </param>
         public void RemoveComponentFromEntity(int entityID, IComponent component)
         {
@@ -140,7 +135,7 @@ namespace GameEngine.Source.Managers
                 }
             }
         }
-        
+
 
         /// <summary>
         /// Returns a component if the Entity has one "linked" to it
@@ -148,7 +143,7 @@ namespace GameEngine.Source.Managers
         /// <typeparam name="T">
         /// The type of the requested component
         /// </typeparam>
-        /// <param name="entity"></param>
+        /// <param name="entityID"></param>
         /// <returns>
         /// A component of the requested type if there is one
         /// else it returns null
@@ -216,7 +211,7 @@ namespace GameEngine.Source.Managers
         /// Removes an Entity from dictionary
         /// As a game Dev you also have to recycle the id
         /// </summary>
-        /// <param name="entity"> The entity to be removed </param>
+        /// <param name="entityID"> The entity to be removed </param>
         public void RemoveEntity(int entityID)
         {
             foreach (KeyValuePair<Type, Dictionary<int, IComponent>> entry in compDic)
@@ -248,7 +243,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Returns a dictionary with all entites that "has" the specific type of component & 
+        /// Returns a dictionary with all entites that "has" the specific type of component and
         /// and the components of that type
         /// </summary>
         /// <typeparam name="T"> The type of component </typeparam>
@@ -261,7 +256,7 @@ namespace GameEngine.Source.Managers
 
             if (compDic.ContainsKey(type))
             {
-                return compDic[type]; 
+                return compDic[type];
             }
             return defaultDictionary;
         }
@@ -286,6 +281,16 @@ namespace GameEngine.Source.Managers
                 }
             }
             return false;
+        }
+
+
+        /// <summary>
+        /// This function is used for retrieving all the current entityIds that has been created up til now.
+        /// </summary>
+        /// <returns>All current entityIds.</returns>
+        public List<int> GetAllCurrentEntityIds()
+        {
+            return CurrentTakenEntityIds;
         }
     }
 }

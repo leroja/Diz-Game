@@ -1,31 +1,42 @@
 ﻿using GameEngine.Source.RandomStuff;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
+    /// <summary>
+    /// A component that contain information for a heightmap
+    /// </summary>
     public class HeightmapComponentTexture : IComponent
     {
-        public BasicEffect Effect { get; set; }
-        public int[] Indices { get; set; }
-        public VertexBuffer VertexBuffer { get; set; }
-        public IndexBuffer IndexBuffer { get; set; }
-
-
+        /// <summary>
+        /// HeightData of th eheightmap
+        /// </summary>
         public float[,] HeightMapData { get; set; }
+        /// <summary>
+        /// A list of the chunks that belong to the Heightmap
+        /// </summary>
         public List<HeightMapChunk> HeightMapChunks { get; set; }
 
+        /// <summary>
+        /// The width of the Heightmap
+        /// </summary>
         public int Width { get; set; }
+        /// <summary>
+        /// The height of the Heightmap
+        /// </summary>
         public int Height { get; set; }
+        /// <summary>
+        /// A Bool that says whether the model is vivible or not
+        /// </summary>
+        public bool IsVisible { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public HeightmapComponentTexture()
         {
             HeightMapChunks = new List<HeightMapChunk>();
+            IsVisible = true;
         }
     }
 }

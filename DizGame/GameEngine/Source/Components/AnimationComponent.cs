@@ -1,82 +1,87 @@
 ﻿using AnimationContentClasses;
-using GameEngine.Source.Enums;
-using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
+    /// <summary>
+    /// AnimationComponent class, used for/stores the relevant information to 
+    /// create animations for a model.
+    /// </summary>
     public class AnimationComponent : IComponent
     {
-
-
         #region Properties
-        private int AnimationEntityID;
-        public AnimationModelData AnimationModelData { get; private set; }
-        public AnimationData ActiveAnimation { get; set; }
-        public int ActiveAnimationKeyFrame { get; set; }
-        public bool EnableAnimationLoop { get; set; }
-        public float AnimationSpeed { get; set; }
-        public TimeSpan ActiveAnimationTime { get; set; }
-        public Matrix[] Bones { get; set; }
-        public Matrix[] BonesTransforms { get; private set; }
-        public Matrix[] BonesAbsolute { get; set; }
-        public Matrix[] BonesAnimation { get; set; }
+
+        /// <summary>
+        /// Information about the currently playing animation clip.
+        /// </summary>
+        public AnimationClip CurrentClipValue { get; private set; }
+        /// <summary>
+        /// The current time to controll where in the animation we are
+        /// </summary>
+        public TimeSpan CurrentTimeValue { get; set; }
+        /// <summary>
+        /// The current keyframe which is "playing"
+        /// </summary>
+        public int CurrentKeyframe { get; set; }
+
+
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
+        public Matrix[] BoneTransforms { get; set; }
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
+        public Matrix[] WorldTransforms { get; set; }
+        /// <summary>
+        /// Arrays of matrices relevant for the transformations of the animations
+        /// </summary>
+        public Matrix[] SkinTransforms { get; set; }
+        /////////////////////////////////////////////////////////////////////////
+
+        // Backlink to the bind pose and skeleton hierarchy data.
+        /// <summary>
+        /// SkinningDataValue is the parameter for which the animation data finally are stored.
+        /// This contains the skeleton hierarchy data aswell as the bind pose for the model.
+        /// </summary>
+        public SkinningData SkinningDataValue { get; set; }
+
+        //public Effect AnimationEffect { get; set; }
         //AnimatedModelEffect AnimatedModelEffect {get; set;}
         #endregion
 
-        public AnimationComponent(int AnimationEntityID)
+        /// <summary>
+        /// Basic constructor for the AnimationComponent class
+        /// </summary>
+        /// <param name="tag">Takes the tag which is stored within a model loaded with a content extension, this tag should contain all the relevant information for constructing the animations for a model</param>
+        public AnimationComponent(object tag)
         {
-            this.AnimationEntityID = AnimationEntityID;
-            
-            // Default animation config
-            AnimationSpeed = 1.0f;
-            ActiveAnimationKeyFrame = 0;
-            ActiveAnimationTime = TimeSpan.Zero;
+            SkinningDataValue = tag as SkinningData;
 
+            if (SkinningDataValue == null)
+                throw new InvalidOperationException("This model does not contain a SkinningData tag.");
+
+            BoneTransforms = new Matrix[SkinningDataValue.BindPose.Count];
+            WorldTransforms = new Matrix[SkinningDataValue.BindPose.Count];
+            SkinTransforms = new Matrix[SkinningDataValue.BindPose.Count];
         }
 
-        public void CreateAnimationData()
+        /// <summary>
+        /// Starts decoding the specified animation clip.
+        /// </summary>
+        public void StartClip(string clipName)
         {
-            //Bones = new List<Matrix>();
-            //BonesTransforms = new List<Matrix>();
-            //BonesAbsolute = new List<Matrix>();
-            //BonesAnimation = new List<Matrix>();
+            if (clipName == null)
+                throw new ArgumentNullException("clipname is missing");
 
-            ModelComponent model = ComponentManager.Instance.GetEntityComponent<ModelComponent>(AnimationEntityID);
-            Dictionary<string, object> modelTag = (Dictionary<string,object>) model.Model.Tag;
-            if (modelTag == null)
-                throw new InvalidOperationException("Oups!! Something went wrong here, this might not be an animation model");
+            CurrentClipValue = (SkinningDataValue.AnimationClips[clipName]);
 
-            if (modelTag.ContainsKey("AnimationModelData"))
-                AnimationModelData = (AnimationModelData)modelTag["AnimationModelData"];
+            CurrentTimeValue = TimeSpan.Zero;
+            CurrentKeyframe = 0;
 
-            else
-                throw new InvalidOperationException("This is not a valid animation model, please try again");
-
-            if(AnimationModelData.AnimationData.Length > 0)
-            {
-                ActiveAnimation = AnimationModelData.AnimationData[0];
-            }
-
-            Bones = new Matrix[AnimationModelData.BindPose.Length];
-            BonesAbsolute = new Matrix[AnimationModelData.BindPose.Length];
-            BonesAnimation = new Matrix[AnimationModelData.BindPose.Length];
-            // Used to apply custom transformation over the bones
-            BonesTransforms = new Matrix[AnimationModelData.BindPose.Length];
-
-            for(int i = 0; i < Bones.Length; i++)
-            {
-                Bones[i] = AnimationModelData.BindPose[i];
-                BonesTransforms[i] = Matrix.Identity;
-            }
-            
-            //AnimatedModelEffect = new AnimatedModelEffect(model.Model.Meshes[0].Effects[0]);
+            // Initialize bone transforms to the bind pose.
+            SkinningDataValue.BindPose.CopyTo(BoneTransforms, 0);
         }
     }
 }

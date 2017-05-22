@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
@@ -10,24 +6,32 @@ using GameEngine.Source.RandomStuff;
 
 namespace GameEngine.Source.Factories
 {
+    // todo write comments
+    /// <summary>
+    /// A factory for creating heightmaps
+    /// </summary>
     public class HeightMapFactory
     {
         private GraphicsDevice graphicsDevice;
-        
+
         private Texture2D heightMap;
         private Texture2D heightMapTexture;
-        public VertexPositionNormalTexture[] VerticesTexture { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        private VertexPositionNormalTexture[] VerticesTexture;
+        private int Width;
+        private int Height;
 
         private int fractions_per_side;
         private int chunk_width;
         private int chunk_height;
-        
+
         private int[] Indices;
-        
+
         private float[,] heightMapData;
-        
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="graphicsDevice"></param>
         public HeightMapFactory(GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
@@ -48,13 +52,9 @@ namespace GameEngine.Source.Factories
             this.heightMapTexture = heightMapTexture;
             this.fractions_per_side = fractions_per_side;
             SetHeightMapData(ref heightMapComponent);
-            //heightMapComponent.Effect = Effect;
-            //heightMapComponent.IndexBuffer = IndexBuffer;
-            heightMapComponent.Indices = Indices;
-            //heightMapComponent.VertexBuffer = VertexBuffer;
             return heightMapComponent;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -119,7 +119,7 @@ namespace GameEngine.Source.Factories
                 }
             }
         }
-               
+
         /// <summary>
         /// 
         /// </summary>
@@ -136,7 +136,7 @@ namespace GameEngine.Source.Factories
                 }
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -170,19 +170,14 @@ namespace GameEngine.Source.Factories
         private void SetUpHeightMapChunks(ref HeightmapComponentTexture heightMapComp)
         {
             for (int x = 0; x < Width - chunk_width; x += chunk_width)
-            { 
+            {
                 for (int y = 0; y < Height - chunk_height; y += chunk_height)
                 {
-                    
                     Rectangle clipRect = new Rectangle(x, y, chunk_width + 1, chunk_height + 1);
                     var offsetpos = new Vector3(x, 0, -y);
 
-                    // Uncomment in för att se att det verkligen är chunks
-                    //HeightMapChunk chunk = CreateHeightMapChunk(heightMap, new Rectangle(x, y, chunk_width, chunk_height),
-                    //new Vector3(x, 0, -y), GetVertexTextureNormals(new Rectangle(x, y, chunk_width, chunk_height)), heightMapTexture);
-
                     HeightMapChunk chunk = CreateHeightMapChunk(heightMap, clipRect, offsetpos, GetVertexTextureNormals(clipRect), heightMapTexture);
-                    
+
                     heightMapComp.HeightMapChunks.Add(chunk);
                 }
             }
@@ -206,7 +201,7 @@ namespace GameEngine.Source.Factories
             }
             return terrainVerts;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -238,18 +233,14 @@ namespace GameEngine.Source.Factories
             };
 
             var indices = InitIndices(terrainRect);
-            chunk.indicesDiv3 = indices.Length / 3; // för att slipa göra den här divisionen flera gånger
+            chunk.IndicesDiv3 = indices.Length / 3; // för att slipa göra den här divisionen flera gånger
 
             CopyNormals(vertexNormals, chunkVertices);
 
             PrepareBuffers(ref chunk, indices, chunkVertices);
-            
+
             chunk.Effect = effect;
             chunk.BoundingBox = boundingBox;
-            chunk.Vertices = chunkVertices;
-            chunk.Rectangle = terrainRect;
-            chunk.Width = terrainRect.Width;
-            chunk.Height = terrainRect.Height;
             return chunk;
         }
 
@@ -276,10 +267,10 @@ namespace GameEngine.Source.Factories
         {
             var width = terrainMap.Width;
             var height = terrainMap.Height;
-            
+
             Color[] colors = new Color[width * height];
             terrainMap.GetData(colors);
-            
+
             var heightInfo = new float[terrainRect.Width, terrainRect.Height];
             for (int x = terrainRect.X; x < terrainRect.X + terrainRect.Width; ++x)
             {

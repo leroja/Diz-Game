@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Components;
@@ -10,9 +6,18 @@ using GameEngine.Source.Enums;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// A system the updates the states of keybord components
+    /// </summary>
     public class KeyBoardSystem : IUpdate
     {
+        /// <summary>
+        /// The previous state of the keyboard
+        /// </summary>
         public KeyboardState PrevState { get; set; }
+        /// <summary>
+        /// The current state of the Keyboard
+        /// </summary>
         public KeyboardState CurState { get; set; }
 
         /// <summary>
@@ -33,7 +38,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// updates the previous & current State of the keyboard
+        /// updates the previous and current State of the keyboard
         /// </summary>
         private void UpdateStates()
         {
@@ -47,7 +52,6 @@ namespace GameEngine.Source.Systems
         /// <param name="keyboardComp"></param>
         private void UpdateActionStates(KeyBoardComponent keyboardComp)
         {
-
             foreach (string action in keyboardComp.KeyBoardActions.Keys)
             {
                 Keys key = keyboardComp.KeyBoardActions[action];
