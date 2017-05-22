@@ -246,7 +246,7 @@ namespace GameEngine.Source.Systems
                 hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
             }
         }
-        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit)
+        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit, float dt)
         {
             if (target != null && hit != null)
             {
@@ -301,7 +301,7 @@ namespace GameEngine.Source.Systems
                         continue;
 
                     if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
-                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos));
+                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
 
                 }
                 done.Add(entityIDUno);
@@ -327,7 +327,7 @@ namespace GameEngine.Source.Systems
         /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
         {
-            UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2));
+            UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2), 1);
         }
         /// <summary>
         /// Does nothing atm
