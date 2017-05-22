@@ -57,7 +57,7 @@ namespace DizGame.Source.Systems
         {
             var hel = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID);
             var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(ResourceID);
-            if (res.thisType == 0) {
+            if (res.thisType == ResourceComponent.ResourceType.Health) {
                 hel.Health += hel.HealthOnPickup;
                     }
         }
