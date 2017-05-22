@@ -189,7 +189,7 @@ namespace GameEngine.Source.Communication
         {
             int len = 0;
 
-            len += ConvertValue(ref inputArray, pos + len, value.Dirrection);
+            //len += ConvertValue(ref inputArray, pos + len, value.Dirrection);
             len += ConvertValue(ref inputArray, pos + len, value.Forward);
             len += ConvertValue(ref inputArray, pos + len, value.ID);
             len += ConvertValue(ref inputArray, pos + len, value.ObjectMatrix);
@@ -198,7 +198,7 @@ namespace GameEngine.Source.Communication
             len += ConvertValue(ref inputArray, pos + len, value.QuaternionRotation);
             len += ConvertValue(ref inputArray, pos + len, value.Right);
             len += ConvertValue(ref inputArray, pos + len, value.Rotation);
-            len += ConvertValue(ref inputArray, pos + len, value.RotationMatrix);
+            //len += ConvertValue(ref inputArray, pos + len, value.RotationMatrix);
             len += ConvertValue(ref inputArray, pos + len, value.Scale);
             len += ConvertValue(ref inputArray, pos + len, value.Up);
 
