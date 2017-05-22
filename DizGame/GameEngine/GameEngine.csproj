@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\Components\Abstract Classes\GameState.cs" />
+    <Compile Include="Source\Communication\ConvertToByteArray.cs" />
     <Compile Include="Source\Components\AnimationComponent.cs" />
     <Compile Include="Source\Components\FlareComponent.cs" />
     <Compile Include="Source\Components\HeightmapComponentTexture.cs" />

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Source.Communication;
+using GameEngine.Source.Enums;
+using DizGame.Source.Communication;
+using System.Threading;
 
 namespace DizGame.Source.Systems
 {
@@ -13,42 +17,74 @@ namespace DizGame.Source.Systems
     /// </summary>
     public class NetworkSystem 
     {
-        NetPeerConfiguration config;
-        NetClient client;
-        int portnumber;
+        private NetPeerConfiguration config;
+        private NetClient client;
+
+        private static int PORTNUMBER = 1337;
+        private string IP = "localhost";
+
+        private int portNum;
+
+        private TalkToServer talkToServer;
+
 
         /// <summary>
         /// Basic constructor for the NetworkSystem, default portnumber is 1337
         /// </summary>
-        public NetworkSystem()
+        public NetworkSystem(): this(PORTNUMBER)
         {
-            portnumber = 1337;
+
         }
 
         /// <summary>
         /// Alternate constructor, if another portnumber is desired.
         /// </summary>
         /// <param name="portnumber"></param>
-        public NetworkSystem(int portnumber)
+        public NetworkSystem(int portNumber)
         {
-            this.portnumber = portnumber;
+            portNum = portNumber;
+
+            ConfigClient();
+
+            client = new NetClient(config);
+
+            talkToServer = new TalkToServer(client);
+        }
+
+
+        private void ConfigClient()
+        {
+            config = new NetPeerConfiguration("gameOne")
+            {
+                AutoFlushSendQueue = false
+
+            };
+
+            config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
+            config.EnableMessageType(NetIncomingMessageType.DebugMessage);
+            config.EnableMessageType(NetIncomingMessageType.Data);
+            config.EnableMessageType(NetIncomingMessageType.StatusChanged);
+            config.EnableMessageType(NetIncomingMessageType.WarningMessage);
+            config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+            config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
         }
 
         /// <summary>
         /// Method for creating and running the network client
         /// </summary>
-        public void RunClient()
+        public void ConnectToServer()
         {
-             config = new NetPeerConfiguration("gameOne")
-            {
-                AutoFlushSendQueue = false
-            };
-            client = new NetClient(config);
             client.Start();
 
-            string ip = "localhost";
-            int port = portnumber;
-            client.Connect(ip, port);
+            client.Connect(IP, portNum);
+
+            DiscoverLocalPeers();
+
+            //while (client.ConnectionStatus != NetConnectionStatus.Connected)
+            //    ;
+
+            //talkToServer.SendRequestInitialGameState();
+
         }
         /// <summary>
         /// This method is used to get the client to discover the server.
@@ -70,8 +106,9 @@ namespace DizGame.Source.Systems
             // Might wanna use different delivery method
             client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
             client.FlushSendQueue();
-                        
+
         }
+
 
         /// <summary>
         /// Method for reading incoming messages from the server, if there is any.
@@ -80,43 +117,68 @@ namespace DizGame.Source.Systems
         public void ReadMessages()
         {
             NetIncomingMessage message;
-            
 
-           
+            bool sendRequest = true;
+
+
             while ((message = client.ReadMessage()) != null)
+            //TODO: add functionallity for the different messagetypes, some information might be needed to be broadcasted to other clients
+            while (true)
             {
-                switch (message.MessageType)
+                //This should be moved to some better place.
+                if (client.ConnectionStatus == NetConnectionStatus.Connected && sendRequest == true)
                 {
-                    case NetIncomingMessageType.DiscoveryRequest:
-                        //
-                        // Server received a discovery request from a client; send a discovery response (with no extra data attached)
-                        //
-                        client.SendDiscoveryResponse(null, message.SenderEndPoint);
-                        break;
-                    case NetIncomingMessageType.Data:
-                        {
-                            Console.WriteLine("Client got a message!");
-                            var data = message.ReadString();
-                            Console.WriteLine(data);
-
-                           
-                            break;
-                        }
-                    case NetIncomingMessageType.DebugMessage:
-                        Console.WriteLine(message.ReadString());
-                        break;
-                    case NetIncomingMessageType.StatusChanged:
-                        Console.WriteLine(message.ReadString());
-                        break;
-                    default:
-                        Console.WriteLine("Unhandled message type: {message.MessageType}");
-                        break;
+                    talkToServer.SendRequestInitialGameState();
+                    sendRequest = false;
                 }
-                client.Recycle(message);
-            }
-            
 
-            
+                while ((message = client.ReadMessage()) != null)
+                {
+                    switch (message.MessageType)
+                    {
+                        case NetIncomingMessageType.DiscoveryResponse:
+                            Console.WriteLine(message.ReadString() + " connection status: " + client.ConnectionStatus);
+                            break;
+
+                        case NetIncomingMessageType.DiscoveryRequest:
+                            //
+                            // Server received a discovery request from a client; send a discovery response (with no extra data attached)
+                            //
+                            client.SendDiscoveryResponse(null, message.SenderEndPoint);
+                            break;
+
+                        case NetIncomingMessageType.Data:
+                            {
+                                Console.WriteLine("Client got a message!");
+                                //var data = message.ReadString();
+                                //Console.WriteLine(data);
+
+                                talkToServer.AnswerMessage(message);
+
+                                break;
+                            }
+                        case NetIncomingMessageType.DebugMessage:
+                            Console.WriteLine(message.ReadString());
+                            break;
+
+                        case NetIncomingMessageType.StatusChanged:
+                            Console.WriteLine(message.ReadString());
+                            break;
+
+                        case NetIncomingMessageType.WarningMessage:
+                            Console.WriteLine(message.ReadString());
+                            break;
+
+                        default:
+                            Console.WriteLine("Unhandled message type: {message.MessageType}");
+                            break;
+                    }
+                    client.Recycle(message);
+                }
+            }
+
+
+
         }
     }
 }

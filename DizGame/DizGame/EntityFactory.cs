@@ -376,6 +376,7 @@ namespace DizGame
                     }
                 }
             }
+
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
             {
@@ -492,7 +493,7 @@ namespace DizGame
         /// </summary>
         /// <param name="numberOfPositions"></param>
         /// <returns></returns>
-        public List<Vector3> GetModelPositions(int numberOfPositions)
+        public static List<Vector3> GetModelPositions(int numberOfPositions)
         {
             List<Vector3> positions = new List<Vector3>();
             Random r = new Random();

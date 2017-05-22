@@ -8,6 +8,8 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using System.Collections;
 using GameEngine.Source.Enums;
+using ServerApplication.Communication;
+using ServerApplication.Protocol;
 
 namespace ServerApplication.ServerLogic
 {
@@ -20,7 +22,10 @@ namespace ServerApplication.ServerLogic
         private NetServer server;
         private List<NetPeer> clients;
         private int portnumber;
+        private NetPeerConfiguration config;
+        private NetOutgoingMessage approvalMessage;
 
+        private TalkToClients talkToClients;
 
         /// <summary>
         /// Default constructor for the server, default portnumber is set to 1337.
@@ -28,7 +33,21 @@ namespace ServerApplication.ServerLogic
         public Server()
         {
             portnumber = 1337;
+
+            //int start = 0;
+            //int end = 0;
+
+            //InitialGameStateProtocol.ReserveRangeEntityIds(2, ref start, ref end);
+
+            //InitialGameStateProtocol.ReserveRangeEntityIds(3, ref start, ref end);
+
+            //InitialGameStateProtocol.GetReservedRangeEntityIds(2, ref start, ref end);
+
+            //InitialGameStateProtocol.GetReservedRangeEntityIds(3, ref start, ref end);
+
+
         }
+
         /// <summary>
         /// Alternate constructor for the server if another portnumber is desired
         /// </summary>
@@ -37,12 +56,23 @@ namespace ServerApplication.ServerLogic
         {
             this.portnumber = portnumber;
         }
+
+        private void ConfigServer()
+        {
+            config = new NetPeerConfiguration("gameOne") { Port = portnumber };
+            config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
+            config.EnableMessageType(NetIncomingMessageType.DebugMessage);
+            config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
+            config.EnableMessageType(NetIncomingMessageType.StatusChanged);
+            config.EnableMessageType(NetIncomingMessageType.Data);
+
+        }
         /// <summary>
         /// Method to create a server and to start it
         /// </summary>
         public void StartServer()
         {
-            var config = new NetPeerConfiguration("gameOne") { Port = portnumber };
+            ConfigServer();
             server = new NetServer(config);
             server.Start();
 
@@ -55,6 +85,8 @@ namespace ServerApplication.ServerLogic
                 Console.WriteLine("Server not started...");
             }
             clients = new List<NetPeer>();
+
+            talkToClients = new TalkToClients(server);
 
         }
 
@@ -76,6 +108,12 @@ namespace ServerApplication.ServerLogic
 
                     switch (message.MessageType)
                     {
+                        case NetIncomingMessageType.ConnectionApproval:
+                            approvalMessage = server.CreateMessage();
+                            approvalMessage.Write("Client approved");
+                            message.SenderConnection.Approve(approvalMessage);
+                            break;
+
                         case NetIncomingMessageType.DiscoveryRequest:
                             //
                             // Server received a discovery request from a client; send a discovery response (with no extra data attached)
@@ -86,19 +124,20 @@ namespace ServerApplication.ServerLogic
                         case NetIncomingMessageType.Data:
                             {
                                 Console.WriteLine("Server got message!");
-                                var data = message.ReadString();
-                                Console.WriteLine(data);
+                                //var data = message.ReadString();
+                                //Console.WriteLine(data);
 
-                                NetOutgoingMessage somemsg = server.CreateMessage("Damn!");
+                                //NetOutgoingMessage somemsg = server.CreateMessage("Damn!");
 
-                                // Might wanna use different delivery method
-                                server.SendMessage(somemsg, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
-                                server.FlushSendQueue();
+                                //// Might wanna use different delivery method
+                                //server.SendMessage(somemsg, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
 
-                                if (data == "exit")
-                                {
-                                    stop = true;
-                                }
+                                talkToClients.AnswerMessage(message);
+
+                                //if (data == "exit")
+                                //{
+                                //    stop = true;
+                                //}
 
                                 break;
                             }
