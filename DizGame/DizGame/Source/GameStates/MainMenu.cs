@@ -1,17 +1,12 @@
-﻿using DizGame.Source.Systems;
-using GameEngine.Source.Components;
+﻿using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.GameStates
 {
@@ -56,13 +51,13 @@ namespace DizGame.Source.GameStates
         public override void Entered()
         {
             SystemManager.Instance.AddSystem(TextSystem);
-            string[] itemNames = {"One Player Game", "Multiplayer Game", "Settings", "Whatever"};
+            string[] itemNames = { "One Player Game", "Multiplayer Game", "Settings", "Whatever" };
             ItemNames = itemNames;
 
             int y = 30;
             Color color;
-            
-            for(int i = 0; i < itemNames.Length; i++)
+
+            for (int i = 0; i < itemNames.Length; i++)
             {
                 Vector2 position = new Vector2(80, y);
                 if (i == 0)
@@ -87,7 +82,7 @@ namespace DizGame.Source.GameStates
         public override void Exiting()
         {
             AudioManager.Instance.StopSong();
-            foreach(int id in GameStateEntities)
+            foreach (int id in GameStateEntities)
             {
                 ComponentManager.Instance.RemoveEntity(id);
             }
@@ -100,7 +95,7 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Obscuring()
         {
-            
+
         }
 
         /// <summary>
@@ -146,7 +141,7 @@ namespace DizGame.Source.GameStates
             {
                 if (!oldState.IsKeyDown(Keys.Down))
                 {
-                    if (SelectedItem < ItemNames.Length -1)
+                    if (SelectedItem < ItemNames.Length - 1)
                     {
                         int index = GameStateEntities.ElementAt(SelectedItem);
                         txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
@@ -155,7 +150,7 @@ namespace DizGame.Source.GameStates
                         index = GameStateEntities.ElementAt(SelectedItem);
                         txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
                         txc.Color = Color.DeepPink;
-                    }   
+                    }
                 }
             }
             if (newState.IsKeyDown(Keys.M) && !oldState.IsKeyDown(Keys.M))

@@ -16,6 +16,7 @@ namespace GameEngine.Source.Systems
     public class TextSystem : IRender
     {
         private SpriteBatch spriteBatch;
+
         /// <summary>
         /// Constructor which take spriteBatch as in parameter.
         /// </summary>
@@ -24,22 +25,24 @@ namespace GameEngine.Source.Systems
         {
             this.spriteBatch = spriteBatch;
         }
+
         /// <summary>
         /// Function that loops throught the TextComponents and then drawing them.
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-           foreach(int entityID in ComponentManager.GetAllEntitiesWithComponentType<TextComponent>())
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<TextComponent>())
             {
                 TextComponent text = ComponentManager.GetEntityComponent<TextComponent>(entityID);
-                if(text.Children != null)
-                    foreach(var child in text.Children)
-                            DrawText(child.Value);
+                if (text.Children != null)
+                    foreach (var child in text.Children)
+                        DrawText(child.Value);
                 else
                     DrawText(text);
             }
         }
+
         /// <summary>
         /// Function to draw the text and it's background
         /// </summary>

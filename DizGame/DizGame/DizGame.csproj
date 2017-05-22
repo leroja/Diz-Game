@@ -72,13 +72,13 @@
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
+    <Compile Include="Source\Systems\GameTransformSystem.cs" />
     <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
-    <Compile Include="Source\Systems\PaticleUppdateSystemcs.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +100,12 @@
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
     <Content Include="Content\HeightMapStuff\Map3.jpg" />
+    <Content Include="Content\Icons\crosshair.png" />
+    <Content Include="Content\Icons\crosshairTrans.png" />
     <Content Include="Content\Icons\squareTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\MapObjects\Rock\Stone texture.jpg" />
     <Content Include="Content\Songs\GameSong.mp3" />
     <Content Include="Content\Songs\MenuSong.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
@@ -113,7 +116,9 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Content\bullet\bullet.mtl" />
     <None Include="Content\bullet\Bullet.obj" />
+    <None Include="Content\bullet\Cartridge.mtl" />
     <None Include="Content\bullet\Cartridge.obj" />
     <None Include="Content\Dude\Dude72.fbx" />
     <None Include="Content\Dude\head.tga" />

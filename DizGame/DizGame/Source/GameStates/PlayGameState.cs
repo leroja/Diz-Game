@@ -2,18 +2,12 @@
 using DizGame.Source.Systems;
 using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
-using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using GameEngine.Tools;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.GameStates
 {
@@ -86,7 +80,7 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Obscuring()
         {
-            foreach(int entityId in GameStateEntities)
+            foreach (int entityId in GameStateEntities)
             {
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityId);
                 HeightmapComponentTexture hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(entityId);
@@ -139,25 +133,30 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
+            //CollisionSystem cSys = new CollisionSystem();
+            PhysicsSystem pSys = new PhysicsSystem();
+            //cSys.Subscribe(pSys);
+            SystemManager.Instance.AddSystem(pSys);
+            //SystemManager.Instance.AddSystem(cSys);
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
+            //SystemManager.Instance.AddSystem(new GameTransformSystem());
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
             SystemManager.Instance.AddSystem(new CameraSystem());
-            SystemManager.Instance.AddSystem(new PhysicsSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
             SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
-            SystemManager.Instance.AddSystem(new PaticleUppdateSystemcs());
+            SystemManager.Instance.AddSystem(new ParticleUpdateSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
-            EntityTracingSystem = new EntityTracingSystem();
-            EntityTracingSystem.RecordInitialEntities();
-            SystemManager.Instance.AddSystem(EntityTracingSystem);
+            //EntityTracingSystem = new EntityTracingSystem();
+            //EntityTracingSystem.RecordInitialEntities();
+            //SystemManager.Instance.AddSystem(EntityTracingSystem);
             SystemManager.Instance.AddSystem(new ModelBoundingSystem());
             SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
@@ -165,8 +164,8 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new ResourceSystem());
-            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
-            SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
+            //SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
+            //SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
         }
 
         /// <summary>
@@ -194,11 +193,16 @@ namespace DizGame.Source.GameStates
             };
             GameStateEntities.AddRange(aiEntityList);
 
+
+            GameStateEntities.Add(entf.PlaceCrossHair(new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2, GameOne.Instance.GraphicsDevice.Viewport.Height / 2 + 20f)));
+
             var idC = entf.CreateDude();
-            entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
+            //entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
+            entf.AddPOVCamToEntity(idC);
+            //entf.CreateStaticCam(new Vector3(-20, 45, 20), new Vector3(45, 50, -30));
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);
-            
+
             int heightmapID = entf.CreateHeightMap("Map3", "BetterGrass", 10);
             //Add hightmap entityid to this state
             GameStateEntities.Add(heightmapID);
@@ -215,7 +219,7 @@ namespace DizGame.Source.GameStates
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
 
-            var ids = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            //var ids = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
             //foreach (var modelEnt in ids)
             //{
             //    var modelComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modelEnt);

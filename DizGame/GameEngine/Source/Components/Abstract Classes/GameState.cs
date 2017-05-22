@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace GameEngine.Source.Components.Abstract_Classes
 {
@@ -50,6 +45,5 @@ namespace GameEngine.Source.Components.Abstract_Classes
         /// pausing or entering a new state, this might depend on the gamestate itself
         /// </summary>
         public abstract void Update();
-
     }
 }

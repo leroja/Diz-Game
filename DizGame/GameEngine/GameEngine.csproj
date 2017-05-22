@@ -70,7 +70,7 @@
     <Compile Include="Source\Systems\ModelBoundingSystem.cs" />
     <Compile Include="Source\Systems\MouseSystem.cs" />
     <Compile Include="Source\Systems\ParticleRenderSystem.cs" />
-    <Compile Include="Source\Systems\PaticleUppdateSystemcs.cs" />
+    <Compile Include="Source\Systems\ParticleUpdateSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interfaces\IPhysics.cs" />
     <Compile Include="Source\Systems\Physics\Type\AbstractClasses\IPhysicsTypeSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
@@ -104,7 +104,6 @@
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
     <Compile Include="Source\Systems\ModelSystem.cs" />
     <Compile Include="Source\Systems\Physics\PhysicsSystem.cs" />
-    <Compile Include="Source\Systems\SoundSystem.cs" />
     <Compile Include="Source\Systems\TextSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
     <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />

@@ -2,9 +2,6 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -14,7 +11,6 @@ namespace GameEngine.Source.Systems
     /// </summary>
     public class TransformSystem : IUpdate
     {
-
         /// <summary>
         /// the system for this component should handle the objects world matrix calculation
         /// i.e objectWorld = Matrix.CreateScale(scale) * rotation * Matrix.CreateTranslation(position);
@@ -35,13 +31,12 @@ namespace GameEngine.Source.Systems
                 tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
                 tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
 
-                tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale) * tfc.RotationMatrix 
+                tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale)
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation) 
                     * Matrix.CreateTranslation(tfc.Position);
 
-                tfc.Orientation *= Quaternion.CreateFromRotationMatrix(tfc.ObjectMatrix); // TODO: vill få fram heading vet ej om detta är korrekt
+                tfc.ModelMatrix = tfc.ObjectMatrix;
             }
-
         }
     }
 }

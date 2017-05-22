@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
@@ -48,6 +46,7 @@ namespace DizGame.Source.AI_Behaviors
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+            var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
 
             transformComp.Rotation = GetRotationToNextWayPoint(AIComp.ID);
 
@@ -57,7 +56,7 @@ namespace DizGame.Source.AI_Behaviors
             t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             transformComp.Position = t;
-            
+
             var location = new Vector2(transformComp.Position.X, transformComp.Position.Z);
             var DistanceToDestination = Vector2.Distance(location, waypoints.Peek());
             if (DistanceToDestination < atDestinationLimit)
@@ -65,6 +64,8 @@ namespace DizGame.Source.AI_Behaviors
                 var waypoint = waypoints.Dequeue();
                 waypoints.Enqueue(waypoint);
             }
+
+            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
 
             BehaviorStuff(AIComp, transformComp);
         }
@@ -81,7 +82,7 @@ namespace DizGame.Source.AI_Behaviors
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
 
-            if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
+            if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
@@ -100,8 +101,18 @@ namespace DizGame.Source.AI_Behaviors
             float x = nextWaypoint.X - AITransformComp.Position.X;
             float z = nextWaypoint.Y - AITransformComp.Position.Z;
             float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
-            
+
             return new Vector3(0, WrapAngle(desiredAngle), 0);
+        }
+
+        /// <summary>
+        /// Override of object.ToString
+        /// Returns the name of the behavior
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "Patroll";
         }
     }
 }

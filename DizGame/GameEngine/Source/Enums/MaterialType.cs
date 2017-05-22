@@ -77,10 +77,12 @@ namespace GameEngine.Source.Enums
         /// </summary>
         DrySnow
     }
+
     /// <summary>
     /// Static class that returns friction coefficents ratio or singular between different materials.
     /// </summary>
-    public static class MaterialFriction {
+    public static class MaterialFriction
+    {
         #region Friction
         #region Public Constants NonSlippery
         /// <summary>

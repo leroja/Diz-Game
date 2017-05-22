@@ -21,14 +21,8 @@ namespace AnimationContentClasses
         {
             Sphere = ball;
         }
-
-
-        //private void Set()
-        //{
-        //    sphere.Center = Vector3.Zero;
-        //}
         /// <summary>
-        /// See IBounding.Intersects
+        /// Checks if this Sphere intersects with another IBounding3D
         /// </summary>
         /// <param name="bounding"></param>
         /// <returns></returns>
@@ -44,8 +38,9 @@ namespace AnimationContentClasses
             }
             return false;
         }
+
         /// <summary>
-        /// See IBounding.CreateMerged
+        /// Merges this sphere with an other IBounding3D
         /// </summary>
         /// <param name="bound"></param>
         /// <returns></returns>

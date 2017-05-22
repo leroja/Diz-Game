@@ -5,8 +5,6 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.AI_Behaviors
 {
@@ -24,7 +22,6 @@ namespace DizGame.Source.AI_Behaviors
         /// </summary>
         public float DistanceToClosestEnemy { get; set; }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -37,7 +34,6 @@ namespace DizGame.Source.AI_Behaviors
         /// </summary>
         /// <param name="rotation"> The current rotation of the AI </param>
         public abstract void OnEnter(Vector3 rotation);
-
 
         /// <summary>
         /// Finds the closest enemy entity
@@ -69,7 +65,7 @@ namespace DizGame.Source.AI_Behaviors
 
                 if (AIComp.ID == EntityId)
                     continue;
-                
+
                 var dist = Vector3.Distance(transformComp.Position, transComp.Position);
                 if (dist < DistanceToClosestEnemy)
                 {
@@ -78,7 +74,6 @@ namespace DizGame.Source.AI_Behaviors
                 }
             }
         }
-
 
         /// <summary>
         /// Returns the current height based on the AI current position
@@ -104,7 +99,7 @@ namespace DizGame.Source.AI_Behaviors
             }
             return 0;
         }
-        
+
         /// <summary>
         /// Calculates the rotation to the closest enemy
         /// </summary>
@@ -121,7 +116,6 @@ namespace DizGame.Source.AI_Behaviors
 
             return new Vector3(0, WrapAngle(desiredAngle), 0);
         }
-        
 
         /// <summary>
         /// Calculates the angle that an object should face, given 
@@ -158,7 +152,6 @@ namespace DizGame.Source.AI_Behaviors
             }
             return rotation;
         }
-        
 
         /// <summary>
         /// Gets the rotation needed for shooting at an enemy on different height level
@@ -171,7 +164,7 @@ namespace DizGame.Source.AI_Behaviors
             var AITransformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
             var dist = Vector2.Distance(new Vector2(AITransformComp.Position.X, AITransformComp.Position.Z), new Vector2(ClosestEnemyTransFormComp.Position.X, ClosestEnemyTransFormComp.Position.Z));
-            
+
             float y = ClosestEnemyTransFormComp.Position.Y - AITransformComp.Position.Y;
 
             float desiredAngle = (float)Math.Atan2(y, dist);

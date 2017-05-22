@@ -25,14 +25,11 @@ namespace GameEngine.Source.Systems
         public override void Update(GameTime gameTime)
         {
             TimeSpan elapsed = gameTime.ElapsedGameTime;
-
-
+            
             framecount++;
             timeSinceLastUpdate += elapsed;
             if (timeSinceLastUpdate > TimeSpan.FromSeconds(1))
             {
-
-                //frameCounter = framecount / timeSinceLastUpdate;
                 frameCounter = framecount;
 
                 g.Window.Title = "FPS: " + frameCounter;

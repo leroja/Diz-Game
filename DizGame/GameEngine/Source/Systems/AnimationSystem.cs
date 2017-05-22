@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using AnimationContentClasses;
@@ -19,6 +16,7 @@ namespace GameEngine.Source.Systems
     {
         TimeSpan time;
         AnimationComponent anc;
+
         /// <summary>
         /// Update logic required for the AnimationComponents
         /// </summary>
@@ -57,7 +55,8 @@ namespace GameEngine.Source.Systems
             // Update the animation position.
             if (relativeToCurrentTime)
             {
-                time += anc.CurrentTimeValue;
+                //time += anc.CurrentTimeValue;
+                time = anc.CurrentTimeValue;
 
                 // If we reached the end, loop back to the start.
                 while (time >= anc.CurrentClipValue.Duration)
@@ -94,10 +93,10 @@ namespace GameEngine.Source.Systems
             }
         }
 
-       /// <summary>
-       /// Help functions used by the update function to update the bones matrices
-       /// </summary>
-       /// <param name="tcp">Takes the transformComponent as a parameter to get the entities transformation matrices</param>
+        /// <summary>
+        /// Help functions used by the update function to update the bones matrices
+        /// </summary>
+        /// <param name="tcp">Takes the transformComponent as a parameter to get the entities transformation matrices</param>
         public void UpdateWorldTransforms(TransformComponent tcp)
         {
             // Root bone.

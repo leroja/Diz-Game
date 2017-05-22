@@ -1,12 +1,10 @@
 ﻿using GameEngine.Source.Systems;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
+using DizGame.Source.AI_Behaviors;
+using System;
 
 namespace DizGame.Source.Systems
 {
@@ -29,10 +27,11 @@ namespace DizGame.Source.Systems
             {
                 var AIComponent = ComponentManager.GetEntityComponent<AIComponent>(EntId);
                 AIComponent.CurrentBehaivior.FindClosestEnemy(AIComponent);
-                
+
+                //Console.WriteLine(AIComponent.CurrentBehaivior.ToString());
+
                 AIComponent.CurrentBehaivior.Update(AIComponent, gameTime);
             }
         }
-        
     }
 }

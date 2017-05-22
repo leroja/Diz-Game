@@ -4,8 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Managers
 {
@@ -15,12 +13,12 @@ namespace GameEngine.Source.Managers
     public class SystemManager
     {
         private static SystemManager instance;
-        
+
         /// <summary>
         /// A spritebatch
         /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
-        
+
         List<IRender> renderSystems = new List<IRender>();
         List<IUpdate> updateSystems = new List<IUpdate>();
 

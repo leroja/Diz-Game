@@ -1,10 +1,6 @@
 ﻿using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -30,7 +26,6 @@ namespace GameEngine.Source.Components
         {
             KeyBoardActions = new Dictionary<string, Keys>();
             State = new Dictionary<string, ButtonStates>();
-            
         }
 
         /// <summary>

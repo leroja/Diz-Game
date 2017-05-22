@@ -1,11 +1,6 @@
 ﻿using AnimationContentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -27,6 +22,8 @@ namespace GameEngine.Source.Components
         /// The boudnin sphere the encapsulates the model
         /// </summary>
         public BoundingVolume BoundingVolume { get; set; }
+
+        public Vector3 MiddlePosition { get; set; }
         /// <summary>
         /// A Bool that says whether the model is static or not
         /// </summary>
@@ -41,7 +38,6 @@ namespace GameEngine.Source.Components
         public Vector3 MiddlePos { get; set; }
 
         #endregion Public Properties
-        
 
         /// <summary>
         /// Constructor which takes model as parameter
@@ -52,6 +48,5 @@ namespace GameEngine.Source.Components
             Model = model;
             IsVisible = true;
         }
-
     }
 }

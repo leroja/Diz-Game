@@ -1,9 +1,5 @@
 ﻿using GameEngine.Source.Components.Abstract_Classes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Managers
 {
@@ -56,10 +52,8 @@ namespace GameEngine.Source.Managers
                 previousState = stack.Peek();
                 previousState.Revealed();
             }
-            
 
             return removedState;
-
         }
 
         /// <summary>
@@ -71,7 +65,7 @@ namespace GameEngine.Source.Managers
             GameState previousState;
             //Means that there is another state on the stack, the pushed state is therefore 
             //obscuring the state allready on the stack.
-            if(stack.Count > 0)
+            if (stack.Count > 0)
             {
                 previousState = stack.Peek();
                 previousState.Obscuring();
@@ -79,6 +73,7 @@ namespace GameEngine.Source.Managers
             stack.Push(state);
             state.Entered();
         }
+
         /// <summary>
         /// Function which enables a peek of the current gamestate
         /// </summary>
@@ -87,6 +82,7 @@ namespace GameEngine.Source.Managers
         {
             return stack.Peek();
         }
+
         /// <summary>
         /// Method for running the current GameStates update logic, in order to 
         /// run logic that might be nessecary for the gamestate to check condition
@@ -94,12 +90,11 @@ namespace GameEngine.Source.Managers
         /// </summary>
         public void UpdateGameState()
         {
-            if(stack.Count != 0)
+            if (stack.Count != 0)
             {
                 GameState currGameState = Peek();
                 currGameState.Update();
             }
-            
         }
     }
 }

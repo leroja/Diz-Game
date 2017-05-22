@@ -24,8 +24,8 @@ namespace GameEngine.Source.Factories
             else
                 flare.Flares = flares;
 
-            if(lightDirection != new Vector3())
-            flare.LightDirection = lightDirection;
+            if (lightDirection != new Vector3())
+                flare.LightDirection = lightDirection;
 
             flare.OcclusionQuery = new OcclusionQuery(device);
             flare.GlowSprite = Content.Load<Texture2D>(glowSpritePath);

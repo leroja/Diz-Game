@@ -17,7 +17,7 @@ namespace GameEngine.Source.Systems
     /// <summary>
     /// PhysicSystem which handles all the physic
     /// </summary>
-    public class PhysicsSystem : IUpdate, IPhysics, IObserver<Tuple<object, object>>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<Tuple<int, int>>
     {
         /// <summary>
         /// List which is then looped over and updates the systems
@@ -71,7 +71,7 @@ namespace GameEngine.Source.Systems
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
                 physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
             }
-            CheckCollision(dt);
+            //CheckCollision(dt);
         }
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity
@@ -270,24 +270,20 @@ namespace GameEngine.Source.Systems
                 {
                     Vector3 dir = target.Velocity;
                     dir.Normalize();
-                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
-                    target.Velocity = Vector3.Zero;
-
-                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position = 
-                    //    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).PreviousPosition;
-                    // TODO: Fixa collisionen
-                }
-                else if (target.PhysicsType == PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
-                {
-                    Vector3 dir = hit.Velocity;
-                    dir.Normalize();
-                    ComponentManager.GetEntityComponent<TransformComponent>(hit.ID).Position += (-dir * 2) * hit.Velocity * dt;
-                    hit.Velocity = Vector3.Zero;
+                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
+                                        //target.Velocity = Vector3.Zero;
+                    target.Velocity *= -dir * new Vector3(1, 0, 1);
+                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position *= target.Velocity * dt;
+                                        //Console.WriteLine(ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position);
+                    
+                                        //Console.WriteLine(target.Velocity);
+                     // TODO: Fixa collisionen
                 }
             }
         }
         private void CheckCollision(float dt)
         {
+            List<int> done = new List<int>();
             foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
             {
                 ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
@@ -302,10 +298,11 @@ namespace GameEngine.Source.Systems
                     if (model2.BoundingVolume == null)
                         continue;
 
-                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding))
+                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
                         UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
 
-}
+                }
+                done.Add(entityIDUno);
             }
         }
         private bool IsPointInsideAABB(TransformComponent transform, BoundingBox box)
@@ -326,10 +323,9 @@ namespace GameEngine.Source.Systems
         /// on collision (retrieves data from collision system)
         /// </summary>
         /// <param name="value"></param>
-        public void OnNext(List<Tuple<IBounding3D, IBounding3D>> value)
+        public void OnNext(Tuple<int, int> value)
         {
-            foreach (var val in value)
-                UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item1.CompID), ComponentManager.GetEntityComponent<PhysicsComponent>(val.Item2.CompID));
+            UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>(value.Item2));
         }
         /// <summary>
         /// Does nothing atm
@@ -345,11 +341,6 @@ namespace GameEngine.Source.Systems
         public void OnCompleted()
         {
             //TODO: OnCompleted
-        }
-
-        public void OnNext(Tuple<object, object> value)
-        {
-            throw new NotImplementedException();
         }
     }
 }

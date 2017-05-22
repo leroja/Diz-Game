@@ -1,9 +1,5 @@
 ﻿using GameEngine.Source.Systems;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
@@ -19,7 +15,7 @@ namespace DizGame.Source.Systems
     public class PlayerSystem : IUpdate
     {
         private EntityFactory entFactory;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,16 +49,15 @@ namespace DizGame.Source.Systems
                     else
                         AudioManager.Instance.GlobalMute();
                 }
-                
+
                 var m = UpdateInput(mouseComp);
 
-                transformComp.Rotation += new Vector3(0, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+                transformComp.Rotation += new Vector3(m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation = WrapAngle(transformComp.Rotation);
 
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % 2 == 0 && worldComp.Day != 0)
+                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position, new Vector3(.1f, .1f, .1f), 100, 200, transformComp.Rotation, 10);
+                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation, 10);
                     AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }
@@ -72,18 +67,23 @@ namespace DizGame.Source.Systems
         /// Calculates the mouse delta movement And sets the mouse to be in the middle of the screen
         /// </summary>
         /// <param name="mouseComp"></param>
+        /// <returns>  </returns>
         private Vector2 UpdateInput(MouseComponent mouseComp)
         {
-            Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
+            if (GameOne.Instance.Window != null)
+            {
+                Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
 
-            int centerX = clientBounds.Width / 2;
-            int centerY = clientBounds.Height / 2;
-            float deltaX = centerX - mouseComp.X;
-            float deltaY = centerY - mouseComp.Y;
+                int centerX = clientBounds.Width / 2;
+                int centerY = clientBounds.Height / 2;
+                float deltaX = centerX - mouseComp.X;
+                float deltaY = centerY - mouseComp.Y;
 
-            Mouse.SetPosition(centerX, centerY);
+                Mouse.SetPosition(centerX, centerY);
 
-            return new Vector2(deltaX, deltaY);
+                return new Vector2(deltaX, deltaY);
+            }
+            return Vector2.Zero;
         }
 
         /// <summary>
@@ -100,6 +100,15 @@ namespace DizGame.Source.Systems
             while (rotation.Y > MathHelper.Pi)
             {
                 rotation.Y -= MathHelper.TwoPi;
+            }
+
+            while (rotation.X < -MathHelper.PiOver4 * 0.5f)
+            {
+                rotation.X += MathHelper.PiOver4 * 0.01f;
+            }
+            while (rotation.X > MathHelper.PiOver4 * 0.5f)
+            {
+                rotation.X -= MathHelper.PiOver4 * 0.01f;
             }
             return rotation;
         }

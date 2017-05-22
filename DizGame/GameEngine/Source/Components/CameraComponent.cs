@@ -1,11 +1,6 @@
 ﻿using AnimationContentClasses;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -41,7 +36,7 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Default personal view offset Vector3(0,2,0)
         /// </summary>
-        public readonly static Vector3 DEFAULT_POV = new Vector3(0, 2, 0);
+        public readonly static Vector3 DEFAULT_POV = new Vector3(0, 7, 0);
         /// <summary>
         /// Default static cam offset Vector3(0,0,0)
         /// </summary>
@@ -94,6 +89,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public bool IsFlareable { get; set; }
         #endregion Public Propterties
+
         /// <summary>
         /// Basic constructor which sets default values
         /// to the attributes

@@ -1,5 +1,4 @@
-﻿using GameEngine.Source.Components;
-using GameEngine.Source.Enums;
+﻿using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
 
 namespace GameEngine.Source.Components
@@ -20,7 +19,9 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Acceleration in meter per second squared (m/s^2)
         /// </summary>
-        public Vector3 Acceleration { get; set; }
+        public Vector3 Acceleration {
+            get;
+            set; }
         /// <summary>
         /// Used to calculate an higher accuracy of velocity,
         /// position using Euler method.
@@ -96,6 +97,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public bool IsMoving { get; set; }
         #endregion Public Configuration
+
         /// <summary>
         /// Basic constructor which sets all the attributes to default values.
         /// </summary>
@@ -115,9 +117,9 @@ namespace GameEngine.Source.Components
             IsMoving = false;
 
             Acceleration = Vector3.Zero;
-            MaxVelocity = new Vector3(14,14,14);
+            MaxVelocity = new Vector3(14, 14, 14);
             LastAcceleration = Vector3.Zero;
-            Velocity = Vector3.Zero;
+            Velocity = Vector3.One;
 
             Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
 

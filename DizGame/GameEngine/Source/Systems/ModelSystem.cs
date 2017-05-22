@@ -37,6 +37,7 @@ namespace GameEngine.Source.Systems
                 DrawModel(entityID);
             }
         }
+
         /// <summary>
         /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo
         /// applies properties to the effects and then draw the parts.
@@ -44,7 +45,6 @@ namespace GameEngine.Source.Systems
         /// <param name="entityID"></param>
         private void DrawModel(int entityID)
         {
-
             ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
             if (model.IsVisible)
             {
@@ -52,6 +52,7 @@ namespace GameEngine.Source.Systems
 
                 if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(entityID))
                 {
+                    // todo
                     //if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
                     {
                         if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
@@ -83,9 +84,13 @@ namespace GameEngine.Source.Systems
                     DrawAnimation(entityID, model);
                 }
             }
-            
         }
 
+        /// <summary>
+        /// Draws a model with an animation
+        /// </summary>
+        /// <param name="entityID">  </param>
+        /// <param name="model">  </param>
         private void DrawAnimation(int entityID, ModelComponent model)
         {
             AnimationComponent anm = ComponentManager.GetEntityComponent<AnimationComponent>(entityID);
@@ -111,12 +116,8 @@ namespace GameEngine.Source.Systems
                         mesh.Draw();
                     }
                 }
-
-
             }
         }
-
-        
     }
 }
  

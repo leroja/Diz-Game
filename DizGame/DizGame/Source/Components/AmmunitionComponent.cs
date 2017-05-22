@@ -1,11 +1,7 @@
 ﻿using DizGame.Source.Enums;
 using GameEngine.Source.Components;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.Components
 {
@@ -34,7 +30,7 @@ namespace DizGame.Source.Components
         public AmmunitionComponent()
         {
             Magazines = new Dictionary<AmmunitionType, List<Tuple<int, int>>>();
-            ActiveMagazine = new Tuple<AmmunitionType, int, int>(AmmunitionType.None,0, 0);
+            ActiveMagazine = new Tuple<AmmunitionType, int, int>(AmmunitionType.None, 0, 0);
             AmmountOfActiveMagazines = 0;
         }
     }

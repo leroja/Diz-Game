@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace GameEngine.Source.Components
 {
@@ -12,7 +7,6 @@ namespace GameEngine.Source.Components
     /// </summary>
     public class TransformComponent : IComponent
     {
-
         /// <summary>
         /// Vector3 representing the position for an object
         /// </summary>
@@ -35,10 +29,6 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Quaternion Orientation { get; set; }
         /// <summary>
-        /// Vector3 which represents the dirrection of an object
-        /// </summary>
-        public Vector3 Dirrection { get; set; }
-        /// <summary>
         /// Vector3 which represents the forward motion of an object
         /// </summary>
         public Vector3 Forward { get; set; }
@@ -55,13 +45,14 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 Scale { get; set; }
         /// <summary>
+        /// Matrix which is the ModelMatrix for an object
+        /// </summary>
+        public Matrix ModelMatrix { get; set; }
+        /// <summary>
         /// Matrix which is the ObjectMatrix for an object
         /// </summary>
         public Matrix ObjectMatrix { get; set; }
-        /// <summary>
-        /// Matrix for describing a rotation of an object.
-        /// </summary>
-        public Matrix RotationMatrix { get; set; }
+
         /// <summary>
         /// Basic Constructor for a TransformComponent
         /// </summary>
@@ -73,25 +64,9 @@ namespace GameEngine.Source.Components
             this.Position = position;
             this.PreviousPosition = position;
             this.Scale = scale;
-            Dirrection = Vector3.Zero;
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;
-            this.RotationMatrix = Matrix.Identity;
-        }
-        /// <summary>
-        /// Alternative Constructor for a TransformComponent
-        /// </summary>
-        /// <param name="position">A Vector3 that should represent the position of an object</param>
-        /// <param name="scale">The scaling of the object which should be represented by a Vector3</param>
-        /// <param name="rotationMatrix">A matrix that should describe the desired rotation for the object</param>
-        public TransformComponent(Vector3 position, Vector3 scale, Matrix rotationMatrix)
-        {
-            this.Position = position;
-            this.PreviousPosition = position;
-            this.Scale = scale;
-            this.QuaternionRotation = Quaternion.Identity;
-            this.Orientation = Quaternion.Identity;
-            this.RotationMatrix = rotationMatrix;
+            this.ModelMatrix = Matrix.Identity;
         }
     }
 }

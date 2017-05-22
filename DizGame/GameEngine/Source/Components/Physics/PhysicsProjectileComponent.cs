@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
-{    
+{
     /// <summary>
-     /// ProjectileComponent used in the physicSystem
-     /// </summary>
+    /// ProjectileComponent used in the physicSystem
+    /// </summary>
     public class PhysicsProjectileComponent : IComponent
     {
         #region Public Configuration
@@ -21,6 +21,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float DampingCoefficient { get; set; }
         #endregion Public Configuration
+
         /// <summary>
         /// Basic constructor which sets default values
         /// to the attributes

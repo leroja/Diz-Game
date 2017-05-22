@@ -1,11 +1,6 @@
 ﻿using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -18,23 +13,53 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// How big is the circular glow effect
         /// </summary>
-        public const float GlowSize = 400;
+        public const float DEFAULT_GLOWSIZE = 300f;
         /// <summary>
         /// How big a rectangle should we examine when issuing our occlusion queries?
         /// Increasing this makes the flares fade out more gradually when the sun goes
         /// behind scenery, while smaller query areas cause sudden on/off transitions.
         /// </summary>
-        public const float QuerySize = 100;
+        public const float DEFAULT_QUERYSIZE = 100f;
         #endregion
+        #region Private attribute
+        private float _querySize;
+        #endregion Private attribute
         #region Fields
+        /// <summary>
+        /// Size of thte rectangle checking the occulusion.
+        /// Default value is 100f;
+        /// </summary>
+        public float QuerySize
+        {
+            get { return _querySize; }
+            set
+            {
+                _querySize = value;
+                SetupDefaultQueryVertices();
+            }
+        }
+        /// <summary>
+        /// Size of the glow effect
+        /// Default value is 300f
+        /// </summary>
+        public float GlowSize { get; set; }
         /// <summary>
         /// Lights direction
         /// </summary>
         public Vector3 LightDirection { get; set; }
         /// <summary>
+        /// Is used to reset the light
+        /// </summary>
+        public Vector3 StartLightDirection { get; set; }
+        /// <summary>
         /// Lights position
         /// </summary>
         public Vector2 LightPosition { get; set; }
+        /// <summary>
+        /// Used if position should be move during game.
+        /// Should be used for Multiplication eg. Vector3.One is Default.
+        /// </summary>
+        public Vector3 LightDirectionOffset { get; set; }
         /// <summary>
         /// Light behindcamera
         /// </summary>
@@ -75,14 +100,19 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Flare[] Flares { get; set; }
         #endregion
+
         /// <summary>
         /// Basic constructor which sets parameters to default values.
         /// </summary>
         public FlareComponent()
         {
             LightDirection = Vector3.Normalize(new Vector3(-1, -0.1f, 0.3f));
-            SetupDefaultQueryVertices();
+            StartLightDirection = Vector3.Normalize(new Vector3(-1, -0.1f, 0.3f));
+            LightDirectionOffset = Vector3.One;
+            GlowSize = DEFAULT_GLOWSIZE;
+            QuerySize = DEFAULT_QUERYSIZE;
         }
+
         /// <summary>
         /// Constructor which takes in lightDirection to set it's direction
         /// </summary>
@@ -90,7 +120,10 @@ namespace GameEngine.Source.Components
         public FlareComponent(Vector3 lightDirection)
         {
             LightDirection = lightDirection;
-            SetupDefaultQueryVertices();
+            StartLightDirection = lightDirection;
+            LightDirectionOffset = Vector3.One;
+            GlowSize = DEFAULT_GLOWSIZE;
+            QuerySize = DEFAULT_QUERYSIZE;
         }
 
         private void SetupDefaultQueryVertices()

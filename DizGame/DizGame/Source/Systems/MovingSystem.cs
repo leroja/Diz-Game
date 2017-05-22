@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
@@ -26,37 +24,63 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
-
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in EntityDict)
             {
                 KeyBoardComponent key = ComponentManager.GetEntityComponent<KeyBoardComponent>(entity.Key);
                 TransformComponent trans = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
                 PhysicsComponent phys = ComponentManager.GetEntityComponent<PhysicsComponent>(entity.Key);
+                var animComp = ComponentManager.GetEntityComponent<AnimationComponent>(entity.Key);
                 Vector3 move = Vector3.Zero;
+                float gravity = 0;
+
+                switch(phys.GravityType)
+                {
+                    case GravityType.Self:
+                        gravity = phys.Gravity;
+                        break;
+                    case GravityType.World:
+                        List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+                        WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
+                        gravity = world.Gravity.Y;
+                        break;
+                    default:
+                        break;
+                }
+                
                 if (!phys.IsInAir)
                 {
                     if (key.GetState("Forward") == ButtonStates.Hold)
                     {
                         move += trans.Forward * 20;
+                        animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
                     }
                     if (key.GetState("Backwards") == ButtonStates.Hold)
                     {
                         move += -trans.Forward * 20;
+                        animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
                     }
                     if (key.GetState("Left") == ButtonStates.Hold)
                     {
-                            move += -trans.Right * 20;
+                        move += -trans.Right * 20;
+                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
                     }
                     if (key.GetState("Right") == ButtonStates.Hold)
                     {
-                            move += trans.Right * 20;
+                        move += trans.Right * 20;
+                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
                     }
                     if (key.GetState("Up") == ButtonStates.Hold)
                     {
                         if (!phys.IsInAir)
                         {
+                            //move = phys.Velocity;
                             phys.IsInAir = true;
-                            move += trans.Up * 8.91f * 20;
+                            //phys.Velocity += trans.Up ;
+                            if(phys.Velocity.X == 0 && phys.Velocity.Z == 0)
+                                phys.Velocity += trans.Up * -gravity * 7;
+                            else
+                            phys.Velocity = new Vector3(phys.Velocity.X, -gravity * 7, phys.Velocity.Z);
                         }
                     }
                 }
@@ -64,6 +88,7 @@ namespace DizGame.Source.Systems
                 {
                     float he = GetHeight(trans.Position);
 
+                    if(!phys.IsInAir)
                     phys.Velocity = move;
                     //phys.Acceleration = CheckMaxVelocityAndGetVector(phys, move);
 
@@ -81,7 +106,6 @@ namespace DizGame.Source.Systems
                         trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                         phys.Acceleration = Vector3.Zero;
                         phys.Velocity = new Vector3(phys.Velocity.X, 0, phys.Velocity.Z);
-
                     }
                 }
                 else
@@ -127,7 +151,7 @@ namespace DizGame.Source.Systems
                 float zCoord = (position.Z % gridSquareSize) / gridSquareSize;
                 float answer = 0;
 
-                if(xCoord <= (1 - zCoord))
+                if (xCoord <= (1 - zCoord))
                 {
                     answer = BarryCentric(
                         new Vector3(0, hmap.HeightMapData[gridX, gridZ], 0),
@@ -141,7 +165,7 @@ namespace DizGame.Source.Systems
                         new Vector3(1, hmap.HeightMapData[gridX + 1, gridZ], 0),
                         new Vector3(1, hmap.HeightMapData[gridX + 1, gridZ + 1], 1),
                         new Vector3(0, hmap.HeightMapData[gridX, gridZ + 1], 1),
-                        new Vector2(xCoord,zCoord));
+                        new Vector2(xCoord, zCoord));
                 }
                 return answer;
             }

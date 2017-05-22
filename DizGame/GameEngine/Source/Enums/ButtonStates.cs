@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameEngine.Source.Enums
+﻿namespace GameEngine.Source.Enums
 {
     /// <summary>
     /// An enum for the states of keyboard keys
     /// </summary>
     public enum ButtonStates
-    {   
+    {
         /// <summary>
         /// For holdning down a Key
         /// </summary>

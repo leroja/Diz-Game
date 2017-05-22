@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Components;
 using AnimationContentClasses;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GameEngine.Source.Systems
 {
@@ -26,13 +24,17 @@ namespace GameEngine.Source.Systems
             this.device = device;
         }
 
+        // Todo:
         /// <summary>
-        /// Methos for drawing the heightmaps
+        /// Method for drawing the heightmap
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
             var ents = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+
+            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
+            WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
 
             var cameraIds = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             var cameraComp = ComponentManager.GetEntityComponent<CameraComponent>(cameraIds[0]);
@@ -50,6 +52,16 @@ namespace GameEngine.Source.Systems
                         chunk.Effect.View = cameraComp.View;
                         chunk.Effect.World = transformComp.ObjectMatrix * Matrix.CreateTranslation(chunk.OffsetPosition);
 
+                        if (world != null && world.IsSunActive)
+                        {
+                            FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
+                            chunk.Effect.LightingEnabled = true;
+                            chunk.Effect.DiffuseColor = new Vector3(1f);
+                            chunk.Effect.AmbientLightColor = new Vector3(0.5f);
+                            chunk.Effect.DirectionalLight0.Enabled = true;
+                            chunk.Effect.DirectionalLight0.DiffuseColor = Vector3.One;
+                            chunk.Effect.DirectionalLight0.Direction = flare.LightDirection;
+                        }
 
                         BoundingBox3D box = new BoundingBox3D(ConvertBoundingBoxToWorldCoords(chunk.BoundingBox, chunk.Effect.World));
 
@@ -69,6 +81,7 @@ namespace GameEngine.Source.Systems
             }
         }
         
+        // todo borde bara behöva göra en gång
         /// <summary>
         /// Recalculates/moves the boudning box to its correct placemnet in the world
         /// </summary>

@@ -3,20 +3,17 @@ using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.Components
 {
-    // todo använd fysiken för rörelse
+    // todo använd fysiken för rörelse i de olika beteenderna
+    // todo gör så at AI:n inte kan hamna utanför bounds
     /// <summary>
     /// A component for the AI:s
     /// </summary>
     public class AIComponent : IComponent
     {
         private Dictionary<string, AiBehavior> AiBehaviors;
-
 
         /// <summary>
         /// The current Behavior/state of the AI Entity
@@ -33,7 +30,7 @@ namespace DizGame.Source.Components
         /// <summary>
         /// A value in seconds for how long the AI will stick to its choosen direction
         /// </summary>
-        public float DirectionDuration { get; set; }     
+        public float DirectionDuration { get; set; }
         /// <summary>
         /// In what range the new rotaion can be. eg. -PI --- +PI
         /// </summary>
@@ -45,7 +42,7 @@ namespace DizGame.Source.Components
         /// <summary>
         /// How often the AI will update its rotation based on the closest enemy in seconds
         /// </summary>
-        public float UpdateFrequency { get; set; }      
+        public float UpdateFrequency { get; set; }
         /// <summary>
         /// The delay between the shoots for when the AI is shooting
         /// Ideally somewhere between 0 and 1 second
@@ -102,7 +99,7 @@ namespace DizGame.Source.Components
                 this.CurrentBehaivior = AiBehaviors["Patroll"];
             }
         }
-        
+
         /// <summary>
         /// Checks if an AI has an behavior
         /// </summary>

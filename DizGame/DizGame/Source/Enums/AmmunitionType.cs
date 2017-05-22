@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace DizGame.Source.Enums
 {
     /// <summary>
@@ -44,6 +39,7 @@ namespace DizGame.Source.Enums
         /// </summary>
         RPG,
     }
+
     /// <summary>
     /// Static class for magazine
     /// </summary>
@@ -57,7 +53,7 @@ namespace DizGame.Source.Enums
         /// <returns></returns>
         public static int GetSize(AmmunitionType ammo)
         {
-            switch(ammo)
+            switch (ammo)
             {
                 case AmmunitionType.AK_47:
                     return 30;

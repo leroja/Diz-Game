@@ -1,13 +1,6 @@
 ﻿using AnimationContentClasses;
-using GameEngine.Source.Enums;
-using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -57,26 +50,21 @@ namespace GameEngine.Source.Components
         //public Effect AnimationEffect { get; set; }
         //AnimatedModelEffect AnimatedModelEffect {get; set;}
         #endregion
-        
+
         /// <summary>
         /// Basic constructor for the AnimationComponent class
         /// </summary>
         /// <param name="tag">Takes the tag which is stored within a model loaded with a content extension, this tag should contain all the relevant information for constructing the animations for a model</param>
         public AnimationComponent(object tag)
         {
-
             SkinningDataValue = tag as SkinningData;
-
 
             if (SkinningDataValue == null)
                 throw new InvalidOperationException("This model does not contain a SkinningData tag.");
 
-
-
             BoneTransforms = new Matrix[SkinningDataValue.BindPose.Count];
             WorldTransforms = new Matrix[SkinningDataValue.BindPose.Count];
             SkinTransforms = new Matrix[SkinningDataValue.BindPose.Count];
-
         }
 
         /// <summary>
@@ -86,9 +74,9 @@ namespace GameEngine.Source.Components
         {
             if (clipName == null)
                 throw new ArgumentNullException("clipname is missing");
-            
+
             CurrentClipValue = (SkinningDataValue.AnimationClips[clipName]);
-            
+
             CurrentTimeValue = TimeSpan.Zero;
             CurrentKeyframe = 0;
 

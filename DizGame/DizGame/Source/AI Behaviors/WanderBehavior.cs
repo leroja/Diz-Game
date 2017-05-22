@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
@@ -45,9 +42,10 @@ namespace DizGame.Source.AI_Behaviors
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
-            
+            var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
+
             currentTimeForDir += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
+
             if (currentTimeForDir > AIComp.DirectionDuration)
             {
                 desiredRotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
@@ -55,13 +53,13 @@ namespace DizGame.Source.AI_Behaviors
                 currentTimeForDir = 0f;
             }
             var rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
-            
+
             transformComp.Rotation = rotation;
 
             var height = GetCurrentHeight(transformComp.Position);
-            
+
             var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
-            
+
             if (t.X >= AIComp.Bounds.Height)
             {
                 t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -87,10 +85,11 @@ namespace DizGame.Source.AI_Behaviors
                 t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             transformComp.Position = t;
+            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
 
             BehaviorStuff(AIComp, transformComp);
         }
-        
+
         /// <summary>
         /// Check whether the AI chould change behavior
         /// If it should then the method changes the behavior
@@ -102,14 +101,24 @@ namespace DizGame.Source.AI_Behaviors
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % 2 == 0 && worldComp.Day != 0)))
+            if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)))
             {
                 AIComp.ChangeBehavior("Evade", transcomp.Rotation);
             }
-            else if (worldComp.Day % 2 == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
+            else if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance - AIComp.Hysteria)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
+        }
+
+        /// <summary>
+        /// Override of object.ToString
+        /// Returns the name of the behavior
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "Wander";
         }
     }
 }

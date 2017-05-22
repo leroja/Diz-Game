@@ -13,12 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin HeightMaps/grass.png
-/copy:HeightMaps/grass.png
-
-#begin HeightMaps/heightmap.png
-/copy:HeightMaps/heightmap.png
-
 #begin Fonts/font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

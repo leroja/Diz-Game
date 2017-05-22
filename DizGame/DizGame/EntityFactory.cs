@@ -1,12 +1,10 @@
-﻿
+﻿using AnimationContentClasses;
 using DizGame.Source.Components;
-using DizGame.Source.Enums;
 using DizGame.Source.Factories;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
-using GameEngine.Source.Systems;
 using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -15,10 +13,6 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static DizGame.Source.Components.ResourceComponent;
-using AnimationContentClasses;
 
 namespace DizGame
 {
@@ -60,17 +54,17 @@ namespace DizGame
                 return instance;
             }
         }
+
         /// <summary>
         /// Private constructor of the entityfactory
         /// </summary>
         private EntityFactory()
         {
             VisibleBullets = true;
-            
+
             CreateWorldComp();
             this.Content = GameOne.Instance.Content;
-            //Content.Load<Model>("MapObjects/Farmhouse/medievalHouse1");
-            Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House");
+
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
@@ -90,12 +84,14 @@ namespace DizGame
                 {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
                 { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
                 {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
+                {"CrossHair", Content.Load<Texture2D>("Icons/crosshairTrans") },
             };
 
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
             ResourceFactory = new ResourceFactory(ModelDic, VisibleBullets);
         }
+
         /// <summary>
         /// Creates the World Component
         /// </summary>
@@ -106,13 +102,37 @@ namespace DizGame
                 new WorldComponent(Matrix.Identity)
                 {
                     IsSunActive = true,
-                    DefineHour = 2,
-                    
+                    DefineHour = 1,
+                    Day = 0,
+                    Hour = 16,
+                    ModulusValue = 2,
                 },
             };
             FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
         }
+
+        // todo gör så att mitten av croshair är på position itället för ena hörnet som det nu
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"> Position of the crosshair on the screen </param>
+        /// <returns></returns>
+        public int PlaceCrossHair(Vector2 position)
+        {
+            var Id = ComponentManager.Instance.CreateID();
+
+            var textureComp = new Texture2DComponent(Texture2dDic["CrossHair"])
+            {
+                Position = position,
+                Scale = new Vector2(0.1f, 0.1f),
+            };
+
+            ComponentManager.Instance.AddComponentToEntity(Id, textureComp);
+
+            return Id;
+        }
+
         /// <summary>
         /// Function to add the entity which might be the model for the different players
         /// </summary>
@@ -129,7 +149,7 @@ namespace DizGame
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
             keys.AddActionAndKey("Mute", Keys.M);
-           
+
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
@@ -154,11 +174,11 @@ namespace DizGame
             };
 
             ComponentManager.Instance.AddAllComponents(entityID, components);
-            
+
             TestingTheAnimationsWithDude(entityID);
             return entityID;
         }
-        
+
         /// <summary>
         /// Creates a house of given model
         /// </summary>
@@ -169,8 +189,8 @@ namespace DizGame
         {
             Vector3 scale = new Vector3();
             Model house = ModelDic[nameOfModel];
-            
-            if(nameOfModel == "House_Wood")
+
+            if (nameOfModel == "House_Wood")
             {
                 scale = new Vector3(0.04f, 0.04f, 0.04f);
             }
@@ -212,7 +232,7 @@ namespace DizGame
             return entityID;
 
         }
-        
+
         /// <summary>
         /// creates the static objects
         /// </summary>
@@ -221,15 +241,17 @@ namespace DizGame
         public int CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
+            Vector3 middlePoint = Vector3.UnitY;
             Model model = ModelDic[nameOfModel];
-
             switch (nameOfModel)
             {
                 case "Rock":
                     scale = new Vector3(5, 5, 5);
+                    middlePoint *= 2;
+
                     foreach (ModelMesh mesh in model.Meshes)
                     {
-                        foreach( BasicEffect effect in mesh.Effects)
+                        foreach (BasicEffect effect in mesh.Effects)
                         {
                             effect.TextureEnabled = true;
                             effect.Texture = Texture2dDic["RockTexture"];
@@ -239,7 +261,7 @@ namespace DizGame
                             effect.FogEnd = 400;
                         }
                     }
-                    
+
                     break;
                 case "Tree":
                     foreach (ModelMesh mesh in model.Meshes)
@@ -251,6 +273,7 @@ namespace DizGame
                             effect.FogColor = Color.LightGray.ToVector3();
                             effect.FogStart = 10;
                             effect.FogEnd = 400;
+                            //effect.EnableDefaultLighting();
                         }
                     }
                     scale = new Vector3(5, 5, 5);
@@ -274,13 +297,39 @@ namespace DizGame
             };
             List<IComponent> components = new List<IComponent>
             {
-            new TransformComponent(position, scale),
+                new TransformComponent(position, scale),
                 comp,
                 phy
             };
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
             return entityID;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private BoundingBox GetStaticModelBox(Model model, float scale)
+        {
+            List<Vector3> positions = new List<Vector3>();
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    Vector3[] vertices = new Vector3[part.VertexBuffer.VertexCount];
+                    part.VertexBuffer.GetData(vertices);
+                    //foreach(VertexPositionNormalTexture vertice in vertices)
+                    //{
+                    //    positions.Add(vertice.Position);
+                    //}
+                    positions.AddRange(vertices);
+                }
+            }
+            BoundingBox box = BoundingBox.CreateFromPoints(positions);
+            box.Min *= scale;
+            box.Max *= scale;
+            return box;
         }
 
         private void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
@@ -345,14 +394,15 @@ namespace DizGame
             }
             return entityIdList;
         }
+
         /// <summary>
         /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
         /// </summary>
-         public void SpawnProtection()
+        public void SpawnProtection()
         {
             List<int> spawnPositions = new List<int>();
             List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            
+
             spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
             spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
             foreach (var id in spawnPositions)
@@ -367,7 +417,7 @@ namespace DizGame
                 {
                     ModelComponent mod = ComponentManager.Instance.GetEntityComponent<ModelComponent>(model);
                     TransformComponent Comp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(model);
-                    if (Comp != null && mod.IsStatic == true )
+                    if (Comp != null && mod.IsStatic == true)
                     {
                         if ((Comp.Position.X >= minX && Comp.Position.X <= maxX) && (Comp.Position.Z <= minZ && Comp.Position.Z >= maxZ))
                         {
@@ -377,6 +427,7 @@ namespace DizGame
                 }
             }
         }
+
         /// <summary>
         /// Creates a parrical emmiter and sets positions and options
         /// </summary>
@@ -388,13 +439,13 @@ namespace DizGame
         /// <param name="direction">Direction of particles</param>
         /// <param name="scale">Scale on Particle</param>
         /// <param name="EmitterLifeTime">Life time on emitter</param>
-        public void CreateParticleEmiter(Vector3 Position,String TextureName,int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale,int EmitterLifeTime)
+        public void CreateParticleEmiter(Vector3 Position, String TextureName, int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale, int EmitterLifeTime)
         {
             TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
             ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction)
             {
                 EmiterLife = EmitterLifeTime,
-                effect = Content.Load<Effect>("Effects/ParticleEffect"),
+                Effect = Content.Load<Effect>("Effects/ParticleEffect"),
             };
             int id = ComponentManager.Instance.CreateID();
             GenerateParticle(emiter);
@@ -402,37 +453,39 @@ namespace DizGame
             ComponentManager.Instance.AddComponentToEntity(id, tran);
             ComponentManager.Instance.AddComponentToEntity(id, emiter);
         }
+
         /// <summary>
-        /// Called for instancning vectore to store particles in
+        /// Called for instancning a vector to store the particles in
         /// </summary>
         /// <param name="emiter"> ParticleEmitterComponent</param>
         public void GenerateParticle(ParticleEmiterComponent emiter)
         {
-            emiter.particle = new ParticleVertex[emiter.nParticles * 4];
-            emiter.indices = new int[emiter.nParticles * 6];
+            emiter.Particles = new ParticleVertex[emiter.NumberOfParticles * 4];
+            emiter.Indices = new int[emiter.NumberOfParticles * 6];
 
             var z = Vector3.Zero;
             var pos = new Vector3(10, 10, 10);
             int x = 0;
-            for (int i = 0; i < emiter.nParticles * 4; i += 4)
+            for (int i = 0; i < emiter.NumberOfParticles * 4; i += 4)
             {
-                emiter.particle[i + 0] = new ParticleVertex(pos, new Vector2(0, 0),
+                emiter.Particles[i + 0] = new ParticleVertex(pos, new Vector2(0, 0),
                 pos, 0, -1);
-                emiter.particle[i + 1] = new ParticleVertex(pos, new Vector2(0, 1),
+                emiter.Particles[i + 1] = new ParticleVertex(pos, new Vector2(0, 1),
                 pos, 0, -1);
-                emiter.particle[i + 2] = new ParticleVertex(pos, new Vector2(1, 1),
+                emiter.Particles[i + 2] = new ParticleVertex(pos, new Vector2(1, 1),
                 pos, 0, -1);
-                emiter.particle[i + 3] = new ParticleVertex(pos, new Vector2(1, 0),
+                emiter.Particles[i + 3] = new ParticleVertex(pos, new Vector2(1, 0),
                 pos, 0, -1);
 
-                emiter.indices[x++] = i + 0;
-                emiter.indices[x++] = i + 3;
-                emiter.indices[x++] = i + 2;
-                emiter.indices[x++] = i + 2;
-                emiter.indices[x++] = i + 1;
-                emiter.indices[x++] = i + 0;
+                emiter.Indices[x++] = i + 0;
+                emiter.Indices[x++] = i + 3;
+                emiter.Indices[x++] = i + 2;
+                emiter.Indices[x++] = i + 2;
+                emiter.Indices[x++] = i + 1;
+                emiter.Indices[x++] = i + 0;
             }
         }
+
         /// <summary>
         /// Gets target number of potitions on heightmap
         /// </summary>
@@ -453,9 +506,9 @@ namespace DizGame
             mapHeight = heigt.Height;
             for (int i = 0; i < numberOfPositions; i++)
             {
-                var pot = new Vector3(r.Next(mapWidht-20), 0,r.Next(mapHeight-20));
+                var pot = new Vector3(r.Next(mapWidht - 20), 0, r.Next(mapHeight - 20));
 
-                pot.Y = heigt.HeightMapData[(int)pot.X,(int)pot.Z];
+                pot.Y = heigt.HeightMapData[(int)pot.X, (int)pot.Z];
                 if (pot.X < 10)
                 {
                     pot.X = pot.X + 10;
@@ -488,7 +541,7 @@ namespace DizGame
                 }
             });
         }
-        
+
         /// <summary>
         /// Removes the current camera
         /// </summary>
@@ -499,7 +552,6 @@ namespace DizGame
         }
 
 
-        // todo, funkar inte
         /// <summary>
         /// Adds a POV camera to an entity
         /// </summary>
@@ -509,7 +561,6 @@ namespace DizGame
         {
             ComponentManager.Instance.AddComponentToEntity(entityID, new CameraComponent(CameraType.Pov)
             {
-                Offset = new Vector3(0, 10, 30),
                 IsFlareable = isFlareable
             });
         }
@@ -554,11 +605,14 @@ namespace DizGame
                 {
                     Rotation = rotation,
                 },
+
                 new  ModelComponent(model){
+                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY, 1))),
+                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(GetModelSphere(model, scale.X))),
                     IsVisible = VisibleBullets,
                     BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(sphere))
                 },
-                
+
                 new BulletComponent(){
                     StartPos = pos,
                     MaxRange = MaxRange,
@@ -575,15 +629,16 @@ namespace DizGame
                     GravityType = GravityType.World,
                     ReferenceArea = (float)Math.PI * (float)Math.Pow((double)3.5, 2),
                     PhysicsType = PhysicsType.Projectiles,
-                    
-                    Velocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity * 100,
-                }, 
+
+                    Velocity = Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z).Forward * initialVelocity,
+                },
             };
 
             ComponentManager.Instance.AddAllComponents(BulletEntity, componentList);
 
             return BulletEntity;
         }
+
         /// <summary>
         /// A temporary class responsible for adding a 
         /// </summary>
@@ -592,7 +647,7 @@ namespace DizGame
         {
             TransformComponent tcp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityID);
             ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
-            
+
             AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
 
             ComponentManager.Instance.AddComponentToEntity(entityID, anm);
@@ -610,7 +665,7 @@ namespace DizGame
             mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(b));
 
         }
-        
+
         /// <summary>
         /// Creates an Height based on the specified heightMap
         /// </summary>
@@ -686,7 +741,7 @@ namespace DizGame
             };
 
             ComponentManager.Instance.AddAllComponents(AIEntityID, components);
-            
+
             TestingTheAnimationsWithDude(AIEntityID);
 
             return AIEntityID;

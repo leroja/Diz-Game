@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -73,6 +68,7 @@ namespace GameEngine.Source.Components
         /// Tectures rotation origin.
         /// </summary>
         public Vector2 Origin { get; set; }
+
         /// <summary>
         /// Construtor that takes in all parameters
         /// </summary>
@@ -104,6 +100,7 @@ namespace GameEngine.Source.Components
             CurrentFrame = 0;
             ElapsedTime = 0;
         }
+
         /// <summary>
         /// Constructor which takes only Texture2D as parameter
         /// and set the rest to default values.
