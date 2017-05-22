@@ -13,12 +13,14 @@ using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
+    
     //TODO: Fixa så alla siffror är korrekta efter metric.
     /// <summary>
     /// PhysicSystem which handles all the physic
     /// </summary>
-    public class PhysicsSystem : IUpdate, IPhysics, IObserver<Tuple<int, int>>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<Tuple<object, object>>
     {
+        float dt = 0;
         /// <summary>
         /// List which is then looped over and updates the systems
         /// </summary>
@@ -65,7 +67,7 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
@@ -244,7 +246,7 @@ namespace GameEngine.Source.Systems
                 hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
             }
         }
-        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit, float dt)
+        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit)
         {
             if (target != null && hit != null)
             {
@@ -299,7 +301,7 @@ namespace GameEngine.Source.Systems
                         continue;
 
                     if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
-                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
+                        //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
 
                 }
                 done.Add(entityIDUno);
@@ -323,9 +325,9 @@ namespace GameEngine.Source.Systems
         /// on collision (retrieves data from collision system)
         /// </summary>
         /// <param name="value"></param>
-        public void OnNext(Tuple<int, int> value)
+        public void OnNext(Tuple<object, object> value)
         {
-            UpdateReflection(ComponentManager.GetEntityComponent<PhysicsComponent>(value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>(value.Item2));
+            UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2));
         }
         /// <summary>
         /// Does nothing atm

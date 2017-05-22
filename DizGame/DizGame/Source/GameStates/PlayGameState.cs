@@ -164,8 +164,8 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new ResourceSystem());
-            //SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
-            //SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
         }
 
         /// <summary>

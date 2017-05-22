@@ -44,7 +44,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         /// <param name="modComp"></param>
         /// <param name="entityId"></param>
-        private void UpdateModelBoundingVolume(ModelComponent modComp, int entityId)
+        private void GetModelBoundingVolume(ModelComponent modComp, int entityId)
         {
             var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(entityId);
             //var box = new BoundingBox();
