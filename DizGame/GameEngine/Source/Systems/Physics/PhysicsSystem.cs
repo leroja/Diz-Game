@@ -301,7 +301,7 @@ namespace GameEngine.Source.Systems
                         continue;
 
                     if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
-                        //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
+                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos));
 
                 }
                 done.Add(entityIDUno);
