@@ -6,6 +6,7 @@ using GameEngine.Source.Components;
 
 namespace DizGame.Source.AI_Behaviors
 {
+    // todo gör så att AI:n inte roterar direkt mot närmsta fienden utan gör så att den vänder sig mod den och gör så att den inte kan skjuta innan den här helt vänd mot fienden
     /// <summary>
     /// A Behavior that makes the AI shoot at the closest enemy
     /// </summary>

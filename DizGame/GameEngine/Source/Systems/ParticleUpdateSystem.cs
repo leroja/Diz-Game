@@ -1,17 +1,13 @@
-﻿using GameEngine.Source.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using GameEngine.Source.RandomStuff;
 
 namespace GameEngine.Source.Systems
 {
-    // Todo Alexander användes den här ens? --Lennart
-    class SmokePaticleSystemcs : IUpdate
+    /// <summary>
+    /// Updates particles
+    /// </summary>
+    public class ParticleUpdateSystem : IUpdate
     {
         /// <summary>
         /// Updates Particles of a certain type
@@ -67,7 +63,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// setts random position inside of bounds
+        /// Sets a random position inside of bounds
         /// </summary>
         /// <param name="min"> Min positions of all position X,Y,Z in a vector3</param>
         /// <param name="max"> Max positions of all position X,Y,Z in a vector3</param>

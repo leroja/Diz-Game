@@ -224,7 +224,7 @@ namespace DizGame
             };
             List<IComponent> components = new List<IComponent>
             {
-            new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
+            new TransformComponent(position, scale),
                 mod,
                 phy
                 };
@@ -274,6 +274,7 @@ namespace DizGame
                             effect.FogColor = Color.LightGray.ToVector3();
                             effect.FogStart = 10;
                             effect.FogEnd = 400;
+                            //effect.EnableDefaultLighting();
                         }
                     }
                     break;
@@ -291,7 +292,7 @@ namespace DizGame
             };
             List<IComponent> components = new List<IComponent>
             {
-            new TransformComponent(position, scale, Matrix.CreateRotationY(-MathHelper.PiOver2)),
+                new TransformComponent(position, scale),
                 comp,
                 phy
             };

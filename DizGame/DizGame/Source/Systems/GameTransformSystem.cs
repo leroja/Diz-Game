@@ -30,7 +30,7 @@ namespace DizGame.Source.Systems
                 tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
                 tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
 
-                tfc.ModelMatrix = Matrix.CreateScale(tfc.Scale) * tfc.RotationMatrix
+                tfc.ModelMatrix = Matrix.CreateScale(tfc.Scale)
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
                     * Matrix.CreateTranslation(tfc.Position);
 
@@ -42,7 +42,7 @@ namespace DizGame.Source.Systems
                 tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
                 tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
 
-                tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale) * tfc.RotationMatrix
+                tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale)
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
                     * Matrix.CreateTranslation(tfc.Position);
             }

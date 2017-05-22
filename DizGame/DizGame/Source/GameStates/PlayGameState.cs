@@ -150,7 +150,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new BulletSystem());
             SystemManager.Instance.AddSystem(new PlayerSystem());
             SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
-            SystemManager.Instance.AddSystem(new PaticleUpdateSystem());
+            SystemManager.Instance.AddSystem(new ParticleUpdateSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
