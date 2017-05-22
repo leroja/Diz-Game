@@ -14,24 +14,23 @@ namespace GameEngine.Source.Communication
     /// </summary>
     public static class ConvertToByteArray
     {
-        ///// <summary>
-        ///// This function converts a value and inserts the bytes in the referenced array.
-        ///// </summary>
-        ///// <param name="inputArray">The zero based array to insert the bytes into.</param>
-        ///// <param name="pos">The start position to begin insertion from.</param>
-        ///// <param name="entityId">The entityId to send together with the components.</param>
-        ///// <param name="value">The value to convert to bytes.</param>
-        /////<returns>The length of the message in the array. The length may be less than the size of the input 
-        ///// array.
-        ///// </returns>
-        //public static int ConvertValue(ref Byte[] inputArray, int pos, int entityId List<IComponent> values)
-        //{
-        //    //Byte[] copiedValues = BitConverter.GetBytes();
+        /// <summary>
+        /// This function converts a value and inserts the bytes in the referenced array.
+        /// </summary>
+        /// <param name="inputArray">The zero based array to insert the bytes into.</param>
+        /// <param name="pos">The start position to begin insertion from.</param>
+        /// <param name="value">The value to convert to bytes.</param>
+        ///<returns>The length of the message in the array. The length may be less than the size of the input 
+        /// array.
+        /// </returns>
+        public static int ConvertValue(ref Byte[] inputArray, int pos, string value)
+        {
+            char[] copiedValues = value.ToCharArray();
 
-        //    //Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
+            Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
 
-        //    //return copiedValues.Length;
-        //}
+            return copiedValues.Length; 
+        }
 
 
         /// <summary>

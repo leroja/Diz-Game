@@ -9,6 +9,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using Lidgren.Network;
 using ServerSupportedCommunication.Enums;
+using Microsoft.Xna.Framework;
 
 namespace DizGame.Source.Communication
 {
@@ -129,12 +130,31 @@ namespace DizGame.Source.Communication
         }
 
 
+        private static void SendCreatedNewBullet(int entityId, string modelName, Vector3 position, Vector3 scale, float maxRange, float initialVelocity,
+                                                 Vector3 rotation, float damage)
+        {
+            InitMessage();
+
+            int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreatedNewBulletComponent);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, entityId);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, modelName);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, position);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, scale);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, maxRange);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, initialVelocity);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, rotation);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, damage);
+
+            SendMessage(arrLength);
+        }
+
         private static void SendCreatedNewTransformComponent(int entityId, TransformComponent component)
         {
             InitMessage();
 
             int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreatedNewTransformComponent);
-            arrLength += ConvertToByteArray.ConvertValue(ref  messageArray, arrLength, component);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, entityId);
+            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, arrLength, component);
 
             SendMessage(arrLength);
         }

@@ -166,6 +166,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new ResourceSystem());
             //SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
             //SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
+            //SystemManager.Instance.AddSystem(new EntityTracingSystem());
         }
 
         /// <summary>

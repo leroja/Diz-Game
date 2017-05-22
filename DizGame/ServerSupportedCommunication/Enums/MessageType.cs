@@ -16,7 +16,7 @@ namespace ServerSupportedCommunication.Enums
         //Client's created objects
         CreatedNewEntity, //Test with sending a whole new entity as a list of components.
         CreatedNewPlayer,
-        CreatedNewBullet,
+        CreatedNewBulletComponent,
         CreatedNewTransformComponent,
 
 
@@ -31,7 +31,7 @@ namespace ServerSupportedCommunication.Enums
                                        //CreatedBoulder, //Vector with positions instead e.g 10 first positions are boulders 
                                        //CreatedTree,    //next 20 are trees and
                                        //CreatedHouse,   // the rest are houses.
-        CreateBullet,
+        CreateBulletComponent,
 
 
         //Moved objects
