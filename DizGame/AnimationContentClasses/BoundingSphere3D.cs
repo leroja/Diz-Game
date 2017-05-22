@@ -10,8 +10,13 @@ namespace AnimationContentClasses
 {
     public class BoundingSphere3D : IBounding3D
     {
-        public BoundingSphere Sphere { get; set; }
-        
+        public BoundingSphere Sphere;
+
+        private BoundingSphere3D() { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ball"></param>
         public BoundingSphere3D(BoundingSphere ball)
         {
             Sphere = ball;

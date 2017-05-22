@@ -30,7 +30,7 @@ namespace DizGame.Source.Components
             /// </summary>
             Ammo
         };
-        ResourceType thisType;
+        public ResourceType thisType;
         /// <summary>
         /// Duration is a timespan which describes the ammount of time 
         /// the component is placed within the world, which also could be 

@@ -133,11 +133,11 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
-            //CollisionSystem cSys = new CollisionSystem();
+            CollisionSystem cSys = new CollisionSystem();
             PhysicsSystem pSys = new PhysicsSystem();
             //cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
-            //SystemManager.Instance.AddSystem(cSys);
+            
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             //SystemManager.Instance.AddSystem(new GameTransformSystem());
@@ -164,8 +164,9 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new ResourceSystem());
-            //SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
-            //SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(cSys);
         }
 
         /// <summary>

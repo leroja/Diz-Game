@@ -12,6 +12,8 @@ namespace AnimationContentClasses
     {
         public BoundingFrustum Frustum { get; set; }
 
+        private BoundingFrustum3D() { }
+
         public BoundingFrustum3D(BoundingFrustum frustum)
         {
             Frustum = frustum;
