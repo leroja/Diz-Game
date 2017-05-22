@@ -20,6 +20,7 @@ namespace ContentProject
     [ContentProcessor(DisplayName = "ModelBoundingSphereProcessor")]
     public class ModelBoundingSphereProcessor : ModelProcessor
     {
+        Dictionary<string, object> modeldict;
         BoundingSphere sphere;
         List<BoundingSphere> sphereList = new List<BoundingSphere>();
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
