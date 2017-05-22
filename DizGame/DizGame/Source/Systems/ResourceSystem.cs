@@ -94,8 +94,7 @@ namespace DizGame.Source.Systems
                     EntityFactory.Instance.ResourceFactory.CreateAmmoResource(positions.ElementAt(keepTrack));
                     keepTrack++;
                     currentNumberOfResources++;
-                }
-                    
+                }     
             }
         }
         private void RemoveOldResources(int entity)

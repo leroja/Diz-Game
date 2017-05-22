@@ -31,30 +31,39 @@ namespace GameEngine.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var ids = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();
-            foreach (var modelEnt in ids)
+            var dict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
+            foreach (var modelEnt in dict)
             {
-                var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
-
-                GetModelBoundingVolume(modelComp, modelEnt);
+                //var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
+                //var tcs = ComponentManager.GetEntityComponent<TransformComponent>(modelEnt.Key);
+                GetModelBoundingVolume((ModelComponent)modelEnt.Value, modelEnt.Key);
             }
         }
 
         private void GetModelBoundingVolume(ModelComponent modComp, int entityId)
         {
             var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(entityId);
-            var sphere = new BoundingSphere(transformComp.Position, 0);
             //var box = new BoundingBox();
-            modComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(new BoundingSphere(new Vector3(transformComp.Position.X, transformComp.Position.Y, transformComp.Position.Z), 3)));
-            //if (volume.Volume.FirstOrDefault().Bounding is BoundingSphere3D)
-            //{
-            //    volume.Bounding = new BoundingSphere3D(sphere);
-            //    volume.BoundingID = -1;
-            //}
-            //if (volume.Volume.FirstOrDefault().Bounding is BoundingBox3D)
-            //{
-            //    volume.Bounding = new BoundingBox3D(box);
-            //    volume.BoundingID = -1;
-            //}
+            if (modComp.BoundingVolume != null)
+            {
+                if (modComp.BoundingVolume.Bounding is BoundingSphere3D)
+                {
+                    BoundingSphere sphere = ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere;
+                    ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Center = transformComp.Position;
+                    ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Center.Y = transformComp.Position.Y + sphere.Radius;
+
+                    //ModelComponent mComp = ComponentManager.GetEntityComponent<ModelComponent>(entityId);
+                    //var sphere = new BoundingSphere(transformComp.Position + 
+                    //    new Vector3(0, ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Radius, 0), 
+                    //    ((BoundingSphere3D)modComp.BoundingVolume.Bounding).Sphere.Radius);
+                    //modComp.BoundingVolume.Bounding = new BoundingSphere3D(sphere);
+                }
+                //if (modComp.BoundingVolume.Bounding is BoundingBox3D)
+                //{
+                //    BoundingBox box = new BoundingBox(((BoundingBox3D)modComp.BoundingVolume.Bounding).Box.Min + transformComp.Position, ((BoundingBox3D)modComp.BoundingVolume.Bounding).Box.Max + transformComp.Position);
+                //    modComp.BoundingVolume.Bounding = new BoundingBox3D(box);
+                //}
+            }
         }
     }
 }

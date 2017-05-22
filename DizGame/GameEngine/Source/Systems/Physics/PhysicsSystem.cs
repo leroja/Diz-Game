@@ -17,7 +17,7 @@ namespace GameEngine.Source.Systems
     /// <summary>
     /// PhysicSystem which handles all the physic
     /// </summary>
-    public class PhysicsSystem : IUpdate, IPhysics, IObserver<List<Tuple<IBounding3D, IBounding3D>>>
+    public class PhysicsSystem : IUpdate, IPhysics, IObserver<Tuple<object, object>>
     {
         /// <summary>
         /// List which is then looped over and updates the systems
@@ -277,6 +277,13 @@ namespace GameEngine.Source.Systems
                     //    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).PreviousPosition;
                     // TODO: Fixa collisionen
                 }
+                else if (target.PhysicsType == PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
+                {
+                    Vector3 dir = hit.Velocity;
+                    dir.Normalize();
+                    ComponentManager.GetEntityComponent<TransformComponent>(hit.ID).Position += (-dir * 2) * hit.Velocity * dt;
+                    hit.Velocity = Vector3.Zero;
+                }
             }
         }
         private void CheckCollision(float dt)
@@ -338,6 +345,11 @@ namespace GameEngine.Source.Systems
         public void OnCompleted()
         {
             //TODO: OnCompleted
+        }
+
+        public void OnNext(Tuple<object, object> value)
+        {
+            throw new NotImplementedException();
         }
     }
 }

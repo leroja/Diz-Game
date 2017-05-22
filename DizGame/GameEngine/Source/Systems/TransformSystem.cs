@@ -26,7 +26,8 @@ namespace GameEngine.Source.Systems
 
             foreach (var entity in mc)
             {
-                TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
+                //TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
+                TransformComponent tfc = (TransformComponent)entity.Value;
                 var rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, tfc.Rotation.X, tfc.Rotation.Z);
                 
                 tfc.QuaternionRotation = rotationQuaternion;

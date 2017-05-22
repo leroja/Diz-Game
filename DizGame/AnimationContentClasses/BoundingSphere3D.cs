@@ -10,13 +10,28 @@ namespace AnimationContentClasses
 {
     public class BoundingSphere3D : IBounding3D
     {
-        public BoundingSphere Sphere { get; set; }
-        
+        public BoundingSphere Sphere;
+
+        private BoundingSphere3D() { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ball"></param>
         public BoundingSphere3D(BoundingSphere ball)
         {
             Sphere = ball;
         }
 
+
+        //private void Set()
+        //{
+        //    sphere.Center = Vector3.Zero;
+        //}
+        /// <summary>
+        /// See IBounding.Intersects
+        /// </summary>
+        /// <param name="bounding"></param>
+        /// <returns></returns>
         public override bool Intersects(IBounding3D bounding)
         {
             if (bounding is BoundingBox3D)
@@ -29,7 +44,11 @@ namespace AnimationContentClasses
             }
             return false;
         }
-
+        /// <summary>
+        /// See IBounding.CreateMerged
+        /// </summary>
+        /// <param name="bound"></param>
+        /// <returns></returns>
         public override IBounding3D CreateMerged(IBounding3D bound)
         {
             if (bound is BoundingBox3D)

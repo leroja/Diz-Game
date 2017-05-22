@@ -11,6 +11,8 @@ namespace AnimationContentClasses
     {
         public BoundingBox Box { get; set; }
 
+        private BoundingBox3D() { }
+
         public BoundingBox3D(BoundingBox box)
         {
             Box = box;

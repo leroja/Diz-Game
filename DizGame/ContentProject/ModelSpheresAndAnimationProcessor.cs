@@ -14,13 +14,25 @@ namespace ContentProject
     [ContentProcessor(DisplayName = "ModelSpheresWithAnimationProcessor")]
     class ModelSpheresAndAnimationProcessor : AnimationProcessor
     {
+        BoundingSphere sphere;
+        List<BoundingSphere> sphereList = new List<BoundingSphere>();
+        Dictionary<string, object> modeldict;
+
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            BoundingVolume bv = BoundingSphereProcessor.CreateBoundingSpheres(input);
             ModelContent model = base.Process(input, context);
 
-            // Stores the bounding data in the model
-            ((Dictionary<string, object>)model.Tag).Add("BoundingVolume", bv);
+            modeldict = (Dictionary<string, object>)model.Tag;
+            foreach (ModelMeshContent meshContent in model.Meshes)
+            {
+                sphereList.Add(meshContent.BoundingSphere);
+                sphere = BoundingSphere.CreateMerged(sphere, meshContent.BoundingSphere);
+            }
+            sphereList.Insert(0, sphere);
+
+            modeldict.Add("BoundingVolume", sphereList);
+            model.Tag = modeldict;
+
             return model;
         }
     }
