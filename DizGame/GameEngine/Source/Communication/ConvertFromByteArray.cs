@@ -68,42 +68,41 @@ namespace GameEngine.Source.Communication
         //}
 
 
+        /// <summary>
+        /// This method gets a quaternion from a byte array
+        /// </summary>
+        /// <param name="inputArray"></param>
+        /// <param name="pos"></param>
+        /// <param name="quaternion"></param>
+        /// <returns></returns>
+        private static Quaternion ConvertValue(ref Byte[] inputArray, int pos, out Quaternion quaternion)
+        {            
+             
+            Quaternion qua = new Quaternion();
+            qua.X = ConvertValue(ref inputArray, pos);
+            pos += 4;
+            qua.Y = ConvertValue(ref inputArray, pos);
+            pos += 4;
+            qua.Z = ConvertValue(ref inputArray, pos);
+            pos += 4;
+            qua.W = ConvertValue(ref inputArray, pos);
+            quaternion = qua;
+            return quaternion;
 
-        //private static void ConvertValue(ref Byte[] inputArray, int pos, out Quaternion quaternion)
-        //{
-        //    int len = 0;
-        //    float r = 8f;
-
-        //    int sizeFloat = 4;
+        }
 
 
-        //    ConvertValue()
-        //    Quaternion q = new Quaternion()
-        //    len += ConvertValue(ref inputArray, pos + len, quaternion.X);
-        //    len += ConvertValue(ref inputArray, pos + len, quaternion.Y);
-        //    len += ConvertValue(ref inputArray, pos + len, quaternion.Z);
-        //    len += ConvertValue(ref inputArray, pos + len, quaternion.W);
-
-        //}
-
-
-        ///// <summary>
-        ///// This function converts a float and inserts the bytes in the referenced array.
-        ///// </summary>
-        ///// <param name="inputArray">The zero based array to insert the bytes into.</param>
-        ///// <param name="pos">The start position to begin insertion from.</param>
-        ///// <param name="value">The value to convert.</param>
-        /////<returns>The length of the message in the array. The length may be less than the size of the input 
-        ///// array.
-        /////<returns>
-        //public static int ConvertValue(ref Byte[] inputArray, int pos, float value)
-        //{
-        //    Byte[] copiedValues = BitConverter.GetBytes(value);
-
-        //    Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
-
-        //    return copiedValues.Length;
-        //}
+        /// <summary>
+        /// This method converts to float and returns it
+        /// </summary>
+        /// <param name="inputArray"></param>
+        /// <param name="pos"></param>
+        /// <param name="value"></param>
+        public static float ConvertValue(ref Byte[] inputArray, int pos)
+        {
+            var value = inputArray.ElementAt(pos);
+            return value;
+        }
 
 
         ///// <summary>
