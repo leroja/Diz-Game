@@ -99,6 +99,15 @@ namespace GameEngine.Source.Components
         /// Array of flares
         /// </summary>
         public Flare[] Flares { get; set; }
+        /// <summary>
+        /// Ambient light colour
+        /// </summary>
+        public Vector3 AmbientLight { get; set; }
+        /// <summary>
+        /// Diffuse colour
+        /// </summary>
+        public Vector3 Diffuse { get; set; }
+
         #endregion
 
         /// <summary>
@@ -111,6 +120,8 @@ namespace GameEngine.Source.Components
             LightDirectionOffset = Vector3.One;
             GlowSize = DEFAULT_GLOWSIZE;
             QuerySize = DEFAULT_QUERYSIZE;
+            Diffuse = new Vector3(1f);
+            AmbientLight = new Vector3(0.5f);
         }
 
         /// <summary>
@@ -124,6 +135,8 @@ namespace GameEngine.Source.Components
             LightDirectionOffset = Vector3.One;
             GlowSize = DEFAULT_GLOWSIZE;
             QuerySize = DEFAULT_QUERYSIZE;
+            Diffuse = Vector3.One;
+            AmbientLight = new Vector3(0.5f);
         }
 
         private void SetupDefaultQueryVertices()

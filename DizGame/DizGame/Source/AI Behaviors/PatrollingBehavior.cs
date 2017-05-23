@@ -47,15 +47,24 @@ namespace DizGame.Source.AI_Behaviors
         {
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
+            var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
 
             transformComp.Rotation = GetRotationToNextWayPoint(AIComp.ID);
 
             var height = GetCurrentHeight(transformComp.Position);
 
-            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
-            t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
+            //t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            transformComp.Position = t;
+            //transformComp.Position = t;
+
+            transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
+            //t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //transformComp.Position = t;
+
+            physComp.Velocity = transformComp.Forward * 10;
+            physComp.Acceleration = new Vector3(physComp.Acceleration.X, 0, physComp.Acceleration.Z);
 
             var location = new Vector2(transformComp.Position.X, transformComp.Position.Z);
             var DistanceToDestination = Vector2.Distance(location, waypoints.Peek());
