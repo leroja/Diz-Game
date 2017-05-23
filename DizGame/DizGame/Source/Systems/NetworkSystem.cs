@@ -120,11 +120,9 @@ namespace DizGame.Source.Systems
 
             bool sendRequest = true;
 
-
-            while ((message = client.ReadMessage()) != null)
-            //TODO: add functionallity for the different messagetypes, some information might be needed to be broadcasted to other clients
             while (true)
-            {
+                while ((message = client.ReadMessage()) != null)
+                {
                 //This should be moved to some better place.
                 if (client.ConnectionStatus == NetConnectionStatus.Connected && sendRequest == true)
                 {
@@ -132,8 +130,6 @@ namespace DizGame.Source.Systems
                     sendRequest = false;
                 }
 
-                while ((message = client.ReadMessage()) != null)
-                {
                     switch (message.MessageType)
                     {
                         case NetIncomingMessageType.DiscoveryResponse:
@@ -174,11 +170,8 @@ namespace DizGame.Source.Systems
                             break;
                     }
                     client.Recycle(message);
-                }
+                
             }
-
-
-
         }
     }
 }
