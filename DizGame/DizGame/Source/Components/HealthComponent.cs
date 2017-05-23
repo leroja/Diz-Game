@@ -14,7 +14,7 @@ namespace DizGame.Source.Components
         /// <summary>
         /// 
         /// </summary>
-        private float MaxHealth = 100;
+        public float MaxHealth = 100;
 
         /// <summary>
         /// 

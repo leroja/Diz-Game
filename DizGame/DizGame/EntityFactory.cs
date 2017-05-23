@@ -161,6 +161,8 @@ namespace DizGame
                 new ModelComponent(chuck),
                 keys,
                 mouse,
+                new HealthComponent(),
+                new ScoreComponent(),
                 new PlayerComponent(),
                 new PhysicsComponent()
                 {
@@ -332,7 +334,7 @@ namespace DizGame
             return box;
         }
 
-        private void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
+        public void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
         {
             min = box.Min * scale;
             max = box.Max * scale;
@@ -592,7 +594,7 @@ namespace DizGame
         /// <param name="rotation"> The rotation oi the bullet </param>
         /// <param name="damage"> How much damage the bullet does </param>
         /// <returns> The enityId of the bullet incase someone would need it </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage,int ownerID)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -617,6 +619,7 @@ namespace DizGame
                     StartPos = pos,
                     MaxRange = MaxRange,
                     Damage = damage,
+                    Owner = ownerID
                 },
                 new PhysicsComponent()
                 {
@@ -718,6 +721,8 @@ namespace DizGame
             {
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),
+                new HealthComponent(),
+                new ScoreComponent(),
                 new PhysicsComponent()
                 {
                     Volume = 22.5f,
