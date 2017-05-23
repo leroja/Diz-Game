@@ -304,6 +304,7 @@ namespace DizGame
         /// 
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="scale"></param>
         /// <returns></returns>
         private BoundingBox GetStaticModelBox(Model model, float scale)
         {
