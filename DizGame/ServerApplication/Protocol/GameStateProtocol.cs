@@ -109,33 +109,32 @@ namespace ServerApplication.Protocol
             int partOfTotal = 0;
             int seed = 122;
 
-            messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 0, "HJo det fungerar");
-            ////Part1 of message
-            //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+            //Part1 of message
+            messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
 
-            ////Part2 of message this row seems not needed...
-            ////messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.PlayerEntityId);
+            //Part2 of message this row seems not needed...
+            //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.PlayerEntityId);
 
-            ////Lock for playerEntityId
-            //lock (_lockObject)
-            //{
-            //    //Part2 of message
-            //    messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
+            //Lock for playerEntityId
+            lock (_lockObject)
+            {
+                //Part2 of message
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
 
-            //    //Part3 of message
-            //    messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
-
+                //Part3 of message
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
 
 
-            //    //Part4 of message
-            //    ReserveRangeEntityIds(playerEntityId++, ref rangeStart, ref rangeEnd);
-            //    messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
-            //    messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
 
-            //    //Part5 of message will be the seed to derive positions from that will be needed by client to
-            //    //build gamesettings0 gameMap.
-            //    messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
-            //}
+                //Part4 of message
+                ReserveRangeEntityIds(playerEntityId++, ref rangeStart, ref rangeEnd);
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
+
+                //Part5 of message will be the seed to derive positions from that will be needed by client to
+                //build gamesettings0 gameMap.
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
+            }
 
             return messageLen;
         }

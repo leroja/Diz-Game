@@ -55,7 +55,7 @@ namespace DizGame.Source.Communication
             {
                 case NetIncomingMessageType.Data:
                     //read which message type (first byte) as defined by us and act accordingly.
-                    messageType = message.ReadByte();
+                    ConvertFromByteArray.ConvertValue(message.ReadBytes(2), 0, out messageType);
 
                     switch (messageType)
                     {
@@ -94,13 +94,13 @@ namespace DizGame.Source.Communication
 
 
             //    //Part4 of message
-            ConvertFromByteArray.ConvertValue(convertArray, 8, out valueInt);
+            ConvertFromByteArray.ConvertValue(convertArray, 6, out valueInt);
             rangeStart = valueInt;
-            ConvertFromByteArray.ConvertValue(convertArray, 12, out valueInt);
+            ConvertFromByteArray.ConvertValue(convertArray, 10, out valueInt);
             rangeEnd = valueInt;
 
             //    //Part5 of message will be the seed to derive positions from that will be needed by client to
-            ConvertFromByteArray.ConvertValue(convertArray, 16, out valueInt);
+            ConvertFromByteArray.ConvertValue(convertArray, 14, out valueInt);
             seed = valueInt;
         }
 
