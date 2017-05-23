@@ -23,6 +23,7 @@ namespace DizGame
     {
         private static EntityFactory instance;
 
+        
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
@@ -35,6 +36,10 @@ namespace DizGame
         /// Factory to create resources
         /// </summary>
         public ResourceFactory ResourceFactory { get; set; }
+        /// <summary>
+        /// A Factory for creating static game object. eg a house
+        /// </summary>
+        public StaticGameObjectsFactory SGOFactory { get; set; }
         /// <summary>
         /// A Bool that says whether the models are vivible or not
         /// </summary>
@@ -89,7 +94,8 @@ namespace DizGame
 
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
-            ResourceFactory = new ResourceFactory(ModelDic, VisibleBullets);
+            ResourceFactory = new ResourceFactory(ModelDic);
+            SGOFactory = new StaticGameObjectsFactory(ModelDic, Texture2dDic);
         }
 
         /// <summary>
@@ -182,221 +188,6 @@ namespace DizGame
         }
 
         /// <summary>
-        /// Creates a house of given model
-        /// </summary>
-        /// <param name="nameOfModel"> Name of the house model </param>
-        /// <param name="position"> position of the  house </param>
-        /// <returns></returns>
-        public int CreateHouse(string nameOfModel, Vector3 position)
-        {
-            Vector3 scale = Vector3.One;
-            Model house = ModelDic[nameOfModel];
-
-            //Todo
-            if (nameOfModel == "CyprusHouse")
-            {
-                scale = new Vector3(4f, 4f, 4f);
-            }
-            foreach (ModelMesh mesh in house.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.FogEnabled = true;
-                    effect.FogColor = Color.LightGray.ToVector3();
-                    effect.FogStart = 10;
-                    effect.FogEnd = 400;
-                }
-            }
-
-            BoundingVolume volume = (BoundingVolume)house.Tag;
-            int entityID = ComponentManager.Instance.CreateID();
-            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
-            BoundingBox box = new BoundingBox(min, max);
-            ModelComponent mod = new ModelComponent(house)
-            {
-                IsStatic = true,
-                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
-            };
-            PhysicsComponent phy = new PhysicsComponent()
-            {
-                PhysicsType = PhysicsType.Static,
-            };
-            List<IComponent> components = new List<IComponent>
-            {
-            new TransformComponent(position, scale),
-                mod,
-                phy
-                };
-            ComponentManager.Instance.AddAllComponents(entityID, components);
-
-            return entityID;
-        }
-
-        /// <summary>
-        /// creates the static objects
-        /// </summary>
-        /// <param name="nameOfModel"></param>
-        /// <param name="position"></param>
-        public int CreateStaticObject(string nameOfModel, Vector3 position)
-        {
-            Vector3 scale = new Vector3();
-            Vector3 middlePoint = Vector3.UnitY;
-            Model model = ModelDic[nameOfModel];
-            switch (nameOfModel)
-            {
-                case "Rock":
-                    scale = new Vector3(5, 5, 5);
-                    middlePoint *= 2;
-
-                    foreach (ModelMesh mesh in model.Meshes)
-                    {
-                        foreach (BasicEffect effect in mesh.Effects)
-                        {
-                            effect.TextureEnabled = true;
-                            effect.Texture = Texture2dDic["RockTexture"];
-                            effect.FogEnabled = true;
-                            effect.FogColor = Color.LightGray.ToVector3();
-                            effect.FogStart = 10;
-                            effect.FogEnd = 400;
-                        }
-                    }
-
-                    break;
-                case "Tree":
-                    foreach (ModelMesh mesh in model.Meshes)
-                    {
-                        //scale = new Vector3(5, 5, 5);
-                        foreach (BasicEffect effect in mesh.Effects)
-                        {
-                            effect.FogEnabled = true;
-                            effect.FogColor = Color.LightGray.ToVector3();
-                            effect.FogStart = 10;
-                            effect.FogEnd = 400;
-                            //effect.EnableDefaultLighting();
-                        }
-                    }
-                    scale = new Vector3(5, 5, 5);
-                    break;
-            }
-            BoundingVolume volume = (BoundingVolume) model.Tag;
-            int entityID = ComponentManager.Instance.CreateID();
-
-            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
-            //Vector3 mid = Vector3.Cross(min, max) / 2;
-            //BoundingBox box1 = new BoundingBox(position - mid, position + mid);
-            BoundingBox box = new BoundingBox(min, max);
-            ModelComponent comp = new ModelComponent(model)
-            {
-                IsStatic = true,
-                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
-            };
-            PhysicsComponent phy = new PhysicsComponent()
-            {
-                PhysicsType = PhysicsType.Static
-            };
-            List<IComponent> components = new List<IComponent>
-            {
-                new TransformComponent(position, scale),
-                comp,
-                phy
-            };
-            ComponentManager.Instance.AddAllComponents(entityID, components);
-
-            return entityID;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="scale"></param>
-        /// <returns></returns>
-        private BoundingBox GetStaticModelBox(Model model, float scale)
-        {
-            List<Vector3> positions = new List<Vector3>();
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    Vector3[] vertices = new Vector3[part.VertexBuffer.VertexCount];
-                    part.VertexBuffer.GetData(vertices);
-                    //foreach(VertexPositionNormalTexture vertice in vertices)
-                    //{
-                    //    positions.Add(vertice.Position);
-                    //}
-                    positions.AddRange(vertices);
-                }
-            }
-            BoundingBox box = BoundingBox.CreateFromPoints(positions);
-            box.Min *= scale;
-            box.Max *= scale;
-            return box;
-        }
-
-        public void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
-        {
-            min = box.Min * scale;
-            max = box.Max * scale;
-            float xDelta = (max - min).X;
-            float zDelta = (max - min).Z;
-            float yDelta = (max - min).Y;
-            min.Y = position.Y;
-            min.X = position.X - xDelta / 2;
-            min.Z = position.Z - zDelta / 2;
-            max.Y = position.Y + yDelta;
-            max.X = position.X + xDelta / 2;
-            max.Z = position.Z + zDelta / 2;
-        }
-
-        /// <summary>
-        /// Randomizes a map 
-        /// </summary>
-        /// <param name="numberOfHouses"> Number of houses </param>
-        /// <param name="numberOfStaticObjects"> Number of static objects </param>
-        public List<int> MakeMap(int numberOfHouses, int numberOfStaticObjects)
-        {
-            List<int> entityIdList = new List<int>();
-
-            List<Vector3> positions = new List<Vector3>();
-            List<Vector3> unablePositions = new List<Vector3>();
-            var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            positions = GetModelPositions(numberOfHouses);
-            for (int i = 0; i < numberOfHouses; i++)
-            {
-                if (!unablePositions.Contains(positions[i]))
-                {
-                    if (i % 2 == 0)
-                    {
-                        entityIdList.Add(CreateHouse("WoodHouse", positions[i]));
-                        unablePositions.Add(positions[i]);
-                    }
-                    else
-                    {
-                        entityIdList.Add(CreateHouse("CyprusHouse", positions[i]));
-                        unablePositions.Add(positions[i]);
-                    }
-                }
-            }
-            positions = GetModelPositions(numberOfStaticObjects);
-            for (int j = 0; j < numberOfStaticObjects; j++)
-            {
-                if (!unablePositions.Contains(positions[j]))
-                {
-                    var modul = j % 2;
-                    switch (modul)
-                    {
-                        case 0:
-                            entityIdList.Add(CreateStaticObject("Tree", positions[j]));
-                            break;
-                        case 1:
-                            entityIdList.Add(CreateStaticObject("Rock", positions[j]));
-                            break;
-                    }
-                }
-            }
-            return entityIdList;
-        }
-
-        /// <summary>
         /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
         /// </summary>
         public void SpawnProtection()
@@ -430,12 +221,12 @@ namespace DizGame
         }
 
         /// <summary>
-        /// Creates a parrical emmiter and sets positions and options
+        /// Creates a particle emmiter and sets positions and options
         /// </summary>
         /// <param name="Position"> Position of emiter</param>
         /// <param name="TextureName">Name of texture</param>
-        /// <param name="nParticles">maximum number of particles in emiter. used for size of vectors</param>
-        /// <param name="Particlelifetime"> life of particke</param>
+        /// <param name="nParticles">maximum number of particles in emiter. Used for size of vectors</param>
+        /// <param name="Particlelifetime"> lifetime of particle </param>
         /// <param name="FadeTime">Fade time on particles</param>
         /// <param name="direction">Direction of particles</param>
         /// <param name="scale">Scale on Particle</param>
@@ -487,43 +278,7 @@ namespace DizGame
             }
         }
 
-        /// <summary>
-        /// Gets target number of potitions on heightmap
-        /// </summary>
-        /// <param name="numberOfPositions"></param>
-        /// <returns></returns>
-        public List<Vector3> GetModelPositions(int numberOfPositions)
-        {
-            List<Vector3> positions = new List<Vector3>();
-            Random r = new Random();
-            int mapWidht;
-            int mapHeight;
-
-            List<Vector3> SpawnProtection = new List<Vector3>();
-            List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
-
-            mapWidht = heigt.Width;
-            mapHeight = heigt.Height;
-            for (int i = 0; i < numberOfPositions; i++)
-            {
-                var pot = new Vector3(r.Next(mapWidht - 20), 0, r.Next(mapHeight - 20));
-
-                pot.Y = heigt.HeightMapData[(int)pot.X, (int)pot.Z];
-                if (pot.X < 10)
-                {
-                    pot.X = pot.X + 10;
-                }
-                if (pot.Z < 10)
-                {
-                    pot.Z = pot.Z - 10;
-                }
-                pot.Z = -pot.Z;
-                positions.Add(pot);
-            }
-            return positions;
-        }
-
+        
 
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
@@ -592,8 +347,9 @@ namespace DizGame
         /// <param name="initialVelocity"> The initial velocity of the bullet </param>
         /// <param name="rotation"> The rotation oi the bullet </param>
         /// <param name="damage"> How much damage the bullet does </param>
+        /// <param name="ownerID"> Entity Id of the Owner </param>
         /// <returns> The enityId of the bullet incase someone would need it </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage,int ownerID)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage, int ownerID)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -665,7 +421,6 @@ namespace DizGame
             b.Center = tcp.Position;
             b.Center.Y += b.Radius;
             mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(b));
-
         }
 
         /// <summary>

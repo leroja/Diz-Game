@@ -5,6 +5,7 @@ using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
+using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
@@ -51,18 +52,10 @@ namespace DizGame.Source.AI_Behaviors
 
             transformComp.Rotation = GetRotationToNextWayPoint(AIComp.ID);
 
-            var height = GetCurrentHeight(transformComp.Position);
-
-            //var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
-            //t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //transformComp.Position = t;
+            var height = MovingSystem.GetHeight(transformComp.Position);
 
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
-            //t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //transformComp.Position = t;
-
+            
             physComp.Velocity = transformComp.Forward * 10;
             physComp.Acceleration = new Vector3(physComp.Acceleration.X, 0, physComp.Acceleration.Z);
 

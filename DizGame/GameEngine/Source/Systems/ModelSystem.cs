@@ -80,8 +80,7 @@ namespace GameEngine.Source.Systems
                                     effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
                                     effect.DirectionalLight0.Direction = flare.LightDirection;
                                 }
-
-                                //effect.EnableDefaultLighting();
+                                
                                 effect.PreferPerPixelLighting = true;
                                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                                 {

@@ -37,6 +37,8 @@ namespace DizGame.Source.Systems
         /// For example if the ratio is 5, every 5th resource will be a health resource and the rest ammo resources.</param>
         public ResourceSystem(int maxNumberOfResourcesInPlay, int healthAmmoRatio)
         {
+            if (healthAmmoRatio == 0)
+                healthAmmoRatio = 2; //   50 / 50 ammo & hälsa
             this.maxNumberOfResourcesInPlay = maxNumberOfResourcesInPlay;
             this.healthAmmoRatio = healthAmmoRatio;
         }

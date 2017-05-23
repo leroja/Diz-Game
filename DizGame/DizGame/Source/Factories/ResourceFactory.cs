@@ -19,19 +19,15 @@ namespace DizGame.Source.Factories
     public class ResourceFactory
     {
         private Dictionary<string, Model> ModelDic;
-        private bool VisibleBullets;
 
         /// <summary>
         /// Constructor for creating the ResourceFactory
         /// </summary>
         /// <param name="ModelDic">Dictoionary containing the models which should represent 
         /// the different types of resources</param>
-        /// <param name="VisibleBullets">Should be true if the models should be rendered by the render system
-        /// or false if they should be temporarily hidden</param>
-        public ResourceFactory(Dictionary<string, Model> ModelDic, bool VisibleBullets)
+        public ResourceFactory(Dictionary<string, Model> ModelDic)
         {
             this.ModelDic = ModelDic;
-            this.VisibleBullets = VisibleBullets;
         }
 
         /// <summary>
@@ -59,7 +55,7 @@ namespace DizGame.Source.Factories
             }
             ModelComponent mcp = new ModelComponent(model)
             {
-                IsVisible = VisibleBullets
+                IsVisible = EntityFactory.Instance.VisibleBullets,
             };
 
             List<IComponent> resourceCompList = new List<IComponent>
@@ -85,9 +81,9 @@ namespace DizGame.Source.Factories
             //adjust the scales differently for the models if needed
             TransformComponent tcp = new TransformComponent(newTotalPos, new Vector3(1, 1, 1));
 
-            ModelComponent mcp = new ModelComponent(ModelDic["Cartridge"])
-            {
-                IsVisible = VisibleBullets
+        ModelComponent mcp = new ModelComponent(ModelDic["Cartridge"])
+        {
+            IsVisible = EntityFactory.Instance.VisibleBullets,
             };
             foreach (var modelpart in mcp.Model.Meshes)
             {
