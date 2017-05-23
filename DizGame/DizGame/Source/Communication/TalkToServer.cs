@@ -28,6 +28,12 @@ namespace DizGame.Source.Communication
         private int WAIT_MAX_MILLIS = 100;
         private static int MAX_MESSAGE_SIZE = 10000;
 
+        //Variables that are received from server when asking for InitialGameState
+        public static int playerEntityId { get; private set; }
+        public static byte gameSetting { get; private set; }
+        public static int rangeStart { get; private set; }
+        public static int rangeEnd { get; private set; }
+        public static int seed { get; private set; }
 
         public TalkToServer(NetClient client)
         {
@@ -71,19 +77,21 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
-            ;
-            //Byte[] messageArray = new byte[MAX_MESSAGE_SIZE];
 
-            //NetOutgoingMessage outMessage = server.CreateMessage();
+            //    //Part2 of message
+            playerEntityId = message.ReadInt32();
 
-            //ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateMap);
 
-            //outMessage.Write(messageArray);
+            //    //Part3 of message
+            gameSetting = message.ReadByte();
 
-            //server.SendMessage(outMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
 
-            ////Send boulders, houses, tree as a list of positions.
-            ////Send Players as entities.
+            //    //Part4 of message
+            rangeStart = message.ReadInt32();
+            rangeEnd = message.ReadInt32();
+
+            //    //Part5 of message will be the seed to derive positions from that will be needed by client to
+            seed = message.ReadInt32();
         }
 
 

@@ -107,17 +107,18 @@ namespace ServerApplication.Protocol
             int messageLen = 0;
             int numOfObjectsTotal = 0;
             int partOfTotal = 0;
+            int seed = 122;
 
             //Part1 of message
             messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
 
-            //Part2 of message
-            messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.PlayerEntityId);
+            //Part2 of message this row seems not needed...
+            //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.PlayerEntityId);
 
             //Lock for playerEntityId
             lock (_lockObject)
             {
-                //Part2 of message cont.
+                //Part2 of message
                 messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
 
                 //Part3 of message
@@ -130,31 +131,31 @@ namespace ServerApplication.Protocol
                 messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
                 messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
 
-                //Part5 of message will be the list of Vector3 positions that will be needed by client to
+                //Part5 of message will be the seed to derive positions from that will be needed by client to
                 //build gamesettings0 gameMap.
-                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, GetStaticObjectPositions(gameSetting));
+                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
             }
 
             return messageLen;
         }
 
 
-        private static List<Vector3> GetStaticObjectPositions(GameSettingsType gameSetting)
-        {
-            int numOfObjectsTotal = 0;
-            int partOfTotal = 0;
+        //private static List<Vector3> GetStaticObjectPositions(GameSettingsType gameSetting)
+        //{
+        //    int numOfObjectsTotal = 0;
+        //    int partOfTotal = 0;
 
-            if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
-            {
-                numOfObjectsTotal += partOfTotal;
-                if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
-                {
-                    numOfObjectsTotal += partOfTotal;
-                    return DizGame.EntityFactory.GetModelPositions(numOfObjectsTotal);
-                }
-            }
+        //    if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
+        //    {
+        //        numOfObjectsTotal += partOfTotal;
+        //        if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
+        //        {
+        //            numOfObjectsTotal += partOfTotal;
+        //            return DizGame.EntityFactory.GetModelPositions(numOfObjectsTotal);
+        //        }
+        //    }
 
-            return new List<Vector3>();
-        }
+        //    return new List<Vector3>();
+        //}
     }
 }
