@@ -25,11 +25,19 @@ namespace GameEngine.Source.Communication
         /// </returns>
         public static int ConvertValue(ref Byte[] inputArray, int pos, string value)
         {
-            char[] copiedValues = value.ToCharArray();
+            Byte[] copiedValues;
+            int index = 0;
+            int len = 0;
 
-            Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
+            foreach (char character in value.ToArray())
+            {
+                copiedValues = BitConverter.GetBytes(character);
+                len += copiedValues.Length;
 
-            return copiedValues.Length; 
+                Array.Copy(copiedValues, 0, inputArray, pos*index++* copiedValues.Length, copiedValues.Length);
+            }
+
+            return len;
         }
 
 

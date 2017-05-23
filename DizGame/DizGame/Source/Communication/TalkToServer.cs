@@ -77,21 +77,31 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
+            //string what = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes));
+
+            Byte[] convertArray = message.ReadBytes(message.LengthBytes);
+            int valueInt = 0;
+            Byte valueByte = 0;
 
             //    //Part2 of message
-            playerEntityId = message.ReadInt32();
+            ConvertFromByteArray.ConvertValue(convertArray, 0, out valueInt);
+            playerEntityId = valueInt;
 
 
             //    //Part3 of message
-            gameSetting = message.ReadByte();
+            ConvertFromByteArray.ConvertValue(convertArray, 4, out valueByte);
+            gameSetting = valueByte;
 
 
             //    //Part4 of message
-            rangeStart = message.ReadInt32();
-            rangeEnd = message.ReadInt32();
+            ConvertFromByteArray.ConvertValue(convertArray, 8, out valueInt);
+            rangeStart = valueInt;
+            ConvertFromByteArray.ConvertValue(convertArray, 12, out valueInt);
+            rangeEnd = valueInt;
 
             //    //Part5 of message will be the seed to derive positions from that will be needed by client to
-            seed = message.ReadInt32();
+            ConvertFromByteArray.ConvertValue(convertArray, 16, out valueInt);
+            seed = valueInt;
         }
 
 
