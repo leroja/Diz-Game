@@ -1,4 +1,5 @@
-﻿using DizGame.Source.Components;
+﻿using AnimationContentClasses;
+using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
@@ -46,6 +47,12 @@ namespace DizGame.Source.Factories
             //adjust the scales differently for the models if needed
             TransformComponent tcp = new TransformComponent(position, new Vector3(0.04f, 0.04f, 0.04f));
             Model model = ModelDic["Heart"];
+            BoundingVolume volume = (BoundingVolume)model.Tag;
+            BoundingSphere sphere = ((BoundingSphere3D)volume.Bounding).Sphere;
+            sphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius * tcp.Scale.X * 10;
+            sphere.Center = tcp.Position;
+            sphere.Center.Y += sphere.Radius;
+
             foreach (var modelpart in model.Meshes)
             {
                 BasicEffect effect = (BasicEffect)modelpart.Effects[0];
@@ -59,7 +66,8 @@ namespace DizGame.Source.Factories
             }
             ModelComponent mcp = new ModelComponent(model)
             {
-                IsVisible = VisibleBullets
+                IsVisible = VisibleBullets,
+                BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(sphere))
             };
 
             List<IComponent> resourceCompList = new List<IComponent>
@@ -80,14 +88,21 @@ namespace DizGame.Source.Factories
         public void CreateAmmoResource(Vector3 position)
         {
             int newEntityId = ComponentManager.Instance.CreateID();
-            var newPosY = position.Y + 2;
+            Model cart = ModelDic["Cartridge"];
+            BoundingVolume volume = (BoundingVolume)cart.Tag;
+
+            var newPosY = position.Y + Math.Abs(((BoundingBox3D)volume.Bounding).Box.Min.Y);
             Vector3 newTotalPos = new Vector3(position.X, newPosY, position.Z);
             //adjust the scales differently for the models if needed
             TransformComponent tcp = new TransformComponent(newTotalPos, new Vector3(1, 1, 1));
 
+            EntityFactory.Instance.GetMinMax(((BoundingBox3D)volume.Bounding).Box, 1, position, out Vector3 min, out Vector3 max);
+            BoundingBox box = new BoundingBox(min, max);
             ModelComponent mcp = new ModelComponent(ModelDic["Cartridge"])
             {
-                IsVisible = VisibleBullets
+                IsVisible = VisibleBullets,
+                BoundingVolume = new BoundingVolume(0, new BoundingBox3D(box))
+                
             };
             foreach (var modelpart in mcp.Model.Meshes)
             {

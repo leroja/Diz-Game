@@ -17,7 +17,7 @@ namespace ContentProject
     [ContentProcessor(DisplayName = "ModelBoundingBoxProcessor")]
     public class ModelBoundingBoxProcessor : ModelProcessor
     {
-        BoundingBox box;
+        static BoundingBox box;
         List<BoundingBox> boxList = new List<BoundingBox>();
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace ContentProject
         /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            //System.Diagnostics.Debugger.Launch();
+            
             ModelContent model = base.Process(input, context);
             //MeshContent mFirst = input as MeshContent;
             //if (mFirst == null)
@@ -55,12 +55,14 @@ namespace ContentProject
             //}
             ////Loop(input);
             //boxList.Insert(0, box);
-            model.Tag = Loop(input);
+            //System.Diagnostics.Debugger.Launch();
+            box = new BoundingBox();
+            model.Tag = Loop(input, this.Scale);
 
             return model;
         }
 
-        private BoundingVolume Loop(NodeContent content)
+        public static BoundingVolume Loop(NodeContent content, float scale)
         {
             BoundingVolume volume = new BoundingVolume(1);
             var cont = content as MeshContent;
@@ -69,7 +71,10 @@ namespace ContentProject
                 
                 foreach (GeometryContent g in cont.Geometry)
                 {
+                    //System.Diagnostics.Debugger.Launch();
                     BoundingBox tempBox = BoundingBox.CreateFromPoints(g.Vertices.Positions);
+                    tempBox.Min *= 1 / scale;
+                    tempBox.Max *= 1 / scale;
                     box = BoundingBox.CreateMerged(box, tempBox);
                     return new BoundingVolume(0, new BoundingBox3D(tempBox));
                 }
@@ -78,7 +83,7 @@ namespace ContentProject
             {
                 foreach(var n in content.Children)
                 {
-                    volume.Volume.Add(Loop(n));
+                    volume.Volume.Add(Loop(n, scale));
                 }
             }
             volume.Bounding = new BoundingBox3D(box);

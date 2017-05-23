@@ -70,8 +70,6 @@
     <Compile Include="ModelBoundingBoxProcessor.cs" />
     <Compile Include="ModelBoundingSphereProcessor.cs" />
     <Compile Include="AnimationProcessor.cs" />
-    <Compile Include="BoundingBoxProcessor.cs" />
-    <Compile Include="BoundingSphereProcessor.cs" />
     <Compile Include="ContentImporter.cs" />
     <Compile Include="ModelBoxesAndAnimationProcessor.cs" />
     <Compile Include="ModelSpheresAndAnimationProcessor.cs" />

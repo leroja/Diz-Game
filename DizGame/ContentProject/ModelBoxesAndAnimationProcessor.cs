@@ -21,22 +21,16 @@ namespace ContentProject
         {
             ////System.Diagnostics.Debugger.Launch();
 
-            //BoundingVolume bv = BoundingBoxProcessor.CreateBoundingBoxes(input);
-            //ModelContent model = base.Process(input, context);
-            //// Stores the bounding data in the model
-            //((Dictionary<string, object>)model.Tag).Add("BoundingVolume", bv);
-            //return model;
             ModelContent model = base.Process(input, context);
 
             modeldict = (Dictionary < string, object > )model.Tag;
-            foreach (ModelMeshContent meshContent in model.Meshes)
-            {
-                sphereList.Add(meshContent.BoundingSphere);
-                sphere = BoundingSphere.CreateMerged(sphere, meshContent.BoundingSphere);
-            }
-            sphereList.Insert(0, sphere);
-
-            modeldict.Add("BoundingVolume", sphereList);
+            //foreach (ModelMeshContent meshContent in model.Meshes)
+            //{
+            //    sphereList.Add(meshContent.BoundingSphere);
+            //    sphere = BoundingSphere.CreateMerged(sphere, meshContent.BoundingSphere);
+            //}
+            //sphereList.Insert(0, sphere);
+            modeldict.Add("BoundingVolume", ModelBoundingBoxProcessor.Loop(input, this.Scale));
             model.Tag = modeldict;
 
             return model;

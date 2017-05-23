@@ -53,7 +53,7 @@ namespace GameEngine.Source.Systems
                 if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(entityID))
                 {
                     // todo
-                    //if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
+                    if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
                     {
                         if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                             model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
