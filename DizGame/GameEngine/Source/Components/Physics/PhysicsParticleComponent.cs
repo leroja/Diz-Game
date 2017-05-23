@@ -27,8 +27,6 @@ namespace GameEngine.Source.Components
         /// If the particle is alive
         /// </summary>
         public bool IsAlive { get; set; }
-        public Texture2D Tetxure { get; set; }
-        public float LifeTime { get; set; }
         #endregion Public Configuration
 
         /// <summary>

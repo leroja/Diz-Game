@@ -4,6 +4,7 @@ using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
+using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
@@ -36,15 +37,18 @@ namespace DizGame.Source.AI_Behaviors
 
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
-            var pos = transformComp.Position;
+            var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
+            
+            physComp.Velocity = transformComp.Forward * 10;
+            physComp.Acceleration = new Vector3(physComp.Acceleration.X, 0, physComp.Acceleration.Z);
 
-            var height = GetCurrentHeight(pos);
+            var height = MovingSystem.GetHeight(transformComp.Position);
 
-            var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
+            transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
-            if (t.X >= AIComp.Bounds.Height)
+            if (transformComp.Position.X >= AIComp.Bounds.Height)
             {
-                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
                 if (AIComp.HaveBehavior("Patroll"))
                 {
@@ -55,9 +59,9 @@ namespace DizGame.Source.AI_Behaviors
                     AIComp.ChangeBehavior("Wander", transformComp.Rotation);
                 }
             }
-            else if (t.X <= 3)
+            else if (transformComp.Position.X <= 3)
             {
-                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
                 if (AIComp.HaveBehavior("Patroll"))
                 {
@@ -68,9 +72,9 @@ namespace DizGame.Source.AI_Behaviors
                     AIComp.ChangeBehavior("Wander", transformComp.Rotation);
                 }
             }
-            else if (t.Z <= -AIComp.Bounds.Width)
+            else if (transformComp.Position.Z <= -AIComp.Bounds.Width)
             {
-                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
                 if (AIComp.HaveBehavior("Patroll"))
                 {
@@ -81,9 +85,9 @@ namespace DizGame.Source.AI_Behaviors
                     AIComp.ChangeBehavior("Wander", transformComp.Rotation);
                 }
             }
-            else if (t.Z >= -3)
+            else if (transformComp.Position.Z >= -3)
             {
-                t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
                 if (AIComp.HaveBehavior("Patroll"))
                 {
@@ -96,7 +100,6 @@ namespace DizGame.Source.AI_Behaviors
             }
             else
             {
-                t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (currentTimeForRot > AIComp.UpdateFrequency)
                 {
                     desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
@@ -105,21 +108,7 @@ namespace DizGame.Source.AI_Behaviors
                 transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
                 BehaviorStuff(AIComp, transformComp);
             }
-            transformComp.Position = t;
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
-
-            //transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z) + transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //if (currentTimeForRot > AIComp.UpdateFrequency)
-            //{
-            //    desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
-            //    currentTimeForRot = 0f;
-            //}
-
-            //transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
-            //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
-
-            //BehaviorStuff(AIComp, transformComp);
         }
 
         /// <summary>

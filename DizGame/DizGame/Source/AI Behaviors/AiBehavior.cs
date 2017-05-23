@@ -76,31 +76,6 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Returns the current height based on the AI current position
-        /// </summary>
-        /// <param name="position">
-        /// The current Position of the AI
-        /// </param>
-        /// <returns></returns>
-        public float GetCurrentHeight(Vector3 position)
-        {
-            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            if (temp.Count != 0)
-            {
-                HeightmapComponentTexture hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(temp.First());
-
-                int roundX = (int)Math.Round(position.X); int roundY = (int)Math.Round(position.Z);
-                if (roundX >= hmap.Width - 1 || roundY >= hmap.Height - 1)
-                {
-                    return 0;
-                }
-                if (roundY <= 0 && roundX >= 0)
-                    return hmap.HeightMapData[roundX, -roundY];
-            }
-            return 0;
-        }
-
-        /// <summary>
         /// Calculates the rotation to the closest enemy
         /// </summary>
         /// <param name="AIComp"> The current AI </param>

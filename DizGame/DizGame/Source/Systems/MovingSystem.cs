@@ -1,4 +1,5 @@
 ﻿using GameEngine.Source.Systems;
+using GameEngine.Source.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace DizGame.Source.Systems
                     if (key.GetState("Left") == ButtonStates.Hold)
                     {
                         move += -trans.Right * 20;
-                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
+                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds); // todo hur ska vi göra när man går åt sidan?
                     }
                     if (key.GetState("Right") == ButtonStates.Hold)
                     {
@@ -133,12 +134,12 @@ namespace DizGame.Source.Systems
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        private float GetHeight(Vector3 position)
+        public static float GetHeight(Vector3 position)
         {
-            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             if (temp.Count != 0)
             {
-                HeightmapComponentTexture hmap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(temp.First());
+                HeightmapComponentTexture hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(temp.First());
                 float gridSquareSize = (hmap.Width * hmap.Height) / ((float)hmap.HeightMapData.Length - 1);
                 int gridX = (int)Math.Floor(position.X / gridSquareSize);
                 int gridZ = -(int)Math.Floor(position.Z / gridSquareSize);
@@ -171,7 +172,8 @@ namespace DizGame.Source.Systems
             }
             return 0;
         }
-        private float BarryCentric(Vector3 p1, Vector3 p2, Vector3 p3, Vector2 pos)
+
+        private static float BarryCentric(Vector3 p1, Vector3 p2, Vector3 p3, Vector2 pos)
         {
             float det = (p2.Z - p3.Z) * (p1.X - p3.X) + (p3.X - p2.X) * (p1.Z - p3.Z);
             float l1 = ((p2.Z - p3.Z) * (pos.X - p3.X) + (p3.X - p2.X) * (pos.Y - p3.Z)) / det;

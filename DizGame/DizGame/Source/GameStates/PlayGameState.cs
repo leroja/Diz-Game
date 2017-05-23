@@ -133,7 +133,9 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
+            
             CollisionSystem cSys = new CollisionSystem();
+            cSys.Subscribe(new HealthSystem());
             PhysicsSystem pSys = new PhysicsSystem();
             cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
@@ -163,7 +165,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
-            SystemManager.Instance.AddSystem(new ResourceSystem());
+            SystemManager.Instance.AddSystem(new ResourceSystem(500, 0)); // todo finjustera
             SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(cSys);
@@ -209,7 +211,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.Add(heightmapID);
 
             //Add all static objects to this state i.e rocks, houses etc.
-            List<int> entityIdList = entf.MakeMap(10, 100);
+            List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100);
             GameStateEntities.AddRange(entityIdList);
 
             entf.CreateParticleEmiter(new Vector3(1, 2000, 1), "Smoke", 400, 10, 30, new Vector3(0, 1, 0), 5, 120);

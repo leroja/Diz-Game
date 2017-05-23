@@ -118,13 +118,14 @@ namespace GameEngine.Source.Systems
                 flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
                 if (flare != null)
                 {
-                    if (c > 2)
+                    if (c > 1)
                     {
                         flare.LightDirection = new Vector3(flare.LightDirection.X,
-                            flare.LightDirection.Y * 1.001f,
-                            flare.LightDirection.Z * 1.001f);
+                            flare.LightDirection.Y * 1.1f,
+                            flare.LightDirection.Z * 1.1f);
                         //flare.LightDirection.Normalize();
                         //Console.WriteLine(flare.LightDirection);
+                        c = 0;
                     }
                     c += dt;
                     if (flare.LightDirection.Z > 10)
@@ -133,7 +134,6 @@ namespace GameEngine.Source.Systems
                             flare.StartLightDirection.Y,
                             flare.StartLightDirection.Z);
                     }
-
                 }
             }
             else

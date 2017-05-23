@@ -68,7 +68,19 @@ namespace GameEngine.Source.Systems
                                 effect.View = defaultCam.View;
                                 effect.Projection = defaultCam.Projection;
 
-                                //effect.EnableDefaultLighting();
+                                if (world != null && world.IsSunActive)
+                                {
+                                    FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
+                                    effect.LightingEnabled = true;
+
+                                    //effect.DiffuseColor = flare.Diffuse;
+                                    //effect.AmbientLightColor = flare.AmbientLight;
+
+                                    effect.DirectionalLight0.Enabled = true;
+                                    effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
+                                    effect.DirectionalLight0.Direction = flare.LightDirection;
+                                }
+                                
                                 effect.PreferPerPixelLighting = true;
                                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                                 {

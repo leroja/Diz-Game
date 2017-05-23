@@ -23,6 +23,7 @@ namespace DizGame
     {
         private static EntityFactory instance;
 
+        
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
@@ -35,6 +36,10 @@ namespace DizGame
         /// Factory to create resources
         /// </summary>
         public ResourceFactory ResourceFactory { get; set; }
+        /// <summary>
+        /// A Factory for creating static game object. eg a house
+        /// </summary>
+        public StaticGameObjectsFactory SGOFactory { get; set; }
         /// <summary>
         /// A Bool that says whether the models are vivible or not
         /// </summary>
@@ -69,12 +74,12 @@ namespace DizGame
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
                 { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
-                { "House_Wood", Content.Load<Model>("MapObjects/Farmhouse/medievalHouse1") } ,
-                { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
+                { "CyprusHouse", Content.Load<Model>("MapObjects/CyprusHouse/Cyprus_House") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
                 { "Dude", Content.Load<Model>("Dude/Dude72") },
                 { "Heart", Content.Load<Model>("MapObjects/Heart/Heart") },
+                { "WoodHouse", Content.Load<Model>("MapObjects/WoodHouse/WoodHouse1")},
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -88,7 +93,8 @@ namespace DizGame
             };
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
-            ResourceFactory = new ResourceFactory(ModelDic, VisibleBullets);
+            ResourceFactory = new ResourceFactory(ModelDic);
+            SGOFactory = new StaticGameObjectsFactory(ModelDic, Texture2dDic);
         }
 
         /// <summary>
@@ -160,6 +166,8 @@ namespace DizGame
                 new ModelComponent(chuck),
                 keys,
                 mouse,
+                new HealthComponent(),
+                new ScoreComponent(),
                 new PlayerComponent(),
                 new PhysicsComponent()
                 {
@@ -400,12 +408,12 @@ namespace DizGame
         }
 
         /// <summary>
-        /// Creates a parrical emmiter and sets positions and options
+        /// Creates a particle emmiter and sets positions and options
         /// </summary>
         /// <param name="Position"> Position of emiter</param>
         /// <param name="TextureName">Name of texture</param>
-        /// <param name="nParticles">maximum number of particles in emiter. used for size of vectors</param>
-        /// <param name="Particlelifetime"> life of particke</param>
+        /// <param name="nParticles">maximum number of particles in emiter. Used for size of vectors</param>
+        /// <param name="Particlelifetime"> lifetime of particle </param>
         /// <param name="FadeTime">Fade time on particles</param>
         /// <param name="direction">Direction of particles</param>
         /// <param name="scale">Scale on Particle</param>
@@ -457,43 +465,7 @@ namespace DizGame
             }
         }
 
-        /// <summary>
-        /// Gets target number of potitions on heightmap
-        /// </summary>
-        /// <param name="numberOfPositions"></param>
-        /// <returns></returns>
-        public List<Vector3> GetModelPositions(int numberOfPositions)
-        {
-            List<Vector3> positions = new List<Vector3>();
-            Random r = new Random();
-            int mapWidht;
-            int mapHeight;
-
-            List<Vector3> SpawnProtection = new List<Vector3>();
-            List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
-
-            mapWidht = heigt.Width;
-            mapHeight = heigt.Height;
-            for (int i = 0; i < numberOfPositions; i++)
-            {
-                var pot = new Vector3(r.Next(mapWidht - 20), 0, r.Next(mapHeight - 20));
-
-                pot.Y = heigt.HeightMapData[(int)pot.X, (int)pot.Z];
-                if (pot.X < 10)
-                {
-                    pot.X = pot.X + 10;
-                }
-                if (pot.Z < 10)
-                {
-                    pot.Z = pot.Z - 10;
-                }
-                pot.Z = -pot.Z;
-                positions.Add(pot);
-            }
-            return positions;
-        }
-
+        
 
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
@@ -562,8 +534,9 @@ namespace DizGame
         /// <param name="initialVelocity"> The initial velocity of the bullet </param>
         /// <param name="rotation"> The rotation oi the bullet </param>
         /// <param name="damage"> How much damage the bullet does </param>
+        /// <param name="ownerID"> Entity Id of the Owner </param>
         /// <returns> The enityId of the bullet incase someone would need it </returns>
-        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage)
+        public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage, int ownerID)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
@@ -586,6 +559,7 @@ namespace DizGame
                     StartPos = pos,
                     MaxRange = MaxRange,
                     Damage = damage,
+                    Owner = ownerID
                 },
                 new PhysicsComponent()
                 {
@@ -694,6 +668,8 @@ namespace DizGame
             {
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),
+                new HealthComponent(),
+                new ScoreComponent(),
                 new PhysicsComponent()
                 {
                     Volume = 22.5f,
