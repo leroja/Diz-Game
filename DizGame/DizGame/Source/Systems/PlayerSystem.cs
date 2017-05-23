@@ -57,7 +57,7 @@ namespace DizGame.Source.Systems
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation, 10);
+                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation, 10,playerId);
                     AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }

@@ -56,7 +56,7 @@ namespace DizGame.Source.AI_Behaviors
             {
                 var rot = GetRotationForAimingAtEnemy(AIComp);
 
-                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot);
+                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot,AIComp.ID);
                 time = AIComp.ShootingCooldown;
             }
 

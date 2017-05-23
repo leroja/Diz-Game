@@ -72,7 +72,7 @@ namespace GameEngine.Source.Systems
             foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
             {
                 ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
-                if (model.BoundingVolume == null)
+                if (model == null || model.BoundingVolume == null)
                     continue;
                 foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
                 {
