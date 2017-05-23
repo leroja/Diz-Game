@@ -136,17 +136,20 @@
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
     <None Include="Content\Fonts\MenuFont.spritefont" />
-    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.mtl" />
-    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.obj" />
-    <None Include="Content\MapObjects\Farmhouse\roof.tga" />
-    <None Include="Content\MapObjects\Farmhouse\wall.tga" />
+    <None Include="Content\MapObjects\CyprusHouse\Cyprus_House.obj" />
+    <None Include="Content\MapObjects\CyprusHouse\Cyprys_House.mtl" />
     <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />
     <None Include="Content\MapObjects\Rock\Rock.obj" />
     <None Include="Content\MapObjects\Tree\lowpolytree.mtl" />
     <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
-    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.mtl" />
-    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.obj" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouse1.mtl" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouse1.obj" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\MADEIRA2.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\MADEIRA3.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\TELHA.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\TELHA2.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\TELHA3.tga" />
     <None Include="Content\WierdDude\Body.fbx" />
   </ItemGroup>
   <ItemGroup>

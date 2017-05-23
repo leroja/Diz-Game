@@ -69,12 +69,12 @@ namespace DizGame
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
                 { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
-                { "House_Wood", Content.Load<Model>("MapObjects/Farmhouse/medievalHouse1") } ,
-                { "House_Stone", Content.Load<Model>("MapObjects/WoodHouse/Cyprys_House") } ,
+                { "CyprusHouse", Content.Load<Model>("MapObjects/CyprusHouse/Cyprus_House") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
                 { "Dude", Content.Load<Model>("Dude/Dude72") },
                 { "Heart", Content.Load<Model>("MapObjects/Heart/Heart") },
+                { "WoodHouse", Content.Load<Model>("MapObjects/WoodHouse/WoodHouse1")},
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -182,19 +182,16 @@ namespace DizGame
         /// <summary>
         /// Creates a house of given model
         /// </summary>
-        /// <param name="nameOfModel">name of the model</param>
-        /// <param name="position">position on house</param>
+        /// <param name="nameOfModel"> Name of the house model </param>
+        /// <param name="position"> position of the  house </param>
         /// <returns></returns>
         public int CreateHouse(string nameOfModel, Vector3 position)
         {
-            Vector3 scale = new Vector3();
+            Vector3 scale = Vector3.One;
             Model house = ModelDic[nameOfModel];
 
-            if (nameOfModel == "House_Wood")
-            {
-                scale = new Vector3(0.04f, 0.04f, 0.04f);
-            }
-            else
+            //Todo
+            if (nameOfModel == "CyprusHouse")
             {
                 scale = new Vector3(4f, 4f, 4f);
             }
@@ -208,6 +205,7 @@ namespace DizGame
                     effect.FogEnd = 400;
                 }
             }
+
             BoundingVolume volume = (BoundingVolume)house.Tag;
             int entityID = ComponentManager.Instance.CreateID();
             GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
@@ -230,7 +228,6 @@ namespace DizGame
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
             return entityID;
-
         }
 
         /// <summary>
@@ -346,11 +343,12 @@ namespace DizGame
             max.X = position.X + xDelta / 2;
             max.Z = position.Z + zDelta / 2;
         }
+
         /// <summary>
         /// Randomizes a map 
         /// </summary>
-        /// <param name="numberOfHouses"></param>
-        /// <param name="numberOfStaticObjects"></param>
+        /// <param name="numberOfHouses"> Number of houses </param>
+        /// <param name="numberOfStaticObjects"> Number of static objects </param>
         public List<int> MakeMap(int numberOfHouses, int numberOfStaticObjects)
         {
             List<int> entityIdList = new List<int>();
@@ -359,22 +357,22 @@ namespace DizGame
             List<Vector3> unablePositions = new List<Vector3>();
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             positions = GetModelPositions(numberOfHouses);
-            //for (int i = 0; i < numberOfHouses; i++)
-            //{
-            //    if (!unablePositions.Contains(positions[i]))
-            //    {
-            //        if (i % 2 == 0)
-            //        {
-            //            entityIdList.Add(CreateHouse("House_Wood", positions[i]));
-            //            unablePositions.Add(positions[i]);
-            //        }
-            //        else
-            //        {
-            //            entityIdList.Add(CreateHouse("House_Stone", positions[i]));
-            //            unablePositions.Add(positions[i]);
-            //        }
-            //    }
-            //}
+            for (int i = 0; i < numberOfHouses; i++)
+            {
+                if (!unablePositions.Contains(positions[i]))
+                {
+                    if (i % 2 == 0)
+                    {
+                        entityIdList.Add(CreateHouse("WoodHouse", positions[i]));
+                        unablePositions.Add(positions[i]);
+                    }
+                    else
+                    {
+                        entityIdList.Add(CreateHouse("CyprusHouse", positions[i]));
+                        unablePositions.Add(positions[i]);
+                    }
+                }
+            }
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
             {
