@@ -70,6 +70,7 @@
     <Compile Include="Source\GameStates\PlayGameState.cs" />
     <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
+    <Compile Include="Source\Systems\AmonitionSystemcs.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
     <Compile Include="Source\Systems\GameTransformSystem.cs" />

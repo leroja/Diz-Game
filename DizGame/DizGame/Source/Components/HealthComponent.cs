@@ -12,11 +12,23 @@ namespace DizGame.Source.Components
         public float Health { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        private float MaxHealth = 100;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public float HealthOnPickup { get; set; }
+
+        /// <summary>
         /// Constructor which sets attributes to default values.
         /// </summary>
         public HealthComponent()
         {
-            Health = 100;
+            Health = MaxHealth;
+            //defult pickup value
+            HealthOnPickup = 20;
         }
     }
 }

@@ -56,10 +56,10 @@ namespace GameEngine.Source.Systems
                         {
                             FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
                             chunk.Effect.LightingEnabled = true;
-                            chunk.Effect.DiffuseColor = new Vector3(1f);
-                            chunk.Effect.AmbientLightColor = new Vector3(0.5f);
+                            //chunk.Effect.DiffuseColor = flare.Diffuse;  // todo
+                            //chunk.Effect.AmbientLightColor = flare.AmbientLight;
                             chunk.Effect.DirectionalLight0.Enabled = true;
-                            chunk.Effect.DirectionalLight0.DiffuseColor = Vector3.One;
+                            chunk.Effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
                             chunk.Effect.DirectionalLight0.Direction = flare.LightDirection;
                         }
 

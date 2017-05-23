@@ -15,6 +15,11 @@ namespace AnimationContentClasses
         public BoundingBox Box { get; set; }
 
         /// <summary>
+        /// Private constructor needed for the processor
+        /// </summary>
+        private BoundingBox3D() { }
+
+        /// <summary>
         /// Creates new BoundingBox3D and takes a BoundingBox as a parameter
         /// </summary>
         /// <param name="box"></param>

@@ -140,6 +140,7 @@ namespace DizGame
         public int CreateDude()
         {
             int entityID = ComponentManager.Instance.CreateID();
+
             Model chuck = ModelDic["Dude"];
             KeyBoardComponent keys = new KeyBoardComponent();
             keys.AddActionAndKey("Forward", Keys.W);
@@ -153,15 +154,11 @@ namespace DizGame
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
             mouse.MouseSensitivity = 0.2f;
-            TransformComponent tComp = new TransformComponent(new Vector3(20, 45, -10), new Vector3(0.1f, 0.1f, 0.1f));
+
             List<IComponent> components = new List<IComponent>
             {
-                tComp,
-                new ModelComponent(chuck){
-                    //BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY * 3, 4))),
-                    BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(GetModelSphere(chuck, 0.05f))),
-                    MiddlePosition = Vector3.UnitY * 4
-                },
+                new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
+                new ModelComponent(chuck),
                 keys,
                 mouse,
                 new PlayerComponent(),
@@ -211,12 +208,14 @@ namespace DizGame
                     effect.FogEnd = 400;
                 }
             }
-            List<BoundingSphere> bList = (List<BoundingSphere>)house.Tag;
+            BoundingVolume volume = (BoundingVolume)house.Tag;
             int entityID = ComponentManager.Instance.CreateID();
+            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
+            BoundingBox box = new BoundingBox(min, max);
             ModelComponent mod = new ModelComponent(house)
             {
                 IsStatic = true,
-                BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(bList[0]))
+                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
             };
             PhysicsComponent phy = new PhysicsComponent()
             {
@@ -267,7 +266,7 @@ namespace DizGame
                 case "Tree":
                     foreach (ModelMesh mesh in model.Meshes)
                     {
-                        scale = new Vector3(5, 5, 5);
+                        //scale = new Vector3(5, 5, 5);
                         foreach (BasicEffect effect in mesh.Effects)
                         {
                             effect.FogEnabled = true;
@@ -277,14 +276,20 @@ namespace DizGame
                             //effect.EnableDefaultLighting();
                         }
                     }
+                    scale = new Vector3(5, 5, 5);
                     break;
             }
-            List<BoundingSphere> bList = (List<BoundingSphere>)model.Tag;
+            BoundingVolume volume = (BoundingVolume) model.Tag;
             int entityID = ComponentManager.Instance.CreateID();
+
+            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
+            //Vector3 mid = Vector3.Cross(min, max) / 2;
+            //BoundingBox box1 = new BoundingBox(position - mid, position + mid);
+            BoundingBox box = new BoundingBox(min, max);
             ModelComponent comp = new ModelComponent(model)
             {
                 IsStatic = true,
-                BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(bList[0]))
+                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
             };
             PhysicsComponent phy = new PhysicsComponent()
             {
@@ -328,25 +333,19 @@ namespace DizGame
             return box;
         }
 
-        private BoundingSphere GetModelSphere(Model model, float scale)
+        private void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
         {
-            List<Vector3> positions = new List<Vector3>();
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    Vector3[] vertices = new Vector3[part.VertexBuffer.VertexCount];
-                    part.VertexBuffer.GetData(vertices);
-                    //foreach(VertexPositionNormalTexture vertice in vertices)
-                    //{
-                    //    positions.Add(vertice.Position);
-                    //}
-                    positions.AddRange(vertices);
-                }
-            }
-            BoundingSphere sphere = BoundingSphere.CreateFromPoints(positions);
-            sphere.Radius *= scale;
-            return sphere;
+            min = box.Min * scale;
+            max = box.Max * scale;
+            float xDelta = (max - min).X;
+            float zDelta = (max - min).Z;
+            float yDelta = (max - min).Y;
+            min.Y = position.Y;
+            min.X = position.X - xDelta / 2;
+            min.Z = position.Z - zDelta / 2;
+            max.Y = position.Y + yDelta;
+            max.X = position.X + xDelta / 2;
+            max.Z = position.Z + zDelta / 2;
         }
         /// <summary>
         /// Randomizes a map 
@@ -361,22 +360,22 @@ namespace DizGame
             List<Vector3> unablePositions = new List<Vector3>();
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             positions = GetModelPositions(numberOfHouses);
-            for (int i = 0; i < numberOfHouses; i++)
-            {
-                if (!unablePositions.Contains(positions[i]))
-                {
-                    if (i % 2 == 0)
-                    {
-                        entityIdList.Add(CreateHouse("House_Wood", positions[i]));
-                        unablePositions.Add(positions[i]);
-                    }
-                    else
-                    {
-                        entityIdList.Add(CreateHouse("House_Stone", positions[i]));
-                        unablePositions.Add(positions[i]);
-                    }
-                }
-            }
+            //for (int i = 0; i < numberOfHouses; i++)
+            //{
+            //    if (!unablePositions.Contains(positions[i]))
+            //    {
+            //        if (i % 2 == 0)
+            //        {
+            //            entityIdList.Add(CreateHouse("House_Wood", positions[i]));
+            //            unablePositions.Add(positions[i]);
+            //        }
+            //        else
+            //        {
+            //            entityIdList.Add(CreateHouse("House_Stone", positions[i]));
+            //            unablePositions.Add(positions[i]);
+            //        }
+            //    }
+            //}
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
             {
@@ -598,9 +597,9 @@ namespace DizGame
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
-
             Model model = ModelDic[modelName];
             List<BoundingSphere> bList = (List<BoundingSphere>)model.Tag;
+            BoundingSphere sphere = new BoundingSphere(pos, bList[0].Radius);
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
@@ -612,6 +611,7 @@ namespace DizGame
                     //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY, 1))),
                     //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(GetModelSphere(model, scale.X))),
                     IsVisible = VisibleBullets,
+                    BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(sphere))
                 },
 
                 new BulletComponent(){
@@ -646,7 +646,7 @@ namespace DizGame
         /// <param name="entityID"></param>
         public void TestingTheAnimationsWithDude(int entityID)
         {
-
+            TransformComponent tcp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityID);
             ModelComponent mcp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityID);
 
             AnimationComponent anm = new AnimationComponent(((Dictionary<string, object>)mcp.Model.Tag)["SkinningData"]);
@@ -656,11 +656,14 @@ namespace DizGame
             var sk = anm.SkinningDataValue.AnimationClips.Keys;
 
             anm.StartClip(sk.First());
-
             Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
             List<BoundingSphere> bList = (List<BoundingSphere>)dict["BoundingVolume"];
-
-            mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(bList[0]));
+            BoundingSphere b = bList[0];
+            
+            b.Radius = tcp.Scale.X * b.Radius;
+            b.Center = tcp.Position;
+            b.Center.Y += b.Radius;
+            mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(b));
 
         }
 
@@ -711,15 +714,11 @@ namespace DizGame
             Model model = ModelDic[ModelName];
 
             var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
-            TransformComponent tComp = new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f));
+
             List<IComponent> components = new List<IComponent>
             {
-                tComp,
-                new ModelComponent(model)
-                {
-                    MiddlePosition = Vector3.UnitY * 4,
-                    BoundingVolume = new BoundingVolume(AIEntityID, new BoundingSphere3D(GetModelSphere(model, 0.05f)))
-                },
+                new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
+                new ModelComponent(model),
                 new PhysicsComponent()
                 {
                     Volume = 22.5f,

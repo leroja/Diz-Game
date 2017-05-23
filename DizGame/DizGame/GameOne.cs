@@ -60,7 +60,6 @@ namespace DizGame
 
             client.DiscoverLocalPeers();
             
-
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
             AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));

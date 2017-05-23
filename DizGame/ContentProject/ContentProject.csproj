@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelBoundingBoxProcessor.cs" />
     <Compile Include="ModelBoundingSphereProcessor.cs" />
     <Compile Include="AnimationProcessor.cs" />
     <Compile Include="BoundingBoxProcessor.cs" />

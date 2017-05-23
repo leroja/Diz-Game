@@ -12,7 +12,6 @@ namespace GameEngine.Tools
 {
     public class BoundingSphereRenderer : IRender
     {
-        // Todo du vet att Mathhelp.piOver2 och PiOver4 finns va?
         public static float RADIANS_FOR_90DEGREES = MathHelper.ToRadians(90);//(float)(Math.PI / 2.0);
         public static float RADIANS_FOR_180DEGREES = RADIANS_FOR_90DEGREES * 2;
 
@@ -26,7 +25,6 @@ namespace GameEngine.Tools
         private const int CIRCLE_NUM_POINTS = 32;
         private IndexBuffer _indexBuffer;
         private VertexPositionNormalTexture[] _vertices;
-        private int[] lineStripIndices;
 
         //private Matrix[] modelBoneTransforms;
 
@@ -43,17 +41,16 @@ namespace GameEngine.Tools
             CreateShape();
         }
 
-        /// <summary>
-        /// This creates the circles to show how the bounding sphere looks like.
-        /// </summary>
         public void CreateShape()
         {
             double angle = MathHelper.TwoPi / CIRCLE_NUM_POINTS;
 
-            _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS * 3 + 3];
-            _vertices[0] = new VertexPositionNormalTexture(Vector3.Zero, Vector3.Forward, Vector2.One);
-            //int verticeIndex = 0;
-            for (int i = 0; i <= CIRCLE_NUM_POINTS; i++)
+            _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS * 3 + 4];
+
+            _vertices[0] = new VertexPositionNormalTexture(
+                Vector3.Zero, Vector3.Forward, Vector2.One);
+
+            for (int i = 1; i <= CIRCLE_NUM_POINTS; i++)
             {
                 float x = (float)Math.Round(Math.Sin(angle * i), 4);
                 float y = (float)Math.Round(Math.Cos(angle * i), 4);
@@ -67,16 +64,28 @@ namespace GameEngine.Tools
                 _vertices[i] = new VertexPositionNormalTexture(
                     point,
                     Vector3.Forward,
-                    Vector2.Zero);
-
+                    new Vector2());
             }
-
-            //_vertices[CIRCLE_NUM_POINTS + 1] = new VertexPositionNormalTexture(
-            //    Vector3.Zero, Vector3.Forward, Vector2.One);
-            for (int i = CIRCLE_NUM_POINTS + 1; i <= CIRCLE_NUM_POINTS * 2 + 1; i++)
+            for (int i = CIRCLE_NUM_POINTS + 1; i <= CIRCLE_NUM_POINTS*2 + 1; i++)
             {
-                float y = (float)Math.Round(Math.Cos(angle * (i - CIRCLE_NUM_POINTS * 2 - 2)), 4);
-                float z = (float)Math.Round(Math.Sin(angle * (i - CIRCLE_NUM_POINTS * 2 - 2)), 4);
+                float z = (float)Math.Round(Math.Sin(angle * i), 4);
+                float x = (float)Math.Round(Math.Cos(angle * i), 4);
+                Vector3 point = new Vector3(
+                                 x,
+                                 0.0f,
+                                 z);
+
+
+
+                _vertices[i] = new VertexPositionNormalTexture(
+                    point,
+                    Vector3.Forward,
+                    new Vector2());
+            }
+            for (int i = CIRCLE_NUM_POINTS * 2 + 2; i <= CIRCLE_NUM_POINTS * 3 + 3; i++)
+            {
+                float y = (float)Math.Round(Math.Sin(angle * i), 4);
+                float z = (float)Math.Round(Math.Cos(angle * i), 4);
                 Vector3 point = new Vector3(
                                  0.0f,
                                  y,
@@ -90,31 +99,11 @@ namespace GameEngine.Tools
                     new Vector2());
             }
 
-            //_vertices[CIRCLE_NUM_POINTS * 2 + 2] = new VertexPositionNormalTexture(
-            //    Vector3.Zero, Vector3.Forward, Vector2.One);
-            for (int i = CIRCLE_NUM_POINTS * 2 + 2; i <= CIRCLE_NUM_POINTS * 3 + 2; i++)
-            {
-                float z = (float)Math.Round(Math.Sin(angle * (i - CIRCLE_NUM_POINTS - 1)), 4);
-                float x = (float)Math.Round(Math.Cos(angle * (i - CIRCLE_NUM_POINTS - 1)), 4);
-                Vector3 point = new Vector3(
-                                 x,
-                                 0.0f,
-                                 z);
-
-
-
-                _vertices[i] = new VertexPositionNormalTexture(
-                    point,
-                    Vector3.Forward,
-                    new Vector2());
-            }
-       
-            
             // Initialize the vertex buffer, allocating memory for each vertex
             buffer = new VertexBuffer(graphicsDevice,
-                            VertexPositionNormalTexture.VertexDeclaration,
-                            _vertices.Length,
-                            BufferUsage.WriteOnly);
+                VertexPositionNormalTexture.VertexDeclaration,
+                _vertices.Length,
+                BufferUsage.None);
 
 
             // Set the vertex buffer data to the array of vertices
@@ -123,18 +112,15 @@ namespace GameEngine.Tools
             InitializeLineStrip();
         }
 
-        /// <summary>
-        /// Adds all indices, and initializes and sets the buffer
-        /// </summary>
         private void InitializeLineStrip()
         {
             // Initialize an array of indices of type short
-            lineStripIndices = new int[CIRCLE_NUM_POINTS * 3 + 1];
+            short[] lineStripIndices = new short[CIRCLE_NUM_POINTS*3 + 1];
 
             // Populate the array with references to indices in the vertex buffer
-            for (int i = 0; i < CIRCLE_NUM_POINTS * 3; i++)
+            for (int i = 0; i < CIRCLE_NUM_POINTS*3; i++)
             {
-                lineStripIndices[i] = (i + 1);
+                lineStripIndices[i] = (short)(i + 1);
             }
 
             lineStripIndices[CIRCLE_NUM_POINTS] = 1;
@@ -142,31 +128,23 @@ namespace GameEngine.Tools
             // Initialize the index buffer, allocating memory for each index
             _indexBuffer = new IndexBuffer(
                 graphicsDevice,
-                IndexElementSize.ThirtyTwoBits,
+                IndexElementSize.SixteenBits,
                 lineStripIndices.Length,
-                BufferUsage.WriteOnly
+                BufferUsage.None
                 );
 
             // Set the data in the index buffer to our array
-            _indexBuffer.SetData(lineStripIndices);
+            _indexBuffer.SetData<short>(lineStripIndices);
 
         }
-        /// <summary>
-        /// Takes in a modelComponent and Color as parameters, translates the boundingsphere 
-        /// made in CreateShape to the models position and scales it and sets the effects 
-        /// DiffuseColor to the colors Vector3
-        /// </summary>
-        /// <param name="mc"></param>
-        /// <param name="color"></param>
-        public void DrawSphere(ModelComponent mc, Color color)
+
+        public void DrawSpheres(BoundingVolume volume, Color color)
         {
-            if (mc.BoundingVolume.Bounding != null)
+            if (volume != null)
             {
-                BoundingSphere3D sphere = mc.BoundingVolume.Bounding as BoundingSphere3D;
-                Matrix scaleMatrix = Matrix.CreateScale((sphere.Sphere.Radius));
-                Matrix translateMat = Matrix.CreateTranslation(sphere.Sphere.Center);
-                //Matrix rotateYMatrix = Matrix.CreateRotationY(MathHelper.ToRadians(90));
-                //Matrix rotateXMatrix = Matrix.CreateRotationX(MathHelper.ToRadians(90));
+                
+                Matrix scaleMatrix = Matrix.CreateScale(((BoundingSphere3D)volume.Bounding).Sphere.Radius);
+                Matrix translateMat = Matrix.CreateTranslation(((BoundingSphere3D)volume.Bounding).Sphere.Center);
 
                 // effect is a compiled effect created and compiled elsewhere
                 // in the application
@@ -178,9 +156,11 @@ namespace GameEngine.Tools
                 foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
-                    basicEffect.AmbientLightColor = color.ToVector3();
+
                     graphicsDevice.SetVertexBuffer(buffer);
                     graphicsDevice.Indices = _indexBuffer;
+
+                    basicEffect.Alpha = ((float)color.A / (float)byte.MaxValue);
 
                     basicEffect.World = scaleMatrix * translateMat;
                     basicEffect.DiffuseColor = color.ToVector3();
@@ -189,43 +169,24 @@ namespace GameEngine.Tools
                         PrimitiveType.LineStrip,
                         0,  // vertex buffer offset to add to each element of the index buffer
                         0,  // first index element to read
-                        lineStripIndices.Length); // number of primitives to draw
-
-                    //basicEffect.World =  scaleMatrix * rotateYMatrix * translateMat;
-                    ////basicEffect.World = translateMat * rotateYMatrix * scaleMatrix;
-                    //basicEffect.DiffuseColor = color.ToVector3();
-
-                    //graphicsDevice.DrawIndexedPrimitives(
-                    //    PrimitiveType.LineStrip,
-                    //    0,  // vertex buffer offset to add to each element of the index buffer
-                    //    0,  // first index element to read
-                    //    lineStripIndices.Length / 3); // number of primitives to draw
-
-                    //basicEffect.World = rotateXMatrix * scaleMatrix * translateMat;
-                    //basicEffect.DiffuseColor = color.ToVector3();
-
-                    //graphicsDevice.DrawIndexedPrimitives(
-                    //    PrimitiveType.LineStrip,
-                    //    0,  // vertex buffer offset to add to each element of the index buffer
-                    //    0,  // first index element to read
-                    //    lineStripIndices.Length / 3); // number of primitives to draw
+                        CIRCLE_NUM_POINTS * 3 + 1); // number of primitives to draw
                 }
             }
         }
-        /// <summary>
-        /// Simply looping through all modelcomponents and calls the DrawSphere
-        /// </summary>
-        /// <param name="gameTime"></param>
+
         public override void Draw(GameTime gameTime)
         {
-            List<int> entities = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();
-            foreach (int ent in entities)
+            List<int> entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            foreach(int ent in entities)
             {
-
-                ModelComponent mc = ComponentManager.GetEntityComponent<ModelComponent>(ent);
-                if (mc.BoundingVolume != null && mc.BoundingVolume.Bounding is BoundingSphere3D)
-                    DrawSphere(mc, new Color(new Vector3(255, 0, 0)));
-
+                ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
+                if (mc.BoundingVolume != null)
+                {
+                    if (mc.BoundingVolume.Bounding is BoundingSphere3D)
+                    {
+                        DrawSpheres(mc.BoundingVolume, Color.Red);
+                    }
+                }
             }
         }
     }
