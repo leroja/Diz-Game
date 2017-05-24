@@ -52,7 +52,7 @@ namespace DizGame.Source.Communication
         /// <param name="message"></param>
         public void AnswerMessage(NetIncomingMessage message)
         {
-            Byte messageType;
+            byte messageType;
 
             switch (message.MessageType)
             {
@@ -95,33 +95,33 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
-            ////string what = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes));
+            //string what = ConvertFromByteArray.ConvertValueToString(message.ReadBytes(message.LengthBytes));
 
-            //Byte[] convertArray = message.ReadBytes(message.LengthBytes);
-            //int valueInt = 0;
-            //Byte valueByte = 0;
-            //int currentPos = 0;
+            Byte[] convertArray = message.ReadBytes(message.LengthBytes);
+            int valueInt = 0;
+            Byte valueByte = 0;
+            int currentPos = 0;
 
-            ////    //Part2 of message
-            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            //playerEntityId = valueInt;
-
-
-            ////    //Part3 of message
-            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
-            //gameSetting = valueByte;
+            //    //Part2 of message
+            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            playerEntityId = valueInt;
 
 
-            ////    //Part4 of message
-            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            //rangeStart = valueInt;
+            //    //Part3 of message
+            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
+            gameSetting = valueByte;
 
-            //currentPos +=ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            //rangeEnd = valueInt;
 
-            ////    //Part5 of message will be the seed to derive positions from that will be needed by client to
-            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            //seed = valueInt;
+            //    //Part4 of message
+            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            rangeStart = valueInt;
+
+            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            rangeEnd = valueInt;
+
+            //    //Part5 of message will be the seed to derive positions from that will be needed by client to
+            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            seed = valueInt;
         }
 
 

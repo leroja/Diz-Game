@@ -65,9 +65,9 @@ namespace ServerApplication.Communication
                             SendInitialGameState(message, GameSettingsType.GameSettings0);
                             break;
 
-                        case (byte)MessageType.WhoIsTheMaster:
-                            SendWhoIsTheMaster(message);
-                            break;
+                        //case (byte)MessageType.WhoIsTheMaster:
+                        //    SendWhoIsTheMaster(message);
+                        //    break;
                     }
                     break;
 
@@ -89,6 +89,10 @@ namespace ServerApplication.Communication
 
             //Building the message.
             messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+
+            //Test of sending a string -> a trailing 'E' is hooked on the message though.
+            //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+            //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 2, "Fungerar det");
 
             Array.Resize(ref messageArray, messageLen);
 

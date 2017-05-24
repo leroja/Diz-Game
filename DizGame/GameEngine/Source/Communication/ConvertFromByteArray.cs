@@ -37,15 +37,17 @@ namespace GameEngine.Source.Communication
 
 
 
-        public static void ConvertValue(Byte[] inputArray, int pos, out int value)
+        public static int ConvertValue(Byte[] inputArray, int pos, out int value)
         {
             value = BitConverter.ToInt32(inputArray, pos);
+            return sizeof(int);
         }
 
 
-        public static void ConvertValue(Byte[] inputArray, int pos, out Byte value)
+        public static int ConvertValue(Byte[] inputArray, int pos, out Byte value)
         {
             value = (Byte)BitConverter.ToChar(inputArray, pos);
+            return sizeof(Byte) * 2;
         }
 
 
@@ -101,7 +103,7 @@ namespace GameEngine.Source.Communication
         /// </summary>
         /// <param name="inputArray"></param>
         /// <returns> input array as a string </returns>
-        private static string ConvertValueToString(Byte[] inputArray)
+        public static string ConvertValueToString(Byte[] inputArray)
         {
             var value = ASCIIEncoding.ASCII.GetString(inputArray);
             return value;

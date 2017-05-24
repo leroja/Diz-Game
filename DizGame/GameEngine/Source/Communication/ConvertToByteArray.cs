@@ -29,15 +29,17 @@ namespace GameEngine.Source.Communication
             int index = 0;
             int len = 0;
 
-            foreach (char character in value.ToArray())
-            {
-                copiedValues = BitConverter.GetBytes(character);
-                len += copiedValues.Length;
+            copiedValues = ASCIIEncoding.ASCII.GetBytes(value);
+            //foreach (char character in value.ToArray())
+            //{
+            //    copiedValues = BitConverter.GetBytes(character);
+            //    len += copiedValues.Length;
 
-                Array.Copy(copiedValues, 0, inputArray, pos*index++* copiedValues.Length, copiedValues.Length);
-            }
+            //    Array.Copy(copiedValues, 0, inputArray, pos*index++* copiedValues.Length, copiedValues.Length);
+            //}
 
-            return len;
+            Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
+            return copiedValues.Length;
         }
 
 
