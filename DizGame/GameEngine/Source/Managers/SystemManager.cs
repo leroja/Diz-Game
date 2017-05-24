@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace GameEngine.Source.Managers
@@ -107,10 +108,43 @@ namespace GameEngine.Source.Managers
         /// </summary>
         public void RunUpdateSystems(GameTime gameTime)
         {
-            foreach (IUpdate system in updateSystems)
+            //foreach (IUpdate system in updateSystems)
+            //{
+            //    system.Update(gameTime);
+            //}
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            GameTime updateGameTime = new GameTime();
+            TimeSpan start;
+
+            var runSteps = 1000.0 / 1000.0;
+            var currentSteps = 0.0;
+
+            while (true)
             {
-                system.Update(gameTime);
+                start = watch.Elapsed;
+
+                if (currentSteps > runSteps)
+                {
+                    updateGameTime.ElapsedGameTime = TimeSpan.FromMilliseconds(currentSteps);
+                    updateGameTime.TotalGameTime += TimeSpan.FromMilliseconds(currentSteps);
+                    currentSteps = 0;
+
+                    //var scene = currentScene;
+                    //if (scene != null && scene.IsSceneInitialised)
+                    //{
+                    //    scene.SystemManager.RunUpdateSystem(updateGameTime);
+                    //}
+                    foreach (IUpdate system in updateSystems)
+                    {
+                        system.Update(gameTime);
+                    }
+                }
+
+                TimeSpan elapsed = watch.Elapsed - start;
+                currentSteps += elapsed.TotalMilliseconds;
             }
+
         }
 
         /// <summary>

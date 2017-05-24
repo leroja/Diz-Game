@@ -16,6 +16,8 @@ namespace DizGame
 
     // efter parallel foreach ca 41 för nästan ingenting och allting 24
 
+    // har dock inte gjort på några utritnings system och de som har med kollisionerna att göra
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
