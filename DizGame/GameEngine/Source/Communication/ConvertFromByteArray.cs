@@ -159,7 +159,7 @@ namespace GameEngine.Source.Communication
         //    return len;
         //}
 
-
+        
 
         ///// <summary>
         ///// This function converts values of Vector3 type and inserts the bytes in the referenced array.
