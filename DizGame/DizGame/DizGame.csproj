@@ -139,6 +139,8 @@
     <None Include="Content\Dude\upBodyC2.tga" />
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
+    <None Include="Content\Fonts\Death.spritefont" />
+    <None Include="Content\Fonts\font.spritefont" />
     <None Include="Content\Fonts\MenuFont.spritefont" />
     <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />

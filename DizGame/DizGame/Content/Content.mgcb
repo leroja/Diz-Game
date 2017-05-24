@@ -349,3 +349,10 @@
 /processorParam:TextureFormat=Compressed
 /build:MapObjects/CyprusHouse/Cyprus_House2.obj
 
+#begin Fonts/Death.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Death.spritefont
+

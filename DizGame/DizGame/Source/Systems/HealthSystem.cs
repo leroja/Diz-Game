@@ -6,6 +6,7 @@ using GameEngine.Source.Managers;
 using Microsoft.Xna;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DizGame.Source.Systems
 {
@@ -107,6 +108,7 @@ namespace DizGame.Source.Systems
                         {
                             var comp = ComponentManager.Instance.GetEntityComponent<PlayerComponent>(HitID);
                             ComponentManager.Instance.RemoveComponentFromEntity(HitID, comp);
+                            ComponentManager.Instance.AddComponentToEntity(HitID, new TextComponent("You Are Dead",new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 3- 90, GameOne.Instance.GraphicsDevice.Viewport.Height/2 -50), Color.Red,GameOne.Instance.Content.Load<SpriteFont>("Fonts/Death"),true));
                         }
                         else if (ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HitID))
                         {
@@ -127,5 +129,6 @@ namespace DizGame.Source.Systems
                 }
             }
         }
+
     }
 }

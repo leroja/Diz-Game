@@ -76,7 +76,12 @@ namespace DizGame.Source.GameStates
             foreach (var id in ScoreID)
             {
                 GameStateEntities.Remove(id);
+                if (ComponentManager.Instance.CheckIfEntityHasComponent<TextComponent>(id))
+                {
+                    ComponentManager.Instance.RemoveComponentFromEntity(id, ComponentManager.Instance.GetEntityComponent<TextComponent>(id));
+                }
             }
+            
             foreach (int entity in GameStateEntities)
             {
                 ComponentManager.Instance.RemoveEntity(entity);
