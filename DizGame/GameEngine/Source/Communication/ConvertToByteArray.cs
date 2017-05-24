@@ -26,12 +26,15 @@ namespace GameEngine.Source.Communication
         public static int ConvertValue(ref Byte[] inputArray, int pos, string value)
         {
             Byte[] copiedValues;
+            Byte[] lengthValue;
 
             copiedValues = ASCIIEncoding.ASCII.GetBytes(value);
+            lengthValue = BitConverter.GetBytes(copiedValues.Length);
 
-            Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
+            Array.Copy(lengthValue, 0, inputArray, pos, copiedValues.Length);
+            Array.Copy(copiedValues, 0, inputArray, pos + lengthValue.Length, copiedValues.Length);
 
-            return pos + copiedValues.Length;
+            return pos + lengthValue.Length +  copiedValues.Length;
         }
 
 

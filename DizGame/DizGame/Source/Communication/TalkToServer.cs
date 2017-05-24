@@ -178,6 +178,7 @@ namespace DizGame.Source.Communication
 
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewBulletComponent);
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);//This function should write the length of the name before the name(local to the function).
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, position);
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, scale);
