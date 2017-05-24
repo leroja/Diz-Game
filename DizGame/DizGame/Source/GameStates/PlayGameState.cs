@@ -1,4 +1,5 @@
 ﻿using AnimationContentClasses;
+using DizGame.Source.Factories;
 using DizGame.Source.Systems;
 using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
@@ -165,10 +166,11 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
-            SystemManager.Instance.AddSystem(new ResourceSystem(500, 0)); // todo finjustera
+            SystemManager.Instance.AddSystem(new ResourceSystem()); // todo finjustera
             SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(cSys);
+            SystemManager.Instance.AddSystem(new HudSystem());
         }
 
         /// <summary>
@@ -218,7 +220,7 @@ namespace DizGame.Source.GameStates
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
-                new Vector2(0, 0), new List<Vector2>());
+                new Vector2(0, 0), new List<Vector2>(), idC);
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
 

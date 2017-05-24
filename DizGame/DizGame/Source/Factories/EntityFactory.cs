@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DizGame
+namespace DizGame.Source.Factories
 {
     /// <summary>
     /// Factory for creating various entities which might be used by the game in the end.
@@ -22,7 +22,6 @@ namespace DizGame
     public class EntityFactory
     {
         private static EntityFactory instance;
-
         
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
@@ -109,7 +108,7 @@ namespace DizGame
                 {
                     IsSunActive = true,
                     DefineHour = 1,
-                    Day = 0,
+                    Day = 1,
                     Hour = 16,
                     ModulusValue = 2,
                 },

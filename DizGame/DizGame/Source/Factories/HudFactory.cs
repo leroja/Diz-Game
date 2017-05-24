@@ -32,13 +32,14 @@ namespace DizGame.Source.Factories
         /// <param name="AmmunitionPosition"></param>
         /// <param name="PlayersRemainingPosition"></param>
         /// <param name="SlotPositions"></param>
-        public int CreateHud(Vector2 healthPosition, Vector2 AmmunitionPosition, Vector2 PlayersRemainingPosition, List<Vector2> SlotPositions)
+        public int CreateHud(Vector2 healthPosition, Vector2 AmmunitionPosition, Vector2 PlayersRemainingPosition, List<Vector2> SlotPositions, int id)
         {
             int HudID = ComponentManager.Instance.CreateID();
             SpriteFont font = Content.Load<SpriteFont>("Fonts\\Font");
 
-            HealthComponent health = new HealthComponent();
-            AmmunitionComponent ammo = new AmmunitionComponent()
+
+            HealthComponent health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(id);
+            AmmunitionComponent ammo = new AmmunitionComponent() // todo ändra sen när vi börjar använda ammo comp
             {
                 ActiveMagazine = new Tuple<AmmunitionType, int, int>(AmmunitionType.AK_47, 30, Magazine.GetSize(AmmunitionType.AK_47))
             };
@@ -68,10 +69,11 @@ namespace DizGame.Source.Factories
 
             List<IComponent> components = new List<IComponent>
             {
-                health,
+                //health,
                 ammo,
                 slot1,
-                new TextComponent(names, textComponents)
+                new TextComponent(names, textComponents),
+                new HudComponent{ TrackedEntity = id},
             };
             ComponentManager.Instance.AddAllComponents(HudID, components);
 
