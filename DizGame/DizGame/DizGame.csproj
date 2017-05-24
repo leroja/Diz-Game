@@ -139,6 +139,8 @@
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
     <None Include="Content\Fonts\MenuFont.spritefont" />
+    <None Include="Content\MapObjects\CyprusHouse\cyprus_house.mtl" />
+    <None Include="Content\MapObjects\CyprusHouse\Cyprus_House2.obj" />
     <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />
     <None Include="Content\MapObjects\Rock\Rock.obj" />
@@ -168,7 +170,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\MapObjects\CyprusHouse\" />
     <Folder Include="Source\Managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

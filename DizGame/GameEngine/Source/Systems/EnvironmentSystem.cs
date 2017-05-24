@@ -20,10 +20,14 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
-            {
-                UpdateDrag(entityID, gameTime);
-            }
+            var ents = ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>();
+            Parallel.ForEach(ents, ent => {
+                UpdateDrag(ent, gameTime);
+            });
+            //foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
+            //{
+            //    UpdateDrag(entityID, gameTime);
+            //}
         }
 
         /// <summary>

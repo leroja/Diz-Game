@@ -10,6 +10,12 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace DizGame
 {
+
+    // kolla på allting 23 fps
+    // kolla på nästan ingenting ca 40 fps
+
+    // efter parallel foreach ca 41 för nästan ingenting och allting 24
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>

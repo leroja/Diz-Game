@@ -5,6 +5,7 @@ using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using DizGame.Source.AI_Behaviors;
 using System;
+using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -23,15 +24,23 @@ namespace DizGame.Source.Systems
             var worldTemp = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            foreach (var EntId in AIIds)
-            {
+            Parallel.ForEach(AIIds, EntId => {
                 var AIComponent = ComponentManager.GetEntityComponent<AIComponent>(EntId);
                 AIComponent.CurrentBehaivior.FindClosestEnemy(AIComponent);
-
-                //Console.WriteLine(AIComponent.CurrentBehaivior.ToString());
+                
 
                 AIComponent.CurrentBehaivior.Update(AIComponent, gameTime);
-            }
+            });
+
+            //foreach (var EntId in AIIds)
+            //{
+            //    var AIComponent = ComponentManager.GetEntityComponent<AIComponent>(EntId);
+            //    AIComponent.CurrentBehaivior.FindClosestEnemy(AIComponent);
+
+            //    //Console.WriteLine(AIComponent.CurrentBehaivior.ToString());
+
+            //    AIComponent.CurrentBehaivior.Update(AIComponent, gameTime);
+            //}
         }
     }
 }

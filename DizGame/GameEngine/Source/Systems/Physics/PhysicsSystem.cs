@@ -68,11 +68,16 @@ namespace GameEngine.Source.Systems
         public override void Update(GameTime gameTime)
         {
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
-            {
-                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
+            var ents = ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>();
+            Parallel.ForEach(ents, ent => {
+                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(ent);
                 physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
-            }
+            });
+            //foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
+            //{
+            //    PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
+            //    physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
+            //}
             //CheckCollision(dt);
         }
         /// <summary>

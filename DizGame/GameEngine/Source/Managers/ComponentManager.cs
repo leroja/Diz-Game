@@ -59,16 +59,29 @@ namespace GameEngine.Source.Managers
         /// </returns>
         public int CreateID()
         {
-            if (entityIDs.Count == 0)
+            lock (this)
             {
-                entityIDs.AddRange(Enumerable.Range(curMax + 1, curMax + step));
-                curMax += step;
-            }
-            int id = entityIDs[entityIDs.Count - 1];
+                if (entityIDs.Count == 0)
+                {
+                    entityIDs.AddRange(Enumerable.Range(curMax + 1, curMax + step));
+                    curMax += step;
+                }
+                int id = entityIDs[entityIDs.Count - 1];
 
-            entityIDs.Remove(id);
-            CurrentTakenEntityIds.Add(id);
-            return id;
+                entityIDs.Remove(id);
+                CurrentTakenEntityIds.Add(id);
+                return id;
+            }
+            //if (entityIDs.Count == 0)
+            //{
+            //    entityIDs.AddRange(Enumerable.Range(curMax + 1, curMax + step));
+            //    curMax += step;
+            //}
+            //int id = entityIDs[entityIDs.Count - 1];
+
+            //entityIDs.Remove(id);
+            //CurrentTakenEntityIds.Add(id);
+            //return id;
         }
 
         /// <summary>

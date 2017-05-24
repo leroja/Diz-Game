@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using DizGame.Source.Factories;
+using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -57,21 +58,33 @@ namespace DizGame.Source.Systems
             int worldid = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>().First();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(worldid);
 
-            foreach (var id in entitylist)
+            Parallel.ForEach(entitylist, id =>
             {
                 var transComp = ComponentManager.GetEntityComponent<TransformComponent>(id);
                 transComp.Rotation += new Vector3(0, 0.7f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0f);
-            }
+            });
+            //foreach (var id in entitylist)
+            //{
+            //    var transComp = ComponentManager.GetEntityComponent<TransformComponent>(id);
+            //    transComp.Rotation += new Vector3(0, 0.7f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0f);
+            //}
             
             if (world.Day % world.ModulusValue != 1)
             {
-                foreach (int entity in entitylist)
+                Parallel.ForEach(entitylist, entity =>
                 {
                     resource = ComponentManager.GetEntityComponent<ResourceComponent>(entity);
                     resource.duration -= gameTime.ElapsedGameTime;
                     if (resource.duration.Seconds <= 0)
                         RemoveOldResources(entity);
-                }
+                });
+                //foreach (int entity in entitylist)
+                //{
+                //    resource = ComponentManager.GetEntityComponent<ResourceComponent>(entity);
+                //    resource.duration -= gameTime.ElapsedGameTime;
+                //    if (resource.duration.Seconds <= 0)
+                //        RemoveOldResources(entity);
+                //}
                 if (entitylist.Count + numberOfRemovedResources < maxNumberOfResourcesInPlay)
                     AddNewResources(entitylist.Count + numberOfRemovedResources);
             }
