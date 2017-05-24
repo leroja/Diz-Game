@@ -6,13 +6,26 @@ using System.Threading.Tasks;
 
 namespace ServerSupportedCommunication.Enums
 {
+    /// <summary>
+    /// These are used when communicating between the server and the client and vice versa.
+    /// </summary>
     public enum MessageType : byte
     {
-        //Client to Server
+        //////////////////////////////////Client to Server
 
         //Ask server
         GetInitialGameState = 1,
         WhoIsTheMaster,
+
+        /// <summary>
+        ///Use these for sending messages to the server in need of debugging.
+        /// </summary>
+        DebugThisFunction0,
+        DebugThisFunction1,
+        DebugThisFunction2,
+        DebugThisFunction3,
+        DebugThisFunction4,
+        DebugThisFunction5,
 
         //Client's created objects
         CreatedNewEntity, //Test with sending a whole new entity as a list of components.
@@ -23,18 +36,26 @@ namespace ServerSupportedCommunication.Enums
 
 
 
-        //Server to Client
+        ///////////////////////////////Server to Client
         YouAreTheMaster,
 
         //Create objects
         CreateNewEntity, //Test to send a whole new entity as a list of components.
         CreatePlayer,    //start positions
-        CreateInitialGameState,        //Used instead for createboulder etc (they are included in the vector as positions).
-                                       //CreatedBoulder, //Vector with positions instead e.g 10 first positions are boulders 
-                                       //CreatedTree,    //next 20 are trees and
-                                       //CreatedHouse,   // the rest are houses.
+        CreateInitialGameState,
+
+
         CreateBulletComponent,
 
+        /// <summary>
+        /// Use these to sending messages to the client in need of debugging.
+        /// </summary>
+        DebuggFunction0,
+        DebuggFunction1,
+        DebuggFunction2,
+        DebuggFunction3,
+        DebuggFunction4,
+        DebuggFunction5,
 
         //Moved objects
         MoveEntity,

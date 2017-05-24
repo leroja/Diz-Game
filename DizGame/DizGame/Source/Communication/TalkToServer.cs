@@ -70,6 +70,27 @@ namespace DizGame.Source.Communication
                         case (byte)MessageType.YouAreTheMaster:
                             IAmTheMaster(message);
                             break;
+
+
+                            //Use these cases when debugging messages:
+                        case (byte)MessageType.DebuggFunction0:
+                            DebugThisFunction0(message);
+                            break;
+                        case (byte)MessageType.DebuggFunction1:
+                            DebugThisFunction1(message);
+                            break;
+                        case (byte)MessageType.DebuggFunction2:
+                            DebugThisFunction2(message);
+                            break;
+                        case (byte)MessageType.DebuggFunction3:
+                            DebugThisFunction3(message);
+                            break;
+                        case (byte)MessageType.DebuggFunction4:
+                            DebugThisFunction4(message);
+                            break;
+                        case (byte)MessageType.DebuggFunction5:
+                            DebugThisFunction5(message);
+                            break;
                     }
                     break;
 
@@ -78,7 +99,8 @@ namespace DizGame.Source.Communication
             }
         }
 
-        private static void IAmTheMaster(NetIncomingMessage message)
+
+        private void IAmTheMaster(NetIncomingMessage message)
         {
             Byte[] convertArray = message.ReadBytes(message.LengthBytes);
             bool valueBool = false;
@@ -94,8 +116,6 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
-            //string what = ConvertFromByteArray.ConvertValueToString(message.ReadBytes(message.LengthBytes));
-
             Byte[] convertArray = message.ReadBytes(message.LengthBytes);
             int valueInt = 0;
             Byte valueByte = 0;
@@ -233,5 +253,40 @@ namespace DizGame.Source.Communication
             client.FlushSendQueue();
         }
 
+
+        /// <summary>
+        /// Used for internal debugging purposes by developers that need testing functions before making them public.
+        /// </summary>
+        private void DebugThisFunction0(NetIncomingMessage message)
+        {
+            string what = "";
+            int pos = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes), 0, out what);
+        }
+
+    
+        private void DebugThisFunction1(NetIncomingMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DebugThisFunction2(NetIncomingMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DebugThisFunction3(NetIncomingMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DebugThisFunction4(NetIncomingMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DebugThisFunction5(NetIncomingMessage message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
