@@ -17,14 +17,31 @@ namespace DizGame.Source.GameStates
     class ScoreScreen : GameState
     {
         #region Properties
+        /// <summary>
+        /// List whit Entities. Used for cntolling entites in state
+        /// </summary>
         public override List<int> GameStateEntities { get; }
+        /// <summary>
+        /// Spritefont used for printing text
+        /// </summary>
         private SpriteFont SpriteFont;
+        /// <summary>
+        /// The previuc keuboardstate to handel input
+        /// </summary>
         private KeyboardState oldState;
+        /// <summary>
+        /// The newest keyboardstate to chek input. ussed to get to next stage
+        /// </summary>
         private KeyboardState newState;
+        /// <summary>
+        /// Textsystem for printing the txt in the scorelist
+        /// </summary>
         private TextSystem TextSystem;
         #endregion
 
-        
+        /// <summary>
+        /// Basic constructor for ScoreSreen
+        /// </summary>
         public ScoreScreen()
         {
             GameStateEntities = new List<int>();
@@ -32,7 +49,9 @@ namespace DizGame.Source.GameStates
             oldState = Keyboard.GetState();
             TextSystem = new TextSystem(SystemManager.Instance.SpriteBatch);
         }
-
+        /// <summary>
+        /// metod calld uppon entering gamestate. fixes whit potitions for text and prints the score list 
+        /// </summary>
         public override void Entered()
         {
             int y = 50;
@@ -62,7 +81,10 @@ namespace DizGame.Source.GameStates
             AudioManager.Instance.ChangeRepeat();
             AudioManager.Instance.ChangeSongVolume(0.5f);
         }
-
+        /// <summary>
+        /// Fixes the list whit Scorers so it is in order for printing
+        /// </summary>
+        /// <returns></returns>
         private List<int> GetScoreStatistics()
         {
             List<ScoreComponent> Score = new List<ScoreComponent>();
@@ -81,7 +103,9 @@ namespace DizGame.Source.GameStates
             temp.Reverse();
             return temp;
         }
-
+        /// <summary>
+        /// Exiting function to remove all the entities which is no longer needed.
+        /// </summary>
         public override void Exiting()
         {
             AudioManager.Instance.StopSong();
@@ -94,17 +118,24 @@ namespace DizGame.Source.GameStates
             }
             SystemManager.Instance.RemoveSystem(TextSystem);
         }
-
+        /// <summary>
+        /// not implemented
+        /// </summary>
         public override void Obscuring()
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Not inplemented
+        /// </summary>
         public override void Revealed()
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Method to run durring the update part of the game, should contain logic
+        /// for exiting the gamestate.
+        /// </summary>
         public override void Update()
         {
             oldState = newState;

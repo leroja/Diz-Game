@@ -66,7 +66,7 @@ namespace DizGame.Source.Factories
         {
             VisibleBullets = true;
             this.Content = GameOne.Instance.Content;
-            CreateWorldComp();
+            //CreateWorldComp();
 
             ModelDic = new Dictionary<string, Model>
             {

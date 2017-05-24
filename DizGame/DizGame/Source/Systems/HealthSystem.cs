@@ -10,21 +10,30 @@ using System.Collections.Generic;
 namespace DizGame.Source.Systems
 {
     /// <summary>
-    ///  20 träff 
-    ///  100 kill
+    ///  Defoult scor for hit =  5 
+    ///  Defoult score for kill = 100
     /// </summary>
     public class HealthSystem : IObserver<Tuple<object, object>>
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public void OnCompleted()
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="error"></param>
         public void OnError(Exception error)
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Funktion called from Observable class. used for kollisions
+        /// </summary>
+        /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
         {
             int id1 = (int)value.Item1;
@@ -53,6 +62,11 @@ namespace DizGame.Source.Systems
                 }
             }
         }
+        /// <summary>
+        /// Logick for handeling Resource/player & recourse/Ai Kolisions
+        /// </summary>
+        /// <param name="HelathID">id of Player/Ai to pick upp Recource</param>
+        /// <param name="ResourceID">ID of the recource </param>
 
         private void PlayerResorceColision(int HelathID, int ResourceID)
         {
@@ -73,7 +87,11 @@ namespace DizGame.Source.Systems
                 }
             }
         }
-
+        /// <summary>
+        /// Handel logick for bullet/player  & bullet/Ai kolisions. 
+        /// </summary>
+        /// <param name="BulletID">ID of bullet.</param>
+        /// <param name="HitID">ID of Kolision target</param>
         private void BulletPlayerColision(int BulletID, int HitID)
         {
             var bullet = ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID);
@@ -95,7 +113,7 @@ namespace DizGame.Source.Systems
                             var comp = ComponentManager.Instance.GetEntityComponent<AIComponent>(HitID);
                             ComponentManager.Instance.RemoveComponentFromEntity(HitID, comp);
                         }
-                        ComponentManager.Instance.RemoveComponentFromEntity(HittID, ComponentManager.Instance.GetEntityComponent<ModelComponent>(HittID));
+                        ComponentManager.Instance.RemoveComponentFromEntity(HitID, ComponentManager.Instance.GetEntityComponent<ModelComponent>(HitID));
                         
                         ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner).Score += 100;
 
