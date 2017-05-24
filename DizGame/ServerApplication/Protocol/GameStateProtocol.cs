@@ -119,21 +119,21 @@ namespace ServerApplication.Protocol
             lock (_lockObject)
             {
                 //Part2 of message
-                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
+                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
 
                 //Part3 of message
-                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
+                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
 
 
 
                 //Part4 of message
                 ReserveRangeEntityIds(playerEntityId++, ref rangeStart, ref rangeEnd);
-                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
-                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
+                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
+                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
 
                 //Part5 of message will be the seed to derive positions from that will be needed by client to
                 //build gamesettings0 gameMap.
-                messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
+                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
             }
 
             return messageLen;

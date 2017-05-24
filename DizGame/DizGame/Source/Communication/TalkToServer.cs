@@ -102,24 +102,24 @@ namespace DizGame.Source.Communication
             int currentPos = 0;
 
             //    //Part2 of message
-            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
             playerEntityId = valueInt;
 
 
             //    //Part3 of message
-            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
+            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
             gameSetting = valueByte;
 
 
             //    //Part4 of message
-            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
             rangeStart = valueInt;
 
-            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
             rangeEnd = valueInt;
 
             //    //Part5 of message will be the seed to derive positions from that will be needed by client to
-            currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
             seed = valueInt;
         }
 
@@ -131,7 +131,9 @@ namespace DizGame.Source.Communication
         {
             InitMessage();
 
-            int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.GetInitialGameState);
+            int arrLength = 0;
+            
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.GetInitialGameState);
 
             SendMessage(arrLength);
         }
@@ -172,15 +174,17 @@ namespace DizGame.Source.Communication
         {
             InitMessage();
 
-            int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreatedNewBulletComponent);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, entityId);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, modelName);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, position);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, scale);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, maxRange);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, initialVelocity);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, rotation);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, damage);
+            int arrLength = 0;
+
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewBulletComponent);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, position);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, scale);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, maxRange);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, initialVelocity);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, rotation);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, damage);
 
             SendMessage(arrLength);
         }
@@ -189,9 +193,11 @@ namespace DizGame.Source.Communication
         {
             InitMessage();
 
-            int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreatedNewTransformComponent);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, entityId);
-            arrLength += ConvertToByteArray.ConvertValue(ref messageArray, arrLength, component);
+            int arrLength = 0;
+
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewTransformComponent);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, component);
 
             SendMessage(arrLength);
         }
@@ -201,7 +207,9 @@ namespace DizGame.Source.Communication
         {
             InitMessage();
 
-            int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.WhoIsTheMaster);
+            int arrLength = 0;
+
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.WhoIsTheMaster);
 
             SendMessage(arrLength);
         }
