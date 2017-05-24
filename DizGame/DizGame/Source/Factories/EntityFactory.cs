@@ -65,15 +65,14 @@ namespace DizGame.Source.Factories
         private EntityFactory()
         {
             VisibleBullets = true;
-
-            CreateWorldComp();
             this.Content = GameOne.Instance.Content;
+            CreateWorldComp();
 
             ModelDic = new Dictionary<string, Model>
             {
                 { "Bullet", Content.Load<Model>("Bullet/Bullet") },
                 { "Cartridge", Content.Load<Model>("Bullet/Cartridge") },
-                { "CyprusHouse", Content.Load<Model>("MapObjects/CyprusHouse/Cyprus_House") } ,
+                { "CyprusHouse", Content.Load<Model>("MapObjects/CyprusHouse/Cyprus_House2") } ,
                 { "Tree", Content.Load<Model>("MapObjects/Tree/lowpolytree") },
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
                 { "Dude", Content.Load<Model>("Dude/Dude72") },
@@ -115,6 +114,13 @@ namespace DizGame.Source.Factories
             };
             FlareFactory.CreateFlare(GameOne.Instance.Content, GameOne.Instance.GraphicsDevice, worldEntId);
             ComponentManager.Instance.AddAllComponents(worldEntId, compList);
+
+            ComponentManager.Instance.AddComponentToEntity(ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>()[0],
+                new TextComponent("WorldTime",
+                new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2 - 50, 0),
+                Color.White,
+                Content.Load<SpriteFont>("Fonts/font"),
+                true));
         }
 
         // todo gör så att mitten av croshair är på position itället för ena hörnet som det nu
