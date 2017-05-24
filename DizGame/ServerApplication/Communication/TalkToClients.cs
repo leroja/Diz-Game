@@ -88,9 +88,11 @@ namespace ServerApplication.Communication
             NetOutgoingMessage outMessage = server.CreateMessage();
 
             //Building the message.
-            //messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
-            messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreateInitialGameState);
-            messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 2, "Fungerar det");
+            messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+
+            //Test of sending a string -> a trailing 'E' is hooked on the message though.
+            //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+            //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 2, "Fungerar det");
 
             Array.Resize(ref messageArray, messageLen);
 
