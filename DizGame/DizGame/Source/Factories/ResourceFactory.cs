@@ -62,7 +62,7 @@ namespace DizGame.Source.Factories
             }
             ModelComponent mcp = new ModelComponent(model)
             {
-                IsVisible = EntityFactory.Instance.VisibleBullets
+                IsVisible = EntityFactory.Instance.VisibleBullets,
                 BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(sphere))
             };
 
@@ -96,7 +96,7 @@ namespace DizGame.Source.Factories
             BoundingBox box = new BoundingBox(min, max);
             ModelComponent mcp = new ModelComponent(ModelDic["Cartridge"])
             {
-                IsVisible = VisibleBullets,
+                IsVisible = EntityFactory.Instance.VisibleBullets,
                 BoundingVolume = new BoundingVolume(0, new BoundingBox3D(box))
                 
             };

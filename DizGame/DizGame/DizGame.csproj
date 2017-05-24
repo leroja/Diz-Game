@@ -75,7 +75,6 @@
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
     <Compile Include="Source\Systems\GameTransformSystem.cs" />
-    <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
@@ -137,8 +136,8 @@
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
     <None Include="Content\Fonts\MenuFont.spritefont" />
+    <None Include="Content\MapObjects\CyprusHouse\cyprus_house.mtl" />
     <None Include="Content\MapObjects\CyprusHouse\Cyprus_House.obj" />
-    <None Include="Content\MapObjects\CyprusHouse\Cyprys_House.mtl" />
     <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />
     <None Include="Content\MapObjects\Rock\Rock.obj" />
