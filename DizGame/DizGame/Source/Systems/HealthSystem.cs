@@ -51,14 +51,6 @@ namespace DizGame.Source.Systems
                 {
                     BulletPlayerColision(id2, id1);
                 }
-                List<int> numberOfPlayers = new List<int>();
-                numberOfPlayers.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
-                numberOfPlayers.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
-                if(numberOfPlayers .Count == 1)
-                {
-                    ///TODO medela GAMESTATE ATT SPELET ÄR FÄRDIGT
-                }
-
             }
         }
 
@@ -105,7 +97,9 @@ namespace DizGame.Source.Systems
                             ComponentManager.Instance.RemoveComponentFromEntity(HittID, comp);
                         }
                         ComponentManager.Instance.RemoveComponentFromEntity(HittID, ComponentManager.Instance.GetEntityComponent<ModelComponent>(HittID));
-                        ComponentManager.Instance.GetEntityComponent<ScoreComponent>(HittID).Score += 100;
+                        
+                        ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner).Score += 100;
+
                     }
 
 
@@ -113,7 +107,7 @@ namespace DizGame.Source.Systems
                     {
                         ComponentManager.Instance.GetEntityComponent<HealthComponent>(HittID).Health -= bullet.Damage;
                         var score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(bullet.Owner);
-                        score.Score += 20;
+                        score.Score += 5;
                     }
                 }
             }

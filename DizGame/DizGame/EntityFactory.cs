@@ -67,7 +67,7 @@ namespace DizGame
         {
             VisibleBullets = true;
 
-            CreateWorldComp();
+            
             this.Content = GameOne.Instance.Content;
 
             ModelDic = new Dictionary<string, Model>
@@ -143,7 +143,7 @@ namespace DizGame
         /// Function to add the entity which might be the model for the different players
         /// </summary>
         /// <returns>return a int which represents the entity id for the object</returns>
-        public int CreateDude()
+        public int CreateDude(string nameOfPlayer)
         {
             int entityID = ComponentManager.Instance.CreateID();
 
@@ -168,7 +168,10 @@ namespace DizGame
                 keys,
                 mouse,
                 new HealthComponent(),
-                new ScoreComponent(),
+                new ScoreComponent()
+                {
+                    NameOfScorer = nameOfPlayer
+                },
                 new PlayerComponent(),
                 new PhysicsComponent()
                 {
@@ -463,8 +466,9 @@ namespace DizGame
         /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
         /// <param name="chaseDist"> In what distance the enemy have to be for the AI to chase it </param>
         /// <param name="DamagePerShot"> How much damage the AI does per shot </param>
+        /// <param name="nameOfAi"> The name of the ai used for scoring</param>
         /// <returns> The ID of the new AI Entity  </returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot, string nameOfAi)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
@@ -476,7 +480,10 @@ namespace DizGame
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),
                 new HealthComponent(),
-                new ScoreComponent(),
+                new ScoreComponent()
+                {
+                    NameOfScorer = nameOfAi
+                },
                 new PhysicsComponent()
                 {
                     Volume = 22.5f,
