@@ -31,7 +31,7 @@ namespace GameEngine.Source.Communication
             copiedValues = ASCIIEncoding.ASCII.GetBytes(value);
             lengthValue = BitConverter.GetBytes(copiedValues.Length);
 
-            Array.Copy(lengthValue, 0, inputArray, pos, copiedValues.Length);
+            Array.Copy(lengthValue, 0, inputArray, pos, lengthValue.Length);
             Array.Copy(copiedValues, 0, inputArray, pos + lengthValue.Length, copiedValues.Length);
 
             return pos + lengthValue.Length +  copiedValues.Length;

@@ -17,24 +17,6 @@ namespace GameEngine.Source.Communication
         //All functions commented here needs to be rewritten to convert the values back to it's original.
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        //This function is the beginning of converting - but it does not work as is...
-        //public static string  ConvertValue(Byte[] inputArray)
-        //{
-        //    char character;
-        //    int index = 0;
-        //    int len = 0;
-        //    string copiedValues = "";
-        //    int charLen = 2;
-
-        //    for(index=0; index < inputArray.Length; index++)
-        //    {
-        //        character = BitConverter.ToChar(inputArray, index);
-        //        len += charLen;
-        //        //Array.Copy(copiedValues, 0, inputArray, pos * index++ * copiedValues.Length, copiedValues.Length);
-        //    }
-        //    return copiedValues;
-        //}
-
 
         ///// <summary>
         ///// This function converts values of Int32 from Byte[] array.
@@ -111,16 +93,23 @@ namespace GameEngine.Source.Communication
             return pos;
 
         }
-        /// <summary>
-        /// This method coverts whole byte array to a string
-        /// </summary>
-        /// <param name="inputArray"></param>
-        /// <returns> input array as a string </returns>
-        public static string ConvertValueToString(Byte[] inputArray)
+
+
+        ///// <summary>
+        ///// This function converts values of string from Byte[] array.
+        ///// </summary>
+        ///// <param name="inputArray">The zero based array to read the bytes from.</param>
+        ///// <param name="pos">The start position to begin reading from in the input array.</param>
+        /// <param name="value">The converted value.</param>
+        /// <returns>The advanced position in the input array where the next data type can be read from.</returns>
+        public static int ConvertValue(Byte[] inputArray, int pos, out string value)
         {
-            var value = ASCIIEncoding.ASCII.GetString(inputArray);
-            return value;
-            //Behöver vi en där man anger position i inputArrayen också? :)
+            int sizeOfString = BitConverter.ToInt32(inputArray, pos);
+
+            value = ASCIIEncoding.ASCII.GetString(inputArray, pos + sizeof(Int32), sizeOfString);
+
+            return pos + sizeof(Int32) + sizeOfString;
+            //Behöver vi en där man anger position i inputArrayen också? :) //The position is now included as a first int in the beginning of the string.
             // dvs, vill vi ha ut hela byte arrayen som sträng eller bara en del?
         }
 
