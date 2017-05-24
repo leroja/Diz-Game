@@ -36,12 +36,12 @@ namespace DizGame.Source.Communication
         public static int seed { get; private set; }
 
         //Variables that are received from server when asking for WhoIsTheMaster
-        public static bool MeMaster  { get; private set; }
+        public static bool IsMaster  { get; private set; }
 
         public TalkToServer(NetClient client)
         {
             TalkToServer.client = client;
-            MeMaster = false;
+            IsMaster = false;
         }
 
 
@@ -85,7 +85,7 @@ namespace DizGame.Source.Communication
 
             //Part2 of message
             ConvertFromByteArray.ConvertValue(convertArray, 0, out valueBool);
-            MeMaster = valueBool;
+            IsMaster = valueBool;
         }
 
 
