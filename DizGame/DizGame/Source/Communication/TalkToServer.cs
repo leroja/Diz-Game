@@ -95,7 +95,7 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
-            string what = ConvertFromByteArray.ConvertValueToString(message.ReadBytes(message.LengthBytes));
+            //string what = ConvertFromByteArray.ConvertValueToString(message.ReadBytes(message.LengthBytes));
 
             Byte[] convertArray = message.ReadBytes(message.LengthBytes);
             int valueInt = 0;
