@@ -84,8 +84,8 @@ namespace DizGame.Source.Communication
             bool valueBool = false;
 
             //Part2 of message
-            //ConvertFromByteArray.ConvertValue(convertArray, 0, out valueBool);
-            //MeMaster = valueBool;
+            ConvertFromByteArray.ConvertValue(convertArray, 0, out valueBool);
+            MeMaster = valueBool;
         }
 
 

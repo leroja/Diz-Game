@@ -36,18 +36,31 @@ namespace GameEngine.Source.Communication
         //}
 
 
-
+        ///// <summary>
+        ///// This function converts values of Int32 from Byte[] array.
+        ///// </summary>
+        ///// <param name="inputArray">The zero based array to read the bytes from.</param>
+        ///// <param name="pos">The start position to begin reading from in the input array.</param>
+        /// <param name="value">The converted value.</param>
+        /// <returns>The advanced position in the input array where the next data type can be read from.</returns>
         public static int ConvertValue(Byte[] inputArray, int pos, out int value)
         {
             value = BitConverter.ToInt32(inputArray, pos);
-            return sizeof(int);
+            return pos + sizeof(int);
         }
 
 
+        ///// <summary>
+        ///// This function converts values of Byte from Byte[] array.
+        ///// </summary>
+        ///// <param name="inputArray">The zero based array to read the bytes from.</param>
+        ///// <param name="pos">The start position to begin reading from in the input array.</param>
+        /// <param name="value">The converted value.</param>
+        /// <returns>The advanced position in the input array where the next data type can be read from.</returns>
         public static int ConvertValue(Byte[] inputArray, int pos, out Byte value)
         {
             value = (Byte)BitConverter.ToChar(inputArray, pos);
-            return sizeof(Byte) * 2;
+            return pos + sizeof(Byte) * 2;
         }
 
 
@@ -172,7 +185,7 @@ namespace GameEngine.Source.Communication
         //    return len;
         //}
 
-        
+
 
         ///// <summary>
         ///// This function converts values of Vector3 type and inserts the bytes in the referenced array.
@@ -223,5 +236,21 @@ namespace GameEngine.Source.Communication
 
         //    return len;
         //}
+
+
+
+        ///// <summary>
+        ///// This function converts values of bool from Byte[] array.
+        ///// </summary>
+        ///// <param name="inputArray">The zero based array to read the bytes from.</param>
+        ///// <param name="pos">The start position to begin reading from in the input array.</param>
+        /// <param name="value">The converted value.</param>
+        /// <returns>The advanced position in the input array where the next data type can be read from.</returns>
+        public static int ConvertValue(Byte[] inputArray, int pos, out bool value)
+        {
+            value = BitConverter.ToBoolean(inputArray, pos);
+            return pos + sizeof(bool);
+        }
+
     }
 }
