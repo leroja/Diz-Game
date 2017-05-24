@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
+using System.Runtime.InteropServices;
 
 namespace GameEngine.Source.Communication
 {
@@ -73,36 +74,68 @@ namespace GameEngine.Source.Communication
         /// </summary>
         /// <param name="inputArray"></param>
         /// <param name="pos"></param>
-        /// <param name="quaternion"></param>
-        /// <returns></returns>
-        private static Quaternion ConvertValue(ref Byte[] inputArray, int pos, out Quaternion quaternion)
+        /// <returns> A Quaternion that has been picked out from the Byte array at a given position</returns>
+        private static Quaternion ConvertValueToQuaternion(Byte[] inputArray, int pos)
         {            
-             
+             //om det nu blir +4 i inputarrayen
             Quaternion qua = new Quaternion();
-            qua.X = ConvertValue(ref inputArray, pos);
+            var value = ConvertValueToFloat(inputArray, pos);
+            qua.X = value;
+            pos += Marshal.SizeOf(value); //så kan man göra för att få ut den riktiga storleken
+            qua.Y = ConvertValueToFloat(inputArray, pos);
             pos += 4;
-            qua.Y = ConvertValue(ref inputArray, pos);
+            qua.Z = ConvertValueToFloat(inputArray, pos);
             pos += 4;
-            qua.Z = ConvertValue(ref inputArray, pos);
-            pos += 4;
-            qua.W = ConvertValue(ref inputArray, pos);
-            quaternion = qua;
-            return quaternion;
+            qua.W = ConvertValueToFloat(inputArray, pos);
+            return qua;
 
+        }
+        /// <summary>
+        /// This method coverts whole byte array to a string
+        /// </summary>
+        /// <param name="inputArray"></param>
+        /// <returns> input array as a string </returns>
+        private static string ConvertValueToString(Byte[] inputArray)
+        {
+            var value = ASCIIEncoding.ASCII.GetString(inputArray);
+            return value;
+            //Behöver vi en där man anger position i inputArrayen också? :)
+            // dvs, vill vi ha ut hela byte arrayen som sträng eller bara en del?
         }
 
 
         /// <summary>
-        /// This method converts to float and returns it
+        /// This method converts to float
         /// </summary>
         /// <param name="inputArray"></param>
         /// <param name="pos"></param>
-        /// <param name="value"></param>
-        public static float ConvertValue(ref Byte[] inputArray, int pos)
+        ///  /// <returns> A float at a given position from the Byte array </returns>
+        public static float ConvertValueToFloat(Byte[] inputArray, int pos)
         {
-            var value = inputArray.ElementAt(pos);
-            return value;
+            var value = BitConverter.ToDouble(inputArray, pos);
+            return (float)value;
         }
+
+        /// <summary>
+        /// This method picks put a vector3 from the byte array at a given position
+        /// </summary>
+        /// <param name="inputArray"></param>
+        /// <param name="pos"></param>
+        /// <returns>A vector3</returns>
+        private static Vector3 ConvertValueToVector3(Byte[] inputArray, int pos)
+        {
+            int floatSize;
+            Vector3 vec = new Vector3();
+            vec.X = ConvertValueToFloat(inputArray, pos);
+            floatSize = Marshal.SizeOf(vec.X);
+            pos += floatSize;
+            vec.Y = ConvertValueToFloat(inputArray, pos);
+            floatSize = Marshal.SizeOf(vec.Y);
+            pos += floatSize;
+            vec.Z = ConvertValueToFloat(inputArray, pos);
+            return vec;
+        }
+
 
 
         ///// <summary>
