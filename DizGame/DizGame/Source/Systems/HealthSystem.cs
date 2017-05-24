@@ -40,6 +40,8 @@ namespace DizGame.Source.Systems
             int id1 = (int)value.Item1;
             int id2 = (int)value.Item2;
 
+            var temp = ComponentManager.Instance.GetAllEntityComponents(id1);
+            var temp2 = ComponentManager.Instance.GetAllEntityComponents(id2);
             if (ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id1) || ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id2))
             {
                 if (ComponentManager.Instance.CheckIfEntityHasComponent<HealthComponent>(id1))
@@ -73,17 +75,24 @@ namespace DizGame.Source.Systems
         {
             var hel = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID);
             var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(ResourceID);
-            if (res.thisType == ResourceComponent.ResourceType.Health)
-            {
-                if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HelathID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HelathID))
+            if(res != null) {
+                if (res.thisType == ResourceComponent.ResourceType.Health)
                 {
-                    if (hel.Health + hel.HealthOnPickup >= 100)
+                    if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HelathID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HelathID))
                     {
-                        ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).Health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).MaxHealth;
-                    }
-                    else
-                    {
-                        ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).Health += ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).HealthOnPickup;
+                        if (hel.Health + hel.HealthOnPickup >= 100)
+                        {
+                            ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).Health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).MaxHealth;
+                            ComponentManager.Instance.RemoveEntity(ResourceID);
+                            ComponentManager.Instance.RecycleID(ResourceID);
+
+                        }
+                        else
+                        {
+                            ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).Health += ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).HealthOnPickup;
+                            ComponentManager.Instance.RemoveEntity(ResourceID);
+                            ComponentManager.Instance.RecycleID(ResourceID);
+                        }
                     }
                 }
             }

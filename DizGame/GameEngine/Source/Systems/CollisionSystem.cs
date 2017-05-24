@@ -56,13 +56,13 @@ namespace GameEngine.Source.Systems
                 for (int j = i + 1; j < boundingEntities.Count; j++)
                 {
                     ModelComponent modComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(boundingEntities[j]);
-                    if (modComp1.BoundingVolume != null && modComp2.BoundingVolume != null)
+                    if (modComp1 != null && modComp2 != null && modComp1.BoundingVolume != null && modComp2.BoundingVolume != null)
                     {
                         if (modComp1.BoundingVolume.Bounding.Intersects(modComp2.BoundingVolume.Bounding))
                         {
                             foreach (IObserver<Tuple<object, object>> observer in observers)
                             {
-                                observer.OnNext(new Tuple<object, object>(i, j));
+                                observer.OnNext(new Tuple<object, object>(boundingEntities[i], boundingEntities[j]));
                             }
                         }
                     }

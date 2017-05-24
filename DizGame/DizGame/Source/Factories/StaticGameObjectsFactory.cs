@@ -162,7 +162,7 @@ namespace DizGame.Source.Factories
 
             if (nameOfModel == "WoodHouse")
             {
-                scale = new Vector3(0.04f, 0.04f, 0.04f);
+                scale = Vector3.One;
             }
             else
             {
