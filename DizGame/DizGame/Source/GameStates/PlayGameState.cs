@@ -156,7 +156,6 @@ namespace DizGame.Source.GameStates
             cSys.Subscribe(new HealthSystem());
             //cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
-            //SystemManager.Instance.AddSystem(cSys);
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             //SystemManager.Instance.AddSystem(new GameTransformSystem());
