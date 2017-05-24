@@ -75,19 +75,25 @@ namespace GameEngine.Source.Communication
         /// <param name="inputArray"></param>
         /// <param name="pos"></param>
         /// <returns> A Quaternion that has been picked out from the Byte array at a given position</returns>
-        private static Quaternion ConvertValueToQuaternion(Byte[] inputArray, int pos)
-        {            
+        private static int ConvertValue(Byte[] inputArray, int pos, out Quaternion quaternion)
+        {
+            float value;    
              //om det nu blir +4 i inputarrayen
             Quaternion qua = new Quaternion();
-            var value = ConvertValueToFloat(inputArray, pos);
+             ConvertValue(inputArray, pos, out value);
             qua.X = value;
             pos += Marshal.SizeOf(value); //så kan man göra för att få ut den riktiga storleken
-            qua.Y = ConvertValueToFloat(inputArray, pos);
-            pos += 4;
-            qua.Z = ConvertValueToFloat(inputArray, pos);
-            pos += 4;
-            qua.W = ConvertValueToFloat(inputArray, pos);
-            return qua;
+            ConvertValue(inputArray, pos, out value);
+            qua.Y = value;
+            pos += Marshal.SizeOf(value);
+            ConvertValue(inputArray, pos, out value);
+            qua.Z = value;
+            pos += Marshal.SizeOf(value);
+            ConvertValue(inputArray, pos, out value);
+            qua.W = value;
+            quaternion = qua;
+            //pos += Marshal.SizeOf(value);
+            return pos;
 
         }
         /// <summary>
@@ -110,10 +116,12 @@ namespace GameEngine.Source.Communication
         /// <param name="inputArray"></param>
         /// <param name="pos"></param>
         ///  /// <returns> A float at a given position from the Byte array </returns>
-        public static float ConvertValueToFloat(Byte[] inputArray, int pos)
+        public static int ConvertValue(Byte[] inputArray, int pos, out float value)
         {
-            var value = BitConverter.ToDouble(inputArray, pos);
-            return (float)value;
+            var retValue = BitConverter.ToDouble(inputArray, pos);
+            value = (float)retValue;
+            pos += Marshal.SizeOf(retValue);
+            return pos;
         }
 
         /// <summary>
@@ -122,18 +130,21 @@ namespace GameEngine.Source.Communication
         /// <param name="inputArray"></param>
         /// <param name="pos"></param>
         /// <returns>A vector3</returns>
-        private static Vector3 ConvertValueToVector3(Byte[] inputArray, int pos)
+        private static int ConvertValueToVector3(Byte[] inputArray, int pos, out Vector3 vector)
         {
-            int floatSize;
+            float value;
             Vector3 vec = new Vector3();
-            vec.X = ConvertValueToFloat(inputArray, pos);
-            floatSize = Marshal.SizeOf(vec.X);
-            pos += floatSize;
-            vec.Y = ConvertValueToFloat(inputArray, pos);
-            floatSize = Marshal.SizeOf(vec.Y);
-            pos += floatSize;
-            vec.Z = ConvertValueToFloat(inputArray, pos);
-            return vec;
+            ConvertValue(inputArray, pos, out value);
+            vec.X = value;
+            pos += Marshal.SizeOf(value);
+            ConvertValue(inputArray, pos, out value);
+            vec.Y = value;            
+            pos += Marshal.SizeOf(value);
+            ConvertValue(inputArray, pos, out value);
+            vec.Z = value;
+            pos += Marshal.SizeOf(value);
+            vector = vec;
+            return pos;
         }
 
 
