@@ -12,6 +12,7 @@ namespace ServerSupportedCommunication.Enums
 
         //Ask server
         GetInitialGameState = 1,
+        WhoIsTheMaster,
 
         //Client's created objects
         CreatedNewEntity, //Test with sending a whole new entity as a list of components.
@@ -23,6 +24,7 @@ namespace ServerSupportedCommunication.Enums
 
 
         //Server to Client
+        YouAreTheMaster,
 
         //Create objects
         CreateNewEntity, //Test to send a whole new entity as a list of components.

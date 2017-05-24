@@ -64,6 +64,10 @@ namespace ServerApplication.Communication
                         case (byte)MessageType.GetInitialGameState:
                             SendInitialGameState(message, GameSettingsType.GameSettings0);
                             break;
+
+                        case (byte)MessageType.WhoIsTheMaster:
+                            SendWhoIsTheMaster(message);
+                            break;
                     }
                     break;
 

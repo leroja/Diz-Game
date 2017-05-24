@@ -35,10 +35,13 @@ namespace DizGame.Source.Communication
         public static int rangeEnd { get; private set; }
         public static int seed { get; private set; }
 
+        //Variables that are received from server when asking for WhoIsTheMaster
+        public static bool MeMaster  { get; private set; }
+
         public TalkToServer(NetClient client)
         {
             TalkToServer.client = client;
-
+            MeMaster = false;
         }
 
 
@@ -63,6 +66,10 @@ namespace DizGame.Source.Communication
                             ReceiveInitialGameState(message);
                             Console.WriteLine("Initial game state length: " + message.LengthBytes);
                             break;
+
+                        case (byte)MessageType.YouAreTheMaster:
+                            IAmTheMaster(message);
+                            break;
                     }
                     break;
 
@@ -71,37 +78,50 @@ namespace DizGame.Source.Communication
             }
         }
 
+        private static void IAmTheMaster(NetIncomingMessage message)
+        {
+            Byte[] convertArray = message.ReadBytes(message.LengthBytes);
+            bool valueBool = false;
+
+            //Part2 of message
+            //ConvertFromByteArray.ConvertValue(convertArray, 0, out valueBool);
+            //MeMaster = valueBool;
+
+        }
+
 
         /// <summary>
         /// This function shall receive the initial game state when asked for by the clients.
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
-            //string what = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes));
+            ////string what = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes));
 
-            Byte[] convertArray = message.ReadBytes(message.LengthBytes);
-            int valueInt = 0;
-            Byte valueByte = 0;
+            //Byte[] convertArray = message.ReadBytes(message.LengthBytes);
+            //int valueInt = 0;
+            //Byte valueByte = 0;
+            //int currentPos = 0;
 
-            //    //Part2 of message
-            ConvertFromByteArray.ConvertValue(convertArray, 0, out valueInt);
-            playerEntityId = valueInt;
-
-
-            //    //Part3 of message
-            ConvertFromByteArray.ConvertValue(convertArray, 4, out valueByte);
-            gameSetting = valueByte;
+            ////    //Part2 of message
+            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //playerEntityId = valueInt;
 
 
-            //    //Part4 of message
-            ConvertFromByteArray.ConvertValue(convertArray, 6, out valueInt);
-            rangeStart = valueInt;
-            ConvertFromByteArray.ConvertValue(convertArray, 10, out valueInt);
-            rangeEnd = valueInt;
+            ////    //Part3 of message
+            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
+            //gameSetting = valueByte;
 
-            //    //Part5 of message will be the seed to derive positions from that will be needed by client to
-            ConvertFromByteArray.ConvertValue(convertArray, 14, out valueInt);
-            seed = valueInt;
+
+            ////    //Part4 of message
+            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //rangeStart = valueInt;
+
+            //currentPos +=ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //rangeEnd = valueInt;
+
+            ////    //Part5 of message will be the seed to derive positions from that will be needed by client to
+            //currentPos += ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //seed = valueInt;
         }
 
 
@@ -173,6 +193,16 @@ namespace DizGame.Source.Communication
             int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreatedNewTransformComponent);
             arrLength += ConvertToByteArray.ConvertValue(ref messageArray, 0, entityId);
             arrLength += ConvertToByteArray.ConvertValue(ref messageArray, arrLength, component);
+
+            SendMessage(arrLength);
+        }
+
+
+        private static void SendRequestWhoIsTheMaster()
+        {
+            InitMessage();
+
+            int arrLength = ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.WhoIsTheMaster);
 
             SendMessage(arrLength);
         }
