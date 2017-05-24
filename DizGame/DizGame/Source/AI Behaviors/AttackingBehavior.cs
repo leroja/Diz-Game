@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using DizGame.Source.Systems;
+using DizGame.Source.Factories;
 
 namespace DizGame.Source.AI_Behaviors
 {

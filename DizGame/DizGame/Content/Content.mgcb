@@ -77,30 +77,6 @@
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff/heightmap.png
 
-#begin HeightMapStuff\BetterGrass.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:HeightMapStuff\BetterGrass.jpg
-
-#begin HeightMapStuff\canyonHeightMap.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:HeightMapStuff\canyonHeightMap.jpg
-
 #begin MapObjects/Tree/lowpolytree.obj
 /importer:OpenAssetImporter
 /processor:ModelBoundingBoxProcessor
@@ -330,7 +306,31 @@
 /processorParam:TextureFormat=Compressed
 /build:MapObjects/WoodHouse/WoodHouse1.obj
 
-#begin MapObjects/CyprusHouse/Cyprus_House.obj
+#begin HeightMapStuff/BetterGrass.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HeightMapStuff/BetterGrass.jpg
+
+#begin HeightMapStuff/canyonHeightMap.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HeightMapStuff/canyonHeightMap.jpg
+
+#begin MapObjects/CyprusHouse/Cyprus_House2.obj
 /importer:OpenAssetImporter
 /processor:ModelBoundingBoxProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -347,5 +347,5 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/build:MapObjects/CyprusHouse/Cyprus_House.obj
+/build:MapObjects/CyprusHouse/Cyprus_House2.obj
 

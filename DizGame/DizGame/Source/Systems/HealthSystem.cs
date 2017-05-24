@@ -74,38 +74,35 @@ namespace DizGame.Source.Systems
             }
         }
 
-        private void BulletPlayerColision(int BulletID, int HittID)
+        private void BulletPlayerColision(int BulletID, int HitID)
         {
-            
             var bullet = ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID);
-            if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HittID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HittID))
+            if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HitID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HitID))
             {
-
-                if (HittID != ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner)
+                if (HitID != ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner)
                 {
-                    var a = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HittID);
+                    var a = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HitID);
                     if (a.Health - bullet.Damage <= 0)
                     {
-                        if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HittID))
+                        ComponentManager.Instance.GetEntityComponent<HealthComponent>(HitID).Health -= bullet.Damage;
+                        if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HitID))
                         {
-                            var comp = ComponentManager.Instance.GetEntityComponent<PlayerComponent>(HittID);
-                            ComponentManager.Instance.RemoveComponentFromEntity(HittID, comp);
+                            var comp = ComponentManager.Instance.GetEntityComponent<PlayerComponent>(HitID);
+                            ComponentManager.Instance.RemoveComponentFromEntity(HitID, comp);
                         }
-                        else if (ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HittID))
+                        else if (ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HitID))
                         {
-                            var comp = ComponentManager.Instance.GetEntityComponent<AIComponent>(HittID);
-                            ComponentManager.Instance.RemoveComponentFromEntity(HittID, comp);
+                            var comp = ComponentManager.Instance.GetEntityComponent<AIComponent>(HitID);
+                            ComponentManager.Instance.RemoveComponentFromEntity(HitID, comp);
                         }
                         ComponentManager.Instance.RemoveComponentFromEntity(HittID, ComponentManager.Instance.GetEntityComponent<ModelComponent>(HittID));
                         
                         ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner).Score += 100;
 
                     }
-
-
                     else
                     {
-                        ComponentManager.Instance.GetEntityComponent<HealthComponent>(HittID).Health -= bullet.Damage;
+                        ComponentManager.Instance.GetEntityComponent<HealthComponent>(HitID).Health -= bullet.Damage;
                         var score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(bullet.Owner);
                         score.Score += 5;
                     }

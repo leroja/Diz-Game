@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
+using DizGame.Source.Factories;
 
 namespace DizGame.Source.Systems
 {
