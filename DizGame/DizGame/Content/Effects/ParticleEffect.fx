@@ -35,7 +35,7 @@ struct VertexShaderOutput
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
 	VertexShaderOutput output;
-	float3 position = input.Position;
+	float3 position = (float3)input.Position;
 
 	//Move to Billboard corner
 	float2 offset = Size * float2((input.UV.x - 0.5f) * 2.0f, -(input.UV.y - 0.5f) * 2.0f);    
@@ -52,6 +52,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 	return output;
 
 }
+
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
 	// Ignore particles that aren't active 
@@ -59,9 +60,9 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	// Sample texture
 	float4 color = tex2D(texSampler, input.UV);
 	// Fade out towards end of life
-	float d = clamp(1.0f - pow((input.RelativeTime / Lifespan), 10),0, 1);
+	float d = (float)clamp(1.0f - pow((input.RelativeTime / Lifespan), 10),0, 1);
 	// Fade in at beginning of life
-	d *= clamp((input.RelativeTime / FadeInTime), 0, 1);
+	d *= (float)clamp((input.RelativeTime / FadeInTime), 0, 1);
 	// Return color * fade amount   
 	return float4(color * d); 
 }

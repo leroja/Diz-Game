@@ -1,4 +1,6 @@
 ﻿using AnimationContentClasses;
+using DizGame.Source.Components;
+using DizGame.Source.Factories;
 using DizGame.Source.Systems;
 using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
@@ -43,7 +45,9 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
+            EntityFactory.Instance.CreateWorldComp();
             InitializeSystems();
+            
 
             if (multiplayerGame)
             {
@@ -68,8 +72,16 @@ namespace DizGame.Source.GameStates
             AudioManager.Instance.StopSong();
             //TODO: observera att vi kanske inte vill ta bort precis alla entiteter i detta statet,
             //Tex vill vi kanske ha kvar spelarna + tillhörande componenter för att göra typ en "score-screen" i slutet.
+            List<int> ScoreID = ComponentManager.Instance.GetAllEntitiesWithComponentType<ScoreComponent>();
+            foreach (var id in ScoreID)
+            {
+                GameStateEntities.Remove(id);
+            }
             foreach (int entity in GameStateEntities)
+            {
                 ComponentManager.Instance.RemoveEntity(entity);
+            }
+            SystemManager.Instance.ClearSystems();
         }
 
         /// <summary>
@@ -125,6 +137,12 @@ namespace DizGame.Source.GameStates
             //    Obscuring();
             //if (state.IsKeyDown(Keys.V))
             //    Revealed();
+            if (CheackEndCriteria())
+            {
+                ScoreScreen Score = new ScoreScreen();
+                GameStateManager.Instance.Pop();
+                GameStateManager.Instance.Push(Score);
+            }
         }
 
         /// <summary>
@@ -164,10 +182,11 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
-            SystemManager.Instance.AddSystem(new ResourceSystem(500, 0)); // todo finjustera
+            SystemManager.Instance.AddSystem(new ResourceSystem()); // todo finjustera
             SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
-            //SystemManager.Instance.AddSystem(cSys);
+            SystemManager.Instance.AddSystem(cSys);
+            SystemManager.Instance.AddSystem(new HudSystem());
         }
 
         /// <summary>
@@ -188,17 +207,17 @@ namespace DizGame.Source.GameStates
 
             List<int> aiEntityList = new List<int>
             {
-                entf.CreateAI("Dude", new Vector3(30, 45, -80), 5, 300, 300, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9),
-                entf.CreateAI("Dude", new Vector3(65, 39, -10), 5, 300, 300, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7),
-                entf.CreateAI("Dude", new Vector3(135, 45, -50), 5, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5),
-                entf.CreateAI("Dude", new Vector3(45, 39, -30), 5, 300, 300, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.2f, 1f, waypointList, 90, 2),
+                entf.CreateAI("Dude", new Vector3(30, 45, -80), 5, 300, 300, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9,"AI-1"),
+                entf.CreateAI("Dude", new Vector3(65, 39, -10), 5, 300, 300, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7,"AI-2"),
+                entf.CreateAI("Dude", new Vector3(135, 45, -50), 5, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5,"AI-3"),
+                entf.CreateAI("Dude", new Vector3(45, 39, -30), 5, 300, 300, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.2f, 1f, waypointList, 90, 2,"Ai-4"),
             };
             GameStateEntities.AddRange(aiEntityList);
 
 
             GameStateEntities.Add(entf.PlaceCrossHair(new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2, GameOne.Instance.GraphicsDevice.Viewport.Height / 2 + 20f)));
 
-            var idC = entf.CreateDude();
+            var idC = entf.CreateDude("Player-1");
             //entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
             entf.AddPOVCamToEntity(idC);
             //entf.CreateStaticCam(new Vector3(-20, 45, 20), new Vector3(45, 50, -30));
@@ -217,7 +236,7 @@ namespace DizGame.Source.GameStates
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
-                new Vector2(0, 0), new List<Vector2>());
+                new Vector2(0, 0), new List<Vector2>(), idC);
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
 
@@ -241,6 +260,24 @@ namespace DizGame.Source.GameStates
             //TODO: initziera alla entiteter som krävs för ett multiplayer game, eventuellt om vi 
             //"Redirictar" till en lobby eftersom att vi behöver hitta alla klienter och så först, kanske borde skapa ett helt nytt state för detta ändå?
             throw new NotImplementedException();
+        }
+        /// <summary>
+        /// Funktion for deciding if Creteria for endgame has been found.
+        /// </summary>
+        /// <returns></returns>
+        private bool CheackEndCriteria()
+        {
+            List<int> numberOfPlayersAlive = new List<int>();
+            numberOfPlayersAlive.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
+            numberOfPlayersAlive.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
+            if (numberOfPlayersAlive.Count <= 1)
+            {
+                return (true);
+            }
+            else
+            {
+                return (false);
+            }
         }
     }
 }

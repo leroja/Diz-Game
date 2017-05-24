@@ -6,6 +6,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Managers;
+using DizGame.Source.Factories;
 
 namespace DizGame.Source.Systems
 {
@@ -14,14 +15,12 @@ namespace DizGame.Source.Systems
     /// </summary>
     public class PlayerSystem : IUpdate
     {
-        private EntityFactory entFactory;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public PlayerSystem()
         {
-            this.entFactory = EntityFactory.Instance;
         }
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace DizGame.Source.Systems
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)
                 {
-                    entFactory.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation, 10,playerId);
+                    EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation, 10,playerId);
                     AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                 }
             }

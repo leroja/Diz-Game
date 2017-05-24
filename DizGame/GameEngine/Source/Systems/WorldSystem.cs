@@ -26,12 +26,6 @@ namespace GameEngine.Source.Systems
         public WorldSystem(Game game)
         {
             this.game = game;
-            ComponentManager.AddComponentToEntity(ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>()[0],
-                new TextComponent("WorldTime", 
-                new Vector2(game.GraphicsDevice.Viewport.Width/2 - 50, 0), 
-                Color.White, 
-                game.Content.Load<SpriteFont>("Fonts/font"), 
-                true));
         }
 
         /// <summary>

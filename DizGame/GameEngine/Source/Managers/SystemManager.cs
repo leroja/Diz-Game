@@ -57,6 +57,14 @@ namespace GameEngine.Source.Managers
                 renderSystems.Add((IRender)system);
             }
         }
+        /// <summary>
+        /// Funktion For Clearing SystemManager
+        /// </summary>
+        public void ClearSystems()
+        {
+            updateSystems.Clear();
+            renderSystems.Clear();
+        }
 
         /// <summary>
         /// Removes a system 

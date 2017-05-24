@@ -15,5 +15,9 @@ namespace DizGame.Source.Components
         /// The players score
         /// </summary>
         public int Score { get; set; }
+        /// <summary>
+        /// Name of the entity the scorecomponent is on
+        /// </summary>
+        public string NameOfScorer { get; set; }
     }
 }
