@@ -86,7 +86,6 @@ namespace DizGame.Source.Communication
             //Part2 of message
             //ConvertFromByteArray.ConvertValue(convertArray, 0, out valueBool);
             //MeMaster = valueBool;
-
         }
 
 

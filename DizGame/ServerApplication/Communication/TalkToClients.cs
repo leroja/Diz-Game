@@ -53,21 +53,21 @@ namespace ServerApplication.Communication
         {
             Byte messageType;
 
-            switch(message.MessageType)
+            switch (message.MessageType)
             {
                 case NetIncomingMessageType.Data:
                     //read which message type (first byte) as defined by us and act accordingly.
                     messageType = message.ReadByte();
 
-                    switch(messageType)
+                    switch (messageType)
                     {
                         case (byte)MessageType.GetInitialGameState:
                             SendInitialGameState(message, GameSettingsType.GameSettings0);
                             break;
 
-                        //case (byte)MessageType.WhoIsTheMaster:
-                        //    SendWhoIsTheMaster(message);
-                        //    break;
+                        case (byte)MessageType.WhoIsTheMaster:
+                            SendWhoIsTheMaster(message);
+                            break;
                     }
                     break;
 
@@ -76,16 +76,30 @@ namespace ServerApplication.Communication
             }
         }
 
+        private void SendWhoIsTheMaster(NetIncomingMessage message)
+        {
+            int messageLen = 0;
+            Byte[] messageArray;
+            NetOutgoingMessage outMessage;
+
+            InitMessage(out messageArray, out outMessage);
+
+            //Building the message.
+            //messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+
+            SendMessage(messageLen, ref messageArray, message, outMessage);
+        }
+
         /// <summary>
         /// This function shall send the initial game state when asked for by the clients.
         /// </summary>
         private void SendInitialGameState(NetIncomingMessage message, GameSettingsType gameSetting)
         {
             int messageLen = 0;
+            Byte[] messageArray;
+            NetOutgoingMessage outMessage;
 
-            Byte[] messageArray = new byte[MAX_MESSAGE_SIZE];
-
-            NetOutgoingMessage outMessage = server.CreateMessage();
+            InitMessage(out messageArray, out outMessage);
 
             //Building the message.
             messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
@@ -94,6 +108,19 @@ namespace ServerApplication.Communication
             //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
             //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 2, "Fungerar det");
 
+            SendMessage(messageLen, ref messageArray, message, outMessage);
+        }
+
+        private void InitMessage(out byte[] messageArray, out NetOutgoingMessage outMessage)
+        {
+            messageArray = new byte[MAX_MESSAGE_SIZE];
+
+            outMessage = server.CreateMessage();
+        }
+
+
+        private void SendMessage(int messageLen, ref Byte[] messageArray, NetIncomingMessage message, NetOutgoingMessage outMessage)
+        {
             Array.Resize(ref messageArray, messageLen);
 
             outMessage.Write(messageArray);
@@ -101,9 +128,10 @@ namespace ServerApplication.Communication
             server.SendMessage(outMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
 
             server.FlushSendQueue();
-            //Send boulders, houses, tree as a list of positions.
-            //Send Players as entities.
         }
+
+
+
 
 
         /// <summary>
@@ -116,12 +144,12 @@ namespace ServerApplication.Communication
         private void ReadClientsRoundTheRobin()
         {
             //Maybe not using this function as it is in the server logic above.
-           foreach(NetConnection netconn in server.Connections)
+            foreach (NetConnection netconn in server.Connections)
             {
                 netconn.Peer.WaitMessage(WAIT_MAX_MILLIS);
             }
         }
-        
+
         /// <summary>
         /// Write messages to all connected clients updating physics state
         /// health, ammo, weapon.
