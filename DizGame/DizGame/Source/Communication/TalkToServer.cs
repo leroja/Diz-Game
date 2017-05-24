@@ -52,7 +52,7 @@ namespace DizGame.Source.Communication
         /// <param name="message"></param>
         public void AnswerMessage(NetIncomingMessage message)
         {
-            Byte messageType;
+            byte messageType;
 
             switch (message.MessageType)
             {
@@ -62,12 +62,12 @@ namespace DizGame.Source.Communication
 
                     switch (messageType)
                     {
-                        case (Byte)8:/*MessageType.CreateInitialGameState*/
+                        case (byte)MessageType.CreateInitialGameState:
                             ReceiveInitialGameState(message);
                             Console.WriteLine("Initial game state length: " + message.LengthBytes);
                             break;
 
-                        case (Byte)MessageType.YouAreTheMaster:
+                        case (byte)MessageType.YouAreTheMaster:
                             IAmTheMaster(message);
                             break;
                     }
