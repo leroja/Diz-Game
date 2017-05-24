@@ -89,7 +89,6 @@ namespace DizGame.Source.Factories
                 {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
                 {"CrossHair", Content.Load<Texture2D>("Icons/crosshairTrans") },
             };
-
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
             ResourceFactory = new ResourceFactory(ModelDic);
@@ -194,6 +193,28 @@ namespace DizGame.Source.Factories
             TestingTheAnimationsWithDude(entityID);
             return entityID;
         }
+
+        public void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
+        {
+            min = box.Min * scale;
+            max = box.Max * scale;
+            float xDelta = (max - min).X;
+            float zDelta = (max - min).Z;
+            float yDelta = (max - min).Y;
+            min.Y = position.Y;
+            min.X = position.X - xDelta / 2;
+            min.Z = position.Z - zDelta / 2;
+            max.Y = position.Y + yDelta;
+            max.X = position.X + xDelta / 2;
+            max.Z = position.Z + zDelta / 2;
+        }
+
+        /// <summary>
+        /// Randomizes a map 
+        /// </summary>
+        /// <param name="numberOfHouses"></param>
+        /// <param name="numberOfStaticObjects"></param>
+       
 
         /// <summary>
         /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
@@ -362,8 +383,8 @@ namespace DizGame.Source.Factories
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
             Model model = ModelDic[modelName];
-            List<BoundingSphere> bList = (List<BoundingSphere>)model.Tag;
-            BoundingSphere sphere = new BoundingSphere(pos, bList[0].Radius);
+            BoundingVolume volume = (BoundingVolume)model.Tag;
+            BoundingSphere sphere = new BoundingSphere(pos, ((BoundingSphere3D)volume.Bounding).Sphere.Radius * scale.X);
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
@@ -372,8 +393,6 @@ namespace DizGame.Source.Factories
                 },
 
                 new  ModelComponent(model){
-                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY, 1))),
-                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(GetModelSphere(model, scale.X))),
                     IsVisible = VisibleBullets,
                     BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(sphere))
                 },
@@ -422,13 +441,21 @@ namespace DizGame.Source.Factories
 
             anm.StartClip(sk.First());
             Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
-            List<BoundingSphere> bList = (List<BoundingSphere>)dict["BoundingVolume"];
-            BoundingSphere b = bList[0];
-            
-            b.Radius = tcp.Scale.X * b.Radius;
-            b.Center = tcp.Position;
-            b.Center.Y += b.Radius;
-            mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(b));
+            BoundingVolume volume = (BoundingVolume)dict["BoundingVolume"];
+            BoundingSphere sphere = ((BoundingSphere3D)volume.Bounding).Sphere;
+            sphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius *  tcp.Scale.X;
+            sphere.Center = tcp.Position;
+            sphere.Center.Y += sphere.Radius;
+            //volume.Bounding = new BoundingSphere3D(sphere);
+            //foreach (BoundingVolume v in volume.Volume)
+            //{
+            //    BoundingSphere innerSphere = ((BoundingSphere3D)v.Bounding).Sphere;
+            //    innerSphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius * tcp.Scale.X;
+            //    innerSphere.Center = tcp.Position;
+            //    innerSphere.Center.Y += innerSphere.Radius;
+            //    volume.Bounding = new BoundingSphere3D(sphere);
+            //}
+            mcp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(sphere));
         }
 
         /// <summary>

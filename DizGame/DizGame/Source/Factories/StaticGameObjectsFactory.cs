@@ -78,22 +78,19 @@ namespace DizGame.Source.Factories
             return entityIdList;
         }
 
-
         /// <summary>
         /// creates the static objects
         /// </summary>
         /// <param name="nameOfModel"></param>
         /// <param name="position"></param>
-        private int CreateStaticObject(string nameOfModel, Vector3 position)
+        public int CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
-            Vector3 middlePoint = Vector3.UnitY;
             Model model = _ModelDictionary[nameOfModel];
             switch (nameOfModel)
             {
                 case "Rock":
                     scale = new Vector3(5, 5, 5);
-                    middlePoint *= 2;
 
                     foreach (ModelMesh mesh in model.Meshes)
                     {
@@ -112,6 +109,7 @@ namespace DizGame.Source.Factories
                 case "Tree":
                     foreach (ModelMesh mesh in model.Meshes)
                     {
+                        //scale = new Vector3(5, 5, 5);
                         foreach (BasicEffect effect in mesh.Effects)
                         {
                             effect.FogEnabled = true;
@@ -151,20 +149,22 @@ namespace DizGame.Source.Factories
             return entityID;
         }
 
-
         /// <summary>
         /// Creates a house of given model
         /// </summary>
         /// <param name="nameOfModel"> Name of the house model </param>
         /// <param name="position"> position of the  house </param>
         /// <returns></returns>
-        private int CreateHouse(string nameOfModel, Vector3 position)
+        public int CreateHouse(string nameOfModel, Vector3 position)
         {
-            Vector3 scale = Vector3.One;
+            Vector3 scale = new Vector3();
             Model house = _ModelDictionary[nameOfModel];
 
-            //Todo
-            if (nameOfModel == "CyprusHouse")
+            if (nameOfModel == "WoodHouse")
+            {
+                scale = new Vector3(0.04f, 0.04f, 0.04f);
+            }
+            else
             {
                 scale = new Vector3(4f, 4f, 4f);
             }
@@ -178,7 +178,6 @@ namespace DizGame.Source.Factories
                     effect.FogEnd = 400;
                 }
             }
-
             BoundingVolume volume = (BoundingVolume)house.Tag;
             int entityID = ComponentManager.Instance.CreateID();
             GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
@@ -201,6 +200,7 @@ namespace DizGame.Source.Factories
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
             return entityID;
+
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace DizGame.Source.Factories
         }
         
         /// <summary>
-        /// 
+        /// Gets the right min and max vector3 for the models boundingbox
         /// </summary>
         /// <param name="box"></param>
         /// <param name="scale"></param>
@@ -261,34 +261,6 @@ namespace DizGame.Source.Factories
             max.Y = position.Y + yDelta;
             max.X = position.X + xDelta / 2;
             max.Z = position.Z + zDelta / 2;
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="scale"></param>
-        /// <returns></returns>
-        private BoundingBox GetStaticModelBox(Model model, float scale)
-        {
-            List<Vector3> positions = new List<Vector3>();
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (ModelMeshPart part in mesh.MeshParts)
-                {
-                    Vector3[] vertices = new Vector3[part.VertexBuffer.VertexCount];
-                    part.VertexBuffer.GetData(vertices);
-                    //foreach(VertexPositionNormalTexture vertice in vertices)
-                    //{
-                    //    positions.Add(vertice.Position);
-                    //}
-                    positions.AddRange(vertices);
-                }
-            }
-            BoundingBox box = BoundingBox.CreateFromPoints(positions);
-            box.Min *= scale;
-            box.Max *= scale;
-            return box;
         }
     }
 }

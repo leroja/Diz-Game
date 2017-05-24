@@ -156,13 +156,11 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
-            
             CollisionSystem cSys = new CollisionSystem();
-            cSys.Subscribe(new HealthSystem());
             PhysicsSystem pSys = new PhysicsSystem();
+            cSys.Subscribe(new HealthSystem());
             //cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
-            
             SystemManager.Instance.AddSystem(new ModelSystem());
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             //SystemManager.Instance.AddSystem(new GameTransformSystem());

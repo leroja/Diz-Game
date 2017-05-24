@@ -227,7 +227,7 @@
 
 #begin Dude/Dude72.fbx
 /importer:FbxImporter
-/processor:ModelBoxesAndAnimationProcessor
+/processor:ModelSpheresAndAnimationProcessor
 /processorParam:DefaultEffect=SkinnedEffect
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
