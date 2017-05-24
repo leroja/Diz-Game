@@ -65,9 +65,9 @@ namespace ServerApplication.Communication
                             SendInitialGameState(message, GameSettingsType.GameSettings0);
                             break;
 
-                        case (byte)MessageType.WhoIsTheMaster:
-                            SendWhoIsTheMaster(message);
-                            break;
+                        //case (byte)MessageType.WhoIsTheMaster:
+                        //    SendWhoIsTheMaster(message);
+                        //    break;
                     }
                     break;
 
@@ -88,7 +88,9 @@ namespace ServerApplication.Communication
             NetOutgoingMessage outMessage = server.CreateMessage();
 
             //Building the message.
-            messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+            //messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+            messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 0, (byte)MessageType.CreateInitialGameState);
+            messageLen += ConvertToByteArray.ConvertValue(ref messageArray, 2, "Fungerar det");
 
             Array.Resize(ref messageArray, messageLen);
 
