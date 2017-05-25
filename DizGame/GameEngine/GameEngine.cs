@@ -27,6 +27,7 @@ namespace GameEngine
 
         Thread updateThread;
         bool runOnce = true;
+        bool updateThreadStarted = false;
 
         /// <summary>
         /// Constructor
@@ -80,20 +81,20 @@ namespace GameEngine
         {
             //if (updateThreadStarted == false)
             //{
-            //    Thread t = new Thread(() => SystemManager.Instance.RunAllUpdateSystems(gameTime));
+            //    Thread t = new Thread(() => SystemManager.Instance.RunUpdateSystems(gameTime));
             //    t.IsBackground = true;
             //    updateThreadStarted = true;
             //    t.Start();
             //    base.Update(gameTime);
             //}
-            if (runOnce)
-            {
-                updateThread = new Thread(() => SystemManager.Instance.RunUpdateSystems(gameTime));
-                updateThread.Start();
-                runOnce = false;
-            }
+            //if (runOnce)
+            //{
+            //    updateThread = new Thread(() => SystemManager.Instance.RunUpdateSystems(gameTime));
+            //    updateThread.Start();
+            //    runOnce = false;
+            //}
             SystemManager.Instance.RunUpdateSystems(gameTime);
-           
+
             GameStateManager.Instance.UpdateGameState();
 
             base.Update(gameTime);
