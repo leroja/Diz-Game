@@ -30,11 +30,13 @@ namespace GameEngine.Source.Systems
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             //pick one
-            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.FirstOrDefault());
 
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            //var ents = new Dictionary<int, IComponent>(ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>());
+            var ents = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
+            foreach (var ent in ents)
             {
-                DrawModel(entityID);
+                DrawModel(ent);
             }
         }
 
@@ -43,14 +45,14 @@ namespace GameEngine.Source.Systems
         /// applies properties to the effects and then draw the parts.
         /// </summary>
         /// <param name="entityID"></param>
-        private void DrawModel(int entityID)
+        private void DrawModel(KeyValuePair<int, IComponent> ent)
         {
-            ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
+            //ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
+            var model = (ModelComponent)ent.Value;
             if (model.IsVisible)
             {
-                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-
-                if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(entityID))
+                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(ent.Key);
+                if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(ent.Key))
                 {
                     // todo
                     if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
@@ -93,7 +95,7 @@ namespace GameEngine.Source.Systems
                 }
                 else
                 {
-                    DrawAnimation(entityID, model);
+                    DrawAnimation(ent.Key, model);
                 }
             }
         }

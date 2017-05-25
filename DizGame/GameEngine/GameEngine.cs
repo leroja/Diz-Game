@@ -24,11 +24,7 @@ namespace GameEngine
         /// A GraphicsDevice
         /// </summary>
         public GraphicsDevice Device { get; set; }
-
-        Thread updateThread;
-        bool runOnce = true;
-        bool updateThreadStarted = false;
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -79,23 +75,8 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //if (updateThreadStarted == false)
-            //{
-            //    Thread t = new Thread(() => SystemManager.Instance.RunUpdateSystems(gameTime));
-            //    t.IsBackground = true;
-            //    updateThreadStarted = true;
-            //    t.Start();
-            //    base.Update(gameTime);
-            //}
-            //if (runOnce)
-            //{
-            //    updateThread = new Thread(() => SystemManager.Instance.RunUpdateSystems(gameTime));
-            //    updateThread.Start();
-            //    runOnce = false;
-            //}
-            SystemManager.Instance.RunUpdateSystems(gameTime);
-
-            GameStateManager.Instance.UpdateGameState();
+            //SystemManager.Instance.RunUpdateSystems(gameTime);
+            //GameStateManager.Instance.UpdateGameState();
 
             base.Update(gameTime);
         }
@@ -107,7 +88,6 @@ namespace GameEngine
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
             SystemManager.Instance.RunRenderSystems(gameTime);
 
             base.Draw(gameTime);

@@ -1,4 +1,5 @@
 ﻿using GameEngine.Source.Enums;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace GameEngine.Source.Components
@@ -20,14 +21,8 @@ namespace GameEngine.Source.Components
         /// The sensitivity
         /// </summary>
         public float MouseSensitivity { get; set; }
-        /// <summary>
-        /// The X position of the mouse on the screen
-        /// </summary>
-        public int X { get; set; }
-        /// <summary>
-        /// The Y position of the mouse on the screen
-        /// </summary>
-        public int Y { get; set; }
+        public Vector2 CurrentPosition { get; set; }
+        public Vector2 PreviousPostion { get; set; }
 
         /// <summary>
         /// Constructor

@@ -37,7 +37,7 @@ namespace GameEngine.Source.Systems
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
 
             var cameraIds = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
-            var cameraComp = ComponentManager.GetEntityComponent<CameraComponent>(cameraIds[0]);
+            var cameraComp = ComponentManager.GetEntityComponent<CameraComponent>(cameraIds.FirstOrDefault());
 
             foreach (int heightMapId in ents)
             {

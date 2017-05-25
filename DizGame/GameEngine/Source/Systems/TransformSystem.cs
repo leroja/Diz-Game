@@ -18,7 +18,7 @@ namespace GameEngine.Source.Systems
         /// </summary>
         public override void Update(GameTime gameTime)
         {
-            Dictionary<int, IComponent> mc = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TransformComponent>();
+            var mc = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TransformComponent>();
 
             Parallel.ForEach(mc, entity => {
                 TransformComponent tfc = (TransformComponent)entity.Value;

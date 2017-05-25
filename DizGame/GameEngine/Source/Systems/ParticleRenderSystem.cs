@@ -44,7 +44,7 @@ namespace GameEngine.Source.Systems
         public override void Draw(GameTime gameTime)
         {
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
-            defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+            defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.FirstOrDefault());
 
             var comp = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmiterComponent>();
             foreach (var i in comp)

@@ -141,7 +141,7 @@ namespace DizGame.Source.GameStates
             oldState = newState;
             newState = Keyboard.GetState();
 
-            if (newState.IsKeyDown(Keys.Enter) && !oldState.IsKeyDown(Keys.Enter))
+            if (newState.IsKeyDown(Keys.Space) && !oldState.IsKeyDown(Keys.Space))
             {   
                     MainMenu NewMainMenu = new MainMenu();
                     GameStateManager.Instance.Pop();

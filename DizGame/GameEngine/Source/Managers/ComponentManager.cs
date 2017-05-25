@@ -1,7 +1,9 @@
 ﻿using GameEngine.Source.Components;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace GameEngine.Source.Managers
 {
@@ -10,15 +12,15 @@ namespace GameEngine.Source.Managers
     /// </summary>
     public class ComponentManager
     {
-        private static ComponentManager instance;
+        private static ComponentManager _instance;
 
         private List<int> entityIDs;
         private int curMax;
         private const int step = 10000;
         private List<int> defaultList;
-        private Dictionary<int, IComponent> defaultDictionary;
+        private ConcurrentDictionary<int, IComponent> defaultDictionary;
 
-        private Dictionary<Type, Dictionary<int, IComponent>> compDic = new Dictionary<Type, Dictionary<int, IComponent>>();
+        private ConcurrentDictionary<Type, ConcurrentDictionary<int, IComponent>> compDic = new ConcurrentDictionary<Type, ConcurrentDictionary<int, IComponent>>();
 
         /// <summary>
         /// List which represents the current occupied id's for entities.
@@ -31,7 +33,7 @@ namespace GameEngine.Source.Managers
             entityIDs = new List<int>();
             entityIDs.AddRange(Enumerable.Range(1, curMax));
             defaultList = new List<int>();
-            defaultDictionary = new Dictionary<int, IComponent>();
+            defaultDictionary = new ConcurrentDictionary<int, IComponent>();
             CurrentTakenEntityIds = new List<int>();
         }
 
@@ -43,11 +45,12 @@ namespace GameEngine.Source.Managers
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new ComponentManager();
+                    var tempInstance = new ComponentManager();
+                    Interlocked.CompareExchange(ref _instance, tempInstance, null);
                 }
-                return instance;
+                return _instance;
             }
         }
 
@@ -72,16 +75,6 @@ namespace GameEngine.Source.Managers
                 CurrentTakenEntityIds.Add(id);
                 return id;
             }
-            //if (entityIDs.Count == 0)
-            //{
-            //    entityIDs.AddRange(Enumerable.Range(curMax + 1, curMax + step));
-            //    curMax += step;
-            //}
-            //int id = entityIDs[entityIDs.Count - 1];
-
-            //entityIDs.Remove(id);
-            //CurrentTakenEntityIds.Add(id);
-            //return id;
         }
 
         /// <summary>
@@ -107,9 +100,9 @@ namespace GameEngine.Source.Managers
 
             if (!compDic.ContainsKey(type))
             {
-                compDic.Add(type, new Dictionary<int, IComponent>());
+                compDic.TryAdd(type, new ConcurrentDictionary<int, IComponent>());
             }
-            compDic[type].Add(entityID, component);
+            compDic[type].TryAdd(entityID, component);
         }
 
         /// <summary>
@@ -125,9 +118,9 @@ namespace GameEngine.Source.Managers
                 Type type = comp.GetType();
                 if (!compDic.ContainsKey(type))
                 {
-                    compDic.Add(type, new Dictionary<int, IComponent>());
+                    compDic.TryAdd(type, new ConcurrentDictionary<int, IComponent>());
                 }
-                compDic[type].Add(entityID, comp);
+                compDic[type].TryAdd(entityID, comp);
             }
         }
 
@@ -144,7 +137,7 @@ namespace GameEngine.Source.Managers
             {
                 if (compDic[type].ContainsKey(entityID))
                 {
-                    compDic[type].Remove(entityID);
+                    compDic[type].TryRemove(entityID, out var comp);
                 }
             }
         }
@@ -227,10 +220,10 @@ namespace GameEngine.Source.Managers
         /// <param name="entityID"> The entity to be removed </param>
         public void RemoveEntity(int entityID)
         {
-            foreach (KeyValuePair<Type, Dictionary<int, IComponent>> entry in compDic)
+            foreach (KeyValuePair<Type, ConcurrentDictionary<int, IComponent>> entry in compDic)
             {
                 if (entry.Value.ContainsKey(entityID))
-                    compDic[entry.Key].Remove(entityID);
+                    compDic[entry.Key].TryRemove(entityID, out var comp);
             }
         }
 
@@ -245,7 +238,7 @@ namespace GameEngine.Source.Managers
         {
             List<IComponent> compList = new List<IComponent>();
 
-            foreach (KeyValuePair<Type, Dictionary<int, IComponent>> entry in compDic)
+            foreach (KeyValuePair<Type, ConcurrentDictionary<int, IComponent>> entry in compDic)
             {
                 if (entry.Value.ContainsKey(Id))
                 {
@@ -263,7 +256,7 @@ namespace GameEngine.Source.Managers
         /// <returns>
         /// A dictionary containing id's and components of the specified type
         /// </returns>
-        public Dictionary<int, IComponent> GetAllEntitiesAndComponentsWithComponentType<T>() where T : IComponent
+        public ConcurrentDictionary<int, IComponent> GetAllEntitiesAndComponentsWithComponentType<T>() where T : IComponent
         {
             Type type = typeof(T);
 

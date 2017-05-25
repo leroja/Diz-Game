@@ -17,7 +17,7 @@ namespace DizGame.Source.Systems
         /// </summary>
         public override void Update(GameTime gameTime)
         {
-            Dictionary<int, IComponent> mc = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TransformComponent>();
+            var mc = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TransformComponent>();
 
 
             foreach (var entity in mc)

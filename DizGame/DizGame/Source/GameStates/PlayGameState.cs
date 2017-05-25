@@ -8,6 +8,7 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using GameEngine.Tools;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -46,8 +47,6 @@ namespace DizGame.Source.GameStates
         public override void Entered()
         {
             EntityFactory.Instance.CreateWorldComp();
-            InitializeSystems();
-            
 
             if (multiplayerGame)
             {
@@ -57,10 +56,11 @@ namespace DizGame.Source.GameStates
             {
                 CreateEntitiesForSinglePlayerGame();
             }
+            InitializeSystems();
+            
             AudioManager.Instance.PlaySong("GameSong");
             AudioManager.Instance.ChangeSongVolume(0.25f);
             AudioManager.Instance.ChangeGlobalSoundEffectVolume(0.75f);
-
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
             SystemManager.Instance.AddSystem(new BulletSystem());
-            SystemManager.Instance.AddSystem(new PlayerSystem());
+            SystemManager.Instance.AddSystem(new PlayerSystem(GameOne.bounds));
             SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new ParticleUpdateSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
@@ -181,12 +181,14 @@ namespace DizGame.Source.GameStates
             //EntityTracingSystem.RecordInitialEntities();
             //SystemManager.Instance.AddSystem(EntityTracingSystem);
             SystemManager.Instance.AddSystem(new ModelBoundingSystem());
-            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(GameOne.Instance));
+            var id = ComponentManager.Instance.CreateID();
+            GameStateEntities.Add(id);
+            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(GameOne.Instance, GameOne.Instance.Content.Load<SpriteFont>("Fonts/font"), id));
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
-            SystemManager.Instance.AddSystem(new ResourceSystem()); // todo finjustera
+            SystemManager.Instance.AddSystem(new ResourceSystem());
             SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(cSys);

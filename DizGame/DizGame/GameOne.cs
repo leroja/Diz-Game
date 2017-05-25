@@ -7,6 +7,7 @@ using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using System.Threading;
 
 namespace DizGame
 {
@@ -26,6 +27,7 @@ namespace DizGame
         NetworkSystem client;
 
         private static Game instance;
+        public static Rectangle bounds;
 
         /// <summary>
         /// Basic constructor for the Game
@@ -49,6 +51,13 @@ namespace DizGame
             }
         }
 
+        public static void SetPos()
+        {
+            int centerX = bounds.Width / 2;
+            int centerY = bounds.Height / 2;
+            Mouse.SetPosition(centerX, centerY);
+        }
+
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -62,7 +71,7 @@ namespace DizGame
             Graphics.PreferredBackBufferHeight = Device.DisplayMode.Height / 2;
             Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
             Graphics.ApplyChanges();
-
+            bounds = Window.ClientBounds;
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
@@ -104,8 +113,12 @@ namespace DizGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
     }
 }

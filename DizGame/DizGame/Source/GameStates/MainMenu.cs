@@ -40,7 +40,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities = new List<int>();
             SelectedItem = 0;
             SpriteFont = GameOne.Instance.Content.Load<SpriteFont>("Fonts/MenuFont");
-            oldState = Keyboard.GetState();
+            oldState = new KeyboardState();
             TextSystem = new TextSystem(SystemManager.Instance.SpriteBatch);
         }
 
@@ -163,7 +163,7 @@ namespace DizGame.Source.GameStates
                     AudioManager.Instance.GlobalMute();
             }
 
-            if (newState.IsKeyDown(Keys.Enter))
+            if (newState.IsKeyDown(Keys.Enter) && !oldState.IsKeyDown(Keys.Enter))
             {
                 switch (SelectedItem)
                 {

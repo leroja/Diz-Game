@@ -22,10 +22,15 @@ namespace GameEngine.Source.Managers
         public SpriteBatch SpriteBatch { get; set; }
 
         List<IRender> renderSystems = new List<IRender>();
-        List<IUpdate> updateSystems = new List<IUpdate>();
+        static List<IUpdate> updateSystems = new List<IUpdate>();
 
+        public Thread TreadUpdateSystems;
+        
         private SystemManager()
         {
+            TreadUpdateSystems = new Thread(new ThreadStart(RunUpdateSystems));
+            
+            TreadUpdateSystems.Start();
         }
 
         /// <summary>
@@ -59,8 +64,9 @@ namespace GameEngine.Source.Managers
                 renderSystems.Add((IRender)system);
             }
         }
+
         /// <summary>
-        /// Funktion For Clearing SystemManager
+        /// Function for clearing the systems in SystemManager
         /// </summary>
         public void ClearSystems()
         {
@@ -110,16 +116,39 @@ namespace GameEngine.Source.Managers
             }
             return default(T);
         }
-
-
+        
         /// <summary>
         /// Runs all updateable systems
         /// </summary>
-        public void RunUpdateSystems(GameTime gameTime)
+        public void RunUpdateSystems()
         {
-            foreach (IUpdate system in updateSystems)
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            GameTime updateGameTime = new GameTime();
+            TimeSpan start;
+
+            var runSteps = 1.0;
+            var currentSteps = 0.0;
+
+            while (true)
             {
-                system.Update(gameTime);
+                start = watch.Elapsed;
+
+                //if (currentSteps >= runSteps)
+                {
+                    updateGameTime.ElapsedGameTime = TimeSpan.FromMilliseconds(currentSteps);
+                    updateGameTime.TotalGameTime += TimeSpan.FromMilliseconds(currentSteps);
+                    currentSteps = 0;
+                    
+                    foreach (IUpdate system in updateSystems)
+                    {
+                        system.Update(updateGameTime);
+                    }
+                    GameStateManager.Instance.UpdateGameState();
+                }
+
+                TimeSpan elapsed = watch.Elapsed - start;
+                currentSteps += elapsed.TotalMilliseconds;
             }
         }
 
@@ -128,9 +157,9 @@ namespace GameEngine.Source.Managers
         /// </summary>
         public void RunRenderSystems(GameTime gameTime)
         {
-            foreach (IRender system in renderSystems)
+            for (int i = 0; i < renderSystems.Count; i++)
             {
-                system.Draw(gameTime);
+                renderSystems[i].Draw(gameTime);
             }
         }
     }

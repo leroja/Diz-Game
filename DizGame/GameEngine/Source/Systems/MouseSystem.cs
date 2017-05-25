@@ -49,8 +49,8 @@ namespace GameEngine.Source.Systems
         /// <param name="mouseComp"></param>
         private void UpdateMousePositions(MouseComponent mouseComp)
         {
-            mouseComp.X = CurState.X;
-            mouseComp.Y = CurState.Y;
+            mouseComp.PreviousPostion = mouseComp.CurrentPosition;
+            mouseComp.CurrentPosition = CurState.Position.ToVector2();
         }
         
         /// <summary>

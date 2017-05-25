@@ -24,7 +24,7 @@ namespace DizGame.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
+            var EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (var entity in EntityDict)
             {

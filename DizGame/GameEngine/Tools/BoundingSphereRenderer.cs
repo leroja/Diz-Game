@@ -176,10 +176,10 @@ namespace GameEngine.Tools
 
         public override void Draw(GameTime gameTime)
         {
-            List<int> entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            foreach(int ent in entities)
+            var entities = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
+            foreach(var ent in entities)
             {
-                ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(ent);
+                var mc = (ModelComponent)ent.Value;
                 if (mc.BoundingVolume != null)
                 {
                     if (mc.BoundingVolume.Bounding is BoundingSphere3D)

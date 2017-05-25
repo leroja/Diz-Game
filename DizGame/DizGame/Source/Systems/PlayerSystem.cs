@@ -7,6 +7,7 @@ using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Managers;
 using DizGame.Source.Factories;
+using System.Threading;
 
 namespace DizGame.Source.Systems
 {
@@ -15,12 +16,20 @@ namespace DizGame.Source.Systems
     /// </summary>
     public class PlayerSystem : IUpdate
     {
+        private Rectangle clientBounds;
+        private int prevY;
+        private int prevX;
+        private Vector2 center;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public PlayerSystem()
+        public PlayerSystem(Rectangle windowBounds)
         {
+            this.clientBounds = windowBounds;
+            prevX = clientBounds.Width / 2;
+            prevY = clientBounds.Height / 2;
+            center = new Vector2(prevX, prevY);
         }
 
         /// <summary>
@@ -69,20 +78,30 @@ namespace DizGame.Source.Systems
         /// <returns>  </returns>
         private Vector2 UpdateInput(MouseComponent mouseComp)
         {
-            if (GameOne.Instance.Window != null)
-            {
-                Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
+            //if (GameOne.Instance.Window != null)
+            //{
+            //Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
 
-                int centerX = clientBounds.Width / 2;
-                int centerY = clientBounds.Height / 2;
-                float deltaX = centerX - mouseComp.X;
-                float deltaY = centerY - mouseComp.Y;
+            //int centerX = clientBounds.Width / 2;
+            //int centerY = clientBounds.Height / 2;
+            
+            //float deltaX = prevX - mouseComp.X;
+            //float deltaY = prevY - mouseComp.Y;
+            //Mouse.SetPosition(centerX, centerY);
 
-                Mouse.SetPosition(centerX, centerY);
+            //prevX = mouseComp.X;
+            //prevY = mouseComp.Y;
+            
+            var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
+            
+            //GameOne.SetPos();
 
-                return new Vector2(deltaX, deltaY);
-            }
-            return Vector2.Zero;
+            return r;
+            //Mouse.SetPosition(centerX, centerY);
+
+            //return new Vector2(deltaX, deltaY);
+            //}
+            //return Vector2.Zero;
         }
 
         /// <summary>
