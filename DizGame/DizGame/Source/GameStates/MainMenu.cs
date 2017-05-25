@@ -1,4 +1,5 @@
-﻿using GameEngine.Source.Components;
+﻿using DizGame.Source.Components;
+using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
@@ -82,6 +83,7 @@ namespace DizGame.Source.GameStates
         public override void Exiting()
         {
             AudioManager.Instance.StopSong();
+            
             foreach (int id in GameStateEntities)
             {
                 ComponentManager.Instance.RemoveEntity(id);

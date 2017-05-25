@@ -46,55 +46,55 @@ namespace GameEngine.Source.Systems
         /// </summary>
         public void CollisionDetection()
         {
-            //List<int> boundingEntities = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            ////List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>> collidedVolumes = new List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>();
+            List<int> boundingEntities = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            //List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>> collidedVolumes = new List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>();
 
-            //for (int i = 0; i < boundingEntities.Count - 1; i++)
-            //{
-            //    ModelComponent modComp1 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(boundingEntities[i]);
-
-            //    for (int j = i + 1; j < boundingEntities.Count; i++)
-            //    {
-            //        ModelComponent modComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(boundingEntities[j]);
-            //        if(modComp1.BoundingVolume != null && modComp2.BoundingVolume != null)
-            //        {
-            //            if (modComp1.BoundingVolume.Bounding.Intersects(modComp2.BoundingVolume.Bounding))
-            //            {
-            //                foreach (IObserver<Tuple<object, object>> observer in observers)
-            //                {
-            //                    observer.OnNext(new Tuple<object, object>(i, j));
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-            List<int> done = new List<int>();
-            foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            for (int i = 0; i < boundingEntities.Count - 1; i++)
             {
-                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
-                if (model == null || model.BoundingVolume == null)
-                    continue;
-                foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+                ModelComponent modComp1 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(boundingEntities[i]);
+
+                for (int j = i + 1; j < boundingEntities.Count; j++)
                 {
-                    if (entityIDUno == entityIDDos)
-                        continue;
-
-                    ModelComponent model2 = ComponentManager.GetEntityComponent<ModelComponent>(entityIDDos);
-                    if (model2.BoundingVolume == null)
-                        continue;
-
-                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
+                    ModelComponent modComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(boundingEntities[j]);
+                    if (modComp1 != null && modComp2 != null && modComp1.BoundingVolume != null && modComp2.BoundingVolume != null)
                     {
-                        foreach (IObserver<Tuple<object, object>> observer in observers)
+                        if (modComp1.BoundingVolume.Bounding.Intersects(modComp2.BoundingVolume.Bounding))
                         {
-                            observer.OnNext(new Tuple<object, object>(entityIDUno, entityIDDos));
+                            foreach (IObserver<Tuple<object, object>> observer in observers)
+                            {
+                                observer.OnNext(new Tuple<object, object>(boundingEntities[i], boundingEntities[j]));
+                            }
                         }
                     }
-
-
                 }
-                done.Add(entityIDUno);
             }
+            //List<int> done = new List<int>();
+            //foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            //{
+            //    ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
+            //    if (model.BoundingVolume == null)
+            //        continue;
+            //    foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            //    {
+            //        if (entityIDUno == entityIDDos)
+            //            continue;
+
+            //        ModelComponent model2 = ComponentManager.GetEntityComponent<ModelComponent>(entityIDDos);
+            //        if (model2.BoundingVolume == null)
+            //            continue;
+
+            //        if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
+            //        {
+            //            foreach (IObserver<Tuple<object, object>> observer in observers)
+            //            {
+            //                observer.OnNext(new Tuple<object, object>(entityIDUno, entityIDDos));
+            //            }
+            //        }
+
+
+            //    }
+            //    done.Add(entityIDUno);
+            //}
         }
 
         /// <summary>

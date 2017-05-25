@@ -227,7 +227,7 @@
 
 #begin Dude/Dude72.fbx
 /importer:FbxImporter
-/processor:ModelBoxesAndAnimationProcessor
+/processor:ModelSpheresAndAnimationProcessor
 /processorParam:DefaultEffect=SkinnedEffect
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
@@ -348,4 +348,11 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:MapObjects/CyprusHouse/Cyprus_House2.obj
+
+#begin Fonts/Death.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Death.spritefont
 

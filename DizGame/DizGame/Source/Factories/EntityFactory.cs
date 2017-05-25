@@ -66,7 +66,7 @@ namespace DizGame.Source.Factories
         {
             VisibleBullets = true;
             this.Content = GameOne.Instance.Content;
-            CreateWorldComp();
+            //CreateWorldComp();
 
             ModelDic = new Dictionary<string, Model>
             {
@@ -89,7 +89,6 @@ namespace DizGame.Source.Factories
                 {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
                 {"CrossHair", Content.Load<Texture2D>("Icons/crosshairTrans") },
             };
-
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
             ResourceFactory = new ResourceFactory(ModelDic);
@@ -148,7 +147,7 @@ namespace DizGame.Source.Factories
         /// Function to add the entity which might be the model for the different players
         /// </summary>
         /// <returns>return a int which represents the entity id for the object</returns>
-        public int CreateDude()
+        public int CreateDude(string nameOfPlayer)
         {
             int entityID = ComponentManager.Instance.CreateID();
 
@@ -173,7 +172,10 @@ namespace DizGame.Source.Factories
                 keys,
                 mouse,
                 new HealthComponent(),
-                new ScoreComponent(),
+                new ScoreComponent()
+                {
+                    NameOfScorer = nameOfPlayer
+                },
                 new PlayerComponent(),
                 new PhysicsComponent()
                 {
@@ -191,6 +193,28 @@ namespace DizGame.Source.Factories
             TestingTheAnimationsWithDude(entityID);
             return entityID;
         }
+
+        public void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
+        {
+            min = box.Min * scale;
+            max = box.Max * scale;
+            float xDelta = (max - min).X;
+            float zDelta = (max - min).Z;
+            float yDelta = (max - min).Y;
+            min.Y = position.Y;
+            min.X = position.X - xDelta / 2;
+            min.Z = position.Z - zDelta / 2;
+            max.Y = position.Y + yDelta;
+            max.X = position.X + xDelta / 2;
+            max.Z = position.Z + zDelta / 2;
+        }
+
+        /// <summary>
+        /// Randomizes a map 
+        /// </summary>
+        /// <param name="numberOfHouses"></param>
+        /// <param name="numberOfStaticObjects"></param>
+       
 
         /// <summary>
         /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
@@ -359,8 +383,8 @@ namespace DizGame.Source.Factories
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
             int BulletEntity = ComponentManager.Instance.CreateID();
             Model model = ModelDic[modelName];
-            List<BoundingSphere> bList = (List<BoundingSphere>)model.Tag;
-            BoundingSphere sphere = new BoundingSphere(pos, bList[0].Radius);
+            BoundingVolume volume = (BoundingVolume)model.Tag;
+            BoundingSphere sphere = new BoundingSphere(pos, ((BoundingSphere3D)volume.Bounding).Sphere.Radius * scale.X);
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
@@ -369,8 +393,6 @@ namespace DizGame.Source.Factories
                 },
 
                 new  ModelComponent(model){
-                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(new BoundingSphere(tComp.Position + Vector3.UnitY, 1))),
-                    //BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(GetModelSphere(model, scale.X))),
                     IsVisible = VisibleBullets,
                     BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(sphere))
                 },
@@ -419,13 +441,21 @@ namespace DizGame.Source.Factories
 
             anm.StartClip(sk.First());
             Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
-            List<BoundingSphere> bList = (List<BoundingSphere>)dict["BoundingVolume"];
-            BoundingSphere b = bList[0];
-            
-            b.Radius = tcp.Scale.X * b.Radius;
-            b.Center = tcp.Position;
-            b.Center.Y += b.Radius;
-            mcp.BoundingVolume = new BoundingVolume(entityID, new BoundingSphere3D(b));
+            BoundingVolume volume = (BoundingVolume)dict["BoundingVolume"];
+            BoundingSphere sphere = ((BoundingSphere3D)volume.Bounding).Sphere;
+            sphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius *  tcp.Scale.X;
+            sphere.Center = tcp.Position;
+            sphere.Center.Y += sphere.Radius;
+            //volume.Bounding = new BoundingSphere3D(sphere);
+            //foreach (BoundingVolume v in volume.Volume)
+            //{
+            //    BoundingSphere innerSphere = ((BoundingSphere3D)v.Bounding).Sphere;
+            //    innerSphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius * tcp.Scale.X;
+            //    innerSphere.Center = tcp.Position;
+            //    innerSphere.Center.Y += innerSphere.Radius;
+            //    volume.Bounding = new BoundingSphere3D(sphere);
+            //}
+            mcp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(sphere));
         }
 
         /// <summary>
@@ -468,8 +498,9 @@ namespace DizGame.Source.Factories
         /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
         /// <param name="chaseDist"> In what distance the enemy have to be for the AI to chase it </param>
         /// <param name="DamagePerShot"> How much damage the AI does per shot </param>
+        /// <param name="nameOfAi"> The name of the ai used for scoring</param>
         /// <returns> The ID of the new AI Entity  </returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot, string nameOfAi)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
@@ -481,7 +512,10 @@ namespace DizGame.Source.Factories
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),
                 new HealthComponent(),
-                new ScoreComponent(),
+                new ScoreComponent()
+                {
+                    NameOfScorer = nameOfAi
+                },
                 new PhysicsComponent()
                 {
                     Volume = 22.5f,

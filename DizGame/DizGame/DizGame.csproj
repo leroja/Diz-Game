@@ -70,13 +70,13 @@
     <Compile Include="Source\Factories\StaticGameObjectsFactory.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\GameStates\PlayGameState.cs" />
+    <Compile Include="Source\GameStates\ScoreScreen.cs" />
     <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\AmonitionSystemcs.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
     <Compile Include="Source\Systems\GameTransformSystem.cs" />
-    <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />
     <Compile Include="Source\Systems\HudSystem.cs" />
@@ -138,6 +138,8 @@
     <None Include="Content\Dude\upBodyC2.tga" />
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
+    <None Include="Content\Fonts\Death.spritefont" />
+    <None Include="Content\Fonts\font.spritefont" />
     <None Include="Content\Fonts\MenuFont.spritefont" />
     <None Include="Content\MapObjects\CyprusHouse\cyprus_house.mtl" />
     <None Include="Content\MapObjects\CyprusHouse\Cyprus_House2.obj" />

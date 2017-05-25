@@ -19,7 +19,10 @@ namespace DizGame.Source.Systems
         {
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// Funktion called from Observable class. used for kollisions
+        /// </summary>
+        /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
         {
             int id1 = (int)value.Item1;
