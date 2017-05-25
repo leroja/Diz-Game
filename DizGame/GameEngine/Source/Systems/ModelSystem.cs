@@ -20,6 +20,13 @@ namespace GameEngine.Source.Systems
         CameraComponent defaultCam;
         int defaultCamID;
 
+        GraphicsDevice device;
+
+        public ModelSystem(GraphicsDevice device)
+        {
+            this.device = device;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -44,7 +51,7 @@ namespace GameEngine.Source.Systems
 
         private void RenderSkyBox(int EntityID)
         {
-
+            device.DepthStencilState = DepthStencilState.DepthRead;
             SkyBoxComponent skybox = ComponentManager.GetEntityComponent<SkyBoxComponent>(EntityID);
             Effect skyBoxEffect = skybox.SkyboxEffect;
             TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(EntityID);
@@ -72,8 +79,17 @@ namespace GameEngine.Source.Systems
                         effect.DirectionalLight0.Enabled = true;
                         effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
                         effect.DirectionalLight0.Direction = flare.LightDirection;
+
+                        effect.DirectionalLight1.Enabled = true;
+                        effect.DirectionalLight1.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight1.Direction = -flare.LightDirection;
+
+                        effect.DirectionalLight2.Enabled = true;
+                        effect.DirectionalLight2.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight2.Direction = tcp.Up;
+
                         //effect.Alpha = 1;
-                 
+
 
                     }
 
@@ -82,12 +98,13 @@ namespace GameEngine.Source.Systems
                     {
                         pass.Apply();
                         mesh.Draw();
+
                     }
                 }
             }
+            device.DepthStencilState = DepthStencilState.Default;
 
-                   
-            
+
 
         }
 

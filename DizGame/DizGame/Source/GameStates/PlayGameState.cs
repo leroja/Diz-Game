@@ -47,7 +47,7 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory.Instance.CreateWorldComp();
             InitializeSystems();
-            //GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
+            GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
 
             if (multiplayerGame)
             {
@@ -161,7 +161,7 @@ namespace DizGame.Source.GameStates
             cSys.Subscribe(new HealthSystem());
             //cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
-            SystemManager.Instance.AddSystem(new ModelSystem());
+            SystemManager.Instance.AddSystem(new ModelSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             //SystemManager.Instance.AddSystem(new GameTransformSystem());
             SystemManager.Instance.AddSystem(new TransformSystem());
