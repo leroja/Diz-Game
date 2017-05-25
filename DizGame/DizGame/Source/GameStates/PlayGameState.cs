@@ -47,7 +47,7 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory.Instance.CreateWorldComp();
             InitializeSystems();
-            
+            //GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
 
             if (multiplayerGame)
             {
