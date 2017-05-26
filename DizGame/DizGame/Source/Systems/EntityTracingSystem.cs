@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// This class is used for tracing new entityId:s that have been added since last update.
+    /// </summary>
     public class EntityTracingSystem : IUpdate
     {
 
@@ -20,6 +23,9 @@ namespace DizGame.Source.Systems
         private static List<int> newEntityIds;
 
 
+        /// <summary>
+        /// Create an entityTracingSystem.
+        /// </summary>
         public EntityTracingSystem()
         {
             currentEntityIds = new List<int>();
@@ -73,6 +79,10 @@ namespace DizGame.Source.Systems
         }
 
 
+        /// <summary>
+        /// The update function to be called at periodic interval.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             List<int> clientCreatedEntities;
