@@ -13,6 +13,9 @@ using Lidgren.Network;
 
 namespace ServerApplication.Protocol
 {
+    /// <summary>
+    /// This class is used when communicating with clients from the server.
+    /// </summary>
     public class GameStateProtocol
     {
         private static readonly GameStateProtocol Instance = new GameStateProtocol();
@@ -94,28 +97,28 @@ namespace ServerApplication.Protocol
             rangeEnd = reserveEnd.ElementAt(index);
         }
 
-        public static void WhoIsTheMaster(/*Byte[] messageArray*/ref NetOutgoingMessage outMessage)
+
+
+        /// <summary>
+        /// This function sends a message to one client that it is the master and the others will receive 
+        /// that they are not the master in deciding game map etc.
+        /// </summary>
+        /// <param name="outMessage">The built message ready to send.</param>
+        public static void WhoIsTheMaster(ref NetOutgoingMessage outMessage)
         {
-
-            //int messageLen = 0;
-
             //Part1 of message
-            //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)MessageType.YouAreTheMaster);
             outMessage.Write((Byte)MessageType.YouAreTheMaster);
 
 
 
             if (!IsMasterSent)
             {
-                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, true);
                 outMessage.Write(true);
                 IsMasterSent = true;
             }
             else
                 outMessage.Write(false);
-                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, false);
 
-            //return messageLen;
         }
 
 
@@ -123,71 +126,36 @@ namespace ServerApplication.Protocol
         /// This function builds a message for the client and contains the initial settings that 
         /// the client will load at gamew start.
         /// </summary>
-        /// <param name="messageArray">The array that will contain the message to be sent to the client.</param>
-        /// <returns>The length of the message in the array. The length may be less than the size of the input 
-        /// array.
-        /// </returns>
-        public static void InitialGameState(/*Byte[] messageArray, */ref NetOutgoingMessage outMessage, GameSettingsType gameSetting)
+        /// <param name="outMessage">The built message ready to send.</param>
+        /// <param name="gameSetting">The gameSetting the clients will use for loading map, place static objects on locations and so on.</param>
+        public static void InitialGameState(ref NetOutgoingMessage outMessage, GameSettingsType gameSetting)
         {
             int rangeStart = 0;
             int rangeEnd = 0;
-            int messageLen = 0;
-            int numOfObjectsTotal = 0;
-            int partOfTotal = 0;
             int seed = 122;
 
             //Part1 of message
-            //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
             outMessage.Write((Byte)MessageType.CreateInitialGameState);
-
-            //Part2 of message this row seems not needed...
-            //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.PlayerEntityId);
 
             //Lock for playerEntityId
             lock (_lockObject)
             {
                 //Part2 of message
-                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
                 outMessage.Write(playerEntityId);
 
                 //Part3 of message
-                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
                 outMessage.Write((Byte)gameSetting);
 
 
                 //Part4 of message
                 ReserveRangeEntityIds(playerEntityId++, ref rangeStart, ref rangeEnd);
-                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
-                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
                 outMessage.Write(rangeStart);
                 outMessage.Write(rangeEnd);
 
                 //Part5 of message will be the seed to derive positions from that will be needed by client to
                 //build gamesettings0 gameMap.
-                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
                 outMessage.Write(seed);
             }
-
-            //return messageLen;
         }
-
-
-        //private static List<Vector3> GetStaticObjectPositions(GameSettingsType gameSetting)
-        //{
-        //    int numOfObjectsTotal = 0;
-        //    int partOfTotal = 0;
-
-        //    if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
-        //    {
-        //        numOfObjectsTotal += partOfTotal;
-        //        if (Int32.TryParse(GameSettings.GetGameSettings(gameSetting, GameSettingsType.CountOfHouses), out partOfTotal))
-        //        {
-        //            numOfObjectsTotal += partOfTotal;
-        //            return DizGame.EntityFactory.GetModelPositions(numOfObjectsTotal);
-        //        }
-        //    }
-
-        //    return new List<Vector3>();
-        //}
     }
 }
