@@ -6,6 +6,10 @@ using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using GameEngine.Source.Factories;
+using GameEngine.Source.Components;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace DizGame
 {
@@ -15,6 +19,7 @@ namespace DizGame
     public class GameOne : GameEngine.GameEngine
     {
         NetworkSystem client;
+        private Thread netClientThread;
 
         private static Game instance;
         public static Rectangle bounds;
@@ -25,8 +30,6 @@ namespace DizGame
         public GameOne()
         {
             instance = this;
-            client = new NetworkSystem();
-            client.RunClient();
             //this.IsMouseVisible = true;
         }
 
@@ -39,6 +42,14 @@ namespace DizGame
             {
                 return instance;
             }
+        }
+
+        private void InitNetworkClient()
+        {
+            client = new NetworkSystem();
+            client.ConnectToServer();
+            netClientThread = new Thread(new ThreadStart(client.ReadMessages));
+            netClientThread.Start();
         }
 
         /// <summary>
@@ -58,8 +69,10 @@ namespace DizGame
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
-            client.DiscoverLocalPeers();
-            
+ 
+
+            InitNetworkClient();
+
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
             AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));

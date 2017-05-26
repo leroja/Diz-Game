@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Enums;
+using GameEngine.Source.Communication;
+using DizGame.Source.Enums;
+using ServerApplication.Protocol;
+using ServerSupportedCommunication.Enums;
 
 namespace ServerApplication.Communication
 {
@@ -18,10 +22,12 @@ namespace ServerApplication.Communication
         private NetServer server;
 
         private int WAIT_MAX_MILLIS = 100;
+        private int MAX_MESSAGE_SIZE = 100;
 
-        public TalkToClients(ref NetServer server)
+        public TalkToClients(NetServer server)
         {
             this.server = server;
+
         }
 
 
@@ -43,12 +49,51 @@ namespace ServerApplication.Communication
         /// The answer is depending of which type of message is recevied.
         /// </summary>
         /// <param name="message"></param>
-        private void AnswerMessage(NetIncomingMessage message)
+        public void AnswerMessage(NetIncomingMessage message)
         {
-            switch(message.MessageType)
+            Byte messageType;
+
+            switch (message.MessageType)
             {
                 case NetIncomingMessageType.Data:
                     //read which message type (first byte) as defined by us and act accordingly.
+                    messageType = message.ReadByte();
+
+                    switch (messageType)
+                    {
+                        case (byte)MessageType.GetInitialGameState:
+                            SendInitialGameState(message, GameSettingsType.GameSettings0);
+                            break;
+
+                        case (byte)MessageType.WhoIsTheMaster:
+                            SendWhoIsTheMaster(message);
+                            break;
+
+
+
+
+
+                        //Used for debugging purposes when communicating with the clients.
+                        case (byte)MessageType.DebugThisFunction0:
+                            DebugFunction0(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction1:
+                            DebugFunction1(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction2:
+                            DebugFunction2(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction3:
+                            DebugFunction3(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction4:
+                            DebugFunction4(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction5:
+                            DebugFunction5(message);
+                            break;
+
+                    }
                     break;
 
                 default:
@@ -56,14 +101,61 @@ namespace ServerApplication.Communication
             }
         }
 
+
+        private void SendWhoIsTheMaster(NetIncomingMessage message)
+        {
+            int messageLen = 0;
+            Byte[] messageArray;
+            NetOutgoingMessage outMessage;
+
+            InitMessage(out messageArray, out outMessage);
+
+            //Building the message.
+            messageLen = GameStateProtocol.WhoIsTheMaster(messageArray);
+
+            SendMessage(messageLen, ref messageArray, message, outMessage);
+        }
+
+
         /// <summary>
         /// This function shall send the initial game state when asked for by the clients.
         /// </summary>
-        private void SendInitialGameState()
+        private void SendInitialGameState(NetIncomingMessage message, GameSettingsType gameSetting)
         {
-            //Send boulders, houses, tree as a list of positions.
-            //Send Players as entities.
+            int messageLen = 0;
+            Byte[] messageArray;
+            NetOutgoingMessage outMessage;
+
+            InitMessage(out messageArray, out outMessage);
+
+            //Building the message.
+            messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+
+            SendMessage(messageLen, ref messageArray, message, outMessage);
         }
+
+
+        private void InitMessage(out byte[] messageArray, out NetOutgoingMessage outMessage)
+        {
+            messageArray = new byte[MAX_MESSAGE_SIZE];
+
+            outMessage = server.CreateMessage();
+        }
+
+
+        private void SendMessage(int messageLen, ref Byte[] messageArray, NetIncomingMessage message, NetOutgoingMessage outMessage)
+        {
+            Array.Resize(ref messageArray, messageLen);
+
+            outMessage.Write(messageArray);
+
+            server.SendMessage(outMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
+
+            server.FlushSendQueue();
+        }
+
+
+
 
 
         /// <summary>
@@ -76,12 +168,12 @@ namespace ServerApplication.Communication
         private void ReadClientsRoundTheRobin()
         {
             //Maybe not using this function as it is in the server logic above.
-           foreach(NetConnection netconn in server.Connections)
+            foreach (NetConnection netconn in server.Connections)
             {
                 netconn.Peer.WaitMessage(WAIT_MAX_MILLIS);
             }
         }
-        
+
         /// <summary>
         /// Write messages to all connected clients updating physics state
         /// health, ammo, weapon.
@@ -112,32 +204,6 @@ namespace ServerApplication.Communication
             server.SendMessage(broadcastMessage, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
-        ///// <summary>
-        ///// This function writes all keyboardstates that has a key pressed to message.
-        ///// </summary>
-        //private void WriteKeyBoardStates()
-        //{
-        //    //TO DO: Build a byte array of message for each client. Seems easier than writing 
-        //    //variables of different kind to message.
-        //    List<int> entities;
-        //    KeyBoardComponent kbdComponent;
-
-        //    entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<KeyBoardComponent>();
-
-        //    foreach (int entityID in entities)
-        //    {
-        //        kbdComponent = ComponentManager.Instance.GetEntityComponent<KeyBoardComponent>(entityID);
-
-        //        broadcastMessage.WriteVariableInt32(entityID);
-
-        //        foreach (string move in kbdComponent.State.Keys)
-        //        {
-        //            if (kbdComponent.State[move] == ButtonStates.Pressed)
-        //                broadcastMessage.WriteAllFields(move);
-        //        }
-
-        //    }
-        //}
 
         /// <summary>
         /// This function shall see how long a client hasnt sent a message.
@@ -163,6 +229,45 @@ namespace ServerApplication.Communication
         private void SmootheClientState()
         {
 
+        }
+
+
+        private void DebugFunction0(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction1(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction2(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction3(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction4(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction5(NetIncomingMessage message)
+        {
+            broadcastMessage = server.CreateMessage();
+
+            //Sendig a 0 because using Byte[] arr on the other side for now.
+            broadcastMessage.Write((byte)MessageType.DebuggFunction5);
+            broadcastMessage.Write((byte)0);
+
+            broadcastMessage.Write(message);
+
+            server.SendMessage(broadcastMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
     }
 }
