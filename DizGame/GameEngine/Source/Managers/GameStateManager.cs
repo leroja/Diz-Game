@@ -1,4 +1,5 @@
 ﻿using GameEngine.Source.Components.Abstract_Classes;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace GameEngine.Source.Managers
@@ -88,12 +89,12 @@ namespace GameEngine.Source.Managers
         /// run logic that might be nessecary for the gamestate to check condition
         /// in which change of a gamestate might be necessary
         /// </summary>
-        public void UpdateGameState()
+        public void UpdateGameState(GameTime gameTime)
         {
             if (stack.Count != 0)
             {
                 GameState currGameState = Peek();
-                currGameState.Update();
+                currGameState.Update(gameTime);
             }
         }
     }

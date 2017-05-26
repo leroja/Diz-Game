@@ -49,6 +49,7 @@ namespace DizGame.Source.GameStates
             oldState = Keyboard.GetState();
             TextSystem = new TextSystem(SystemManager.Instance.SpriteBatch);
         }
+
         /// <summary>
         /// metod calld uppon entering gamestate. fixes whit potitions for text and prints the score list 
         /// </summary>
@@ -81,6 +82,7 @@ namespace DizGame.Source.GameStates
             AudioManager.Instance.ChangeRepeat();
             AudioManager.Instance.ChangeSongVolume(0.5f);
         }
+
         /// <summary>
         /// Fixes the list whit Scorers so it is in order for printing
         /// </summary>
@@ -103,6 +105,7 @@ namespace DizGame.Source.GameStates
             temp.Reverse();
             return temp;
         }
+
         /// <summary>
         /// Exiting function to remove all the entities which is no longer needed.
         /// </summary>
@@ -118,6 +121,7 @@ namespace DizGame.Source.GameStates
             }
             SystemManager.Instance.RemoveSystem(TextSystem);
         }
+
         /// <summary>
         /// not implemented
         /// </summary>
@@ -125,6 +129,7 @@ namespace DizGame.Source.GameStates
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
         /// Not inplemented
         /// </summary>
@@ -132,11 +137,12 @@ namespace DizGame.Source.GameStates
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
         /// Method to run durring the update part of the game, should contain logic
         /// for exiting the gamestate.
         /// </summary>
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             oldState = newState;
             newState = Keyboard.GetState();

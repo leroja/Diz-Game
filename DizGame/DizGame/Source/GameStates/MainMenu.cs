@@ -6,6 +6,7 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,6 +30,7 @@ namespace DizGame.Source.GameStates
         private KeyboardState oldState;
         private KeyboardState newState;
         private TextSystem TextSystem;
+        private Double time;
         #endregion
 
         /// <summary>
@@ -51,6 +53,7 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
+            time = 2;
             SystemManager.Instance.AddSystem(TextSystem);
             string[] itemNames = { "One Player Game", "Multiplayer Game", "Settings", "Whatever" };
             ItemNames = itemNames;
@@ -114,11 +117,17 @@ namespace DizGame.Source.GameStates
         /// the user input to the menu. So that the user will be able 
         /// to chose the different options in the menu.
         /// </summary>
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
+            time -= gameTime.ElapsedGameTime.TotalSeconds;
             oldState = newState;
             newState = Keyboard.GetState();
             TextComponent txc;
+            if (newState.IsKeyDown(Keys.Escape) && !oldState.IsKeyUp(Keys.Escape) && time < 0)
+            {
+                GameOne.Instance.Exit();
+                SystemManager.Instance.TreadUpdateSystems.Abort();
+            }
 
             if (newState.IsKeyDown(Keys.Up))
             {

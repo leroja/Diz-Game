@@ -134,21 +134,22 @@ namespace GameEngine.Source.Managers
             {
                 start = watch.Elapsed;
 
-                //if (currentSteps >= runSteps)
+                if (currentSteps >= runSteps)
                 {
                     updateGameTime.ElapsedGameTime = TimeSpan.FromMilliseconds(currentSteps);
                     updateGameTime.TotalGameTime += TimeSpan.FromMilliseconds(currentSteps);
                     currentSteps = 0;
-                    
+
                     foreach (IUpdate system in updateSystems)
                     {
                         system.Update(updateGameTime);
                     }
-                    GameStateManager.Instance.UpdateGameState();
+                    GameStateManager.Instance.UpdateGameState(updateGameTime);
                 }
 
                 TimeSpan elapsed = watch.Elapsed - start;
                 currentSteps += elapsed.TotalMilliseconds;
+                //currentSteps = elapsed.TotalMilliseconds;
             }
         }
 

@@ -75,9 +75,6 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            //SystemManager.Instance.RunUpdateSystems(gameTime);
-            //GameStateManager.Instance.UpdateGameState();
-
             base.Update(gameTime);
         }
 

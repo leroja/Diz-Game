@@ -98,7 +98,7 @@ namespace DizGame.Source.Factories
         /// <summary>
         /// Creates the World Component
         /// </summary>
-        public void CreateWorldComp()
+        public int CreateWorldComp()
         {
             var worldEntId = ComponentManager.Instance.CreateID();
             var compList = new List<IComponent>() {
@@ -120,6 +120,7 @@ namespace DizGame.Source.Factories
                 Color.White,
                 Content.Load<SpriteFont>("Fonts/font"),
                 true));
+            return worldEntId;
         }
 
         // todo gör så att mitten av croshair är på position itället för ena hörnet som det nu

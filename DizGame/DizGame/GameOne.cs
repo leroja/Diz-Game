@@ -51,13 +51,6 @@ namespace DizGame
             }
         }
 
-        public static void SetPos()
-        {
-            int centerX = bounds.Width / 2;
-            int centerY = bounds.Height / 2;
-            Mouse.SetPosition(centerX, centerY);
-        }
-
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -111,8 +104,6 @@ namespace DizGame
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
             base.Update(gameTime);
         }
 

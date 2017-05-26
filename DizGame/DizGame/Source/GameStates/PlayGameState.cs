@@ -9,6 +9,7 @@ using GameEngine.Source.Systems;
 using GameEngine.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
@@ -131,7 +132,7 @@ namespace DizGame.Source.GameStates
         /// Method to run durring the update part of the game, should contain logic
         /// for exiting the gamestate.
         /// </summary>
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             //Bara för att testa så att obscuring och revealed metoderna fungerar.
             //Allting döljs men det återstår väl o se om tex AI:n fortfarande "rör" sig/och kan
@@ -142,7 +143,16 @@ namespace DizGame.Source.GameStates
             //    Obscuring();
             //if (state.IsKeyDown(Keys.V))
             //    Revealed();
-            if (CheackEndCriteria())
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                GameStateEntities.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>());
+                MainMenu main = new MainMenu();
+                GameStateManager.Instance.Pop();
+                GameStateManager.Instance.Push(main);
+            }
+
+            if (CheckEndCriteria())
             {
                 ScoreScreen Score = new ScoreScreen();
                 GameStateManager.Instance.Pop();
@@ -271,7 +281,7 @@ namespace DizGame.Source.GameStates
         /// Funktion for deciding if Creteria for endgame has been found.
         /// </summary>
         /// <returns></returns>
-        private bool CheackEndCriteria()
+        private bool CheckEndCriteria()
         {
             List<int> numberOfPlayersAlive = new List<int>();
             numberOfPlayersAlive.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());

@@ -78,30 +78,27 @@ namespace DizGame.Source.Systems
         /// <returns>  </returns>
         private Vector2 UpdateInput(MouseComponent mouseComp)
         {
-            //if (GameOne.Instance.Window != null)
-            //{
             //Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
 
             //int centerX = clientBounds.Width / 2;
             //int centerY = clientBounds.Height / 2;
-            
+
             //float deltaX = prevX - mouseComp.X;
             //float deltaY = prevY - mouseComp.Y;
             //Mouse.SetPosition(centerX, centerY);
 
             //prevX = mouseComp.X;
             //prevY = mouseComp.Y;
-            
-            var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
-            
-            //GameOne.SetPos();
+
+            var r = center - mouseComp.CurrentPosition;
+            //var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
+
+            //Mouse.SetPosition((int)center.X, (int)center.Y);
 
             return r;
             //Mouse.SetPosition(centerX, centerY);
 
             //return new Vector2(deltaX, deltaY);
-            //}
-            //return Vector2.Zero;
         }
 
         /// <summary>
@@ -120,11 +117,11 @@ namespace DizGame.Source.Systems
                 rotation.Y -= MathHelper.TwoPi;
             }
 
-            while (rotation.X < -MathHelper.PiOver4 * 0.5f)
+            while (rotation.X < -MathHelper.PiOver4)
             {
                 rotation.X += MathHelper.PiOver4 * 0.01f;
             }
-            while (rotation.X > MathHelper.PiOver4 * 0.5f)
+            while (rotation.X > MathHelper.PiOver4)
             {
                 rotation.X -= MathHelper.PiOver4 * 0.01f;
             }
