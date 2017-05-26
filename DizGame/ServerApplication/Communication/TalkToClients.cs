@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Enums;
-using GameEngine.Source.Communication;
+//using GameEngine.Source.Communication;
 using DizGame.Source.Enums;
 using ServerApplication.Protocol;
 using ServerSupportedCommunication.Enums;

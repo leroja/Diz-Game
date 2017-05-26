@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GameEngine.Source.Communication;
+//using GameEngine.Source.Communication;
 using GameEngine.Source.Components;
 //using ServerApplication.Enums;
 using GameEngine.Source.Managers;
@@ -60,7 +60,8 @@ namespace DizGame.Source.Communication
             {
                 case NetIncomingMessageType.Data:
                     //read which message type (first byte) as defined by us and act accordingly.
-                    ConvertFromByteArray.ConvertValue(message.ReadBytes(2), 0, out messageType);
+                    //ConvertFromByteArray.ConvertValue(message.ReadBytes(2), 0, out messageType);
+                    messageType = message.ReadByte();
 
                     switch (messageType)
                     {
@@ -108,12 +109,14 @@ namespace DizGame.Source.Communication
 
         private void IAmTheMaster(NetIncomingMessage message)
         {
-            Byte[] convertArray = message.ReadBytes(message.LengthBytes);
-            bool valueBool = false;
+            //Byte[] convertArray = message.ReadBytes(message.LengthBytes);
+            //bool valueBool = false;
 
             //Part2 of message
-            ConvertFromByteArray.ConvertValue(convertArray, 0, out valueBool);
-            IsMaster = valueBool;
+            //ConvertFromByteArray.ConvertValue(convertArray, 0, out valueBool);
+            //IsMaster = valueBool;
+            IsMaster = message.ReadBoolean();
+
         }
 
 
@@ -122,31 +125,36 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void ReceiveInitialGameState(NetIncomingMessage message)
         {
-            Byte[] convertArray = message.ReadBytes(message.LengthBytes);
-            int valueInt = 0;
-            Byte valueByte = 0;
-            int currentPos = 0;
+            //Byte[] convertArray = message.ReadBytes(message.LengthBytes);
+            //int valueInt = 0;
+            //Byte valueByte = 0;
+            //int currentPos = 0;
 
             //    //Part2 of message
-            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            PlayerEntityId = valueInt;
+            //currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //PlayerEntityId = valueInt;
+            PlayerEntityId = message.ReadInt32();
 
 
             //    //Part3 of message
-            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
-            GameSetting = valueByte;
+            //currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
+            //GameSetting = valueByte;
+            GameSetting = message.ReadByte();
 
 
             //    //Part4 of message
-            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            RangeStart = valueInt;
+            //currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //RangeStart = valueInt;
+            RangeStart = message.ReadInt32();
 
-            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            RangeEnd = valueInt;
+            //currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //RangeEnd = valueInt;
+            RangeEnd = message.ReadInt32();
 
             //    //Part5 of message will be the seed to derive positions from that will be needed by client to
-            currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            Seed = valueInt;
+            //currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
+            //Seed = valueInt;
+            Seed = message.ReadInt32();
         }
 
 
@@ -285,8 +293,8 @@ namespace DizGame.Source.Communication
         /// </summary>
         private void DebugThisFunction0(NetIncomingMessage message)
         {
-            string what = "";
-            int pos = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes), 0, out what);
+            //string what = "";
+            //int pos = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes), 0, out what);
         }
 
     

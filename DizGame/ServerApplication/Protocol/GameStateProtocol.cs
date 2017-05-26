@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DizGame.Source.Enums;
 using DizGame.Source.Settings;
-using GameEngine.Source.Communication;
+//using GameEngine.Source.Communication;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
 using ServerSupportedCommunication.Enums;
