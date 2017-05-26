@@ -74,7 +74,7 @@ namespace ContentProject
                     //System.Diagnostics.Debugger.Launch();
                     BoundingBox tempBox = BoundingBox.CreateFromPoints(g.Vertices.Positions);
                     box = BoundingBox.CreateMerged(box, tempBox);
-                    return new BoundingVolume(0, new BoundingBox3D(tempBox));
+                    return new BoundingVolume(new BoundingBox3D(tempBox));
                 }
             }
             else

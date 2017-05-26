@@ -1,4 +1,5 @@
 ﻿using AnimationContentClasses;
+using AnimationContentClasses.Utils;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Managers;
@@ -91,7 +92,6 @@ namespace DizGame.Source.Factories
             {
                 case "Rock":
                     scale = new Vector3(5, 5, 5);
-
                     foreach (ModelMesh mesh in model.Meshes)
                     {
                         foreach (BasicEffect effect in mesh.Effects)
@@ -123,16 +123,16 @@ namespace DizGame.Source.Factories
                     break;
             }
             BoundingVolume volume = (BoundingVolume)model.Tag;
-            int entityID = ComponentManager.Instance.CreateID();
+            Util.ScaleBoundingVolume(ref volume, scale.X, position, out BoundingVolume scaledVolume);
 
-            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
+            int entityID = ComponentManager.Instance.CreateID();
+            
             //Vector3 mid = Vector3.Cross(min, max) / 2;
             //BoundingBox box1 = new BoundingBox(position - mid, position + mid);
-            BoundingBox box = new BoundingBox(min, max);
             ModelComponent comp = new ModelComponent(model)
             {
                 IsStatic = true,
-                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
+                BoundingVolume = scaledVolume
             };
             PhysicsComponent phy = new PhysicsComponent()
             {
@@ -179,13 +179,14 @@ namespace DizGame.Source.Factories
                 }
             }
             BoundingVolume volume = (BoundingVolume)house.Tag;
+            Util.ScaleBoundingVolume(ref volume, scale.X, position, out BoundingVolume scaledVolume);
+
             int entityID = ComponentManager.Instance.CreateID();
-            GetMinMax(((BoundingBox3D)volume.Bounding).Box, scale.X, position, out Vector3 min, out Vector3 max);
-            BoundingBox box = new BoundingBox(min, max);
+
             ModelComponent mod = new ModelComponent(house)
             {
                 IsStatic = true,
-                BoundingVolume = new BoundingVolume(entityID, new BoundingBox3D(box))
+                BoundingVolume = scaledVolume
             };
             PhysicsComponent phy = new PhysicsComponent()
             {
@@ -237,29 +238,6 @@ namespace DizGame.Source.Factories
                 positions.Add(pot);
             }
             return positions;
-        }
-
-        /// <summary>
-        /// Gets the right min and max vector3 for the models boundingbox
-        /// </summary>
-        /// <param name="box"></param>
-        /// <param name="scale"></param>
-        /// <param name="position"></param>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        private void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
-        {
-            min = box.Min * scale;
-            max = box.Max * scale;
-            float xDelta = (max - min).X;
-            float zDelta = (max - min).Z;
-            float yDelta = (max - min).Y;
-            min.Y = position.Y;
-            min.X = position.X - xDelta / 2;
-            min.Z = position.Z - zDelta / 2;
-            max.Y = position.Y + yDelta;
-            max.X = position.X + xDelta / 2;
-            max.Z = position.Z + zDelta / 2;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AnimationContentClasses;
+using AnimationContentClasses.Utils;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
@@ -195,21 +196,6 @@ namespace DizGame.Source.Factories
             return entityID;
         }
 
-        public void GetMinMax(BoundingBox box, float scale, Vector3 position, out Vector3 min, out Vector3 max)
-        {
-            min = box.Min * scale;
-            max = box.Max * scale;
-            float xDelta = (max - min).X;
-            float zDelta = (max - min).Z;
-            float yDelta = (max - min).Y;
-            min.Y = position.Y;
-            min.X = position.X - xDelta / 2;
-            min.Z = position.Z - zDelta / 2;
-            max.Y = position.Y + yDelta;
-            max.X = position.X + xDelta / 2;
-            max.Z = position.Z + zDelta / 2;
-        }
-
         /// <summary>
         /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
         /// </summary>
@@ -399,7 +385,7 @@ namespace DizGame.Source.Factories
             int BulletEntity = ComponentManager.Instance.CreateID();
             Model model = ModelDic[modelName];
             BoundingVolume volume = (BoundingVolume)model.Tag;
-            BoundingSphere sphere = new BoundingSphere(pos, ((BoundingSphere3D)volume.Bounding).Sphere.Radius * scale.X);
+            Util.ScaleBoundingVolume(ref volume, scale.X, pos, out BoundingVolume scaledVolume);
             List<IComponent> componentList = new List<IComponent>()
             {
                 new TransformComponent(pos, scale)
@@ -409,7 +395,7 @@ namespace DizGame.Source.Factories
 
                 new  ModelComponent(model){
                     IsVisible = VisibleBullets,
-                    BoundingVolume = new BoundingVolume(BulletEntity, new BoundingSphere3D(sphere))
+                    BoundingVolume = scaledVolume
                 },
 
                 new BulletComponent(){
@@ -457,10 +443,7 @@ namespace DizGame.Source.Factories
             anm.StartClip(sk.First());
             Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
             BoundingVolume volume = (BoundingVolume)dict["BoundingVolume"];
-            BoundingSphere sphere = ((BoundingSphere3D)volume.Bounding).Sphere;
-            sphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius * tcp.Scale.X;
-            sphere.Center = tcp.Position;
-            sphere.Center.Y += sphere.Radius;
+            Util.ScaleBoundingVolume(ref volume, tcp.Scale.X, tcp.Position, out BoundingVolume scaledVolume);
             //volume.Bounding = new BoundingSphere3D(sphere);
             //foreach (BoundingVolume v in volume.Volume)
             //{
@@ -470,7 +453,7 @@ namespace DizGame.Source.Factories
             //    innerSphere.Center.Y += innerSphere.Radius;
             //    volume.Bounding = new BoundingSphere3D(sphere);
             //}
-            mcp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(sphere));
+            mcp.BoundingVolume = scaledVolume;
         }
 
         /// <summary>

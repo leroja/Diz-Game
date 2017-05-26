@@ -98,7 +98,7 @@
 
 #begin MapObjects/Rock/Rock.obj
 /importer:FbxImporter
-/processor:ModelBoundingBoxProcessor
+/processor:ModelBoundingSphereProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True
 /processorParam:DefaultEffect=BasicEffect

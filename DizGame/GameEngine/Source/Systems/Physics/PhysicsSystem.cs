@@ -285,52 +285,14 @@ namespace GameEngine.Source.Systems
                     dir.Normalize();
                     //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
                     //target.Velocity = Vector3.Zero;
-                    target.Velocity *= -dir * new Vector3(1, 0, 1);
-                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position *= target.Velocity * dt;
+                    //target.Velocity *= -dir * new Vector3(1, 0, 1);
+                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position *= target.Velocity * dt;
                     //Console.WriteLine(ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position);
 
                     //Console.WriteLine(target.Velocity);
                     // TODO: Fixa collisionen
                 }
             }
-        }
-
-        private void CheckCollision(float dt)
-        {
-            List<int> done = new List<int>();
-            foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-            {
-                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
-                if (model.BoundingVolume == null)
-                    continue;
-                foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-                {
-                    if (entityIDUno == entityIDDos)
-                        continue;
-
-                    ModelComponent model2 = ComponentManager.GetEntityComponent<ModelComponent>(entityIDDos);
-                    if (model2.BoundingVolume == null)
-                        continue;
-
-                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
-                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos));
-
-                }
-                done.Add(entityIDUno);
-            }
-        }
-        private bool IsPointInsideAABB(TransformComponent transform, BoundingBox box)
-        {
-            return (transform.Position.X >= box.Min.X && transform.Position.X <= box.Max.X) &&
-                (transform.Position.Y >= box.Min.Y && transform.Position.Y <= box.Max.Y) &&
-                (transform.Position.Z >= box.Min.Z && transform.Position.Z <= box.Max.Z);
-        }
-        private bool IsPointInsideSphere(TransformComponent tranform, BoundingSphere sphere)
-        {
-            var distance = Math.Sqrt((tranform.Position.X - sphere.Center.X) * (tranform.Position.X - sphere.Center.X) +
-                (tranform.Position.Y - sphere.Center.Y) * (tranform.Position.Y - sphere.Center.Y) +
-                (tranform.Position.Z - sphere.Center.Z) * (tranform.Position.Z - sphere.Center.Z));
-            return distance < sphere.Radius;
         }
 
         /// <summary>
@@ -340,8 +302,8 @@ namespace GameEngine.Source.Systems
         /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
         {
-            UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2));
-            UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1));
+            //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2));
+            //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1));
         }
 
         /// <summary>

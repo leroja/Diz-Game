@@ -175,7 +175,7 @@ namespace DizGame.Source.GameStates
             cSys.Subscribe(new HealthSystem());
             cSys.Subscribe(ammo);
             cSys.Subscribe(new StaticColisionSystem());
-            //cSys.Subscribe(pSys);
+            cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
             SystemManager.Instance.AddSystem(ammo);
             SystemManager.Instance.AddSystem(new ModelSystem(GameOne.Instance.GraphicsDevice));
