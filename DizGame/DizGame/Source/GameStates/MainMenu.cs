@@ -126,7 +126,7 @@ namespace DizGame.Source.GameStates
             if (newState.IsKeyDown(Keys.Escape) && !oldState.IsKeyUp(Keys.Escape) && time < 0)
             {
                 GameOne.Instance.Exit();
-                SystemManager.Instance.TreadUpdateSystems.Abort();
+                SystemManager.Instance.ThreadUpdateSystems.Abort();
             }
 
             if (newState.IsKeyDown(Keys.Up))

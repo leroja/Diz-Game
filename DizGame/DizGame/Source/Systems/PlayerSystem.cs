@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Managers;
 using DizGame.Source.Factories;
 using System.Threading;
+using DizGame.Source.Managers;
 
 namespace DizGame.Source.Systems
 {
@@ -94,9 +95,10 @@ namespace DizGame.Source.Systems
             //prevX = mouseComp.X;
             //prevY = mouseComp.Y;
 
-            var r = center - mouseComp.CurrentPosition;
-            //var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
+            //var r = center - mouseComp.CurrentPosition;
+            var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
 
+            InputManager.Instance.SetPos();
             //Mouse.SetPosition((int)center.X, (int)center.Y);
 
             return r;

@@ -8,6 +8,7 @@ using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Threading;
+using DizGame.Source.Managers;
 
 namespace DizGame
 {
@@ -76,7 +77,9 @@ namespace DizGame
 
             MainMenu startState = new MainMenu();
             GameStateManager.Instance.Push(startState);
-            
+
+            InputManager.Instance.SetPos();
+
             base.Initialize();
         }
         

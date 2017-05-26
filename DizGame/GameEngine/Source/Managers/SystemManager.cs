@@ -24,13 +24,14 @@ namespace GameEngine.Source.Managers
         List<IRender> renderSystems = new List<IRender>();
         static List<IUpdate> updateSystems = new List<IUpdate>();
 
-        public Thread TreadUpdateSystems;
+        public Thread ThreadUpdateSystems;
+        
         
         private SystemManager()
         {
-            TreadUpdateSystems = new Thread(new ThreadStart(RunUpdateSystems));
+            ThreadUpdateSystems = new Thread(new ThreadStart(RunUpdateSystems));
             
-            TreadUpdateSystems.Start();
+            ThreadUpdateSystems.Start();
         }
 
         /// <summary>
