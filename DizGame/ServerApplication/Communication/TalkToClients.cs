@@ -11,6 +11,9 @@ using ServerSupportedCommunication.Enums;
 
 namespace ServerApplication.Communication
 {
+    /// <summary>
+    /// This class is used for communication with clients in a client - server architecture.
+    /// </summary>
     public class TalkToClients
     {
 
@@ -24,6 +27,11 @@ namespace ServerApplication.Communication
         private int WAIT_MAX_MILLIS = 100;
         private int MAX_MESSAGE_SIZE = 100;
 
+
+        /// <summary>
+        /// The contructor.
+        /// </summary>
+        /// <param name="server">The server in Lidgrens Network to use for communication.</param>
         public TalkToClients(NetServer server)
         {
             this.server = server;
@@ -48,7 +56,7 @@ namespace ServerApplication.Communication
         /// This function shall answer the message from the client. 
         /// The answer is depending of which type of message is recevied.
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">The message from the clients using Lidgrens Network.</param>
         public void AnswerMessage(NetIncomingMessage message)
         {
             Byte messageType;
