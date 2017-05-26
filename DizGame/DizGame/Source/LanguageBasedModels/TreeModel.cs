@@ -6,7 +6,9 @@ using System.Linq;
 
 namespace DizGame.Source.LanguageBasedModels
 {
-
+    /// <summary>
+    /// A simple model of a tree drawn with lines.
+    /// </summary>
     public class TreeModel
     {
         private struct Pos_or

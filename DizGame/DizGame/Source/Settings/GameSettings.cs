@@ -7,6 +7,9 @@ using DizGame.Source.Enums;
 
 namespace DizGame.Source.Settings
 {
+    /// <summary>
+    /// These are the pre-defined games settings for the client to choose from.
+    /// </summary>
     public class GameSettings
     {
         private static readonly GameSettings instance = new GameSettings();
@@ -21,6 +24,12 @@ namespace DizGame.Source.Settings
         }
 
 
+        /// <summary>
+        /// This class is used for getting a specific gameSetting.
+        /// </summary>
+        /// <param name="gameSettingsNumber">The number of the gameSetting to retrieve.</param>
+        /// <param name="name">Which type of gameSetting to retrieve.</param>
+        /// <returns>The gameSetting retrieved.</returns>
         public static string GetGameSettings(GameSettingsType gameSettingsNumber, GameSettingsType name)
         {
             if (settings.ContainsKey(gameSettingsNumber))
