@@ -85,10 +85,11 @@ namespace ServerApplication.Communication
             InitMessage(out messageArray, out outMessage);
 
             //Building the message.
-            //messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+            messageLen = GameStateProtocol.WhoIsTheMaster(messageArray);
 
             SendMessage(messageLen, ref messageArray, message, outMessage);
         }
+
 
         /// <summary>
         /// This function shall send the initial game state when asked for by the clients.
@@ -102,14 +103,11 @@ namespace ServerApplication.Communication
             InitMessage(out messageArray, out outMessage);
 
             //Building the message.
-            //messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
-
-            //Test of sending a string -> a trailing 'E' is hooked on the message though.
-            messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)MessageType.CreateInitialGameState);
-            messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, "Fungerar det");
+            messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
 
             SendMessage(messageLen, ref messageArray, message, outMessage);
         }
+
 
         private void InitMessage(out byte[] messageArray, out NetOutgoingMessage outMessage)
         {
@@ -180,32 +178,6 @@ namespace ServerApplication.Communication
             server.SendMessage(broadcastMessage, server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
-        ///// <summary>
-        ///// This function writes all keyboardstates that has a key pressed to message.
-        ///// </summary>
-        //private void WriteKeyBoardStates()
-        //{
-        //    //TO DO: Build a byte array of message for each client. Seems easier than writing 
-        //    //variables of different kind to message.
-        //    List<int> entities;
-        //    KeyBoardComponent kbdComponent;
-
-        //    entities = ComponentManager.Instance.GetAllEntitiesWithComponentType<KeyBoardComponent>();
-
-        //    foreach (int entityID in entities)
-        //    {
-        //        kbdComponent = ComponentManager.Instance.GetEntityComponent<KeyBoardComponent>(entityID);
-
-        //        broadcastMessage.WriteVariableInt32(entityID);
-
-        //        foreach (string move in kbdComponent.State.Keys)
-        //        {
-        //            if (kbdComponent.State[move] == ButtonStates.Pressed)
-        //                broadcastMessage.WriteAllFields(move);
-        //        }
-
-        //    }
-        //}
 
         /// <summary>
         /// This function shall see how long a client hasnt sent a message.

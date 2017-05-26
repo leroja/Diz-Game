@@ -28,6 +28,7 @@ namespace ServerApplication.Protocol
         private static int playerEntityId;
         private static Object _lockObject;
 
+        private static bool IsMasterSent;
 
         /// <summary>
         /// This protocol is used by the server to store a range of entityIds that is sent to the clients.
@@ -51,6 +52,7 @@ namespace ServerApplication.Protocol
 
             _lockObject = new object();
 
+            IsMasterSent = false;
         }
 
 
@@ -89,6 +91,26 @@ namespace ServerApplication.Protocol
 
             rangeStart = reserveStart.ElementAt(index);
             rangeEnd = reserveEnd.ElementAt(index);
+        }
+
+        public static int WhoIsTheMaster(Byte[] messageArray)
+        {
+
+            int messageLen = 0;
+
+            //Part1 of message
+            messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)MessageType.YouAreTheMaster);
+
+            //Part2 of message this row seems not needed...
+            if (!IsMasterSent)
+            {
+                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, true);
+                IsMasterSent = true;
+            }
+            else
+                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, false);
+
+            return messageLen;
         }
 
 

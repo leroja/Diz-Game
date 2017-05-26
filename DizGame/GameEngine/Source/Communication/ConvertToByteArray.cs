@@ -198,5 +198,24 @@ namespace GameEngine.Source.Communication
 
             return pos;
         }
+
+
+        /// <summary>
+        /// This function converts value of bool type and inserts the bytes in the referenced array.
+        /// </summary>
+        /// <param name="inputArray">The zero based array to insert the bytes into.</param>
+        /// <param name="pos">The start position to begin insertion from.</param>
+        /// <param name="value">The value to insert.</param>
+        ///<returns>The advancement of the pos in the input array where to read the next data '
+        ///type from.
+        /// </returns>
+        public static int ConvertValue(ref Byte[] inputArray, int pos, bool value)
+        {
+            Byte[] copiedValues = BitConverter.GetBytes(value);
+
+            Array.Copy(copiedValues, 0, inputArray, pos, copiedValues.Length);
+
+            return pos + copiedValues.Length;
+        }
     }
 }
