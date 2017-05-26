@@ -259,7 +259,15 @@ namespace ServerApplication.Communication
 
         private void DebugFunction5(NetIncomingMessage message)
         {
+            broadcastMessage = server.CreateMessage();
 
+            //Sendig a 0 because using Byte[] arr on the other side for now.
+            broadcastMessage.Write((byte)MessageType.DebuggFunction5);
+            broadcastMessage.Write((byte)0);
+
+            broadcastMessage.Write(message);
+
+            server.SendMessage(broadcastMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered, 0);
         }
     }
 }
