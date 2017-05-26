@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using AnimationContentClasses;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -16,7 +17,7 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
+            Parallel.ForEach(ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>(), entityID =>
             {
                 CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(entityID);
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
@@ -24,7 +25,7 @@ namespace GameEngine.Source.Systems
                 UpdateCameraAfterType(camera, transform);
                 camera.Projection = Matrix.CreatePerspectiveFieldOfView(camera.FieldOfView, camera.AspectRatio, camera.NearPlane, camera.FarPlane);
                 camera.CameraFrustrum = new BoundingFrustum3D(new BoundingFrustum(camera.View * camera.Projection));
-            }
+            });
         }
 
         /// <summary>
@@ -36,7 +37,6 @@ namespace GameEngine.Source.Systems
         {
             switch (camera.CameraType)
             {
-                // Todo något fel i POV
                 case Enums.CameraType.Pov:
                     var rotTest = Matrix.CreateFromQuaternion(transform.QuaternionRotation);
                     Vector3 transformedOffsetTest = Vector3.Transform(camera.Offset, rotTest);
@@ -46,9 +46,6 @@ namespace GameEngine.Source.Systems
                     Vector3 lookAtOffset = Vector3.Transform(Vector3.UnitZ, Matrix.CreateRotationX(transform.Rotation.X) * Matrix.CreateRotationY(transform.Rotation.Y));
                     camera.LookAt = cameraPos - lookAtOffset;
                     camera.View = Matrix.CreateLookAt(cameraPos, camera.LookAt, upTest);
-                    //Vector3 lookAtOffset = Vector3.Transform(Vector3.UnitZ, Matrix.CreateRotationX(transform.Rotation.X) * Matrix.CreateRotationY(transform.Rotation.Y));
-                    //camera.LookAt = transform.Position + camera.Offset - lookAtOffset;
-                    //camera.View = Matrix.CreateLookAt(transform.Position + camera.Offset, camera.LookAt, Vector3.Up);
                     break;
                 case Enums.CameraType.StaticCam:
                     camera.View = Matrix.CreateLookAt(transform.Position, camera.LookAt, Vector3.Up);

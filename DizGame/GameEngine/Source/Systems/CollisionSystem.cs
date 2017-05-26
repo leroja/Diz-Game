@@ -34,7 +34,9 @@ namespace GameEngine.Source.Systems
             }
         }
 
-        //Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public CollisionSystem()
         {
             observers = new List<IObserver<Tuple<object, object>>>();
@@ -142,6 +144,10 @@ namespace GameEngine.Source.Systems
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             CollisionDetection();

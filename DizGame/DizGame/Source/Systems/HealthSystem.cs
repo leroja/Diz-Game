@@ -1,11 +1,8 @@
-﻿using GameEngine.Source.Systems;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
-using Microsoft.Xna;
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DizGame.Source.Systems
@@ -23,6 +20,7 @@ namespace DizGame.Source.Systems
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -31,8 +29,9 @@ namespace DizGame.Source.Systems
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
-        /// Funktion called from Observable class. used for kollisions
+        /// Function called from Observable class. used for collisions
         /// </summary>
         /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
@@ -65,17 +64,19 @@ namespace DizGame.Source.Systems
                 }
             }
         }
+
         /// <summary>
-        /// Logick for handeling Resource/player & recourse/Ai Kolisions
+        /// Logic for handling Resource/player and resourse/Ai collisions
         /// </summary>
-        /// <param name="HelathID">id of Player/Ai to pick upp Recource</param>
-        /// <param name="ResourceID">ID of the recource </param>
+        /// <param name="HelathID"> ID of Player/Ai to pick upp Resource</param>
+        /// <param name="ResourceID"> ID of the resource </param>
 
         private void PlayerResorceColision(int HelathID, int ResourceID)
         {
             var hel = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID);
             var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(ResourceID);
-            if(res != null) {
+            if (res != null)
+            {
                 if (res.thisType == ResourceComponent.ResourceType.Health)
                 {
                     if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HelathID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HelathID))
@@ -97,11 +98,12 @@ namespace DizGame.Source.Systems
                 }
             }
         }
+
         /// <summary>
-        /// Handel logick for bullet/player  & bullet/Ai kolisions. 
+        /// Handle logic for bullet/player and bullet/Ai collisions. 
         /// </summary>
         /// <param name="BulletID">ID of bullet.</param>
-        /// <param name="HitID">ID of Kolision target</param>
+        /// <param name="HitID">ID of collision target</param>
         private void BulletPlayerColision(int BulletID, int HitID)
         {
             var bullet = ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID);
@@ -117,7 +119,7 @@ namespace DizGame.Source.Systems
                         {
                             var comp = ComponentManager.Instance.GetEntityComponent<PlayerComponent>(HitID);
                             ComponentManager.Instance.RemoveComponentFromEntity(HitID, comp);
-                            ComponentManager.Instance.AddComponentToEntity(HitID, new TextComponent("You Are Dead",new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 3- 90, GameOne.Instance.GraphicsDevice.Viewport.Height/2 -50), Color.Red,GameOne.Instance.Content.Load<SpriteFont>("Fonts/Death"),true));
+                            ComponentManager.Instance.AddComponentToEntity(HitID, new TextComponent("You Are Dead", new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 3 - 90, GameOne.Instance.GraphicsDevice.Viewport.Height / 2 - 50), Color.Red, GameOne.Instance.Content.Load<SpriteFont>("Fonts/Death"), true));
                         }
                         else if (ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HitID))
                         {
@@ -125,9 +127,8 @@ namespace DizGame.Source.Systems
                             ComponentManager.Instance.RemoveComponentFromEntity(HitID, comp);
                         }
                         ComponentManager.Instance.RemoveComponentFromEntity(HitID, ComponentManager.Instance.GetEntityComponent<ModelComponent>(HitID));
-                        
-                        ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner).Score += 100;
 
+                        ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner).Score += 100;
                     }
                     else
                     {
@@ -138,6 +139,5 @@ namespace DizGame.Source.Systems
                 }
             }
         }
-
     }
 }

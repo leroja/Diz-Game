@@ -37,7 +37,6 @@ namespace GameEngine.Source.Managers
             CurrentTakenEntityIds = new List<int>();
         }
 
-
         /// <summary>
         /// The instance of the component manager
         /// </summary>
@@ -288,7 +287,6 @@ namespace GameEngine.Source.Managers
             }
             return false;
         }
-
 
         /// <summary>
         /// This function is used for retrieving all the current entityIds that has been created up til now.

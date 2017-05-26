@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using Microsoft.Xna.Framework.Graphics;
-using GameEngine.Source.Factories;
-using GameEngine.Source.RandomStuff;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -35,11 +28,12 @@ namespace GameEngine.Source.Systems
         public override void Update(GameTime gameTime)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>())
+
+            Parallel.ForEach(ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>(), entityID =>
             {
                 UpdateTime(entityID, gameTime);
                 UpdateSun(entityID, dt);
-            }
+            });
         }
 
         /// <summary>
@@ -50,7 +44,7 @@ namespace GameEngine.Source.Systems
         private void UpdateTime(int entityID, GameTime gameTime)
         {
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(entityID);
-            
+
             if (world.Noon && world.Hour == 12 && world.Second > 1)
                 world.Noon = false;
 
@@ -95,6 +89,7 @@ namespace GameEngine.Source.Systems
 
             text.Text = "Day: " + world.Day + "\n" + hour + ":" + minute + ":" + second;
         }
+
         private float c = 0;
         private bool reverse = false;
         /// <summary>

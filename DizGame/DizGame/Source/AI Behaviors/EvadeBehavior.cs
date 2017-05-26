@@ -31,10 +31,10 @@ namespace DizGame.Source.AI_Behaviors
             var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
             var pos = transformComp.Position;
-            
+
             var rotation = GetRotationToClosestEnenmy(AIComp);
 
-            transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0); // todo kolla upp
+            transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0); // -MathHelper.Pi gör så att AI:n får en motsatt rotaion till närmsta fienden
 
 
             physComp.Velocity = transformComp.Forward * 10;

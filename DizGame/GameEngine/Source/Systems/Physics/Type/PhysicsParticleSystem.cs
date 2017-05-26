@@ -18,6 +18,7 @@ namespace GameEngine.Source.Systems
         {
             PhysicsType = PhysicsType.Particle;
         }
+
         /// <summary>
         /// Updates the particle using Euler method because,
         /// particles using constant acceleration
@@ -36,6 +37,7 @@ namespace GameEngine.Source.Systems
             PhysicsSystem.UpdateVelocity(physic, dt);
             PhysicsSystem.UpdateDeceleration(physic);
         }
+
         /// <summary>
         /// Updates the object position using its velocity * dt
         /// </summary>

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Managers;
@@ -66,7 +64,7 @@ namespace GameEngine.Tools
                     Vector3.Forward,
                     new Vector2());
             }
-            for (int i = CIRCLE_NUM_POINTS + 1; i <= CIRCLE_NUM_POINTS*2 + 1; i++)
+            for (int i = CIRCLE_NUM_POINTS + 1; i <= CIRCLE_NUM_POINTS * 2 + 1; i++)
             {
                 float z = (float)Math.Round(Math.Sin(angle * i), 4);
                 float x = (float)Math.Round(Math.Cos(angle * i), 4);
@@ -115,10 +113,10 @@ namespace GameEngine.Tools
         private void InitializeLineStrip()
         {
             // Initialize an array of indices of type short
-            short[] lineStripIndices = new short[CIRCLE_NUM_POINTS*3 + 1];
+            short[] lineStripIndices = new short[CIRCLE_NUM_POINTS * 3 + 1];
 
             // Populate the array with references to indices in the vertex buffer
-            for (int i = 0; i < CIRCLE_NUM_POINTS*3; i++)
+            for (int i = 0; i < CIRCLE_NUM_POINTS * 3; i++)
             {
                 lineStripIndices[i] = (short)(i + 1);
             }
@@ -142,7 +140,7 @@ namespace GameEngine.Tools
         {
             if (volume != null)
             {
-                
+
                 Matrix scaleMatrix = Matrix.CreateScale(((BoundingSphere3D)volume.Bounding).Sphere.Radius);
                 Matrix translateMat = Matrix.CreateTranslation(((BoundingSphere3D)volume.Bounding).Sphere.Center);
 
@@ -177,7 +175,7 @@ namespace GameEngine.Tools
         public override void Draw(GameTime gameTime)
         {
             var entities = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
-            foreach(var ent in entities)
+            foreach (var ent in entities)
             {
                 var mc = (ModelComponent)ent.Value;
                 if (mc.BoundingVolume != null)

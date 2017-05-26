@@ -200,7 +200,6 @@ namespace DizGame.Source.Factories
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
             return entityID;
-
         }
 
         /// <summary>
@@ -239,7 +238,7 @@ namespace DizGame.Source.Factories
             }
             return positions;
         }
-        
+
         /// <summary>
         /// Gets the right min and max vector3 for the models boundingbox
         /// </summary>

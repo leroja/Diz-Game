@@ -1,5 +1,4 @@
-﻿using AnimationContentClasses;
-using DizGame.Source.Components;
+﻿using DizGame.Source.Components;
 using DizGame.Source.Factories;
 using DizGame.Source.Systems;
 using GameEngine.Source.Components;
@@ -48,7 +47,7 @@ namespace DizGame.Source.GameStates
         public override void Entered()
         {
             EntityFactory.Instance.CreateWorldComp();
-            
+
             GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
 
             if (multiplayerGame)
@@ -60,7 +59,7 @@ namespace DizGame.Source.GameStates
                 CreateEntitiesForSinglePlayerGame();
             }
             InitializeSystems();
-            
+
             AudioManager.Instance.PlaySong("GameSong");
             AudioManager.Instance.ChangeSongVolume(0.25f);
             AudioManager.Instance.ChangeGlobalSoundEffectVolume(0.75f);
@@ -84,7 +83,7 @@ namespace DizGame.Source.GameStates
                     ComponentManager.Instance.RemoveComponentFromEntity(id, ComponentManager.Instance.GetEntityComponent<TextComponent>(id));
                 }
             }
-            
+
             foreach (int entity in GameStateEntities)
             {
                 ComponentManager.Instance.RemoveEntity(entity);
@@ -112,6 +111,7 @@ namespace DizGame.Source.GameStates
                 EntityFactory.Instance.VisibleBullets = false;
             }
         }
+
         /// <summary>
         /// Method to show everything again that's been hidden incase of an obscuring state
         /// might also need some adjustment if we wanna handle a paused state, in single player mode that is.
@@ -130,6 +130,7 @@ namespace DizGame.Source.GameStates
                 EntityFactory.Instance.VisibleBullets = true;
             }
         }
+
         /// <summary>
         /// Method to run durring the update part of the game, should contain logic
         /// for exiting the gamestate.
@@ -219,6 +220,7 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory entf = EntityFactory.Instance;
 
+            // todo place mora AI:s and make them be on the whole map, make them more spread out
             var waypointList = new List<Vector2>()
             {
                 new Vector2(5, -5),
@@ -283,8 +285,9 @@ namespace DizGame.Source.GameStates
             //"Redirictar" till en lobby eftersom att vi behöver hitta alla klienter och så först, kanske borde skapa ett helt nytt state för detta ändå?
             throw new NotImplementedException();
         }
+
         /// <summary>
-        /// Funktion for deciding if Creteria for endgame has been found.
+        /// Function for deciding if Criteria for endgame has been found.
         /// </summary>
         /// <returns></returns>
         private bool CheckEndCriteria()

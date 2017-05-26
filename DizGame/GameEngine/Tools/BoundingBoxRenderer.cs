@@ -1,10 +1,5 @@
 ﻿using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using AnimationContentClasses;
@@ -50,7 +45,7 @@ namespace GameEngine.Tools
         {
             var dict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
 
-            foreach(var modEnt in dict)
+            foreach (var modEnt in dict)
             {
                 ModelComponent modC = (ModelComponent)modEnt.Value;
                 if (modC.BoundingVolume != null)
@@ -110,5 +105,4 @@ namespace GameEngine.Tools
             }
         }
     }
-
 }

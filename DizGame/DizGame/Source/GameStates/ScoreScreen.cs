@@ -9,8 +9,6 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.GameStates
 {
@@ -67,7 +65,7 @@ namespace DizGame.Source.GameStates
                 ScoreComponent score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ids[i]);
                 if (i == 0)
                 {
-                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score+ "      "+"Winner", position, color, SpriteFont, true);
+                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score + "      " + "Winner", position, color, SpriteFont, true);
                 }
                 else
                 {
@@ -94,9 +92,9 @@ namespace DizGame.Source.GameStates
             var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<ScoreComponent>();
             foreach (var id in a)
             {
-                Score.Add(ComponentManager.Instance.GetEntityComponent<ScoreComponent>(id)); 
+                Score.Add(ComponentManager.Instance.GetEntityComponent<ScoreComponent>(id));
             }
-            
+
             List<ScoreComponent> orderdList = Score.OrderBy(o => o.Score).ToList();
             foreach (var scorecomp in orderdList)
             {
@@ -130,7 +128,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Not inplemented
+        /// Not implemented
         /// </summary>
         public override void Revealed()
         {
@@ -147,10 +145,10 @@ namespace DizGame.Source.GameStates
             newState = Keyboard.GetState();
 
             if (newState.IsKeyDown(Keys.Space) && !oldState.IsKeyDown(Keys.Space))
-            {   
-                    MainMenu NewMainMenu = new MainMenu();
-                    GameStateManager.Instance.Pop();
-                    GameStateManager.Instance.Push(NewMainMenu);   
+            {
+                MainMenu NewMainMenu = new MainMenu();
+                GameStateManager.Instance.Pop();
+                GameStateManager.Instance.Push(NewMainMenu);
             }
             if (newState.IsKeyDown(Keys.M) && !oldState.IsKeyDown(Keys.M))
             {

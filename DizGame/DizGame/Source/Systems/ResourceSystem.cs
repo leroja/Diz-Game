@@ -63,12 +63,7 @@ namespace DizGame.Source.Systems
                 var transComp = ComponentManager.GetEntityComponent<TransformComponent>(id);
                 transComp.Rotation += new Vector3(0, 0.7f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0f);
             });
-            //foreach (var id in entitylist)
-            //{
-            //    var transComp = ComponentManager.GetEntityComponent<TransformComponent>(id);
-            //    transComp.Rotation += new Vector3(0, 0.7f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0f);
-            //}
-            
+
             if (world.Day % world.ModulusValue != 1)
             {
                 Parallel.ForEach(entitylist, entity =>
@@ -78,13 +73,6 @@ namespace DizGame.Source.Systems
                     if (resource.duration.Seconds <= 0)
                         RemoveOldResources(entity);
                 });
-                //foreach (int entity in entitylist)
-                //{
-                //    resource = ComponentManager.GetEntityComponent<ResourceComponent>(entity);
-                //    resource.duration -= gameTime.ElapsedGameTime;
-                //    if (resource.duration.Seconds <= 0)
-                //        RemoveOldResources(entity);
-                //}
                 if (entitylist.Count + numberOfRemovedResources < maxNumberOfResourcesInPlay)
                     AddNewResources(entitylist.Count + numberOfRemovedResources);
             }

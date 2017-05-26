@@ -21,7 +21,13 @@ namespace GameEngine.Source.Components
         /// The sensitivity
         /// </summary>
         public float MouseSensitivity { get; set; }
+        /// <summary>
+        /// The current postion of the mouse
+        /// </summary>
         public Vector2 CurrentPosition { get; set; }
+        /// <summary>
+        /// The previous position of the mouse
+        /// </summary>
         public Vector2 PreviousPostion { get; set; }
 
         /// <summary>

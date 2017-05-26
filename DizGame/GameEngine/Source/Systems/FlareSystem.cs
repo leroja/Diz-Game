@@ -39,14 +39,14 @@ namespace GameEngine.Source.Systems
                 foreach (int cameraID in ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>())
                 {
                     CameraComponent camera = ComponentManager.GetEntityComponent<CameraComponent>(cameraID);
-                        if (flare.IsActive)
-                        {
-                            DrawOcclusion(flare, camera);
-                            DrawGlow(flare);
-                            if (camera.IsFlareable)
-                                DrawFlares(flare);
-                            RestoreRenderStates();
-                        }
+                    if (flare.IsActive)
+                    {
+                        DrawOcclusion(flare, camera);
+                        DrawGlow(flare);
+                        if (camera.IsFlareable)
+                            DrawFlares(flare);
+                        RestoreRenderStates();
+                    }
                 }
             }
         }

@@ -1,6 +1,5 @@
 ﻿using AnimationContentClasses;
 using DizGame.Source.Components;
-using DizGame.Source.Factories;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
@@ -22,7 +21,7 @@ namespace DizGame.Source.Factories
     public class EntityFactory
     {
         private static EntityFactory instance;
-        
+
         private ContentManager Content;
         private Dictionary<string, Model> ModelDic;
         private Dictionary<string, Texture2D> Texture2dDic;
@@ -66,7 +65,6 @@ namespace DizGame.Source.Factories
         {
             VisibleBullets = true;
             this.Content = GameOne.Instance.Content;
-            //CreateWorldComp();
 
             ModelDic = new Dictionary<string, Model>
             {
@@ -124,7 +122,7 @@ namespace DizGame.Source.Factories
             return worldEntId;
         }
 
-        // todo gör så att mitten av croshair är på position itället för ena hörnet som det nu
+        // fixa till så cross hair är där skotten går, inte riktigt helt 100 just nu
         /// <summary>
         /// 
         /// </summary>
@@ -165,7 +163,7 @@ namespace DizGame.Source.Factories
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
-            mouse.MouseSensitivity = 0.9f;
+            mouse.MouseSensitivity = 0.2f;
 
             List<IComponent> components = new List<IComponent>
             {
@@ -213,13 +211,6 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// Randomizes a map 
-        /// </summary>
-        /// <param name="numberOfHouses"></param>
-        /// <param name="numberOfStaticObjects"></param>
-       
-
-        /// <summary>
         /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
         /// </summary>
         public void SpawnProtection()
@@ -232,11 +223,11 @@ namespace DizGame.Source.Factories
                     ModelComponent ModComp1 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(Model1);
                     ModelComponent ModComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(Model2);
 
-                    if(ModComp1 != ModComp2)
+                    if (ModComp1 != ModComp2)
                     {
                         if (ModComp2 != null && ModComp1 != null && ModComp1.BoundingVolume.Bounding.Intersects(ModComp2.BoundingVolume.Bounding))
                         {
-                            if(!ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(ModComp2.ID) && !ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(ModComp2.ID))
+                            if (!ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(ModComp2.ID) && !ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(ModComp2.ID))
                             {
                                 ComponentManager.Instance.RemoveEntity(ModComp2.ID);
                                 ComponentManager.Instance.RemoveEntity(ModComp2.ID);
@@ -244,7 +235,7 @@ namespace DizGame.Source.Factories
                         }
                     }
                 }
-              
+
 
             }
             //List<int> spawnPositions = new List<int>();
@@ -332,8 +323,6 @@ namespace DizGame.Source.Factories
                 emiter.Indices[x++] = i + 0;
             }
         }
-
-        
 
         /// <summary>
         /// Creates a static camera on the specified position and that is looking att the specified lookat
@@ -469,7 +458,7 @@ namespace DizGame.Source.Factories
             Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
             BoundingVolume volume = (BoundingVolume)dict["BoundingVolume"];
             BoundingSphere sphere = ((BoundingSphere3D)volume.Bounding).Sphere;
-            sphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius *  tcp.Scale.X;
+            sphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius * tcp.Scale.X;
             sphere.Center = tcp.Position;
             sphere.Center.Y += sphere.Radius;
             //volume.Bounding = new BoundingSphere3D(sphere);
@@ -571,6 +560,11 @@ namespace DizGame.Source.Factories
 
             return AIEntityID;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int CreateNewSkyBox()
         {
             int skyboxid = ComponentManager.Instance.CreateID();

@@ -2,27 +2,34 @@
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace DizGame.Source.Systems
 {
-    class AmmunitionSystem : IUpdate ,IObserver<Tuple<object, object>>
+    /// <summary>
+    /// 
+    /// </summary>
+    public class AmmunitionSystem : IUpdate, IObserver<Tuple<object, object>>
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public void OnCompleted()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="error"></param>
         public void OnError(Exception error)
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
-        /// Funktion called from Observable class. used for kollisions
+        /// Function called from Observable class. used for collisions
         /// </summary>
         /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
@@ -35,12 +42,13 @@ namespace DizGame.Source.Systems
                 var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(id1);
                 if (res.thisType == ResourceComponent.ResourceType.Ammo)
                 {
-                    if (ComponentManager.Instance.CheckIfEntityHasComponent<AmmunitionComponent>(id2)) {
+                    if (ComponentManager.Instance.CheckIfEntityHasComponent<AmmunitionComponent>(id2))
+                    {
                         var amo = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(id2);
                         ComponentManager.Instance.RemoveEntity(id1);
                         ComponentManager.Instance.RecycleID(id1);
                         amo.AmmountOfActiveMagazines++;
-                            }
+                    }
                 }
             }
             else if (ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id2))
@@ -60,17 +68,21 @@ namespace DizGame.Source.Systems
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             var list = ComponentManager.Instance.GetAllEntitiesWithComponentType<AmmunitionComponent>();
             foreach (var ammoid in list)
             {
                 var ammocomp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(ammoid);
-                if(ammocomp.curentAmoInMag <= 0)
+                if (ammocomp.CurrentAmmoInMag <= 0)
                 {
-                    if(ammocomp.AmmountOfActiveMagazines > 0)
+                    if (ammocomp.AmmountOfActiveMagazines > 0)
                     {
-                        ammocomp.curentAmoInMag = ammocomp.MaxAmoInMag;
+                        ammocomp.CurrentAmmoInMag = ammocomp.MaxAmmoInMag;
                         ammocomp.AmmountOfActiveMagazines--;
                     }
                 }

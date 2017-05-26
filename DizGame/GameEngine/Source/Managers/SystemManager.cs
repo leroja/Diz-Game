@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -24,14 +23,17 @@ namespace GameEngine.Source.Managers
         List<IRender> renderSystems = new List<IRender>();
         static List<IUpdate> updateSystems = new List<IUpdate>();
 
-        public Thread ThreadUpdateSystems;
-        
-        
+        /// <summary>
+        /// Använder oss inte av denna tråd just nu eftersom vi får problem när vi ska sätta musen mitt i skärmen
+        /// </summary>
+        public Thread ThreadUpdateSystems { get; set; }
+
+
         private SystemManager()
         {
-            ThreadUpdateSystems = new Thread(new ThreadStart(RunUpdateSystems));
-            
-            ThreadUpdateSystems.Start();
+            //ThreadUpdateSystems = new Thread(new ThreadStart(RunUpdateSystems));
+
+            //ThreadUpdateSystems.Start();
         }
 
         /// <summary>
@@ -117,41 +119,47 @@ namespace GameEngine.Source.Managers
             }
             return default(T);
         }
-        
+
         /// <summary>
         /// Runs all updateable systems
         /// </summary>
-        public void RunUpdateSystems()
+        //public void RunUpdateSystems()
+        public void RunUpdateSystems(GameTime gameTime)
         {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            GameTime updateGameTime = new GameTime();
-            TimeSpan start;
+            //Stopwatch watch = new Stopwatch();
+            //watch.Start();
+            //GameTime updateGameTime = new GameTime();
+            //TimeSpan start;
 
-            var runSteps = 1.0;
-            var currentSteps = 0.0;
+            //var runSteps = 1.0;
+            //var currentSteps = 0.0;
 
-            while (true)
+            //while (true)
+            //{
+            //    start = watch.Elapsed;
+
+            //    if (currentSteps >= runSteps)
+            //    {
+            //        updateGameTime.ElapsedGameTime = TimeSpan.FromMilliseconds(currentSteps);
+            //        updateGameTime.TotalGameTime += TimeSpan.FromMilliseconds(currentSteps);
+            //        currentSteps = 0;
+
+            //        foreach (IUpdate system in updateSystems)
+            //        {
+            //            system.Update(updateGameTime);
+            //        }
+            //        GameStateManager.Instance.UpdateGameState(updateGameTime);
+            //    }
+
+            //    TimeSpan elapsed = watch.Elapsed - start;
+            //    currentSteps += elapsed.TotalMilliseconds;
+            //    //currentSteps = elapsed.TotalMilliseconds;
+            //}
+            foreach (IUpdate system in updateSystems)
             {
-                start = watch.Elapsed;
-
-                if (currentSteps >= runSteps)
-                {
-                    updateGameTime.ElapsedGameTime = TimeSpan.FromMilliseconds(currentSteps);
-                    updateGameTime.TotalGameTime += TimeSpan.FromMilliseconds(currentSteps);
-                    currentSteps = 0;
-
-                    foreach (IUpdate system in updateSystems)
-                    {
-                        system.Update(updateGameTime);
-                    }
-                    GameStateManager.Instance.UpdateGameState(updateGameTime);
-                }
-
-                TimeSpan elapsed = watch.Elapsed - start;
-                currentSteps += elapsed.TotalMilliseconds;
-                //currentSteps = elapsed.TotalMilliseconds;
+                system.Update(gameTime);
             }
+            GameStateManager.Instance.UpdateGameState(gameTime);
         }
 
         /// <summary>

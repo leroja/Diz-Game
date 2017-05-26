@@ -1,9 +1,5 @@
 ﻿using GameEngine.Source.Systems;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
@@ -22,7 +18,7 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var entIDs = ComponentManager.GetAllEntitiesWithComponentType<HudComponent>();
-            
+
             foreach (var entityId in entIDs)
             {
                 var hudComp = ComponentManager.GetEntityComponent<HudComponent>(entityId);
@@ -31,7 +27,7 @@ namespace DizGame.Source.Systems
 
                 var textComp = ComponentManager.GetEntityComponent<TextComponent>(entityId);
                 textComp.Children.First().Value.Text = healthComp.Health.ToString();
-                textComp.Children["Ammunition"].Text = AmmoComp.curentAmoInMag + "/" + AmmoComp.MaxAmoInMag + " " + " Clips left: " + AmmoComp.AmmountOfActiveMagazines;
+                textComp.Children["Ammunition"].Text = AmmoComp.CurrentAmmoInMag + "/" + AmmoComp.MaxAmmoInMag + " " + " Clips left: " + AmmoComp.AmmountOfActiveMagazines;
             }
         }
     }

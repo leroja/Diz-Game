@@ -2,24 +2,13 @@
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-using System.Threading;
-using DizGame.Source.Managers;
 
 namespace DizGame
 {
-
-    // kolla på allting 23 fps
-    // kolla på nästan ingenting ca 40 fps
-
-    // efter parallel foreach ca 41 för nästan ingenting och allting 24
-
-    // har dock inte gjort på några utritnings system och de som har med kollisionerna att göra
-
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -77,9 +66,7 @@ namespace DizGame
 
             MainMenu startState = new MainMenu();
             GameStateManager.Instance.Push(startState);
-
-            InputManager.Instance.SetPos();
-
+            
             base.Initialize();
         }
         
@@ -110,6 +97,10 @@ namespace DizGame
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);

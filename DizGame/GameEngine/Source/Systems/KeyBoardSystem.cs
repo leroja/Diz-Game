@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -29,12 +30,12 @@ namespace GameEngine.Source.Systems
             UpdateStates();
 
             List<int> entities = ComponentManager.GetAllEntitiesWithComponentType<KeyBoardComponent>();
-            
-            foreach (var item in entities)
+
+            Parallel.ForEach(entities, item =>
             {
                 KeyBoardComponent kbc = ComponentManager.GetEntityComponent<KeyBoardComponent>(item);
                 UpdateActionStates(kbc);
-            }
+            });
         }
 
         /// <summary>

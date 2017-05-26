@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
+using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -26,7 +27,8 @@ namespace DizGame.Source.Systems
         {
             var EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (var entity in EntityDict)
+
+            Parallel.ForEach(EntityDict, entity =>
             {
                 KeyBoardComponent key = ComponentManager.GetEntityComponent<KeyBoardComponent>(entity.Key);
                 TransformComponent trans = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
@@ -35,7 +37,7 @@ namespace DizGame.Source.Systems
                 Vector3 move = Vector3.Zero;
                 float gravity = 0;
 
-                switch(phys.GravityType)
+                switch (phys.GravityType)
                 {
                     case GravityType.Self:
                         gravity = phys.Gravity;
@@ -48,7 +50,7 @@ namespace DizGame.Source.Systems
                     default:
                         break;
                 }
-                
+
                 if (!phys.IsInAir)
                 {
                     if (key.GetState("Forward") == ButtonStates.Hold)
@@ -78,10 +80,10 @@ namespace DizGame.Source.Systems
                             //move = phys.Velocity;
                             phys.IsInAir = true;
                             //phys.Velocity += trans.Up ;
-                            if(phys.Velocity.X == 0 && phys.Velocity.Z == 0)
+                            if (phys.Velocity.X == 0 && phys.Velocity.Z == 0)
                                 phys.Velocity += trans.Up * -gravity * 7;
                             else
-                            phys.Velocity = new Vector3(phys.Velocity.X, -gravity * 7, phys.Velocity.Z);
+                                phys.Velocity = new Vector3(phys.Velocity.X, -gravity * 7, phys.Velocity.Z);
                         }
                     }
                 }
@@ -89,8 +91,8 @@ namespace DizGame.Source.Systems
                 {
                     float he = GetHeight(trans.Position);
 
-                    if(!phys.IsInAir)
-                    phys.Velocity = move;
+                    if (!phys.IsInAir)
+                        phys.Velocity = move;
                     //phys.Acceleration = CheckMaxVelocityAndGetVector(phys, move);
 
 
@@ -114,7 +116,7 @@ namespace DizGame.Source.Systems
                     float he = GetHeight(trans.Position);
                     trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                 }
-            }
+            });
         }
         private Vector3 CheckMaxVelocityAndGetVector(PhysicsComponent physic, Vector3 move)
         {

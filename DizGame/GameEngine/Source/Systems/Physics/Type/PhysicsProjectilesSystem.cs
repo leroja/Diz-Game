@@ -1,11 +1,5 @@
 ﻿using GameEngine.Source.Systems.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameEngine.Source.Components;
-using Microsoft.Xna.Framework;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Systems.AbstractClasses;
 
@@ -24,6 +18,7 @@ namespace GameEngine.Source.Systems
         {
             PhysicsType = PhysicsType.Projectiles;
         }
+
         /// <summary>
         /// Updates Acceleration, mass, gravity, force, velocity, position and decaeleration
         /// Using non euler for acceleration
@@ -46,6 +41,7 @@ namespace GameEngine.Source.Systems
             UpdateArcPosition(physic, dt);
             //PhysicsSystem.UpdateDeceleration(physic);
         }
+
         /// <summary>
         /// Updates the projectiles position in an arc
         /// </summary>

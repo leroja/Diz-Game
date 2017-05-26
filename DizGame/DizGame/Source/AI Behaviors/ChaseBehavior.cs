@@ -38,7 +38,7 @@ namespace DizGame.Source.AI_Behaviors
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
-            
+
             physComp.Velocity = transformComp.Forward * 10;
             physComp.Acceleration = new Vector3(physComp.Acceleration.X, 0, physComp.Acceleration.Z);
 
@@ -138,7 +138,7 @@ namespace DizGame.Source.AI_Behaviors
                 }
             }
         }
-        
+
         /// <summary>
         /// Override of object.ToString
         /// Returns the name of the behavior

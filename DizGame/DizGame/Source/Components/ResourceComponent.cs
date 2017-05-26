@@ -30,6 +30,10 @@ namespace DizGame.Source.Components
             /// </summary>
             Ammo
         };
+
+        /// <summary>
+        /// The type of resource
+        /// </summary>
         public ResourceType thisType;
         /// <summary>
         /// Duration is a timespan which describes the ammount of time 
@@ -51,7 +55,7 @@ namespace DizGame.Source.Components
         }
 
         /// <summary>
-        /// Alternate constructor for the ResourceComponent
+        /// Alternative constructor for the ResourceComponent
         /// </summary>
         /// <param name="type">Takes the type of the kind of resource, in order to 
         /// tell the differance between resources</param>

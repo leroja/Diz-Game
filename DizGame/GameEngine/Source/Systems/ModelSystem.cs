@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,6 +19,10 @@ namespace GameEngine.Source.Systems
 
         GraphicsDevice device;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="device"></param>
         public ModelSystem(GraphicsDevice device)
         {
             this.device = device;
@@ -41,7 +42,6 @@ namespace GameEngine.Source.Systems
             //pick one
             defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(defaultCamID);
 
-            //var ents = new Dictionary<int, IComponent>(ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>());
             var ents = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
             foreach (var ent in ents)
             {
@@ -62,7 +62,6 @@ namespace GameEngine.Source.Systems
             // only has one mesh
             foreach (ModelMesh mesh in skybox.SkyboxModel.Meshes)
             {
-                
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.World = tcp.ObjectMatrix * world.World;
@@ -91,8 +90,6 @@ namespace GameEngine.Source.Systems
                         effect.DirectionalLight2.Direction = tcp.Up;
 
                         //effect.Alpha = 1;
-
-
                     }
 
                     effect.PreferPerPixelLighting = true;
@@ -105,26 +102,21 @@ namespace GameEngine.Source.Systems
                 }
             }
             device.DepthStencilState = DepthStencilState.Default;
-
-
-
         }
 
         /// <summary>
         /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo
         /// applies properties to the effects and then draw the parts.
         /// </summary>
-        /// <param name="entityID"></param>
+        /// <param name="ent"></param>
         private void DrawModel(KeyValuePair<int, IComponent> ent)
         {
-            //ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
             var model = (ModelComponent)ent.Value;
             if (model.IsVisible)
             {
                 TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(ent.Key);
                 if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(ent.Key))
                 {
-                    // todo
                     if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
                     {
                         if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
@@ -152,7 +144,7 @@ namespace GameEngine.Source.Systems
                                     effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
                                     effect.DirectionalLight0.Direction = flare.LightDirection;
                                 }
-                                
+
                                 effect.PreferPerPixelLighting = true;
                                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                                 {
@@ -204,4 +196,3 @@ namespace GameEngine.Source.Systems
         }
     }
 }
- 

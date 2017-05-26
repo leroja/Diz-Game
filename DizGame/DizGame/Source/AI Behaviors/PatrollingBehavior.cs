@@ -55,7 +55,7 @@ namespace DizGame.Source.AI_Behaviors
             var height = MovingSystem.GetHeight(transformComp.Position);
 
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
-            
+
             physComp.Velocity = transformComp.Forward * 10;
             physComp.Acceleration = new Vector3(physComp.Acceleration.X, 0, physComp.Acceleration.Z);
 

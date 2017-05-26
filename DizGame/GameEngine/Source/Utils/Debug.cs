@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace GameEngine.Source.Utils
 {
@@ -16,8 +10,6 @@ namespace GameEngine.Source.Utils
         static VertexBuffer vertBuffer;
         static VertexDeclaration vertDecl;
         static BasicEffect effect;
-
-
-        // TODO: fixa denna så man kan måla ut bounding ex
+        
     }
 }

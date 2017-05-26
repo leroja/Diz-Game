@@ -55,7 +55,7 @@ namespace GameEngine.Source.Systems
                 if (text.IsVisible)
                 {
                     spriteBatch.Begin();
-                    if(text.IsBackgroundVisible)
+                    if (text.IsBackgroundVisible)
                     {
                         Vector2 textSize = text.Font.MeasureString(text.Text);
                         text.BackgroundRectangle = new Texture2D(spriteBatch.GraphicsDevice, (int)textSize.X, (int)textSize.Y);

@@ -7,8 +7,7 @@ using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Managers;
 using DizGame.Source.Factories;
-using System.Threading;
-using DizGame.Source.Managers;
+using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -18,8 +17,6 @@ namespace DizGame.Source.Systems
     public class PlayerSystem : IUpdate
     {
         private Rectangle clientBounds;
-        private int prevY;
-        private int prevX;
         private Vector2 center;
 
         /// <summary>
@@ -28,9 +25,7 @@ namespace DizGame.Source.Systems
         public PlayerSystem(Rectangle windowBounds)
         {
             this.clientBounds = windowBounds;
-            prevX = clientBounds.Width / 2;
-            prevY = clientBounds.Height / 2;
-            center = new Vector2(prevX, prevY);
+            center = new Vector2(clientBounds.Width / 2, clientBounds.Height / 2);
         }
 
         /// <summary>
@@ -43,7 +38,7 @@ namespace DizGame.Source.Systems
             var worldTemp = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            foreach (var playerId in PlayerEntityIds)
+            Parallel.ForEach(PlayerEntityIds, playerId =>
             {
                 var playerComp = ComponentManager.GetEntityComponent<PlayerComponent>(playerId);
                 var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(playerId);
@@ -66,14 +61,14 @@ namespace DizGame.Source.Systems
 
                 if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)
                 {
-                    if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).curentAmoInMag >0)
+                    if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).CurrentAmmoInMag > 0)
                     {
                         EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation, 10, playerId);
-                        ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).curentAmoInMag--;
+                        ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).CurrentAmmoInMag--;
                         AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                     }
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -83,28 +78,13 @@ namespace DizGame.Source.Systems
         /// <returns>  </returns>
         private Vector2 UpdateInput(MouseComponent mouseComp)
         {
-            //Rectangle clientBounds = GameOne.Instance.Window.ClientBounds;
 
-            //int centerX = clientBounds.Width / 2;
-            //int centerY = clientBounds.Height / 2;
+            var r = center - mouseComp.CurrentPosition;
+            //var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
 
-            //float deltaX = prevX - mouseComp.X;
-            //float deltaY = prevY - mouseComp.Y;
-            //Mouse.SetPosition(centerX, centerY);
-
-            //prevX = mouseComp.X;
-            //prevY = mouseComp.Y;
-
-            //var r = center - mouseComp.CurrentPosition;
-            var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
-
-            InputManager.Instance.SetPos();
-            //Mouse.SetPosition((int)center.X, (int)center.Y);
+            Mouse.SetPosition((int)center.X, (int)center.Y);
 
             return r;
-            //Mouse.SetPosition(centerX, centerY);
-
-            //return new Vector2(deltaX, deltaY);
         }
 
         /// <summary>

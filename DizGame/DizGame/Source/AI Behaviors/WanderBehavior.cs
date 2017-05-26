@@ -85,7 +85,7 @@ namespace DizGame.Source.AI_Behaviors
                 transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
             }
-            
+
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
 
             BehaviorStuff(AIComp, transformComp);
