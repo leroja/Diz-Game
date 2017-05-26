@@ -159,6 +159,7 @@ namespace DizGame.Source.GameStates
             CollisionSystem cSys = new CollisionSystem();
             PhysicsSystem pSys = new PhysicsSystem();
             cSys.Subscribe(new HealthSystem());
+            cSys.Subscribe(new StaticColisionSystem());
             //cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
             SystemManager.Instance.AddSystem(new ModelSystem());

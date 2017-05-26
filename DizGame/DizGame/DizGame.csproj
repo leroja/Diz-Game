@@ -84,6 +84,7 @@
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
+    <Compile Include="Source\Systems\StaticColisionSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
