@@ -10,6 +10,8 @@ using GameEngine.Source.Managers;
 using Lidgren.Network;
 using ServerSupportedCommunication.Enums;
 using Microsoft.Xna.Framework;
+using ServerSupportedCommunication.XNAExtensions.Lidgren.Network.Xna;
+using ServerSupportedCommunication.XNAExtensions;
 
 namespace DizGame.Source.Communication
 {
@@ -29,11 +31,11 @@ namespace DizGame.Source.Communication
         private static int MAX_MESSAGE_SIZE = 10000;
 
         //Variables that are received from server when asking for InitialGameState
-        public static int playerEntityId { get; private set; }
-        public static byte gameSetting { get; private set; }
-        public static int rangeStart { get; private set; }
-        public static int rangeEnd { get; private set; }
-        public static int seed { get; private set; }
+        public static int PlayerEntityId { get; private set; }
+        public static byte GameSetting { get; private set; }
+        public static int RangeStart { get; private set; }
+        public static int RangeEnd { get; private set; }
+        public static int Seed { get; private set; }
 
         //Variables that are received from server when asking for WhoIsTheMaster
         public static bool IsMaster  { get; private set; }
@@ -127,24 +129,24 @@ namespace DizGame.Source.Communication
 
             //    //Part2 of message
             currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            playerEntityId = valueInt;
+            PlayerEntityId = valueInt;
 
 
             //    //Part3 of message
             currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueByte);
-            gameSetting = valueByte;
+            GameSetting = valueByte;
 
 
             //    //Part4 of message
             currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            rangeStart = valueInt;
+            RangeStart = valueInt;
 
             currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            rangeEnd = valueInt;
+            RangeEnd = valueInt;
 
             //    //Part5 of message will be the seed to derive positions from that will be needed by client to
             currentPos = ConvertFromByteArray.ConvertValue(convertArray, currentPos, out valueInt);
-            seed = valueInt;
+            Seed = valueInt;
         }
 
 
@@ -156,10 +158,11 @@ namespace DizGame.Source.Communication
             InitMessage();
 
             int arrLength = 0;
-            
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.GetInitialGameState);
 
-            SendMessage(arrLength);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.GetInitialGameState);
+            message.Write((byte)MessageType.GetInitialGameState);
+
+            SendMessage(/*arrLength*/);
         }
 
 
@@ -198,36 +201,51 @@ namespace DizGame.Source.Communication
         {
             InitMessage();
 
-            int arrLength = 0;
+            //int arrLength = 0;
 
-/////////////This line just used for debugging - remove in final version.
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.DebugThisFunction5);
+            /////////////This line just used for debugging - remove in final version.
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.DebugThisFunction5);
+            message.Write((byte)MessageType.DebugThisFunction5);
 
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewBulletComponent);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, position);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, scale);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, maxRange);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, initialVelocity);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, rotation);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, damage);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewBulletComponent);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, position);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, scale);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, maxRange);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, initialVelocity);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, rotation);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, damage);
 
-            SendMessage(arrLength);
+            message.Write((byte)MessageType.CreatedNewBulletComponent);
+            message.Write(entityId);
+            message.Write(modelName);
+            message.Write(position);
+            message.Write(scale);
+            message.Write(maxRange);
+            message.Write(initialVelocity);
+            message.Write(rotation);
+            message.Write(damage);
+
+            SendMessage(/*arrLength*/);
         }
 
         private static void SendCreatedNewTransformComponent(int entityId, TransformComponent component)
         {
             InitMessage();
 
-            int arrLength = 0;
+            //int arrLength = 0;
 
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewTransformComponent);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, component);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewTransformComponent);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, component);
 
-            SendMessage(arrLength);
+            message.Write((byte)MessageType.CreatedNewTransformComponent);
+            message.Write(entityId);
+            message.WriteTransform(component);
+
+            SendMessage(/*arrLength*/);
         }
 
 
@@ -235,11 +253,12 @@ namespace DizGame.Source.Communication
         {
             InitMessage();
 
-            int arrLength = 0;
+            //int arrLength = 0;
 
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.WhoIsTheMaster);
+            //arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.WhoIsTheMaster);
+            message.Write((byte)MessageType.WhoIsTheMaster);
 
-            SendMessage(arrLength);
+            SendMessage(/*arrLength*/);
         }
 
 
@@ -247,15 +266,15 @@ namespace DizGame.Source.Communication
         {
             message = client.CreateMessage();
 
-            messageArray = new Byte[MAX_MESSAGE_SIZE];
+            //messageArray = new Byte[MAX_MESSAGE_SIZE];
         }
 
 
-        private static void SendMessage(int arrLength)
+        private static void SendMessage(/*int arrLength*/)
         {
-            Array.Resize(ref messageArray, arrLength);
+            //Array.Resize(ref messageArray, arrLength);
 
-            message.Write(messageArray);
+            //message.Write(messageArray);
             client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
             client.FlushSendQueue();
         }

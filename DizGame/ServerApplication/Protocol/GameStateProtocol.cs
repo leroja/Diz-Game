@@ -9,6 +9,7 @@ using GameEngine.Source.Communication;
 using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework;
 using ServerSupportedCommunication.Enums;
+using Lidgren.Network;
 
 namespace ServerApplication.Protocol
 {
@@ -93,24 +94,28 @@ namespace ServerApplication.Protocol
             rangeEnd = reserveEnd.ElementAt(index);
         }
 
-        public static int WhoIsTheMaster(Byte[] messageArray)
+        public static void WhoIsTheMaster(/*Byte[] messageArray*/ref NetOutgoingMessage outMessage)
         {
 
-            int messageLen = 0;
+            //int messageLen = 0;
 
             //Part1 of message
-            messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)MessageType.YouAreTheMaster);
+            //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)MessageType.YouAreTheMaster);
+            outMessage.Write((Byte)MessageType.YouAreTheMaster);
 
-            //Part2 of message this row seems not needed...
+
+
             if (!IsMasterSent)
             {
-                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, true);
+                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, true);
+                outMessage.Write(true);
                 IsMasterSent = true;
             }
             else
-                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, false);
+                outMessage.Write(false);
+                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, false);
 
-            return messageLen;
+            //return messageLen;
         }
 
 
@@ -122,7 +127,7 @@ namespace ServerApplication.Protocol
         /// <returns>The length of the message in the array. The length may be less than the size of the input 
         /// array.
         /// </returns>
-        public static int InitialGameState(Byte[] messageArray, GameSettingsType gameSetting)
+        public static void InitialGameState(/*Byte[] messageArray, */ref NetOutgoingMessage outMessage, GameSettingsType gameSetting)
         {
             int rangeStart = 0;
             int rangeEnd = 0;
@@ -132,7 +137,8 @@ namespace ServerApplication.Protocol
             int seed = 122;
 
             //Part1 of message
-            messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+            //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, 0, (Byte)MessageType.CreateInitialGameState);
+            outMessage.Write((Byte)MessageType.CreateInitialGameState);
 
             //Part2 of message this row seems not needed...
             //messageLen += ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)GameSettingsType.PlayerEntityId);
@@ -141,24 +147,28 @@ namespace ServerApplication.Protocol
             lock (_lockObject)
             {
                 //Part2 of message
-                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
+                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, playerEntityId);
+                outMessage.Write(playerEntityId);
 
                 //Part3 of message
-                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
-
+                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, (Byte)gameSetting);
+                outMessage.Write((Byte)gameSetting);
 
 
                 //Part4 of message
                 ReserveRangeEntityIds(playerEntityId++, ref rangeStart, ref rangeEnd);
-                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
-                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
+                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeStart);
+                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, rangeEnd);
+                outMessage.Write(rangeStart);
+                outMessage.Write(rangeEnd);
 
                 //Part5 of message will be the seed to derive positions from that will be needed by client to
                 //build gamesettings0 gameMap.
-                messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
+                //messageLen = ConvertToByteArray.ConvertValue(ref messageArray, messageLen, seed);
+                outMessage.Write(seed);
             }
 
-            return messageLen;
+            //return messageLen;
         }
 
 

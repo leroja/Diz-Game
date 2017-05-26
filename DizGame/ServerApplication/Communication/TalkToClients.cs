@@ -104,16 +104,16 @@ namespace ServerApplication.Communication
 
         private void SendWhoIsTheMaster(NetIncomingMessage message)
         {
-            int messageLen = 0;
-            Byte[] messageArray;
+            //int messageLen = 0;
+            //Byte[] messageArray;
             NetOutgoingMessage outMessage;
 
-            InitMessage(out messageArray, out outMessage);
+            InitMessage(/*out messageArray,*/ out outMessage);
 
             //Building the message.
-            messageLen = GameStateProtocol.WhoIsTheMaster(messageArray);
+           GameStateProtocol.WhoIsTheMaster(ref outMessage);
 
-            SendMessage(messageLen, ref messageArray, message, outMessage);
+            SendMessage(/*messageLen, ref messageArray,*/ message, outMessage);
         }
 
 
@@ -122,32 +122,32 @@ namespace ServerApplication.Communication
         /// </summary>
         private void SendInitialGameState(NetIncomingMessage message, GameSettingsType gameSetting)
         {
-            int messageLen = 0;
-            Byte[] messageArray;
+            //    int messageLen = 0;
+            //    Byte[] messageArray;
             NetOutgoingMessage outMessage;
 
-            InitMessage(out messageArray, out outMessage);
+            InitMessage(/*out messageArray, */out outMessage);
 
             //Building the message.
-            messageLen = GameStateProtocol.InitialGameState(messageArray, gameSetting);
+            GameStateProtocol.InitialGameState(ref outMessage, gameSetting);
 
-            SendMessage(messageLen, ref messageArray, message, outMessage);
+            SendMessage(/*messageLen, ref messageArray, */message, outMessage);
         }
 
 
-        private void InitMessage(out byte[] messageArray, out NetOutgoingMessage outMessage)
+        private void InitMessage(/*out byte[] messageArray, */out NetOutgoingMessage outMessage)
         {
-            messageArray = new byte[MAX_MESSAGE_SIZE];
+            //messageArray = new byte[MAX_MESSAGE_SIZE];
 
             outMessage = server.CreateMessage();
         }
 
 
-        private void SendMessage(int messageLen, ref Byte[] messageArray, NetIncomingMessage message, NetOutgoingMessage outMessage)
+        private void SendMessage(/*int messageLen, ref Byte[] messageArray, */NetIncomingMessage message, NetOutgoingMessage outMessage)
         {
-            Array.Resize(ref messageArray, messageLen);
+            //Array.Resize(ref messageArray, messageLen);
 
-            outMessage.Write(messageArray);
+            //outMessage.Write(messageArray);
 
             server.SendMessage(outMessage, message.SenderConnection, NetDeliveryMethod.ReliableOrdered);
 
@@ -263,7 +263,7 @@ namespace ServerApplication.Communication
 
             //Sendig a 0 because using Byte[] arr on the other side for now.
             broadcastMessage.Write((byte)MessageType.DebuggFunction5);
-            broadcastMessage.Write((byte)0);
+            //broadcastMessage.Write((byte)0);
 
             broadcastMessage.Write(message);
 
