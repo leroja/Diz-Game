@@ -39,10 +39,7 @@ namespace DizGame.Source.Factories
 
 
             HealthComponent health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(id);
-            AmmunitionComponent ammo = new AmmunitionComponent() // todo ändra sen när vi börjar använda ammo comp
-            {
-                ActiveMagazine = new Tuple<AmmunitionType, int, int>(AmmunitionType.AK_47, 30, Magazine.GetSize(AmmunitionType.AK_47))
-            };
+            AmmunitionComponent ammo = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(id);
             Texture2DComponent slot1 = new Texture2DComponent(Content.Load<Texture2D>("Icons\\squareTest"))
             {
                 Scale = new Vector2(0.2f, 0.2f),
@@ -52,15 +49,13 @@ namespace DizGame.Source.Factories
             List<TextComponent> textComponents = new List<TextComponent>
             {
                 new TextComponent(health.Health.ToString(), healthPosition, Color.Pink, font, true, Color.WhiteSmoke, true, 0.3f), // health
-                new TextComponent(ammo.ActiveMagazine.Item2 + "/" + ammo.ActiveMagazine.Item3 + " " + ammo.ActiveMagazine.Item1 + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.DeepPink, font, true, Color.WhiteSmoke, true, 0.3f), // ammo
-                // TODO: en player remaining vet inte om vi skall göra en komponent för det? :) <- Det är väl bara att plocka ut typ alla "health component" o kolla hur många som har mer än 0 i hälsa?
+                new TextComponent(ammo.curentAmoInMag+"/" + ammo.MaxAmoInMag + " " + " Clips left: " + ammo.AmmountOfActiveMagazines , AmmunitionPosition, Color.DeepPink, font, true, Color.WhiteSmoke, true, 0.3f), // ammo
             };
             List<string> names = new List<string>
             {
                 "Health",
                 "Ammunition",
 
-                // TODO: en player remaining vet inte om vi skall göra en komponent för det? :)
             };
             foreach (Vector2 slots in SlotPositions)
             {
@@ -70,7 +65,7 @@ namespace DizGame.Source.Factories
             List<IComponent> components = new List<IComponent>
             {
                 //health,
-                ammo,
+                //ammo,
                 slot1,
                 new TextComponent(names, textComponents),
                 new HudComponent{ TrackedEntity = id},

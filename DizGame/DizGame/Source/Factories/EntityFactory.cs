@@ -173,6 +173,7 @@ namespace DizGame.Source.Factories
                 keys,
                 mouse,
                 new HealthComponent(),
+                new AmmunitionComponent(),
                 new ScoreComponent()
                 {
                     NameOfScorer = nameOfPlayer
@@ -513,6 +514,7 @@ namespace DizGame.Source.Factories
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),
                 new HealthComponent(),
+                new AmmunitionComponent(),
                 new ScoreComponent()
                 {
                     NameOfScorer = nameOfAi

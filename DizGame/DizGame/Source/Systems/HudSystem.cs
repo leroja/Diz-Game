@@ -27,10 +27,11 @@ namespace DizGame.Source.Systems
             {
                 var hudComp = ComponentManager.GetEntityComponent<HudComponent>(entityId);
                 var healthComp = ComponentManager.GetEntityComponent<HealthComponent>(hudComp.TrackedEntity);
-                var AmmoComp = ComponentManager.GetEntityComponent<AmmunitionComponent>(entityId); // todo ändra sen när vi börjar använda ammo comp
+                var AmmoComp = ComponentManager.GetEntityComponent<AmmunitionComponent>(hudComp.TrackedEntity);
 
                 var textComp = ComponentManager.GetEntityComponent<TextComponent>(entityId);
                 textComp.Children.First().Value.Text = healthComp.Health.ToString();
+                textComp.Children["Ammunition"].Text = AmmoComp.curentAmoInMag + "/" + AmmoComp.MaxAmoInMag + " " + " Clips left: " + AmmoComp.AmmountOfActiveMagazines;
             }
         }
     }
