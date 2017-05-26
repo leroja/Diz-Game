@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CollisionSystem : IUpdate, IObservable<Tuple<object, object>>
     {
         //Holds all the observers for this class

@@ -38,7 +38,7 @@ namespace DizGame.Source.Systems
             var worldTemp = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
 
-            Parallel.ForEach(PlayerEntityIds, playerId =>
+            foreach (var playerId in PlayerEntityIds)
             {
                 var playerComp = ComponentManager.GetEntityComponent<PlayerComponent>(playerId);
                 var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(playerId);
@@ -68,7 +68,7 @@ namespace DizGame.Source.Systems
                         AudioManager.Instance.PlaySoundEffect("ShotEffect", 1f, 1f);
                     }
                 }
-            });
+            }
         }
 
         /// <summary>
