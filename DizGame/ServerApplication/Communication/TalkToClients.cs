@@ -262,7 +262,7 @@ namespace ServerApplication.Communication
             broadcastMessage = server.CreateMessage();
 
             //Sendig a 0 because using Byte[] arr on the other side for now.
-            broadcastMessage.Write((byte)MessageType.DebuggFunction5);
+            broadcastMessage.Write((byte)MessageType.DebugFunction5);
             //broadcastMessage.Write((byte)0);
 
             broadcastMessage.Write(message);

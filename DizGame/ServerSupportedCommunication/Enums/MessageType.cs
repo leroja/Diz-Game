@@ -13,52 +13,139 @@ namespace ServerSupportedCommunication.Enums
     {
         //////////////////////////////////Client to Server
 
-        //Ask server
+        /// <summary>
+        /// Ask server to send the initial game state.
+        /// </summary>
         GetInitialGameState = 1,
+
+        /// <summary>
+        /// Ask the server who will be the master (decide which map to play etc.) when playing multiplayer.
+        /// </summary>
         WhoIsTheMaster,
 
         /// <summary>
-        ///Use these for sending messages to the server in need of debugging.
+        ///Use this for sending messages to the server in need of debugging.
         /// </summary>
         DebugThisFunction0,
+
+        /// <summary>
+        ///Use this for sending messages to the server in need of debugging.
+        /// </summary>
         DebugThisFunction1,
+
+        /// <summary>
+        ///Use this for sending messages to the server in need of debugging.
+        /// </summary>
         DebugThisFunction2,
+
+        /// <summary>
+        ///Use this for sending messages to the server in need of debugging.
+        /// </summary>
         DebugThisFunction3,
+
+        /// <summary>
+        ///Use this for sending messages to the server in need of debugging.
+        /// </summary>
         DebugThisFunction4,
+
+        /// <summary>
+        ///Use this for sending messages to the server in need of debugging.
+        /// </summary>
         DebugThisFunction5,
 
-        //Client's created objects
-        CreatedNewEntity, //Test with sending a whole new entity as a list of components.
+
+
+
+
+        /// <summary>
+        /// Client created new object.
+        /// </summary>
+        CreatedNewEntity,
+
+        /// <summary>
+        /// Client created new object.
+        /// </summary>
         CreatedNewPlayer,
-        CreatedNewBulletComponent,
+
+
+        /// <summary>
+        /// Client created new object.
+        /// </summary>
         CreatedNewTransformComponent,
 
+        /// <summary>
+        /// Client created new object.
+        /// </summary>
+        CreatedNewBulletComponent,
 
 
 
         ///////////////////////////////Server to Client
+
+        /// <summary>
+        /// The server decided who will be in charge of deciding map etc.
+        /// </summary>
         YouAreTheMaster,
 
-        //Create objects
-        CreateNewEntity, //Test to send a whole new entity as a list of components.
-        CreatePlayer,    //start positions
+        /// <summary>
+        /// The server demands to create a new object.
+        /// </summary>
+        CreateNewEntity,
+
+        /// <summary>
+        /// The server demands to create a new object.
+        /// </summary>
+        CreatePlayer,
+
+        /// <summary>
+        /// The server demands to create a new object.
+        /// </summary>
         CreateInitialGameState,
 
-
+        /// <summary>
+        /// The server demands to create a new object.
+        /// </summary>
         CreateBulletComponent,
 
         /// <summary>
-        /// Use these to sending messages to the client in need of debugging.
+        /// The server send debug messages to the client in need of debugging.
         /// </summary>
-        DebuggFunction0,
-        DebuggFunction1,
-        DebuggFunction2,
-        DebuggFunction3,
-        DebuggFunction4,
-        DebuggFunction5,
+        DebugFunction0,
 
-        //Moved objects
+        /// <summary>
+        /// The server send debug messages to the client in need of debugging.
+        /// </summary>
+        DebugFunction1,
+
+        /// <summary>
+        /// The server send debug messages to the client in need of debugging.
+        /// </summary>
+        DebugFunction2,
+
+        /// <summary>
+        /// The server send debug messages to the client in need of debugging.
+        /// </summary>
+        DebugFunction3,
+
+        /// <summary>
+        /// The server send debug messages to the client in need of debugging.
+        /// </summary>
+        DebugFunction4,
+
+        /// <summary>
+        /// The server send debug messages to the client in need of debugging.
+        /// </summary>
+        DebugFunction5,
+
+        /// <summary>
+        /// The server asks for moving an object.
+        /// </summary>
         MoveEntity,
+
+        /// <summary>
+        /// The server asks for deleting an object.
+        /// </summary>
+        DeleteEntity,
 
     }
 }

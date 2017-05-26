@@ -80,22 +80,22 @@ namespace DizGame.Source.Communication
 
 
                             //Use these cases when debugging messages:
-                        case (byte)MessageType.DebuggFunction0:
+                        case (byte)MessageType.DebugFunction0:
                             DebugThisFunction0(message);
                             break;
-                        case (byte)MessageType.DebuggFunction1:
+                        case (byte)MessageType.DebugFunction1:
                             DebugThisFunction1(message);
                             break;
-                        case (byte)MessageType.DebuggFunction2:
+                        case (byte)MessageType.DebugFunction2:
                             DebugThisFunction2(message);
                             break;
-                        case (byte)MessageType.DebuggFunction3:
+                        case (byte)MessageType.DebugFunction3:
                             DebugThisFunction3(message);
                             break;
-                        case (byte)MessageType.DebuggFunction4:
+                        case (byte)MessageType.DebugFunction4:
                             DebugThisFunction4(message);
                             break;
-                        case (byte)MessageType.DebuggFunction5:
+                        case (byte)MessageType.DebugFunction5:
                             DebugThisFunction5(message);
                             break;
                     }
