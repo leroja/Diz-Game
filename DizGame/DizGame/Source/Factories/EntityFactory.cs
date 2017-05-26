@@ -78,6 +78,7 @@ namespace DizGame.Source.Factories
                 { "Dude", Content.Load<Model>("Dude/Dude72") },
                 { "Heart", Content.Load<Model>("MapObjects/Heart/Heart") },
                 { "WoodHouse", Content.Load<Model>("MapObjects/WoodHouse/WoodHouse1")},
+                {"skybox", Content.Load<Model>("MapObjects/Skybox/skybox3") },
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -85,7 +86,7 @@ namespace DizGame.Source.Factories
                 {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
                 {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
                 {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
-                { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
+                {"Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
                 {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
                 {"CrossHair", Content.Load<Texture2D>("Icons/crosshairTrans") },
             };
@@ -173,6 +174,7 @@ namespace DizGame.Source.Factories
                 keys,
                 mouse,
                 new HealthComponent(),
+                new AmmunitionComponent(),
                 new ScoreComponent()
                 {
                     NameOfScorer = nameOfPlayer
@@ -513,6 +515,7 @@ namespace DizGame.Source.Factories
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),
                 new HealthComponent(),
+                new AmmunitionComponent(),
                 new ScoreComponent()
                 {
                     NameOfScorer = nameOfAi
@@ -544,6 +547,22 @@ namespace DizGame.Source.Factories
             TestingTheAnimationsWithDude(AIEntityID);
 
             return AIEntityID;
+        }
+        public int CreateNewSkyBox()
+        {
+            int skyboxid = ComponentManager.Instance.CreateID();
+            Model model = ModelDic["skybox"];
+            //Texture2D texture = Content.Load<Texture2D>("MapObjects/Skybox/skybox_texture");
+            //Effect skyBoxEffect = Content.Load<Effect>("Effects/SkyBox");
+
+            List<IComponent> newcmpList = new List<IComponent>
+            {
+                new SkyBoxComponent(model), //507 och 505 rör du inte!
+                new TransformComponent(new Vector3(507,45,-510), new Vector3(505,200,510))
+            };
+            ComponentManager.Instance.AddAllComponents(skyboxid, newcmpList);
+
+            return skyboxid;
         }
     }
 }

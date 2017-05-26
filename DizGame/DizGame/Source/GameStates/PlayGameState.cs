@@ -48,6 +48,8 @@ namespace DizGame.Source.GameStates
         public override void Entered()
         {
             EntityFactory.Instance.CreateWorldComp();
+            
+            GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
 
             if (multiplayerGame)
             {
@@ -166,12 +168,16 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
+            AmmunitionSystem ammo = new AmmunitionSystem();
             CollisionSystem cSys = new CollisionSystem();
             PhysicsSystem pSys = new PhysicsSystem();
             cSys.Subscribe(new HealthSystem());
+            cSys.Subscribe(ammo);
+            cSys.Subscribe(new StaticColisionSystem());
             //cSys.Subscribe(pSys);
             SystemManager.Instance.AddSystem(pSys);
-            SystemManager.Instance.AddSystem(new ModelSystem());
+            SystemManager.Instance.AddSystem(ammo);
+            SystemManager.Instance.AddSystem(new ModelSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
             //SystemManager.Instance.AddSystem(new GameTransformSystem());
             SystemManager.Instance.AddSystem(new TransformSystem());

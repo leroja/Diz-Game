@@ -112,8 +112,7 @@ namespace DizGame.Source.GameStates
         public override void Exiting()
         {
             AudioManager.Instance.StopSong();
-            List<int> tep = ComponentManager.Instance.GetAllEntitiesWithComponentType<ScoreComponent>();
-            GameStateEntities.AddRange(tep);
+            GameStateEntities.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<ScoreComponent>());
             GameStateEntities.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>());
             foreach (int id in GameStateEntities)
             {

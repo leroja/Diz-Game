@@ -18,6 +18,14 @@ namespace GameEngine.Source.Systems
     {
         WorldComponent world;
         CameraComponent defaultCam;
+        int defaultCamID;
+
+        GraphicsDevice device;
+
+        public ModelSystem(GraphicsDevice device)
+        {
+            this.device = device;
+        }
 
         /// <summary>
         /// 
@@ -29,8 +37,9 @@ namespace GameEngine.Source.Systems
             world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
+            defaultCamID = entitiesWithCamera.First();
             //pick one
-            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.FirstOrDefault());
+            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(defaultCamID);
 
             //var ents = new Dictionary<int, IComponent>(ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>());
             var ents = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
@@ -38,6 +47,67 @@ namespace GameEngine.Source.Systems
             {
                 DrawModel(ent);
             }
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<SkyBoxComponent>())
+                RenderSkyBox(entityID);
+        }
+
+        private void RenderSkyBox(int EntityID)
+        {
+            device.DepthStencilState = DepthStencilState.DepthRead;
+            SkyBoxComponent skybox = ComponentManager.GetEntityComponent<SkyBoxComponent>(EntityID);
+            Effect skyBoxEffect = skybox.SkyboxEffect;
+            TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(EntityID);
+
+            // Draw all of the components of the mesh, but we know the cube really
+            // only has one mesh
+            foreach (ModelMesh mesh in skybox.SkyboxModel.Meshes)
+            {
+                
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = tcp.ObjectMatrix * world.World;
+
+                    effect.View = defaultCam.View;
+                    effect.Projection = defaultCam.Projection;
+
+                    if (world != null && world.IsSunActive)
+                    {
+                        FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
+                        effect.LightingEnabled = true;
+
+                        //effect.DiffuseColor = flare.Diffuse;
+                        //effect.AmbientLightColor = flare.AmbientLight;
+
+                        effect.DirectionalLight0.Enabled = true;
+                        effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight0.Direction = flare.LightDirection;
+
+                        effect.DirectionalLight1.Enabled = true;
+                        effect.DirectionalLight1.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight1.Direction = -flare.LightDirection;
+
+                        effect.DirectionalLight2.Enabled = true;
+                        effect.DirectionalLight2.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight2.Direction = tcp.Up;
+
+                        //effect.Alpha = 1;
+
+
+                    }
+
+                    effect.PreferPerPixelLighting = true;
+                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+                        mesh.Draw();
+
+                    }
+                }
+            }
+            device.DepthStencilState = DepthStencilState.Default;
+
+
+
         }
 
         /// <summary>
