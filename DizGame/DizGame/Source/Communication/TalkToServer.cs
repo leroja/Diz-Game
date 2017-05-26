@@ -64,7 +64,11 @@ namespace DizGame.Source.Communication
                     {
                         case (byte)MessageType.CreateInitialGameState:
                             ReceiveInitialGameState(message);
-                            Console.WriteLine("Initial game state length: " + message.LengthBytes);
+
+                            //Functions that need debugging:
+                            //This uses DebugThisFunction5();
+                            SendCreatedNewBullet(1, "Bullet", new Vector3(1, 1, 1), new Vector3(.1f, .1f, .1f), 100, 1000, new Vector3(1, 1, 1), 10);
+
                             break;
 
                         case (byte)MessageType.YouAreTheMaster:
@@ -196,9 +200,12 @@ namespace DizGame.Source.Communication
 
             int arrLength = 0;
 
+/////////////This line just used for debugging - remove in final version.
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.DebugThisFunction5);
+
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, (byte)MessageType.CreatedNewBulletComponent);
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, entityId);
-            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);//This function should write the length of the name before the name(local to the function).
+            arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, modelName);
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, position);
             arrLength = ConvertToByteArray.ConvertValue(ref messageArray, arrLength, scale);
@@ -266,27 +273,27 @@ namespace DizGame.Source.Communication
     
         private void DebugThisFunction1(NetIncomingMessage message)
         {
-            throw new NotImplementedException();
+
         }
 
         private void DebugThisFunction2(NetIncomingMessage message)
         {
-            throw new NotImplementedException();
+
         }
 
         private void DebugThisFunction3(NetIncomingMessage message)
         {
-            throw new NotImplementedException();
+
         }
 
         private void DebugThisFunction4(NetIncomingMessage message)
         {
-            throw new NotImplementedException();
+
         }
 
         private void DebugThisFunction5(NetIncomingMessage message)
         {
-            throw new NotImplementedException();
+            ;
         }
     }
 }

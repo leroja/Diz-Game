@@ -68,6 +68,31 @@ namespace ServerApplication.Communication
                         case (byte)MessageType.WhoIsTheMaster:
                             SendWhoIsTheMaster(message);
                             break;
+
+
+
+
+
+                        //Used for debugging purposes when communicating with the clients.
+                        case (byte)MessageType.DebugThisFunction0:
+                            DebugFunction0(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction1:
+                            DebugFunction1(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction2:
+                            DebugFunction2(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction3:
+                            DebugFunction3(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction4:
+                            DebugFunction4(message);
+                            break;
+                        case (byte)MessageType.DebugThisFunction5:
+                            DebugFunction5(message);
+                            break;
+
                     }
                     break;
 
@@ -75,6 +100,7 @@ namespace ServerApplication.Communication
                     break;
             }
         }
+
 
         private void SendWhoIsTheMaster(NetIncomingMessage message)
         {
@@ -201,6 +227,37 @@ namespace ServerApplication.Communication
         /// and have sent a new state.
         /// </summary>
         private void SmootheClientState()
+        {
+
+        }
+
+
+        private void DebugFunction0(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction1(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction2(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction3(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction4(NetIncomingMessage message)
+        {
+
+        }
+
+        private void DebugFunction5(NetIncomingMessage message)
         {
 
         }
