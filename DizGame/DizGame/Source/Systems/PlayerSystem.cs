@@ -90,8 +90,8 @@ namespace DizGame.Source.Systems
             //prevX = mouseComp.X;
             //prevY = mouseComp.Y;
 
-            var r = center - mouseComp.CurrentPosition;
-            //var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
+            //var r = center - mouseComp.CurrentPosition;
+            var r = mouseComp.PreviousPostion - mouseComp.CurrentPosition;
 
             //Mouse.SetPosition((int)center.X, (int)center.Y);
 

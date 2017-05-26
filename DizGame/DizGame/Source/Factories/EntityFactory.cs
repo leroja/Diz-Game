@@ -222,32 +222,55 @@ namespace DizGame.Source.Factories
         /// </summary>
         public void SpawnProtection()
         {
-            List<int> spawnPositions = new List<int>();
-            List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-
-            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
-            spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
-            foreach (var id in spawnPositions)
+            var modelList = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+            foreach (var Model1 in modelList)
             {
-                TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id);
-                float minX = tran.Position.X - 10;
-                float minZ = tran.Position.Z + 10;
-                float maxX = tran.Position.X + 10;
-                float maxZ = tran.Position.Z - 10;
-
-                foreach (var model in modelId)
+                foreach (var Model2 in modelList)
                 {
-                    ModelComponent mod = ComponentManager.Instance.GetEntityComponent<ModelComponent>(model);
-                    TransformComponent Comp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(model);
-                    if (Comp != null && mod.IsStatic == true)
+                    ModelComponent ModComp1 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(Model1);
+                    ModelComponent ModComp2 = ComponentManager.Instance.GetEntityComponent<ModelComponent>(Model2);
+
+                    if(ModComp1 != ModComp2)
                     {
-                        if ((Comp.Position.X >= minX && Comp.Position.X <= maxX) && (Comp.Position.Z <= minZ && Comp.Position.Z >= maxZ))
+                        if (ModComp2 != null && ModComp1 != null && ModComp1.BoundingVolume.Bounding.Intersects(ModComp2.BoundingVolume.Bounding))
                         {
-                            ComponentManager.Instance.RemoveEntity(model);
+                            if(!ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(ModComp2.ID) && !ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(ModComp2.ID))
+                            {
+                                ComponentManager.Instance.RemoveEntity(ModComp2.ID);
+                                ComponentManager.Instance.RemoveEntity(ModComp2.ID);
+                            }
                         }
                     }
                 }
+              
+
             }
+            //List<int> spawnPositions = new List<int>();
+            //List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
+
+            //spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
+            //spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
+            //foreach (var id in spawnPositions)
+            //{
+            //    TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id);
+            //    float minX = tran.Position.X - 10;
+            //    float minZ = tran.Position.Z + 10;
+            //    float maxX = tran.Position.X + 10;
+            //    float maxZ = tran.Position.Z - 10;
+
+            //    foreach (var model in modelId)
+            //    {
+            //        ModelComponent mod = ComponentManager.Instance.GetEntityComponent<ModelComponent>(model);
+            //        TransformComponent Comp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(model);
+            //        if (Comp != null && mod.IsStatic == true)
+            //        {
+            //            if ((Comp.Position.X >= minX && Comp.Position.X <= maxX) && (Comp.Position.Z <= minZ && Comp.Position.Z >= maxZ))
+            //            {
+            //                ComponentManager.Instance.RemoveEntity(model);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
