@@ -35,7 +35,6 @@ namespace GameEngine.Source.Factories
         public HeightMapFactory(GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
-
         }
 
         /// <summary>

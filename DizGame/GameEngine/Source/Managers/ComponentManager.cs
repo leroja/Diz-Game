@@ -168,6 +168,14 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
+        /// Clears the Component manager and removes all components stored in it.
+        /// </summary>
+        public void ClearManager()
+        {
+            compDic.Clear();
+        }
+
+        /// <summary>
         /// Returns an entityId if there is an entity linked to the specific component
         /// </summary>
         /// <typeparam name="T"> The type of compent </typeparam>

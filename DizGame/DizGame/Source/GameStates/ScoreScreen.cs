@@ -55,7 +55,7 @@ namespace DizGame.Source.GameStates
         {
             int entiID = ComponentManager.Instance.CreateID();
             GameStateEntities.Add(entiID);
-            var textComp = new TextComponent("Name " + "       " + "Score " + "      " + "Kills" + "      " + "Hits", new Vector2(80, 10), Color.MonoGameOrange, SpriteFont, true);
+            var textComp = new TextComponent("Name " + "       " + "Score " + "      " + "Kills" + "      " + "Hits", new Vector2(80, 10), Color.DarkTurquoise, SpriteFont, true);
             ComponentManager.Instance.AddComponentToEntity(entiID, textComp);
 
             int y = 50;
@@ -84,7 +84,7 @@ namespace DizGame.Source.GameStates
 
             int entID = ComponentManager.Instance.CreateID();
             GameStateEntities.Add(entID);
-            textComp = new TextComponent("Press Space to continue", new Vector2(80, y), Color.Black, SpriteFont, true);
+            textComp = new TextComponent("Press Space to continue", new Vector2(250, GameOne.Instance.Window.ClientBounds.Height - 100), Color.Black, SpriteFont, true);
             ComponentManager.Instance.AddComponentToEntity(entID, textComp);
 
             AudioManager.Instance.PlaySong("MenuSong");

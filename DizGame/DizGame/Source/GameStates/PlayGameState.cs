@@ -46,6 +46,7 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
+            ComponentManager.Instance.ClearManager();
             EntityFactory.Instance.CreateWorldComp();
 
             GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
@@ -147,12 +148,16 @@ namespace DizGame.Source.GameStates
             //if (state.IsKeyDown(Keys.V))
             //    Revealed();
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                GameStateEntities.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>());
-                MainMenu main = new MainMenu();
+                // todo temporärt, vill snabbt se score screen medan jag gör ändringar där
+                //GameStateEntities.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>());
+                //MainMenu main = new MainMenu();
+                //GameStateManager.Instance.Pop();
+                //GameStateManager.Instance.Push(main);
+                ScoreScreen Score = new ScoreScreen();
                 GameStateManager.Instance.Pop();
-                GameStateManager.Instance.Push(main);
+                GameStateManager.Instance.Push(Score);
             }
 
             if (CheckEndCriteria())
@@ -220,7 +225,7 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory entf = EntityFactory.Instance;
 
-            // todo place more AI:s and make them be on the whole map, fine tune thier parameters
+            // todo maybe place more AI:s, fine tune thier parameters
             var waypointList = new List<Vector2>()
             {
                 new Vector2(5, -5),
@@ -236,7 +241,11 @@ namespace DizGame.Source.GameStates
                 entf.CreateAI("Dude", new Vector3(800, 45, -50), 5, 1000, 1000, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5, "AI-3"),
                 entf.CreateAI("Dude", new Vector3(5, 39, -45), 5, 1000, 1000, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.7f, 1f, waypointList, 90, 2, "Ai-4"),
                 entf.CreateAI("Dude", new Vector3(800, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.1f, 100, 40, 0.7f, 1f, null, 350, 1, "AI-5"),
-                entf.CreateAI("Dude", new Vector3(50, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-6"),
+                entf.CreateAI("Dude", new Vector3(75, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-6"),
+                entf.CreateAI("Dude", new Vector3(250, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-7"),
+                entf.CreateAI("Dude", new Vector3(50, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-8"),
+                entf.CreateAI("Dude", new Vector3(250, 45, -500), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-9"),
+                entf.CreateAI("Dude", new Vector3(500, 45, -500), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-10"),
             };
             GameStateEntities.AddRange(aiEntityList);
 
