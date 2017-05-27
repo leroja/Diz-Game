@@ -52,9 +52,9 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
-            time = 2;
+            time = 1;
             SystemManager.Instance.AddSystem(TextSystem);
-            string[] itemNames = { "One Player Game", "Multiplayer Game", "Settings", "Whatever" };
+            string[] itemNames = { "One Player Game", "Multiplayer Game", "Settings", "Whatever", "Exit" };
             ItemNames = itemNames;
 
             int y = 30;
@@ -188,6 +188,10 @@ namespace DizGame.Source.GameStates
                     case 2:
                         break;
                     case 3:
+                        break;
+                    case 4:
+                        GameOne.Instance.Exit();
+                        //SystemManager.Instance.ThreadUpdateSystems.Abort();
                         break;
                 }
             }

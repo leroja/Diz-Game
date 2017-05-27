@@ -53,6 +53,11 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
+            int entiID = ComponentManager.Instance.CreateID();
+            GameStateEntities.Add(entiID);
+            var textComp = new TextComponent("Name " + "       " + "Score " + "      " + "Kills" + "      " + "Hits", new Vector2(80, 10), Color.MonoGameOrange, SpriteFont, true);
+            ComponentManager.Instance.AddComponentToEntity(entiID, textComp);
+
             int y = 50;
             Color color;
             TextComponent textComponent;
@@ -65,17 +70,23 @@ namespace DizGame.Source.GameStates
                 ScoreComponent score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ids[i]);
                 if (i == 0)
                 {
-                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score + "      " + "Winner", position, color, SpriteFont, true);
+                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score + "        " + score.Kills + "        " + score.Hits + "      " + "Winner", position, color, SpriteFont, true);
                 }
                 else
                 {
-                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score, position, color, SpriteFont, true);
+                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score + "        " + score.Kills + "        " + score.Hits, position, color, SpriteFont, true);
                 }
                 int entityID = ComponentManager.Instance.CreateID();
                 GameStateEntities.Add(entityID);
                 ComponentManager.Instance.AddComponentToEntity(entityID, textComponent);
                 y += 40;
             }
+
+            int entID = ComponentManager.Instance.CreateID();
+            GameStateEntities.Add(entID);
+            textComp = new TextComponent("Press Space to continue", new Vector2(80, y), Color.Black, SpriteFont, true);
+            ComponentManager.Instance.AddComponentToEntity(entID, textComp);
+
             AudioManager.Instance.PlaySong("MenuSong");
             AudioManager.Instance.ChangeRepeat();
             AudioManager.Instance.ChangeSongVolume(0.5f);

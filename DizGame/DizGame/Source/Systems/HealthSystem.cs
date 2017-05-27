@@ -128,12 +128,16 @@ namespace DizGame.Source.Systems
                         }
                         ComponentManager.Instance.RemoveComponentFromEntity(HitID, ComponentManager.Instance.GetEntityComponent<ModelComponent>(HitID));
 
-                        ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner).Score += 100;
+                        var score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner);
+                        score.Kills += 1;
+                        score.Hits += 1;
+                        score.Score += 100;
                     }
                     else
                     {
                         ComponentManager.Instance.GetEntityComponent<HealthComponent>(HitID).Health -= bullet.Damage;
                         var score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(bullet.Owner);
+                        score.Hits += 1;
                         score.Score += 5;
                     }
                 }

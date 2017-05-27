@@ -220,7 +220,7 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory entf = EntityFactory.Instance;
 
-            // todo place mora AI:s and make them be on the whole map, make them more spread out
+            // todo place more AI:s and make them be on the whole map, fine tune thier parameters
             var waypointList = new List<Vector2>()
             {
                 new Vector2(5, -5),
@@ -231,10 +231,12 @@ namespace DizGame.Source.GameStates
 
             List<int> aiEntityList = new List<int>
             {
-                entf.CreateAI("Dude", new Vector3(30, 45, -80), 5, 300, 300, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9,"AI-1"),
-                entf.CreateAI("Dude", new Vector3(65, 39, -10), 5, 300, 300, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7,"AI-2"),
-                entf.CreateAI("Dude", new Vector3(135, 45, -50), 5, 300, 300, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5,"AI-3"),
-                entf.CreateAI("Dude", new Vector3(45, 39, -30), 5, 300, 300, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.2f, 1f, waypointList, 90, 2,"Ai-4"),
+                entf.CreateAI("Dude", new Vector3(100, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9, "AI-1"),
+                entf.CreateAI("Dude", new Vector3(500, 39, -500), 5, 1000, 1000, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7, "AI-2"),
+                entf.CreateAI("Dude", new Vector3(800, 45, -50), 5, 1000, 1000, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5, "AI-3"),
+                entf.CreateAI("Dude", new Vector3(5, 39, -45), 5, 1000, 1000, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.7f, 1f, waypointList, 90, 2, "Ai-4"),
+                entf.CreateAI("Dude", new Vector3(800, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.1f, 100, 40, 0.7f, 1f, null, 350, 1, "AI-5"),
+                entf.CreateAI("Dude", new Vector3(50, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-6"),
             };
             GameStateEntities.AddRange(aiEntityList);
 
