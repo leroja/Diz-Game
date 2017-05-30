@@ -142,7 +142,6 @@
 #begin Fonts/MenuFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/MenuFont.spritefont
 
@@ -352,7 +351,6 @@
 #begin Fonts/Death.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Death.spritefont
 
@@ -417,4 +415,22 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MapObjects/Skybox/509d97aea7d06.jpg
+
+#begin Effects/HardwareInstancedEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/HardwareInstancedEffect.fx
+
+#begin HeightMapStuff/drygrass.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HeightMapStuff/drygrass.png
 

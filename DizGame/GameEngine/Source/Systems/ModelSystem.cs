@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace GameEngine.Source.Systems
 {
@@ -49,7 +50,44 @@ namespace GameEngine.Source.Systems
             }
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<SkyBoxComponent>())
                 RenderSkyBox(entityID);
+
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<HardwareInstancedComponent>())
+                RenderHardwareInstanced(entityID);
         }
+
+
+
+        /// <summary>
+        /// Renders from one copy in hardware to serveral places on map.
+        /// </summary>
+        /// <param name="entityID">The id to render.</param>
+        private void RenderHardwareInstanced(int entityID)
+        {
+            HardwareInstancedComponent hwComponent = ComponentManager.GetEntityComponent<HardwareInstancedComponent>(entityID);
+            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+
+            hwComponent.GraphicsDevice.Indices = hwComponent.IndexBuffer;
+
+            hwComponent.GraphicsDevice.SetVertexBuffers(hwComponent.Bindings);
+
+            hwComponent.Effect.Parameters["World"].SetValue(Matrix.Identity);
+            hwComponent.Effect.Parameters["View"].SetValue(defaultCam.View);
+            hwComponent.Effect.Parameters["Projection"].SetValue(defaultCam.Projection);
+            hwComponent.Effect.Parameters["Texture"].SetValue(hwComponent.Texture);
+
+            hwComponent.GraphicsDevice.RasterizerState = hwComponent.RasterizerState;
+
+            foreach (EffectPass pass in hwComponent.Effect.Techniques[1/*(int)ShaderTechnique.InstancedTechnique*/].Passes)
+            {
+                pass.Apply();
+
+                hwComponent.GraphicsDevice.DrawInstancedPrimitives(
+                    PrimitiveType.LineList, 0, 0, hwComponent.VertexBuffer.VertexCount, 0, 
+                    hwComponent.IndexBuffer.IndexCount / hwComponent.IndicesPerPrimitive, hwComponent.InstanceCount);
+
+            }
+        }
+
 
         private void RenderSkyBox(int EntityID)
         {
