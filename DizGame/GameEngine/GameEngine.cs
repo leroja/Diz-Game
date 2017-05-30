@@ -65,7 +65,7 @@ namespace GameEngine
         /// </summary>
         protected override void UnloadContent()
         {
-
+            base.UnloadContent();
         }
 
         /// <summary>

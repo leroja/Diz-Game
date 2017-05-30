@@ -27,6 +27,7 @@ namespace DizGame.Source.Systems
 
         private TalkToServer talkToServer;
 
+        private bool EndThread;
 
         /// <summary>
         /// Basic constructor for the NetworkSystem, default portnumber is 1337
@@ -49,6 +50,18 @@ namespace DizGame.Source.Systems
             client = new NetClient(config);
 
             talkToServer = new TalkToServer(client);
+
+            EndThread = false;
+        }
+
+
+        /// <summary>
+        /// This function give the thread a signal to gracefully 
+        /// end execution.
+        /// </summary>
+        public void EndExecution()
+        {
+            EndThread = true;
         }
 
 
@@ -120,7 +133,7 @@ namespace DizGame.Source.Systems
 
             bool sendRequest = true;
 
-            while (true)
+            while (EndThread == false)
                 while ((message = client.ReadMessage()) != null)
                 {
                 //This should be moved to some better place.
@@ -169,9 +182,12 @@ namespace DizGame.Source.Systems
                             Console.WriteLine("Unhandled message type: {message.MessageType}");
                             break;
                     }
+
                     client.Recycle(message);
-                
+
             }
+
+            client.Disconnect("Client ended communication");
         }
     }
 }

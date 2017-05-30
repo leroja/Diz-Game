@@ -98,7 +98,8 @@ namespace DizGame
         /// </summary>
         protected override void UnloadContent()
         {
-
+            client.EndExecution();
+            netClientThread.Join();
         }
 
         /// <summary>
