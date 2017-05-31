@@ -82,9 +82,9 @@ namespace DizGame.Source.Factories
             }
 
             if(rockPositions.Count > 0)
-                entityIdList.Add(CreateDryGrass(10, rockPositions[0], new Vector3(10f, 10f, 10f)));
+                entityIdList.Add(CreateDryGrass(10, rockPositions[0], new Vector3(0.1f)));
             else
-                entityIdList.Add(CreateDryGrass(10, GetModelPositions(1)[0], new Vector3(10f, 10f, 10f)));
+                entityIdList.Add(CreateDryGrass(10, GetModelPositions(1)[0], new Vector3(0.1f)));
 
             return entityIdList;
         }
@@ -216,7 +216,7 @@ namespace DizGame.Source.Factories
 
         public int CreateDryGrass(int numberOfObjects, Vector3 position, Vector3 scale)
         {
-            TreeModel tree = new TreeModel(GameOne.Instance.GraphicsDevice, 1f, MathHelper.PiOver4 - 0.5f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
+            TreeModel tree = new TreeModel(GameOne.Instance.GraphicsDevice, 1f, MathHelper.PiOver4 - 0.5f, "F[LF]F[RF]F", 4, 1f, new string[] { "F" });
             int instanceCount = numberOfObjects;
 
             VertexDeclaration matriceVD = new VertexDeclaration(
@@ -236,7 +236,7 @@ namespace DizGame.Source.Factories
             VertexBufferBinding[] bindings = new VertexBufferBinding[2];
 
             bindings[0] = new VertexBufferBinding(tree.VertexBuffer);
-            bindings[1] = new VertexBufferBinding(matriceVB, 0, instanceCount);
+            bindings[1] = new VertexBufferBinding(matriceVB, 0, 1);
 
             RasterizerState rs = new RasterizerState();
             rs.CullMode = CullMode.None;
@@ -279,10 +279,10 @@ namespace DizGame.Source.Factories
         private void InitObjectMatrices(ref Matrix[] objectMatrices, Vector3 position, Vector3 scale)
         {
             for (int i = 0; i < objectMatrices.Length; i++)
-                objectMatrices[i] = Matrix.Identity 
-                                  * Matrix.CreateScale(scale*10) 
-                                  * Matrix.CreateTranslation(position)
-                                  * Matrix.CreateRotationY(i * MathHelper.PiOver4);
+                objectMatrices[i] = Matrix.Identity
+                                  * Matrix.CreateScale(scale)
+                                  * Matrix.CreateRotationY(i * MathHelper.PiOver4)
+                                  * Matrix.CreateTranslation(position);
         }
 
         private void SpreadTheGrassAroundPosition(ref Matrix[] objectMatrices, Vector3 position, int spread)
@@ -292,9 +292,9 @@ namespace DizGame.Source.Factories
             for(int i=0; i<objectMatrices.Length; i++)
             {
                 objectMatrices[i] *= Matrix.CreateTranslation(
-                    new Vector3(rnd.Next((int)objectMatrices[i].Translation.X - spread, (int)objectMatrices[i].Translation.X + spread),
-                                objectMatrices[i].Translation.Y,
-                                rnd.Next((int)objectMatrices[i].Translation.Z - spread, (int)objectMatrices[i].Translation.Z + spread)));
+                    new Vector3(rnd.Next(-spread, spread),
+                                0,
+                                rnd.Next(-spread, spread)));
 
 
             }
