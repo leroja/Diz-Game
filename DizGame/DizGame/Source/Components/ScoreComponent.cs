@@ -27,5 +27,9 @@ namespace DizGame.Source.Components
         /// How many times the entity has hit the enemies
         /// </summary>
         public int Hits { get; set; }
+        /// <summary>
+        /// A string of awards an entity has recieved, e.g. winner, most kills, most hits, last alive
+        /// </summary>
+        public string Awards { get; set; }
     }
 }

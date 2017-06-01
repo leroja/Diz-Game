@@ -32,7 +32,7 @@ namespace DizGame.Source.AI_Behaviors
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
             var pos = transformComp.Position;
 
-            var rotation = GetRotationToClosestEnenmy(AIComp);
+            var rotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position);
 
             transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0); // -MathHelper.Pi gör så att AI:n får en motsatt rotaion till närmsta fienden
 

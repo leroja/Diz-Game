@@ -18,6 +18,7 @@ namespace DizGame.Source.GameStates
         private const int BetweenNameAndScore = 155;
         private const int BetweenScoreAndKills = 255;
         private const int BetweenKillsAndHits = 355;
+        private const int BetweenHitsAndAdditional = 455;
 
         #region Properties
         /// <summary>
@@ -58,6 +59,11 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
+            var world = ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>();
+            var ev = ComponentManager.Instance.GetEntityComponent<TextComponent>(world.FirstOrDefault());
+            ev.Color = Color.Black;
+            ev.Position = new Vector2(700, 10);
+            
             SystemManager.Instance.AddSystem(TextSystem);
 
             int entiID = ComponentManager.Instance.CreateID();
@@ -71,14 +77,16 @@ namespace DizGame.Source.GameStates
                 "Name",
                 "Score",
                 "Kills",
-                "Hits"
+                "Hits",
+                "Additional Stuff"
             };
             List<TextComponent> li = new List<TextComponent>()
             {
-                new TextComponent("Name", new Vector2(start, 10),Color.DarkTurquoise, SpriteFont, true),
-                new TextComponent("Score", new Vector2(BetweenNameAndScore, 10),Color.DarkTurquoise, SpriteFont, true),
-                new TextComponent("Kills", new Vector2(BetweenScoreAndKills, 10),Color.DarkTurquoise, SpriteFont, true),
-                new TextComponent("Hits", new Vector2(BetweenKillsAndHits, 10),Color.DarkTurquoise, SpriteFont, true),
+                new TextComponent("Name", new Vector2(start, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Score", new Vector2(BetweenNameAndScore, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Kills", new Vector2(BetweenScoreAndKills, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Hits", new Vector2(BetweenKillsAndHits, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Awards", new Vector2(BetweenHitsAndAdditional, 10), Color.Navy, SpriteFont, true), 
             };
 
             var textComp = new TextComponent(names, li);
@@ -93,10 +101,11 @@ namespace DizGame.Source.GameStates
                 
                 li = new List<TextComponent>()
                 {
-                    new TextComponent(score.NameOfScorer, new Vector2(start, y), Color.Pink, SpriteFont, true),
+                    new TextComponent(score.NameOfScorer, new Vector2(start, y), Color.DeepPink, SpriteFont, true),
                     new TextComponent(score.Score.ToString(), new Vector2(BetweenNameAndScore + 10, y), Color.OrangeRed, SpriteFont, true),
                     new TextComponent(score.Kills.ToString(), new Vector2(BetweenScoreAndKills + 10, y), Color.DarkRed, SpriteFont, true),
                     new TextComponent(score.Hits.ToString(), new Vector2(BetweenKillsAndHits + 10, y), Color.YellowGreen, SpriteFont, true),
+                    new TextComponent("", new Vector2(BetweenHitsAndAdditional, 10), Color.Navy, SpriteFont, true),
                 };
 
                 textComponent = new TextComponent(names, li);
@@ -154,8 +163,7 @@ namespace DizGame.Source.GameStates
                 Score.Add(ComponentManager.Instance.GetEntityComponent<ScoreComponent>(id));
             }
 
-            List<ScoreComponent> orderdList = Score.OrderByDescending(o => o.NameOfScorer).ToList();
-            return orderdList[0].NameOfScorer;
+            return Score.OrderByDescending(o => o.NameOfScorer).ToList()[0].NameOfScorer;
         }
 
         /// <summary>

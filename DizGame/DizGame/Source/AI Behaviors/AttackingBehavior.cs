@@ -51,7 +51,7 @@ namespace DizGame.Source.AI_Behaviors
 
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
+            transformComp.Rotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position);
             transformComp.Position = new Vector3(transformComp.Position.X, MovingSystem.GetHeight(transformComp.Position), transformComp.Position.Z);
             if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && time < 0)
             {

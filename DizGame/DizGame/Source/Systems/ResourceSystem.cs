@@ -64,7 +64,7 @@ namespace DizGame.Source.Systems
                 transComp.Rotation += new Vector3(0, 0.7f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0f);
             });
 
-            if (world.Day % world.ModulusValue != 1)
+            if (world.Day % world.ModulusValue == 1)
             {
                 Parallel.ForEach(entitylist, entity =>
                 {

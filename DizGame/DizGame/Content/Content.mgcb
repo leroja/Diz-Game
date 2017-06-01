@@ -142,6 +142,7 @@
 #begin Fonts/MenuFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/MenuFont.spritefont
 
@@ -262,30 +263,6 @@
 /processorParam:TextureFormat=Compressed
 /build:MapObjects/Heart/Heart.fbx
 
-#begin Icons/crosshair.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Icons/crosshair.png
-
-#begin Icons/crosshairTrans.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Icons/crosshairTrans.png
-
 #begin MapObjects/WoodHouse/WoodHouse1.obj
 /importer:OpenAssetImporter
 /processor:ModelBoundingBoxProcessor
@@ -351,6 +328,7 @@
 #begin Fonts/Death.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Death.spritefont
 
@@ -433,4 +411,22 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff/drygrass.png
+
+#begin SoundEffects/menu-selection-sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/menu-selection-sound.wav
+
+#begin Icons/crosshairTransparent.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Icons/crosshairTransparent.png
 
