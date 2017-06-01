@@ -116,6 +116,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\MapObjects\Rock\Stone texture.jpg" />
+    <Content Include="Content\MapObjects\Skybox\509d97aea7d06.jpg" />
+    <Content Include="Content\MapObjects\Skybox\skybox_texture.jpg" />
     <Content Include="Content\Songs\GameSong.mp3" />
     <Content Include="Content\Songs\MenuSong.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
@@ -152,6 +154,8 @@
     <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />
     <None Include="Content\MapObjects\Rock\Rock.obj" />
+    <None Include="Content\MapObjects\Skybox\skybox2.fbx" />
+    <None Include="Content\MapObjects\Skybox\skybox3.fbx" />
     <None Include="Content\MapObjects\Tree\lowpolytree.mtl" />
     <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
     <None Include="Content\MapObjects\WoodHouse\WoodHouse1.mtl" />

@@ -164,7 +164,7 @@ namespace DizGame.Source.Factories
 
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
-            mouse.MouseSensitivity = 0.2f;
+            mouse.MouseSensitivity = 0.1f;
 
             List<IComponent> components = new List<IComponent>
             {

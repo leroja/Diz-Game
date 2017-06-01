@@ -59,14 +59,13 @@ namespace DizGame.Source.Factories
             };
             foreach (Vector2 slots in SlotPositions)
             {
-
             }
 
             List<IComponent> components = new List<IComponent>
             {
                 slot1,
                 new TextComponent(names, textComponents),
-                new HudComponent{ TrackedEntity = id},
+                new HudComponent{ TrackedEntity = id },
             };
             ComponentManager.Instance.AddAllComponents(HudID, components);
 
