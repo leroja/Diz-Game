@@ -46,8 +46,10 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Checks all entities with boundingspherecomponent if they collide and sets those components'
-        /// hasCollided variables to true if they collide.
+        /// Checks all model entities with their BoundingVolume if it intersects 
+        /// with another boundingVolume. Then notifies all observers and sends those model
+        /// entity ids to the observers. 
+        /// 
         /// </summary>
         public void CollisionDetection()
         {
@@ -73,33 +75,6 @@ namespace GameEngine.Source.Systems
                     }
                 }
             }
-            //List<int> done = new List<int>();
-            //foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-            //{
-            //    ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
-            //    if (model.BoundingVolume == null)
-            //        continue;
-            //    foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-            //    {
-            //        if (entityIDUno == entityIDDos)
-            //            continue;
-
-            //        ModelComponent model2 = ComponentManager.GetEntityComponent<ModelComponent>(entityIDDos);
-            //        if (model2.BoundingVolume == null)
-            //            continue;
-
-            //        if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
-            //        {
-            //            foreach (IObserver<Tuple<object, object>> observer in observers)
-            //            {
-            //                observer.OnNext(new Tuple<object, object>(entityIDUno, entityIDDos));
-            //            }
-            //        }
-
-
-            //    }
-            //    done.Add(entityIDUno);
-            //}
         }
 
         /// <summary>
@@ -114,38 +89,39 @@ namespace GameEngine.Source.Systems
             return new Unsubscriber(observers, observer);
         }
 
-        /// <summary>
-        /// Goes through every boundingsphere in 
-        /// </summary>
-        /// <param name="volume1"></param>
-        /// <param name="volume2"></param>
-        /// <param name="tuple"></param>
-        /// <returns>true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
-        private bool FindFirstHit(KeyValuePair<int, List<BoundingVolume>> volume1, KeyValuePair<int, List<BoundingVolume>> volume2, out Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>> tuple)
-        {
-            BoundingVolume s1 = volume1.Value.FirstOrDefault();
-            BoundingVolume s2 = volume2.Value.FirstOrDefault();
-            if (s1 != null || s2 != null)
-            {
-                if (s1.Bounding.Intersects(s2.Bounding))
-                {
-                    tuple = new Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>(new KeyValuePair<int, IBounding3D>(volume1.Key, s1.Bounding), new KeyValuePair<int, IBounding3D>(volume2.Key, s2.Bounding));
-                    return true;
-                }
-                else if (volume1.Value.Count > volume2.Value.Count)
-                {
-                    volume1.Value.Remove(s1);
-                    FindFirstHit(volume1, volume2, out tuple);
-                }
-                else if (volume1.Value.Count < volume2.Value.Count)
-                {
-                    volume2.Value.Remove(s2);
-                    FindFirstHit(volume1, volume2, out tuple);
-                }
-            }
-            tuple = null;
-            return false;
-        }
+        ///// <summary>
+        ///// Goes through every boundingsphere 
+        ///// 
+        ///// </summary>
+        ///// <param name="volume1"></param>
+        ///// <param name="volume2"></param>
+        ///// <param name="tuple"></param>
+        ///// <returns>true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
+        //private bool FindFirstHit(KeyValuePair<int, List<BoundingVolume>> volume1, KeyValuePair<int, List<BoundingVolume>> volume2, out Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>> tuple)
+        //{
+        //    BoundingVolume s1 = volume1.Value.FirstOrDefault();
+        //    BoundingVolume s2 = volume2.Value.FirstOrDefault();
+        //    if (s1 != null || s2 != null)
+        //    {
+        //        if (s1.Bounding.Intersects(s2.Bounding))
+        //        {
+        //            tuple = new Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>(new KeyValuePair<int, IBounding3D>(volume1.Key, s1.Bounding), new KeyValuePair<int, IBounding3D>(volume2.Key, s2.Bounding));
+        //            return true;
+        //        }
+        //        else if (volume1.Value.Count > volume2.Value.Count)
+        //        {
+        //            volume1.Value.Remove(s1);
+        //            FindFirstHit(volume1, volume2, out tuple);
+        //        }
+        //        else if (volume1.Value.Count < volume2.Value.Count)
+        //        {
+        //            volume2.Value.Remove(s2);
+        //            FindFirstHit(volume1, volume2, out tuple);
+        //        }
+        //    }
+        //    tuple = null;
+        //    return false;
+        //}
 
         /// <summary>
         /// 
