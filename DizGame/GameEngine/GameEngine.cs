@@ -86,8 +86,7 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            //ThreadManager.Instance.RunOnNewThread<GameTime>(SystemManager.Instance.RunRenderSystems, gameTime);
+            GraphicsDevice.Clear(Color.White);
             SystemManager.Instance.RunRenderSystems(gameTime);
             base.Draw(gameTime);
         }

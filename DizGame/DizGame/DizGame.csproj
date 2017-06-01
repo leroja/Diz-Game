@@ -46,6 +46,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\AI Behaviors\HoardingBehavior.cs" />
     <Compile Include="Source\Factories\EntityFactory.cs" />
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
@@ -110,8 +111,7 @@
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
     <Content Include="Content\HeightMapStuff\Map3.jpg" />
-    <Content Include="Content\Icons\crosshair.png" />
-    <Content Include="Content\Icons\crosshairTrans.png" />
+    <Content Include="Content\Icons\crosshairTransparent.png" />
     <Content Include="Content\Icons\squareTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -122,6 +122,7 @@
     <Content Include="Content\Songs\MenuSong.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
     <Content Include="Content\ParticleTexture\Smoke.png" />
+    <Content Include="Content\SoundEffects\menu-selection-sound.wav" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

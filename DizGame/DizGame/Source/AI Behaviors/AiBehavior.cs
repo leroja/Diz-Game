@@ -14,6 +14,7 @@ namespace DizGame.Source.AI_Behaviors
     /// </summary>
     public abstract class AiBehavior
     {
+        #region properties
         /// <summary>
         /// The ID of the closest enemy
         /// </summary>
@@ -22,6 +23,32 @@ namespace DizGame.Source.AI_Behaviors
         /// Distance to the closest enemy
         /// </summary>
         public float DistanceToClosestEnemy { get; set; }
+        /// <summary>
+        /// Distance to the closest resource
+        /// </summary>
+        public float DistanceToClosestResource { get; set; }
+        /// <summary>
+        /// The ID of the Closest resource
+        /// </summary>
+        public int ClosestResource { get; set; }
+        /// <summary>
+        /// The ID of the closest Ammo resource
+        /// </summary>
+        public int ClosestAmmo { get; set; }
+        /// <summary>
+        /// The ID of the closest Health Resource
+        /// </summary>
+        public int ClosestHealth { get; set; }
+        /// <summary>
+        /// Distance to the closest Ammo resource
+        /// </summary>
+        public float DistanceToClosestAmmo { get; set; }
+        /// <summary>
+        /// Distance to the closest Health resource
+        /// </summary>
+        public float DistanceToClosestHealth { get; set; }
+
+        #endregion properties
 
         /// <summary>
         /// 
@@ -77,17 +104,56 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Calculates the rotation to the closest enemy
+        /// Finds the closest resource entity
+        /// </summary>
+        public void FindClosestResource(AIComponent AIComp)
+        {
+            DistanceToClosestResource = float.MaxValue;
+            DistanceToClosestAmmo = float.MaxValue;
+            DistanceToClosestHealth = float.MaxValue;
+
+            var ResourceIds = ComponentManager.Instance.GetAllEntitiesWithComponentType<ResourceComponent>();
+
+
+            var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
+
+            // Find wich Resource Entity is the closest one
+            foreach (var entityId in ResourceIds)
+            {
+                var resourceComp = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(entityId);
+                var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityId);
+
+                var dist = Vector3.Distance(transformComp.Position, transComp.Position);
+                if (dist < DistanceToClosestResource)
+                {
+                    ClosestResource = entityId;
+                    DistanceToClosestResource = dist;
+                }
+                if (dist < DistanceToClosestAmmo && resourceComp.thisType == ResourceComponent.ResourceType.Ammo)
+                {
+                    ClosestAmmo = entityId;
+                    DistanceToClosestAmmo = dist;
+                }
+                if (dist < DistanceToClosestHealth && resourceComp.thisType == ResourceComponent.ResourceType.Health)
+                {
+                    ClosestHealth = entityId;
+                    DistanceToClosestHealth = dist;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates the rotation to the position
         /// </summary>
         /// <param name="AIComp"> The current AI </param>
+        /// <param name="OtherPosition"> Postion to rotate to </param>
         /// <returns> A new rotation Vector </returns>
-        public Vector3 GetRotationToClosestEnenmy(AIComponent AIComp)
+        public Vector3 GetRotationTo(AIComponent AIComp, Vector3 OtherPosition)
         {
-            var ClosestEnemyTransFormComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy);
             var AITransformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
-            float x = ClosestEnemyTransFormComp.Position.X - AITransformComp.Position.X;
-            float z = ClosestEnemyTransFormComp.Position.Z - AITransformComp.Position.Z;
+            float x = OtherPosition.X - AITransformComp.Position.X;
+            float z = OtherPosition.Z - AITransformComp.Position.Z;
             float desiredAngle = (float)Math.Atan2(x, z) + MathHelper.Pi;
 
             return new Vector3(0, WrapAngle(desiredAngle), 0);

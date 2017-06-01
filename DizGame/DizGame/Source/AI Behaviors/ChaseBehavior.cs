@@ -8,6 +8,7 @@ using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
+    // todo clean/make pretier
     /// <summary>
     /// A state that makes the AI Chase either another AI or the Player
     /// </summary>
@@ -102,7 +103,7 @@ namespace DizGame.Source.AI_Behaviors
             {
                 if (currentTimeForRot > AIComp.UpdateFrequency)
                 {
-                    desiredRotation = GetRotationToClosestEnenmy(AIComp).Y;
+                    desiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y;
                     currentTimeForRot = 0f;
                 }
                 transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
