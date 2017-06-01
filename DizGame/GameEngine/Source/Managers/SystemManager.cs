@@ -161,7 +161,6 @@ namespace GameEngine.Source.Managers
             }
             GameStateManager.Instance.UpdateGameState(gameTime);
         }
-
         /// <summary>
         /// Runs all rendering systems
         /// </summary>
