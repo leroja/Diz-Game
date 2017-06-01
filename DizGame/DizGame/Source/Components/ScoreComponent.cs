@@ -31,5 +31,13 @@ namespace DizGame.Source.Components
         /// A string of awards an entity has recieved, e.g. winner, most kills, most hits, last alive
         /// </summary>
         public string Awards { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ScoreComponent()
+        {
+            Awards = "";
+        }
     }
 }

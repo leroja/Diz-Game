@@ -44,7 +44,7 @@ namespace DizGame.Source.GameStates
         #endregion
 
         /// <summary>
-        /// Basic constructor for ScoreSreen
+        /// Basic constructor for ScoreScreen
         /// </summary>
         public ScoreScreen()
         {
@@ -55,7 +55,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// metod calld uppon entering gamestate. fixes whit potitions for text and prints the score list 
+        /// method called upon entering gamestate. fixes with positions for text and prints the score list 
         /// </summary>
         public override void Entered()
         {
@@ -105,7 +105,7 @@ namespace DizGame.Source.GameStates
                     new TextComponent(score.Score.ToString(), new Vector2(BetweenNameAndScore + 10, y), Color.OrangeRed, SpriteFont, true),
                     new TextComponent(score.Kills.ToString(), new Vector2(BetweenScoreAndKills + 10, y), Color.DarkRed, SpriteFont, true),
                     new TextComponent(score.Hits.ToString(), new Vector2(BetweenKillsAndHits + 10, y), Color.YellowGreen, SpriteFont, true),
-                    new TextComponent("", new Vector2(BetweenHitsAndAdditional, 10), Color.Navy, SpriteFont, true),
+                    new TextComponent(score.Awards, new Vector2(BetweenHitsAndAdditional, y), Color.Navy, SpriteFont, true),
                 };
 
                 textComponent = new TextComponent(names, li);
@@ -140,12 +140,18 @@ namespace DizGame.Source.GameStates
                 Score.Add(ComponentManager.Instance.GetEntityComponent<ScoreComponent>(id));
             }
 
-            List<ScoreComponent> orderdList = Score.OrderBy(o => o.Score).ToList();
+            List<ScoreComponent> orderdList = Score.OrderByDescending(o => o.Score).ToList();
+            orderdList[0].Awards += " Winner,";
             foreach (var scorecomp in orderdList)
             {
                 temp.Add(scorecomp.ID);
             }
-            temp.Reverse();
+
+            orderdList = Score.OrderByDescending(o => o.Kills).ToList();
+            orderdList[0].Awards += " Most Kills,";
+            orderdList = Score.OrderByDescending(o => o.Hits).ToList();
+            orderdList[0].Awards += " Most Hits,";
+
             return temp;
         }
 

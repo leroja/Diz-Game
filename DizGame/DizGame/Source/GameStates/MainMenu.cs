@@ -145,7 +145,7 @@ namespace DizGame.Source.GameStates
                         txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
                         txc.Color = Color.DeepPink;
 
-                        AudioManager.Instance.PlaySoundEffect("MenuChange", 1, 1);
+                        AudioManager.Instance.PlaySoundEffect("MenuChange", 0, 0);
                     }
                 }
             }
@@ -162,7 +162,7 @@ namespace DizGame.Source.GameStates
                         index = GameStateEntities.ElementAt(SelectedItem);
                         txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
                         txc.Color = Color.DeepPink;
-                        AudioManager.Instance.PlaySoundEffect("MenuChange", 1, 1);
+                        AudioManager.Instance.PlaySoundEffect("MenuChange", 0, 0);
                     }
                 }
             }
