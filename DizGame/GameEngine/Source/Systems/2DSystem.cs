@@ -56,7 +56,7 @@ namespace GameEngine.Source.Systems
             spriteBatch.Draw(texture.Texture, texture.Position, null, texture.Color, texture.Rotation, texture.Origin, texture.Scale, SpriteEffects.None, 0);
             spriteBatch.End();
 
-            spriteBatch.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            //spriteBatch.GraphicsDevice.BlendState = BlendState.AlphaBlend;
             spriteBatch.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
         }
     }

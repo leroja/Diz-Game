@@ -135,9 +135,10 @@ namespace DizGame.Source.Factories
 
             var textureComp = new Texture2DComponent(Texture2dDic["CrossHair"])
             {
-                Position = position,
                 Scale = new Vector2(0.1f, 0.1f),
+                
             };
+            textureComp.Position = new Vector2(position.X - 7f, position.Y);
 
             ComponentManager.Instance.AddComponentToEntity(Id, textureComp);
 

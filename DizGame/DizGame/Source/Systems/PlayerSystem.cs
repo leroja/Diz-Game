@@ -63,7 +63,7 @@ namespace DizGame.Source.Systems
                 {
                     if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).CurrentAmmoInMag > 0)
                     {
-                        EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 1000, 1000, transformComp.Rotation, 10, playerId);
+                        EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 17, new Vector3(.1f, .1f, .1f), 1000, 1000, transformComp.Rotation, 10, playerId);
                         ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).CurrentAmmoInMag--;
                         AudioManager.Instance.PlaySoundEffect("ShotEffect", 0f, 1f);
                     }

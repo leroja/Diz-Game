@@ -111,6 +111,7 @@
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
     <Content Include="Content\HeightMapStuff\Map3.jpg" />
+    <Content Include="Content\Icons\Ak47Icon.png" />
     <Content Include="Content\Icons\crosshairTransparent.png" />
     <Content Include="Content\Icons\squareTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -124,6 +125,7 @@
     <Content Include="Content\ParticleTexture\Smoke.png" />
     <Content Include="Content\SoundEffects\menu-selection-sound.wav" />
     <Content Include="Icon.ico" />
+    <Content Include="Content\Weapons\AK47FPS.png" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

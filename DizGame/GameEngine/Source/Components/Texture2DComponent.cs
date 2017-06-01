@@ -111,7 +111,7 @@ namespace GameEngine.Source.Components
             Texture = texture;
             Height = texture.Height;
             Width = texture.Width;
-            Color = Color.LimeGreen;
+            Color = Color.White;
             Scale = Vector2.One;
             Active = true;
             Frames = 1;
