@@ -2,11 +2,14 @@
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using GameEngine.Source.Factories;
+using GameEngine.Source.Components;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace DizGame
 {
@@ -16,8 +19,10 @@ namespace DizGame
     public class GameOne : GameEngine.GameEngine
     {
         NetworkSystem client;
+        private Thread netClientThread;
 
         private static Game instance;
+        public static Rectangle bounds;
 
         /// <summary>
         /// Basic constructor for the Game
@@ -25,8 +30,6 @@ namespace DizGame
         public GameOne()
         {
             instance = this;
-            client = new NetworkSystem();
-            client.RunClient();
             //this.IsMouseVisible = true;
         }
 
@@ -39,6 +42,14 @@ namespace DizGame
             {
                 return instance;
             }
+        }
+
+        private void InitNetworkClient()
+        {
+            client = new NetworkSystem();
+            client.ConnectToServer();
+            netClientThread = new Thread(new ThreadStart(client.ReadMessages));
+            netClientThread.Start();
         }
 
         /// <summary>
@@ -54,12 +65,14 @@ namespace DizGame
             Graphics.PreferredBackBufferHeight = Device.DisplayMode.Height / 2;
             Graphics.PreferredBackBufferWidth = Device.DisplayMode.Width / 2;
             Graphics.ApplyChanges();
-
+            bounds = Window.ClientBounds;
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
-            client.DiscoverLocalPeers();
-            
+ 
+
+            InitNetworkClient();
+
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
             AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
@@ -85,7 +98,8 @@ namespace DizGame
         /// </summary>
         protected override void UnloadContent()
         {
-
+            client.EndExecution();
+            netClientThread.Join();
         }
 
         /// <summary>
@@ -94,10 +108,16 @@ namespace DizGame
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             base.Update(gameTime);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
+        protected override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
     }
 }

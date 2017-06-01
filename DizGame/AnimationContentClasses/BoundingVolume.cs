@@ -11,7 +11,6 @@ namespace AnimationContentClasses
 {
     public class BoundingVolume
     {
-        public int BoundingID { get; private set; }
         [ContentSerializer]
         public List<BoundingVolume> Volume { get; set; }
         [ContentSerializer]
@@ -29,19 +28,18 @@ namespace AnimationContentClasses
         
         public BoundingVolume(object obj)
         {
+            // TODO: object obj? Varför användes ej obj isf?
             Volume = new List<BoundingVolume>();
         }
 
-        public BoundingVolume(int id, IBounding3D bounding)
+        public BoundingVolume(IBounding3D bounding)
         {
-            BoundingID = id;
             Bounding = bounding;
             Volume = new List<BoundingVolume>();
         }
 
-        public BoundingVolume(int id, List<BoundingVolume> volume, IBounding3D bounding)
+        public BoundingVolume(List<BoundingVolume> volume, IBounding3D bounding)
         {
-            BoundingID = id;
             Bounding = bounding;
             Volume = volume;
         }

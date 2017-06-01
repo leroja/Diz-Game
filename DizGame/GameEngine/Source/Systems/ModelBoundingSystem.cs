@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using GameEngine.Source.RandomStuff;
 using AnimationContentClasses;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -29,14 +24,13 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            var ids = ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>();
             var dict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
-            foreach (var modelEnt in dict)
+            Parallel.ForEach(dict, modelEnt =>
             {
                 //var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
                 //var tcs = ComponentManager.GetEntityComponent<TransformComponent>(modelEnt.Key);
                 GetModelBoundingVolume((ModelComponent)modelEnt.Value, modelEnt.Key);
-            }
+            });
         }
 
         /// <summary>

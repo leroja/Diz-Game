@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -35,12 +32,12 @@ namespace GameEngine.Source.Systems
 
             List<int> entities = ComponentManager.GetAllEntitiesWithComponentType<MouseComponent>();
 
-            foreach (var item in entities)
+            Parallel.ForEach(entities, item =>
             {
                 MouseComponent mouse = ComponentManager.GetEntityComponent<MouseComponent>(item);
                 UpdateActionStates(mouse);
                 UpdateMousePositions(mouse);
-            }
+            });
         }
 
         /// <summary>
@@ -49,10 +46,10 @@ namespace GameEngine.Source.Systems
         /// <param name="mouseComp"></param>
         private void UpdateMousePositions(MouseComponent mouseComp)
         {
-            mouseComp.X = CurState.X;
-            mouseComp.Y = CurState.Y;
+            mouseComp.PreviousPostion = mouseComp.CurrentPosition;
+            mouseComp.CurrentPosition = CurState.Position.ToVector2();
         }
-        
+
         /// <summary>
         /// updates the previous and current State of the Mouse
         /// </summary>
@@ -83,7 +80,7 @@ namespace GameEngine.Source.Systems
         /// <param name="button"></param>
         private void UpdateBtn(MouseComponent mouse, ButtonState curState, ButtonState prevState, string button)
         {
-            
+
             if (curState == ButtonState.Pressed && prevState == ButtonState.Pressed)
             {
                 mouse.MouseActionState[button] = ButtonStates.Hold;

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using GameEngine.Source.Utils;
+using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
@@ -59,7 +60,7 @@ namespace DizGame.Source.AI_Behaviors
             physComp.Velocity = transformComp.Forward * 10;
             physComp.Acceleration = new Vector3(physComp.Acceleration.X, 0, physComp.Acceleration.Z);
 
-            var height = GetHeight(transformComp.Position);
+            var height = MovingSystem.GetHeight(transformComp.Position);
 
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
@@ -84,44 +85,6 @@ namespace DizGame.Source.AI_Behaviors
                 transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
             }
-            //else
-            //{
-            //    t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //}
-
-
-            //var height = GetHeight(transformComp.Position);
-
-            //var t = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
-
-            //if (t.X >= AIComp.Bounds.Height)
-            //{
-            //    t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //    transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-            //}
-            //else if (t.X <= 3)
-            //{
-            //    t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //    transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-            //}
-            //else if (t.Z <= -AIComp.Bounds.Width)
-            //{
-            //    t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //    transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-            //}
-            //else if (t.Z >= -3)
-            //{
-            //    t -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //    transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-            //}
-            //else
-            //{
-            //    t += transformComp.Forward * 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //}
-            //transformComp.Position = t;
-
-
-
 
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
 

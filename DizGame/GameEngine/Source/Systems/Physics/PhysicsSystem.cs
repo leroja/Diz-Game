@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using GameEngine.Source.Systems;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Systems.Interfaces;
 using GameEngine.Source.Systems.AbstractClasses;
-using AnimationContentClasses;
 
 namespace GameEngine.Source.Systems
 {
-    
+
     //TODO: Fixa så alla siffror är korrekta efter metric.
     /// <summary>
     /// PhysicSystem which handles all the physic
@@ -44,6 +41,7 @@ namespace GameEngine.Source.Systems
                 new PhysicsStaticSystem(this)
         };
         }
+
         /// <summary>
         /// Function to add new PhysicTypeSystem into the list
         /// </summary>
@@ -52,6 +50,7 @@ namespace GameEngine.Source.Systems
         {
             physicSystems.Add(system);
         }
+
         /// <summary>
         /// Function to remove PhysicTypeSystems from the list
         /// </summary>
@@ -60,6 +59,7 @@ namespace GameEngine.Source.Systems
         {
             physicSystems.Remove(system);
         }
+
         /// <summary>
         /// Updates all the necessary part for the physicsystem
         /// using one loop
@@ -68,13 +68,15 @@ namespace GameEngine.Source.Systems
         public override void Update(GameTime gameTime)
         {
             dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
+            var ents = ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>();
+            Parallel.ForEach(ents, ent =>
             {
-                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(entityID);
+                PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(ent);
                 physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
-            }
+            });
             //CheckCollision(dt);
         }
+
         /// <summary>
         /// Using Euler order -> Acceleration -> Position -> Velocity
         /// will provide better accuracy but only when
@@ -96,6 +98,7 @@ namespace GameEngine.Source.Systems
 
             UpdateDeceleration(physic);
         }
+
         /// <summary>
         /// Using Non Euler order does work but with less accurac        /// except when acceleration is not constant
         /// </summary>
@@ -112,6 +115,7 @@ namespace GameEngine.Source.Systems
 
             UpdateDeceleration(physic);
         }
+
         /// <summary>
         /// Updates the mass using density * volume
         /// </summary>
@@ -124,6 +128,7 @@ namespace GameEngine.Source.Systems
             else
                 physic.InverseMass = 1 / physic.Mass;
         }
+
         /// <summary>
         /// Updates the objects Euler acceleration
         /// This function should be updated BEFORE position,
@@ -137,6 +142,7 @@ namespace GameEngine.Source.Systems
             Vector3 avg_acceleration = (physic.LastAcceleration + new_acceleration) / 2;
             physic.Acceleration = avg_acceleration;
         }
+
         /// <summary>
         /// Calculates the physic objects Deaceleration
         /// </summary>
@@ -152,7 +158,7 @@ namespace GameEngine.Source.Systems
                 if (physic.Acceleration.Z == 0)
                     physic.Velocity = new Vector3(physic.Velocity.X, physic.Velocity.Y, 0);
             }
-            if(!physic.IsMoving)
+            if (!physic.IsMoving)
             {
                 float X = physic.Acceleration.X, Y = physic.Acceleration.Y, Z = physic.Acceleration.Z;
                 if (physic.Acceleration.X < 0)
@@ -172,6 +178,7 @@ namespace GameEngine.Source.Systems
             }
             //Console.WriteLine(physic.Acceleration);
         }
+
         /// <summary>
         /// Updates the objects linear velocity
         /// using its initialVelocity if any 
@@ -185,6 +192,7 @@ namespace GameEngine.Source.Systems
             //TODO: physic.Velocity += physic.InitialVelocity + ((physic.Acceleration - frictio) * dt);
             //Console.WriteLine(physic.Velocity);
         }
+
         /// <summary>
         /// Updates the forces
         /// </summary>
@@ -193,6 +201,7 @@ namespace GameEngine.Source.Systems
         {
             physic.Forces = physic.Mass * physic.Acceleration;
         }
+
         /// <summary>
         /// Updates the Acceleration using formula 
         /// A = F/M
@@ -202,6 +211,7 @@ namespace GameEngine.Source.Systems
         {
             physic.Acceleration = (physic.Forces / physic.Mass);
         }
+
         /// <summary>
         /// Updates the gravity depending on physics gravity type
         /// </summary>
@@ -209,7 +219,7 @@ namespace GameEngine.Source.Systems
         /// <param name="dt"></param>
         public virtual void UpdateGravity(PhysicsComponent physic, float dt)
         {
-            switch(physic.GravityType)
+            switch (physic.GravityType)
             {
                 case GravityType.Self:
                     physic.Acceleration = new Vector3(physic.Acceleration.X, physic.Gravity, physic.Acceleration.Z);
@@ -217,13 +227,14 @@ namespace GameEngine.Source.Systems
                 case GravityType.World:
                     List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
                     WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
-                    physic.Acceleration = new Vector3(physic.Acceleration.X + world.Gravity.X, 
-                        physic.Acceleration.Y + world.Gravity.Y, 
+                    physic.Acceleration = new Vector3(physic.Acceleration.X + world.Gravity.X,
+                        physic.Acceleration.Y + world.Gravity.Y,
                         physic.Acceleration.Z + world.Gravity.Z);
                     break;
             }
-                
+
         }
+
         /// <summary>
         /// Updates the objects heading depending on collision
         /// </summary>
@@ -246,7 +257,7 @@ namespace GameEngine.Source.Systems
                 hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
             }
         }
-        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit, float dt)
+        private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit)
         {
             if (target != null && hit != null)
             {
@@ -268,58 +279,22 @@ namespace GameEngine.Source.Systems
                     target.Velocity = velocity1;
                     hit.Velocity = velocity2;
                 }
-                else if(target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
+                else if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
                 {
                     Vector3 dir = target.Velocity;
                     dir.Normalize();
                     //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
-                                        //target.Velocity = Vector3.Zero;
-                    target.Velocity *= -dir * new Vector3(1, 0, 1);
-                    ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position *= target.Velocity * dt;
-                                        //Console.WriteLine(ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position);
-                    
-                                        //Console.WriteLine(target.Velocity);
-                     // TODO: Fixa collisionen
+                    //target.Velocity = Vector3.Zero;
+                    //target.Velocity *= -dir * new Vector3(1, 0, 1);
+                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position *= target.Velocity * dt;
+                    //Console.WriteLine(ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position);
+
+                    //Console.WriteLine(target.Velocity);
+                    // TODO: Fixa collisionen
                 }
             }
         }
-        private void CheckCollision(float dt)
-        {
-            List<int> done = new List<int>();
-            foreach (int entityIDUno in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-            {
-                ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityIDUno);
-                if (model.BoundingVolume == null)
-                    continue;
-                foreach (int entityIDDos in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
-                {
-                    if (entityIDUno == entityIDDos)
-                        continue;
 
-                    ModelComponent model2 = ComponentManager.GetEntityComponent<ModelComponent>(entityIDDos);
-                    if (model2.BoundingVolume == null)
-                        continue;
-
-                    if (model.BoundingVolume.Bounding.Intersects(model2.BoundingVolume.Bounding) && !done.Contains(entityIDDos))
-                        UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDUno), ComponentManager.GetEntityComponent<PhysicsComponent>(entityIDDos), dt);
-
-                }
-                done.Add(entityIDUno);
-            }
-        }
-        private bool IsPointInsideAABB(TransformComponent transform, BoundingBox box)
-        {
-            return (transform.Position.X >= box.Min.X && transform.Position.X <= box.Max.X) &&
-                (transform.Position.Y >= box.Min.Y && transform.Position.Y <= box.Max.Y) &&
-                (transform.Position.Z >= box.Min.Z && transform.Position.Z <= box.Max.Z);
-        }
-        private bool IsPointInsideSphere(TransformComponent tranform, BoundingSphere sphere)
-        {
-            var distance = Math.Sqrt((tranform.Position.X - sphere.Center.X) * (tranform.Position.X - sphere.Center.X) +
-                (tranform.Position.Y - sphere.Center.Y) * (tranform.Position.Y - sphere.Center.Y) +
-                (tranform.Position.Z - sphere.Center.Z) * (tranform.Position.Z - sphere.Center.Z));
-            return distance < sphere.Radius;
-        }
         /// <summary>
         /// Observer funktion, Updates the reflection on two objects 
         /// on collision (retrieves data from collision system)
@@ -327,8 +302,10 @@ namespace GameEngine.Source.Systems
         /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
         {
-            UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2), 1);
+            //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2));
+            //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1));
         }
+
         /// <summary>
         /// Does nothing atm
         /// </summary>
@@ -337,6 +314,7 @@ namespace GameEngine.Source.Systems
         {
             //TODO: OnError
         }
+
         /// <summary>
         /// Does nothing atm
         /// </summary>

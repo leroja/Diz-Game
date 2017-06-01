@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace GameEngine.Source.Enums
 {
     /// <summary>
@@ -40,6 +35,7 @@ namespace GameEngine.Source.Enums
         /// </summary>
         Soft
     }
+
     /// <summary>
     /// Gravitytype is used to define which gravity the object should use.
     /// </summary>

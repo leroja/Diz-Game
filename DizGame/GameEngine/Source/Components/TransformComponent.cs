@@ -68,5 +68,19 @@ namespace GameEngine.Source.Components
             this.Orientation = Quaternion.Identity;
             this.ModelMatrix = Matrix.Identity;
         }
+
+        /// <summary>
+        /// Basic Constructor for a TransformComponent.
+        /// </summary>
+        public TransformComponent()
+        {
+            Rotation = Vector3.Zero;
+            this.Position = Vector3.Zero;
+            this.PreviousPosition = Vector3.Zero;
+            this.Scale = Vector3.One;
+            this.QuaternionRotation = Quaternion.Identity;
+            this.Orientation = Quaternion.Identity;
+            this.ModelMatrix = Matrix.Identity;
+        }
     }
 }

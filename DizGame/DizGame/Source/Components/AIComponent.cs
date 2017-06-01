@@ -1,13 +1,13 @@
 ﻿using DizGame.Source.AI_Behaviors;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 
 namespace DizGame.Source.Components
 {
-    // todo använd fysiken för rörelse i de olika beteenderna
-    // todo gör så at AI:n inte kan hamna utanför bounds
+    // todo använd fysiken för rörelse i de olika beteenderna, kanske inte riktigt helt 100 ännu
+    // todo gör så at AI:n inte kan hamna utanför bounds, delvis klart, vissa behavior funkar
+    // todo ta bort / flytta en del properties till bättre ställe
     /// <summary>
     /// A component for the AI:s
     /// </summary>

@@ -1,10 +1,12 @@
 ﻿using GameEngine.Source.Systems;
+using GameEngine.Source.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
+using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -23,9 +25,10 @@ namespace DizGame.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            Dictionary<int, IComponent> EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
+            var EntityDict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<KeyBoardComponent>();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (var entity in EntityDict)
+
+            Parallel.ForEach(EntityDict, entity =>
             {
                 KeyBoardComponent key = ComponentManager.GetEntityComponent<KeyBoardComponent>(entity.Key);
                 TransformComponent trans = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
@@ -34,7 +37,7 @@ namespace DizGame.Source.Systems
                 Vector3 move = Vector3.Zero;
                 float gravity = 0;
 
-                switch(phys.GravityType)
+                switch (phys.GravityType)
                 {
                     case GravityType.Self:
                         gravity = phys.Gravity;
@@ -47,7 +50,7 @@ namespace DizGame.Source.Systems
                     default:
                         break;
                 }
-                
+
                 if (!phys.IsInAir)
                 {
                     if (key.GetState("Forward") == ButtonStates.Hold)
@@ -63,7 +66,7 @@ namespace DizGame.Source.Systems
                     if (key.GetState("Left") == ButtonStates.Hold)
                     {
                         move += -trans.Right * 20;
-                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
+                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds); // todo hur ska vi göra när man går åt sidan?
                     }
                     if (key.GetState("Right") == ButtonStates.Hold)
                     {
@@ -77,10 +80,10 @@ namespace DizGame.Source.Systems
                             //move = phys.Velocity;
                             phys.IsInAir = true;
                             //phys.Velocity += trans.Up ;
-                            if(phys.Velocity.X == 0 && phys.Velocity.Z == 0)
+                            if (phys.Velocity.X == 0 && phys.Velocity.Z == 0)
                                 phys.Velocity += trans.Up * -gravity * 7;
                             else
-                            phys.Velocity = new Vector3(phys.Velocity.X, -gravity * 7, phys.Velocity.Z);
+                                phys.Velocity = new Vector3(phys.Velocity.X, -gravity * 7, phys.Velocity.Z);
                         }
                     }
                 }
@@ -88,8 +91,8 @@ namespace DizGame.Source.Systems
                 {
                     float he = GetHeight(trans.Position);
 
-                    if(!phys.IsInAir)
-                    phys.Velocity = move;
+                    if (!phys.IsInAir)
+                        phys.Velocity = move;
                     //phys.Acceleration = CheckMaxVelocityAndGetVector(phys, move);
 
 
@@ -113,7 +116,7 @@ namespace DizGame.Source.Systems
                     float he = GetHeight(trans.Position);
                     trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                 }
-            }
+            });
         }
         private Vector3 CheckMaxVelocityAndGetVector(PhysicsComponent physic, Vector3 move)
         {
@@ -133,12 +136,12 @@ namespace DizGame.Source.Systems
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        private float GetHeight(Vector3 position)
+        public static float GetHeight(Vector3 position)
         {
-            List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
             if (temp.Count != 0)
             {
-                HeightmapComponentTexture hmap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(temp.First());
+                HeightmapComponentTexture hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(temp.First());
                 float gridSquareSize = (hmap.Width * hmap.Height) / ((float)hmap.HeightMapData.Length - 1);
                 int gridX = (int)Math.Floor(position.X / gridSquareSize);
                 int gridZ = -(int)Math.Floor(position.Z / gridSquareSize);
@@ -171,7 +174,8 @@ namespace DizGame.Source.Systems
             }
             return 0;
         }
-        private float BarryCentric(Vector3 p1, Vector3 p2, Vector3 p3, Vector2 pos)
+
+        private static float BarryCentric(Vector3 p1, Vector3 p2, Vector3 p3, Vector2 pos)
         {
             float det = (p2.Z - p3.Z) * (p1.X - p3.X) + (p3.X - p2.X) * (p1.Z - p3.Z);
             float l1 = ((p2.Z - p3.Z) * (pos.X - p3.X) + (p3.X - p2.X) * (pos.Y - p3.Z)) / det;

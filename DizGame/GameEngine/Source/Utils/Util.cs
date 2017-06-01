@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Utils
 {
@@ -16,7 +12,7 @@ namespace GameEngine.Source.Utils
         /// Returns a random double between minumim and maximun
         /// </summary>
         /// <param name="minimum"> Minimum Value </param>
-        /// <param name="maximum"> Maximun Value </param>
+        /// <param name="maximum"> Maximum Value </param>
         /// <returns></returns>
         public static double GetRandomNumber(double minimum, double maximum)
         {

@@ -17,7 +17,7 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Default far plane (1000.0f)
         /// </summary>
-        public const float DEFAULT_ZFAR = 1000.0f;
+        public const float DEFAULT_ZFAR = 1500.0f;
         /// <summary>
         /// Default near plane (1.0f)
         /// </summary>

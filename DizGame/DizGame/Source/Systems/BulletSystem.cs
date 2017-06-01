@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
+using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -24,7 +25,7 @@ namespace DizGame.Source.Systems
         {
             var compIds = ComponentManager.GetAllEntitiesWithComponentType<BulletComponent>();
 
-            foreach (var id in compIds)
+            Parallel.ForEach(compIds, id =>
             {
                 var bulletComponent = ComponentManager.GetEntityComponent<BulletComponent>(id);
                 var mouseComp = ComponentManager.GetEntityComponent<MouseComponent>(id);
@@ -37,7 +38,7 @@ namespace DizGame.Source.Systems
                 {
                     toDelete.Add(id);
                 }
-            }
+            });
 
             foreach (var id in toDelete)
             {

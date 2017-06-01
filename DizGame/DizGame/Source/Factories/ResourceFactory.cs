@@ -1,14 +1,12 @@
-﻿using DizGame.Source.Components;
+﻿using AnimationContentClasses;
+using AnimationContentClasses.Utils;
+using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static DizGame.Source.Components.ResourceComponent;
 
 namespace DizGame.Source.Factories
@@ -19,19 +17,15 @@ namespace DizGame.Source.Factories
     public class ResourceFactory
     {
         private Dictionary<string, Model> ModelDic;
-        private bool VisibleBullets;
 
         /// <summary>
         /// Constructor for creating the ResourceFactory
         /// </summary>
         /// <param name="ModelDic">Dictoionary containing the models which should represent 
         /// the different types of resources</param>
-        /// <param name="VisibleBullets">Should be true if the models should be rendered by the render system
-        /// or false if they should be temporarily hidden</param>
-        public ResourceFactory(Dictionary<string, Model> ModelDic, bool VisibleBullets)
+        public ResourceFactory(Dictionary<string, Model> ModelDic)
         {
             this.ModelDic = ModelDic;
-            this.VisibleBullets = VisibleBullets;
         }
 
         /// <summary>
@@ -46,6 +40,9 @@ namespace DizGame.Source.Factories
             //adjust the scales differently for the models if needed
             TransformComponent tcp = new TransformComponent(position, new Vector3(0.04f, 0.04f, 0.04f));
             Model model = ModelDic["Heart"];
+            BoundingVolume volume = (BoundingVolume)model.Tag;
+            Util.ScaleBoundingVolume(ref volume, tcp.Scale.X * 10, tcp.Position, out BoundingVolume scaledVolume);
+
             foreach (var modelpart in model.Meshes)
             {
                 BasicEffect effect = (BasicEffect)modelpart.Effects[0];
@@ -59,7 +56,8 @@ namespace DizGame.Source.Factories
             }
             ModelComponent mcp = new ModelComponent(model)
             {
-                IsVisible = VisibleBullets
+                IsVisible = EntityFactory.Instance.VisibleBullets,
+                BoundingVolume = scaledVolume
             };
 
             List<IComponent> resourceCompList = new List<IComponent>
@@ -80,14 +78,22 @@ namespace DizGame.Source.Factories
         public void CreateAmmoResource(Vector3 position)
         {
             int newEntityId = ComponentManager.Instance.CreateID();
-            var newPosY = position.Y + 2;
+            Model cart = ModelDic["Cartridge"];
+            BoundingVolume volume = (BoundingVolume)cart.Tag;
+
+            Util.ScaleBoundingVolume(ref volume, 1, position, out BoundingVolume scaledVolume);
+
+            var newPosY = position.Y + Math.Abs(((BoundingBox3D)volume.Bounding).Box.Min.Y);
             Vector3 newTotalPos = new Vector3(position.X, newPosY, position.Z);
             //adjust the scales differently for the models if needed
             TransformComponent tcp = new TransformComponent(newTotalPos, new Vector3(1, 1, 1));
 
+
             ModelComponent mcp = new ModelComponent(ModelDic["Cartridge"])
             {
-                IsVisible = VisibleBullets
+                IsVisible = EntityFactory.Instance.VisibleBullets,
+                BoundingVolume = scaledVolume
+
             };
             foreach (var modelpart in mcp.Model.Meshes)
             {

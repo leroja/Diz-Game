@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace GameEngine.Source.Components.Abstract_Classes
 {
@@ -44,6 +45,6 @@ namespace GameEngine.Source.Components.Abstract_Classes
         /// Should contain the Gamestates logic incase of exiting,
         /// pausing or entering a new state, this might depend on the gamestate itself
         /// </summary>
-        public abstract void Update();
+        public abstract void Update(GameTime gameTime);
     }
 }

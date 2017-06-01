@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace GameEngine.Source.Systems
 {
@@ -18,6 +16,18 @@ namespace GameEngine.Source.Systems
     {
         WorldComponent world;
         CameraComponent defaultCam;
+        int defaultCamID;
+
+        GraphicsDevice device;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="device"></param>
+        public ModelSystem(GraphicsDevice device)
+        {
+            this.device = device;
+        }
 
         /// <summary>
         /// 
@@ -29,31 +39,123 @@ namespace GameEngine.Source.Systems
             world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
             //Check for all entities with a camera
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
+            defaultCamID = entitiesWithCamera.First();
             //pick one
-            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+            defaultCam = ComponentManager.GetEntityComponent<CameraComponent>(defaultCamID);
 
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<ModelComponent>())
+            var ents = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
+            foreach (var ent in ents)
             {
-                DrawModel(entityID);
+                DrawModel(ent);
             }
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<SkyBoxComponent>())
+                RenderSkyBox(entityID);
+
+            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<HardwareInstancedComponent>())
+                RenderHardwareInstanced(entityID);
+        }
+
+
+
+        /// <summary>
+        /// Renders from one copy in hardware to serveral places on map.
+        /// </summary>
+        /// <param name="entityID">The id to render.</param>
+        private void RenderHardwareInstanced(int entityID)
+        {
+            HardwareInstancedComponent hwComponent = ComponentManager.GetEntityComponent<HardwareInstancedComponent>(entityID);
+            TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
+
+            hwComponent.GraphicsDevice.Indices = hwComponent.IndexBuffer;
+
+            hwComponent.GraphicsDevice.SetVertexBuffers(hwComponent.Bindings);
+
+            hwComponent.Effect.Parameters["World"].SetValue(Matrix.Identity);
+            hwComponent.Effect.Parameters["View"].SetValue(defaultCam.View);
+            hwComponent.Effect.Parameters["Projection"].SetValue(defaultCam.Projection);
+            hwComponent.Effect.Parameters["Texture"].SetValue(hwComponent.Texture);
+
+            hwComponent.GraphicsDevice.RasterizerState = hwComponent.RasterizerState;
+
+            foreach (EffectPass pass in hwComponent.Effect.Techniques[1/*(int)ShaderTechnique.InstancedTechnique*/].Passes)
+            {
+                pass.Apply();
+
+                hwComponent.GraphicsDevice.DrawInstancedPrimitives(
+                    PrimitiveType.LineList, 0, 0, hwComponent.VertexBuffer.VertexCount, 0, 
+                    hwComponent.IndexBuffer.IndexCount / hwComponent.IndicesPerPrimitive, hwComponent.InstanceCount);
+
+            }
+        }
+
+
+        private void RenderSkyBox(int EntityID)
+        {
+            device.DepthStencilState = DepthStencilState.DepthRead;
+            SkyBoxComponent skybox = ComponentManager.GetEntityComponent<SkyBoxComponent>(EntityID);
+            Effect skyBoxEffect = skybox.SkyboxEffect;
+            TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(EntityID);
+
+            // Draw all of the components of the mesh, but we know the cube really
+            // only has one mesh
+            foreach (ModelMesh mesh in skybox.SkyboxModel.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = tcp.ObjectMatrix * world.World;
+
+                    effect.View = defaultCam.View;
+                    effect.Projection = defaultCam.Projection;
+
+                    if (world != null && world.IsSunActive)
+                    {
+                        FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
+                        effect.LightingEnabled = true;
+
+                        //effect.DiffuseColor = flare.Diffuse;
+                        //effect.AmbientLightColor = flare.AmbientLight;
+
+                        effect.DirectionalLight0.Enabled = true;
+                        effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight0.Direction = flare.LightDirection;
+
+                        effect.DirectionalLight1.Enabled = true;
+                        effect.DirectionalLight1.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight1.Direction = -flare.LightDirection;
+
+                        effect.DirectionalLight2.Enabled = true;
+                        effect.DirectionalLight2.DiffuseColor = flare.Diffuse;
+                        effect.DirectionalLight2.Direction = tcp.Up;
+
+                        //effect.Alpha = 1;
+                    }
+
+                    effect.PreferPerPixelLighting = true;
+                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+                        mesh.Draw();
+
+                    }
+                }
+            }
+            device.DepthStencilState = DepthStencilState.Default;
         }
 
         /// <summary>
         /// Updates all the models and transforms and places the bones on right positions using CopyAbsoluteBoneTranformsTo
         /// applies properties to the effects and then draw the parts.
         /// </summary>
-        /// <param name="entityID"></param>
-        private void DrawModel(int entityID)
+        /// <param name="ent"></param>
+        private void DrawModel(KeyValuePair<int, IComponent> ent)
         {
-            ModelComponent model = ComponentManager.GetEntityComponent<ModelComponent>(entityID);
+            var model = (ModelComponent)ent.Value;
             if (model.IsVisible)
             {
-                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(entityID);
-
-                if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(entityID))
+                TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(ent.Key);
+                if (!ComponentManager.CheckIfEntityHasComponent<AnimationComponent>(ent.Key))
                 {
-                    // todo
-                    //if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
+                    if (defaultCam.CameraFrustrum.Intersects(model.BoundingVolume.Bounding))
                     {
                         if (model.MeshWorldMatrices == null || model.MeshWorldMatrices.Length < model.Model.Bones.Count)
                             model.MeshWorldMatrices = new Matrix[model.Model.Bones.Count];
@@ -72,14 +174,15 @@ namespace GameEngine.Source.Systems
                                 {
                                     FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
                                     effect.LightingEnabled = true;
+
                                     //effect.DiffuseColor = flare.Diffuse;
                                     //effect.AmbientLightColor = flare.AmbientLight;
+
                                     effect.DirectionalLight0.Enabled = true;
                                     effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
                                     effect.DirectionalLight0.Direction = flare.LightDirection;
                                 }
 
-                                //effect.EnableDefaultLighting();
                                 effect.PreferPerPixelLighting = true;
                                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                                 {
@@ -92,7 +195,7 @@ namespace GameEngine.Source.Systems
                 }
                 else
                 {
-                    DrawAnimation(entityID, model);
+                    DrawAnimation(ent.Key, model);
                 }
             }
         }
@@ -131,4 +234,3 @@ namespace GameEngine.Source.Systems
         }
     }
 }
- 

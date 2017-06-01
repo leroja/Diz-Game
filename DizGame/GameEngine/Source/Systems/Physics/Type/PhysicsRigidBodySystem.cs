@@ -2,7 +2,6 @@
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
-using System;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Systems.AbstractClasses;
 
@@ -21,6 +20,7 @@ namespace GameEngine.Source.Systems
         {
             PhysicsType = PhysicsType.Rigid;
         }
+
         /// <summary>
         /// Updates Acceleration, mass, gravity, force, velocity, position and decaeleration
         /// Using non euler for acceleration
@@ -49,6 +49,7 @@ namespace GameEngine.Source.Systems
 
             //PhysicsSystem.UpdateDeceleration(physic);
         }
+
         /// <summary>
         /// Updates the object position using its velocity * dt
         /// </summary>
@@ -85,15 +86,18 @@ namespace GameEngine.Source.Systems
             // Update the angular velocity
             CalculateAngularVelocity(rigidbody);
         }
+
         private void CalculateWorldFrameInvertedInertiaTensor(Quaternion worldFrameOrientation, PhysicsRigidbodyComponent rigidbody)
         {
             Matrix A = Matrix.CreateFromQuaternion(worldFrameOrientation);
             rigidbody.WorldFrameInvertedInertiaTensor = A * rigidbody.BodyFrameInvertedInertiaTensor * Matrix.Transpose(A);
         }
+
         private void CalculateAngularVelocity(PhysicsRigidbodyComponent rigidbody)
         {
             rigidbody.AngularVelocity = Vector3.Transform(rigidbody.AngularMomentum, rigidbody.WorldFrameInvertedInertiaTensor);
         }
+
         private Matrix Tilde(Vector3 v)
         {
             return new Matrix(0, -v.Z, v.Y, 0,
@@ -101,6 +105,5 @@ namespace GameEngine.Source.Systems
             -v.Y, v.X, 0, 0,
             0, 0, 0, 1);
         }
-
     }
 }

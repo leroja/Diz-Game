@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameEngine.Source.Managers;
 using GameEngine.Source.RandomStuff;
 using GameEngine.Source.Components;
@@ -30,7 +28,7 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="gd">Graphiscs device fro drawing Primatives </param>
+        /// <param name="gd"> Graphics device for drawing Primatives </param>
         public ParticleRenderSystem(GraphicsDevice gd)
         {
             CreationTime = DateTime.Now;
@@ -44,7 +42,7 @@ namespace GameEngine.Source.Systems
         public override void Draw(GameTime gameTime)
         {
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
-            defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.First());
+            defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.FirstOrDefault());
 
             var comp = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmiterComponent>();
             foreach (var i in comp)
@@ -90,7 +88,7 @@ namespace GameEngine.Source.Systems
                 device.DepthStencilState = DepthStencilState.Default;
             }
         }
-        
+
         /// <summary>
         /// Updates Buffers for ParticleEmitterComponent
         /// </summary>
@@ -118,4 +116,3 @@ namespace GameEngine.Source.Systems
         }
     }
 }
-

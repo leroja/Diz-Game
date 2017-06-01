@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -15,22 +16,22 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            var a  = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmiterComponent>();
-            foreach (var id in a)
+            var a = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmiterComponent>();
+            Parallel.ForEach(a, id =>
             {
                 var emiter = ComponentManager.GetEntityComponent<ParticleEmiterComponent>(id);
 
                 emiter.EmiterLife -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if(emiter.EmiterLife < 0)
+                if (emiter.EmiterLife < 0)
                 {
                     ComponentManager.RemoveEntity(ComponentManager.GetEntityIDByComponent<ParticleEmiterComponent>(emiter));
                     emiter = null;
                 }
                 if (emiter != null)
                 {
-                    AddParticle(id,gameTime);
+                    AddParticle(id, gameTime);
                 }
-            }
+            });
         }
 
         /// <summary>
@@ -51,8 +52,8 @@ namespace GameEngine.Source.Systems
             emiter.NumberOfActiveParticles += 4;
 
             float startTime = emiter.LifeTime;
-            var pot = SetRandomPos(new Vector3(10 , 0, 10), new Vector3(-10, 0, -10));
-            
+            var pot = SetRandomPos(new Vector3(10, 0, 10), new Vector3(-10, 0, -10));
+
             for (int i = 0; i < 4; i++)
             {
                 emiter.Particles[emiter.StartIndex + i].StartPosition = pos;

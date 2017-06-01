@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -17,26 +18,24 @@ namespace GameEngine.Source.Systems
         /// </summary>
         public override void Update(GameTime gameTime)
         {
-            Dictionary<int, IComponent> mc = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TransformComponent>();
+            var mc = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TransformComponent>();
 
-
-            foreach (var entity in mc)
+            Parallel.ForEach(mc, entity =>
             {
-                //TransformComponent tfc = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
                 TransformComponent tfc = (TransformComponent)entity.Value;
                 var rotationQuaternion = Quaternion.CreateFromYawPitchRoll(tfc.Rotation.Y, tfc.Rotation.X, tfc.Rotation.Z);
-                
+
                 tfc.QuaternionRotation = rotationQuaternion;
                 tfc.Forward = Vector3.Transform(Vector3.Forward, tfc.QuaternionRotation);
                 tfc.Up = Vector3.Transform(Vector3.Up, tfc.QuaternionRotation);
                 tfc.Right = Vector3.Transform(Vector3.Right, tfc.QuaternionRotation);
 
                 tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale)
-                    * Matrix.CreateFromQuaternion(tfc.QuaternionRotation) 
+                    * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
                     * Matrix.CreateTranslation(tfc.Position);
 
                 tfc.ModelMatrix = tfc.ObjectMatrix;
-            }
+            });
         }
     }
 }

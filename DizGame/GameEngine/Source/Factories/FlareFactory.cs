@@ -4,16 +4,24 @@ using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Factories
 {
+    /// <summary>
+    /// A factory for creating flares
+    /// </summary>
     public static class FlareFactory
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Content"></param>
+        /// <param name="device"></param>
+        /// <param name="entityID"></param>
+        /// <param name="flares"></param>
+        /// <param name="lightDirection"></param>
+        /// <param name="isActive"></param>
+        /// <param name="glowSpritePath"></param>
         public static void CreateFlare(ContentManager Content, GraphicsDevice device, int entityID = -1, Flare[] flares = null, Vector3 lightDirection = new Vector3(), bool isActive = true, string glowSpritePath = "Flare/glow")
         {
             FlareComponent flare = new FlareComponent();

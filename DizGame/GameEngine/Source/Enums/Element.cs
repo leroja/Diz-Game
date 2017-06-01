@@ -302,6 +302,5 @@ namespace GameEngine.Source.Enums
                     return new Tuple<float, float>(331.3f, 1.292f);
             }
         }
-
     }
 }

@@ -46,7 +46,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="EntityFactory.cs" />
+    <Compile Include="Source\Factories\EntityFactory.cs" />
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,30 +57,37 @@
     <Compile Include="Source\AI Behaviors\PatrollingBehavior.cs" />
     <Compile Include="Source\AI Behaviors\WanderBehavior.cs" />
     <Compile Include="Source\Components\AIComponent.cs" />
+    <Compile Include="Source\Communication\TalkToServer.cs" />
     <Compile Include="Source\Components\BulletComponent.cs" />
     <Compile Include="Source\Components\HealthComponent.cs" />
     <Compile Include="Source\Components\AmmunitionComponent.cs" />
+    <Compile Include="Source\Components\HudComponent.cs" />
     <Compile Include="Source\Components\PlayerComponent.cs" />
     <Compile Include="Source\Components\ResourceComponent.cs" />
     <Compile Include="Source\Components\ScoreComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\Factories\HudFactory.cs" />
     <Compile Include="Source\Factories\ResourceFactory.cs" />
+    <Compile Include="Source\Factories\StaticGameObjectsFactory.cs" />
     <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\GameStates\PlayGameState.cs" />
+    <Compile Include="Source\GameStates\ScoreScreen.cs" />
     <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
-    <Compile Include="Source\Systems\AmonitionSystemcs.cs" />
+    <Compile Include="Source\Systems\AmmunitionSystem.cs" />
+    <Compile Include="Source\Enums\GameSettingsType.cs" />
+    <Compile Include="Source\Settings\GameSettings.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\EntityTracingSystem.cs" />
     <Compile Include="Source\Systems\GameTransformSystem.cs" />
-    <Compile Include="Source\Systems\HandleBoundingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />
+    <Compile Include="Source\Systems\HudSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
+    <Compile Include="Source\Systems\StaticColisionSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
@@ -95,9 +102,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Effects\HardwareInstancedEffect.fx" />
     <Content Include="Content\Effects\ParticleEffect.fx" />
     <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
+    <Content Include="Content\HeightMapStuff\drygrass.png" />
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
     <Content Include="Content\HeightMapStuff\Map3.jpg" />
@@ -135,18 +144,23 @@
     <None Include="Content\Dude\upBodyC2.tga" />
     <None Include="Content\Dude\upbodyN.tga" />
     <None Include="Content\Dude\upBodyS.tga" />
+    <None Include="Content\Fonts\Death.spritefont" />
+    <None Include="Content\Fonts\font.spritefont" />
     <None Include="Content\Fonts\MenuFont.spritefont" />
-    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.mtl" />
-    <None Include="Content\MapObjects\Farmhouse\MedievalHouse1.obj" />
-    <None Include="Content\MapObjects\Farmhouse\roof.tga" />
-    <None Include="Content\MapObjects\Farmhouse\wall.tga" />
+    <None Include="Content\MapObjects\CyprusHouse\cyprus_house.mtl" />
+    <None Include="Content\MapObjects\CyprusHouse\Cyprus_House2.obj" />
     <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />
     <None Include="Content\MapObjects\Rock\Rock.obj" />
     <None Include="Content\MapObjects\Tree\lowpolytree.mtl" />
     <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
-    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.mtl" />
-    <None Include="Content\MapObjects\WoodHouse\Cyprys_House.obj" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouse1.mtl" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouse1.obj" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\MADEIRA2.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\MADEIRA3.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\TELHA.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\TELHA2.tga" />
+    <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\TELHA3.tga" />
     <None Include="Content\WierdDude\Body.fbx" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +175,10 @@
     <ProjectReference Include="..\GameEngine\GameEngine.csproj">
       <Project>{beb5aa74-8cd7-4ded-86d9-693fa6e9aaf0}</Project>
       <Name>GameEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerSupportedCommunication\ServerSupportedCommunication.csproj">
+      <Project>{72d628ae-d696-472c-b147-368d3e5facfd}</Project>
+      <Name>ServerSupportedCommunication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

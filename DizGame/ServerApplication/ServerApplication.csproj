@@ -53,6 +53,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lidgren-network-gen3-master\Lidgren.Network\bin\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,15 +67,24 @@
     <Compile Include="Communication\TalkToClients.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protocol\GameStateProtocol.cs" />
     <Compile Include="ServerLogic\Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DizGame\DizGame.csproj">
+      <Project>{7CAC22CD-A7C9-48AF-8B06-19A005BD728F}</Project>
+      <Name>DizGame</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GameEngine\GameEngine.csproj">
       <Project>{BEB5AA74-8CD7-4DED-86D9-693FA6E9AAF0}</Project>
       <Name>GameEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerSupportedCommunication\ServerSupportedCommunication.csproj">
+      <Project>{72D628AE-D696-472C-B147-368D3E5FACFD}</Project>
+      <Name>ServerSupportedCommunication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -19,9 +19,11 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Acceleration in meter per second squared (m/s^2)
         /// </summary>
-        public Vector3 Acceleration {
+        public Vector3 Acceleration
+        {
             get;
-            set; }
+            set;
+        }
         /// <summary>
         /// Used to calculate an higher accuracy of velocity,
         /// position using Euler method.

@@ -5,6 +5,7 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,7 @@ namespace DizGame.Source.GameStates
         private KeyboardState oldState;
         private KeyboardState newState;
         private TextSystem TextSystem;
+        private Double time;
         #endregion
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities = new List<int>();
             SelectedItem = 0;
             SpriteFont = GameOne.Instance.Content.Load<SpriteFont>("Fonts/MenuFont");
-            oldState = Keyboard.GetState();
+            oldState = new KeyboardState();
             TextSystem = new TextSystem(SystemManager.Instance.SpriteBatch);
         }
 
@@ -50,8 +52,9 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Entered()
         {
+            time = 1;
             SystemManager.Instance.AddSystem(TextSystem);
-            string[] itemNames = { "One Player Game", "Multiplayer Game", "Settings", "Whatever" };
+            string[] itemNames = { "One Player Game", "Multiplayer Game", "Settings", "Whatever", "Exit" };
             ItemNames = itemNames;
 
             int y = 30;
@@ -82,6 +85,7 @@ namespace DizGame.Source.GameStates
         public override void Exiting()
         {
             AudioManager.Instance.StopSong();
+
             foreach (int id in GameStateEntities)
             {
                 ComponentManager.Instance.RemoveEntity(id);
@@ -112,11 +116,17 @@ namespace DizGame.Source.GameStates
         /// the user input to the menu. So that the user will be able 
         /// to chose the different options in the menu.
         /// </summary>
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
+            time -= gameTime.ElapsedGameTime.TotalSeconds;
             oldState = newState;
             newState = Keyboard.GetState();
             TextComponent txc;
+            if (newState.IsKeyDown(Keys.Escape) && !oldState.IsKeyUp(Keys.Escape) && time < 0)
+            {
+                GameOne.Instance.Exit();
+                //SystemManager.Instance.ThreadUpdateSystems.Abort();
+            }
 
             if (newState.IsKeyDown(Keys.Up))
             {
@@ -161,7 +171,7 @@ namespace DizGame.Source.GameStates
                     AudioManager.Instance.GlobalMute();
             }
 
-            if (newState.IsKeyDown(Keys.Enter))
+            if (newState.IsKeyDown(Keys.Enter) && !oldState.IsKeyDown(Keys.Enter))
             {
                 switch (SelectedItem)
                 {
@@ -178,6 +188,10 @@ namespace DizGame.Source.GameStates
                     case 2:
                         break;
                     case 3:
+                        break;
+                    case 4:
+                        GameOne.Instance.Exit();
+                        //SystemManager.Instance.ThreadUpdateSystems.Abort();
                         break;
                 }
             }

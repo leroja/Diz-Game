@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
+using DizGame.Source.Factories;
+using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -37,6 +39,8 @@ namespace DizGame.Source.Systems
         /// For example if the ratio is 5, every 5th resource will be a health resource and the rest ammo resources.</param>
         public ResourceSystem(int maxNumberOfResourcesInPlay, int healthAmmoRatio)
         {
+            if (healthAmmoRatio == 0)
+                healthAmmoRatio = 2; //   50 / 50 ammo & hälsa
             this.maxNumberOfResourcesInPlay = maxNumberOfResourcesInPlay;
             this.healthAmmoRatio = healthAmmoRatio;
         }
@@ -54,21 +58,21 @@ namespace DizGame.Source.Systems
             int worldid = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>().First();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(worldid);
 
-            foreach (var id in entitylist)
+            Parallel.ForEach(entitylist, id =>
             {
                 var transComp = ComponentManager.GetEntityComponent<TransformComponent>(id);
                 transComp.Rotation += new Vector3(0, 0.7f * (float)gameTime.ElapsedGameTime.TotalSeconds, 0f);
-            }
-            
+            });
+
             if (world.Day % world.ModulusValue != 1)
             {
-                foreach (int entity in entitylist)
+                Parallel.ForEach(entitylist, entity =>
                 {
                     resource = ComponentManager.GetEntityComponent<ResourceComponent>(entity);
                     resource.duration -= gameTime.ElapsedGameTime;
                     if (resource.duration.Seconds <= 0)
                         RemoveOldResources(entity);
-                }
+                });
                 if (entitylist.Count + numberOfRemovedResources < maxNumberOfResourcesInPlay)
                     AddNewResources(entitylist.Count + numberOfRemovedResources);
             }

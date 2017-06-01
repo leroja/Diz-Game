@@ -32,9 +32,10 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<TextComponent>())
+            var ents = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<TextComponent>();
+            foreach (var entity in ents)
             {
-                TextComponent text = ComponentManager.GetEntityComponent<TextComponent>(entityID);
+                var text = (TextComponent)entity.Value;
                 if (text.Children != null)
                     foreach (var child in text.Children)
                         DrawText(child.Value);
@@ -54,7 +55,7 @@ namespace GameEngine.Source.Systems
                 if (text.IsVisible)
                 {
                     spriteBatch.Begin();
-                    if(text.IsBackgroundVisible)
+                    if (text.IsBackgroundVisible)
                     {
                         Vector2 textSize = text.Font.MeasureString(text.Text);
                         text.BackgroundRectangle = new Texture2D(spriteBatch.GraphicsDevice, (int)textSize.X, (int)textSize.Y);

@@ -3,10 +3,12 @@ using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
+using DizGame.Source.Systems;
+using DizGame.Source.Factories;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // todo gör så att AI:n inte roterar direkt mot närmsta fienden utan gör så att den vänder sig mod den och gör så att den inte kan skjuta innan den här helt vänd mot fienden
+    // todo gör så att AI:n inte roterar direkt mot närmsta fienden utan gör så att den vänder sig mot den och gör så att den inte kan skjuta innan den här helt vänd mot fienden
     /// <summary>
     /// A Behavior that makes the AI shoot at the closest enemy
     /// </summary>
@@ -44,20 +46,23 @@ namespace DizGame.Source.AI_Behaviors
             var worldComp = (WorldComponent)worldTemp.Values.First();
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
-            //physComp.Velocity = new Vector3(0, physComp.Velocity.Y, 0); // todo temp
             physComp.Velocity = Vector3.Zero; // todo temp
             physComp.Acceleration = Vector3.Zero;  // todo temp
 
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             transformComp.Rotation = GetRotationToClosestEnenmy(AIComp);
-            transformComp.Position = new Vector3(transformComp.Position.X, GetHeight(transformComp.Position), transformComp.Position.Z);
+            transformComp.Position = new Vector3(transformComp.Position.X, MovingSystem.GetHeight(transformComp.Position), transformComp.Position.Z);
             if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && time < 0)
             {
-                var rot = GetRotationForAimingAtEnemy(AIComp);
+                if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag > 0)
+                {
+                    var rot = GetRotationForAimingAtEnemy(AIComp);
 
-                EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot);
-                time = AIComp.ShootingCooldown;
+                    EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot, AIComp.ID);
+                    ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag--;
+                    time = AIComp.ShootingCooldown;
+                }
             }
 
             BehaviorStuff(AIComp, transformComp, worldComp);

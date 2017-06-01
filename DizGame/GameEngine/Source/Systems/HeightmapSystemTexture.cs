@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Components;
 using AnimationContentClasses;
@@ -14,7 +13,7 @@ namespace GameEngine.Source.Systems
     public class HeightmapSystemTexture : IRender
     {
         private GraphicsDevice device;
-        
+
         /// <summary>
         /// A constructor that takes a GrapicsDevice as a parameter
         /// </summary>
@@ -24,7 +23,6 @@ namespace GameEngine.Source.Systems
             this.device = device;
         }
 
-        // Todo:
         /// <summary>
         /// Method for drawing the heightmap
         /// </summary>
@@ -37,7 +35,7 @@ namespace GameEngine.Source.Systems
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
 
             var cameraIds = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
-            var cameraComp = ComponentManager.GetEntityComponent<CameraComponent>(cameraIds[0]);
+            var cameraComp = ComponentManager.GetEntityComponent<CameraComponent>(cameraIds.FirstOrDefault());
 
             foreach (int heightMapId in ents)
             {
@@ -56,7 +54,7 @@ namespace GameEngine.Source.Systems
                         {
                             FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
                             chunk.Effect.LightingEnabled = true;
-                            //chunk.Effect.DiffuseColor = flare.Diffuse;  // todo
+                            //chunk.Effect.DiffuseColor = flare.Diffuse;
                             //chunk.Effect.AmbientLightColor = flare.AmbientLight;
                             chunk.Effect.DirectionalLight0.Enabled = true;
                             chunk.Effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
@@ -77,11 +75,11 @@ namespace GameEngine.Source.Systems
                         }
                     }
                 }
-                
+
             }
         }
-        
-        // todo borde bara behöva göra en gång
+
+        // todo borde bara behöva göras en gång, kanske när de skapas
         /// <summary>
         /// Recalculates/moves the boudning box to its correct placemnet in the world
         /// </summary>

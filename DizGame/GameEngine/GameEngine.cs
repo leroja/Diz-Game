@@ -3,6 +3,7 @@ using GameEngine.Source.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
 
 namespace GameEngine
 {
@@ -22,7 +23,7 @@ namespace GameEngine
         /// <summary>
         /// A GraphicsDevice
         /// </summary>
-        public GraphicsDevice Device { get; set; } 
+        public GraphicsDevice Device { get; set; }
 
         /// <summary>
         /// Constructor
@@ -64,7 +65,7 @@ namespace GameEngine
         /// </summary>
         protected override void UnloadContent()
         {
-
+            base.UnloadContent();
         }
 
         /// <summary>
@@ -74,9 +75,8 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            // kommentera ut denna om vi börjar använda ThreadUpdateSystems igen
             SystemManager.Instance.RunUpdateSystems(gameTime);
-           
-            GameStateManager.Instance.UpdateGameState();
 
             base.Update(gameTime);
         }
@@ -88,7 +88,6 @@ namespace GameEngine
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
             SystemManager.Instance.RunRenderSystems(gameTime);
 
             base.Draw(gameTime);

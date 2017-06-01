@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
@@ -20,10 +19,11 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>())
+            var ents = ComponentManager.GetAllEntitiesWithComponentType<PhysicsComponent>();
+            Parallel.ForEach(ents, ent =>
             {
-                UpdateDrag(entityID, gameTime);
-            }
+                UpdateDrag(ent, gameTime);
+            });
         }
 
         /// <summary>
