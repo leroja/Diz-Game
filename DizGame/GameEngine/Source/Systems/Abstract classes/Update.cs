@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Threading;
 
 namespace GameEngine.Source.Systems
@@ -9,7 +10,6 @@ namespace GameEngine.Source.Systems
     public abstract class IUpdate : ISystem
     {
         private static object _lock = new object();
-        private Thread _thread;
         /// <summary>
         /// 
         /// </summary>
@@ -20,16 +20,11 @@ namespace GameEngine.Source.Systems
         /// Thread safe update
         /// </summary>
         /// <param name="gameTime"></param>
-        public void UpdateSafe(GameTime gameTime)
+        public void UpdateThreadSafe(GameTime gameTime)
         {
             lock (_lock)
             {
-                if (_thread == null)
-                {
-                    _thread = new Thread(() => Update(gameTime));
-                    _thread.Start();
-                }
-                
+                Update(gameTime);
             }
         }
     }

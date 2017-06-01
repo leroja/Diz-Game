@@ -10,8 +10,6 @@ namespace GameEngine.Source.Systems
     public abstract class IRender : ISystem
     {
         private static object _lock = new object();
-        private Thread _thread;
-
 
         /// <summary>
         /// 
@@ -23,16 +21,12 @@ namespace GameEngine.Source.Systems
         /// Thread safe function 
         /// </summary>
         /// <param name="gameTime"></param>
-        public void DrawSafe(GameTime gameTime)
+        public void DrawThreadSafe(GameTime gameTime)
         {
+            //Console.WriteLine(this.ToString());
             lock (_lock)
             {
-                if (_thread == null)
-                {
-                    _thread = new Thread(() => Draw(gameTime));
-                    _thread.Start();
-                }
-
+                Draw(gameTime);
             }
         }
 

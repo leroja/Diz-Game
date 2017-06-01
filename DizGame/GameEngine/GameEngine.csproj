@@ -63,6 +63,7 @@
     <Compile Include="Source\Factories\FlareFactory.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
+    <Compile Include="Source\Managers\ThreadManager.cs" />
     <Compile Include="Source\RandomStuff\ParticleVertex.cs" />
     <Compile Include="Source\RandomStuff\Flare.cs" />
     <Compile Include="Source\Systems\2DSystem.cs" />
