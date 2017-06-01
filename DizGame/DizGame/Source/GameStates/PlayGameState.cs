@@ -28,7 +28,7 @@ namespace DizGame.Source.GameStates
         private bool multiplayerGame;
 
         #endregion
-
+         
         /// <summary>
         /// Basic constructor for the PlayGame-state 
         /// </summary>
