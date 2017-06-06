@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace ContentProject
 {
     /// <summary>
-    /// AnimationProcessor extending the Modelprocessor class to enable custom content processing.
+    /// AnimationProcessor extending the ModelProcessor class to enable custom content processing.
     /// </summary>
     [ContentProcessor(DisplayName = "ModelBoundingSphereProcessor")]
     public class ModelBoundingSphereProcessor : ModelProcessor

@@ -81,11 +81,11 @@ namespace GameEngine.Source.Components
         /// </summary>
         public BoundingFrustum3D CameraFrustrum { get; set; }
         /// <summary>
-        /// Set which type of camera is used eg.(Pov, static, chase)
+        /// Set which type of camera is used e.g.(POV, static, chase)
         /// </summary>
         public CameraType CameraType { get; set; }
         /// <summary>
-        /// Sets if camera is flareable eg. reflect the light flares.
+        /// Sets if camera is flareable e.g. reflect the light flares.
         /// </summary>
         public bool IsFlareable { get; set; }
         #endregion Public Propterties

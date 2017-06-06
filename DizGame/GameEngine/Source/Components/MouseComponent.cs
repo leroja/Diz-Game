@@ -14,7 +14,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Dictionary<string, ButtonStates> MouseActionState { get; set; }
         /// <summary>
-        /// Stores wich actions are boudn to wich specific key
+        /// Stores which actions are bound to which specific key
         /// </summary>
         public Dictionary<string, string> MouseActionBinding { get; set; }
         /// <summary>
@@ -22,7 +22,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float MouseSensitivity { get; set; }
         /// <summary>
-        /// The current postion of the mouse
+        /// The current position of the mouse
         /// </summary>
         public Vector2 CurrentPosition { get; set; }
         /// <summary>
@@ -51,7 +51,7 @@ namespace GameEngine.Source.Components
         ///     RightButton, LeftButton, MiddleButton
         /// </summary>
         /// <param name="action"> name of the action </param>
-        /// <param name="button"> wich mousebutton the action should be binded to </param>
+        /// <param name="button"> which mouse button the action should be binded to </param>
         public void AddActionToButton(string action, string button)
         {
             MouseActionBinding.Add(action, button);

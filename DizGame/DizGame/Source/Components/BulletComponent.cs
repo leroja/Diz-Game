@@ -13,11 +13,11 @@ namespace DizGame.Source.Components
         /// </summary>
         public float MaxRange { get; set; }
         /// <summary>
-        /// Where the Bullet where created/shooted from
+        /// Where the Bullet where created/shot from
         /// </summary>
         public Vector3 StartPos { get; set; }
         /// <summary>
-        /// How much damage the bullet does to enties
+        /// How much damage the bullet does to entities
         /// </summary>
         public float Damage { get; set; }
         /// <summary>

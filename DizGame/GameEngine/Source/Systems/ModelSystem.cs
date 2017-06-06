@@ -8,8 +8,8 @@ using System;
 namespace GameEngine.Source.Systems
 {
     /// <summary>
-    /// Modelsystem class is responsible for handling all entities with an component type of modelcomponent, 
-    /// which is renderable objects. 
+    /// ModelSystem class is responsible for handling all entities with an component type of modelComponent, 
+    /// which are renderable objects. 
     /// In other words this class contains logic for drawing these kind of objects.
     /// </summary>
     public class ModelSystem : IRender
@@ -58,7 +58,7 @@ namespace GameEngine.Source.Systems
 
 
         /// <summary>
-        /// Renders from one copy in hardware to serveral places on map.
+        /// Renders from one copy in hardware to several places on map.
         /// </summary>
         /// <param name="entityID">The id to render.</param>
         private void RenderHardwareInstanced(int entityID)

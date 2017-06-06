@@ -12,7 +12,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 Position { get; set; }
         /// <summary>
-        /// Vector3 representing the prevoius position
+        /// Vector3 representing the previous position
         /// </summary>
         public Vector3 PreviousPosition { get; set; }
         /// <summary>
@@ -25,7 +25,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Quaternion QuaternionRotation;
         /// <summary>
-        /// Quaternion oritentation in order to prevent Gimballock
+        /// Quaternion orientation in order to prevent Gimballock
         /// </summary>
         public Quaternion Orientation { get; set; }
         /// <summary>

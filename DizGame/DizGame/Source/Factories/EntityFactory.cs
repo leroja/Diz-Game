@@ -28,7 +28,7 @@ namespace DizGame.Source.Factories
         private Dictionary<string, Texture2D> Texture2dDic;
         private HeightMapFactory hmFactory;
         /// <summary>
-        /// Hud factory
+        /// HUD factory
         /// </summary>
         public HudFactory HudFactory { get; set; }
         /// <summary>
@@ -36,11 +36,11 @@ namespace DizGame.Source.Factories
         /// </summary>
         public ResourceFactory ResourceFactory { get; set; }
         /// <summary>
-        /// A Factory for creating static game object. eg a house
+        /// A Factory for creating static game object. e.g a house
         /// </summary>
         public StaticGameObjectsFactory SGOFactory { get; set; }
         /// <summary>
-        /// A Bool that says whether the models are vivible or not
+        /// A Bool that says whether the models are visible or not
         /// </summary>
         public bool VisibleBullets { get; set; }
 
@@ -60,7 +60,7 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// Private constructor of the entityfactory
+        /// Private constructor of the entityFactory
         /// </summary>
         private EntityFactory()
         {
@@ -198,7 +198,7 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// Cheaks if objects get the same position as Characters. if they have the same position the object it is removed
+        /// Checks if objects get the same position as Characters. if they have the same position the object it is removed
         /// </summary>
         public void SpawnProtection()
         {
@@ -254,65 +254,65 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// Creates a particle emmiter and sets positions and options
+        /// Creates a particle emitter and sets positions and options
         /// </summary>
-        /// <param name="Position"> Position of emiter</param>
+        /// <param name="Position"> Position of emitter</param>
         /// <param name="TextureName">Name of texture</param>
-        /// <param name="nParticles">maximum number of particles in emiter. Used for size of vectors</param>
+        /// <param name="nParticles">maximum number of particles in emitter. Used for size of vectors</param>
         /// <param name="Particlelifetime"> lifetime of particle </param>
         /// <param name="FadeTime">Fade time on particles</param>
         /// <param name="direction">Direction of particles</param>
         /// <param name="scale">Scale on Particle</param>
         /// <param name="EmitterLifeTime">Life time on emitter</param>
-        public void CreateParticleEmiter(Vector3 Position, String TextureName, int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale, int EmitterLifeTime)
+        public void CreateParticleEmitter(Vector3 Position, String TextureName, int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale, int EmitterLifeTime)
         {
             TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
-            ParticleEmiterComponent emiter = new ParticleEmiterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction)
+            ParticleEmitterComponent emitter = new ParticleEmitterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction)
             {
-                EmiterLife = EmitterLifeTime,
+                EmitterLife = EmitterLifeTime,
                 Effect = Content.Load<Effect>("Effects/ParticleEffect"),
             };
             int id = ComponentManager.Instance.CreateID();
-            GenerateParticle(emiter);
+            GenerateParticle(emitter);
 
             ComponentManager.Instance.AddComponentToEntity(id, tran);
-            ComponentManager.Instance.AddComponentToEntity(id, emiter);
+            ComponentManager.Instance.AddComponentToEntity(id, emitter);
         }
 
         /// <summary>
-        /// Called for instancning a vector to store the particles in
+        /// Called for instancing a vector to store the particles in
         /// </summary>
-        /// <param name="emiter"> ParticleEmitterComponent</param>
-        public void GenerateParticle(ParticleEmiterComponent emiter)
+        /// <param name="emitter"> ParticleEmitterComponent</param>
+        public void GenerateParticle(ParticleEmitterComponent emitter)
         {
-            emiter.Particles = new ParticleVertex[emiter.NumberOfParticles * 4];
-            emiter.Indices = new int[emiter.NumberOfParticles * 6];
+            emitter.Particles = new ParticleVertex[emitter.NumberOfParticles * 4];
+            emitter.Indices = new int[emitter.NumberOfParticles * 6];
 
             var z = Vector3.Zero;
             var pos = new Vector3(10, 10, 10);
             int x = 0;
-            for (int i = 0; i < emiter.NumberOfParticles * 4; i += 4)
+            for (int i = 0; i < emitter.NumberOfParticles * 4; i += 4)
             {
-                emiter.Particles[i + 0] = new ParticleVertex(pos, new Vector2(0, 0),
+                emitter.Particles[i + 0] = new ParticleVertex(pos, new Vector2(0, 0),
                 pos, 0, -1);
-                emiter.Particles[i + 1] = new ParticleVertex(pos, new Vector2(0, 1),
+                emitter.Particles[i + 1] = new ParticleVertex(pos, new Vector2(0, 1),
                 pos, 0, -1);
-                emiter.Particles[i + 2] = new ParticleVertex(pos, new Vector2(1, 1),
+                emitter.Particles[i + 2] = new ParticleVertex(pos, new Vector2(1, 1),
                 pos, 0, -1);
-                emiter.Particles[i + 3] = new ParticleVertex(pos, new Vector2(1, 0),
+                emitter.Particles[i + 3] = new ParticleVertex(pos, new Vector2(1, 0),
                 pos, 0, -1);
 
-                emiter.Indices[x++] = i + 0;
-                emiter.Indices[x++] = i + 3;
-                emiter.Indices[x++] = i + 2;
-                emiter.Indices[x++] = i + 2;
-                emiter.Indices[x++] = i + 1;
-                emiter.Indices[x++] = i + 0;
+                emitter.Indices[x++] = i + 0;
+                emitter.Indices[x++] = i + 3;
+                emitter.Indices[x++] = i + 2;
+                emitter.Indices[x++] = i + 2;
+                emitter.Indices[x++] = i + 1;
+                emitter.Indices[x++] = i + 0;
             }
         }
 
         /// <summary>
-        /// Creates a static camera on the specified position and that is looking att the specified lookat
+        /// Creates a static camera on the specified position and that is looking at the specified lookAt
         /// </summary>
         /// <param name="CameraPosition"> Position of the camera </param>
         /// <param name="lookAt"> A position that the camera should look at </param>
@@ -355,7 +355,7 @@ namespace DizGame.Source.Factories
         /// <summary>
         /// Adds an chase Camera to an entity
         /// </summary>
-        /// <param name="EntityId"> The ID of the enitt that the camera should follow </param>
+        /// <param name="EntityId"> The ID of the entity that the camera should follow </param>
         /// <param name="Offset"> How far behind the camera should be </param>
         /// <param name="isFlareable"></param>
         public void AddChaseCamToEntity(int EntityId, Vector3 Offset, bool isFlareable = false)
@@ -376,10 +376,10 @@ namespace DizGame.Source.Factories
         /// <param name="scale"> How much to scale the bullet </param>
         /// <param name="MaxRange"> The max range of the bullet </param>
         /// <param name="initialVelocity"> The initial velocity of the bullet </param>
-        /// <param name="rotation"> The rotation oi the bullet </param>
+        /// <param name="rotation"> The rotation of the bullet </param>
         /// <param name="damage"> How much damage the bullet does </param>
         /// <param name="ownerID"> Entity Id of the Owner </param>
-        /// <returns> The enityId of the bullet incase someone would need it </returns>
+        /// <returns> The enityId of the bullet in case someone would need it </returns>
         public int CreateBullet(string modelName, Vector3 pos, Vector3 scale, float MaxRange, float initialVelocity, Vector3 rotation, float damage, int ownerID)
         {
             pos = new Vector3(pos.X, pos.Y + 4.5f, pos.Z);
@@ -481,13 +481,13 @@ namespace DizGame.Source.Factories
         /// <summary>
         /// Creates a new AI Entity
         /// </summary>
-        /// <param name="ModelName"> The name of the model the AI sjould use </param>
+        /// <param name="ModelName"> The name of the model the AI should use </param>
         /// <param name="position"> The initial position of the AI </param>
         /// <param name="hysteria">  </param>
         /// <param name="widthBound">  </param>
         /// <param name="heightBound">  </param>
-        /// <param name="DirectionDuration"> A value in seconds for how long the AI will stick to its choosen direction </param>
-        /// <param name="rotation"> In what range the new rotaion can be. eg. -PI --- +PI </param>
+        /// <param name="DirectionDuration"> A value in seconds for how long the AI will stick to its chosen direction </param>
+        /// <param name="rotation"> In what range the new rotation can be. e.g. -PI --- +PI </param>
         /// <param name="shootingCoolDown"> The delay between the shoots for when the AI is shooting
         /// Ideally somewhere between 0 and 1 second </param>
         /// <param name="attackingDistance"> From how far the AI will start shooting </param>
@@ -497,7 +497,7 @@ namespace DizGame.Source.Factories
         /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
         /// <param name="chaseDist"> In what distance the enemy have to be for the AI to chase it </param>
         /// <param name="DamagePerShot"> How much damage the AI does per shot </param>
-        /// <param name="nameOfAi"> The name of the ai used for scoring</param>
+        /// <param name="nameOfAi"> The name of the AI used for scoring</param>
         /// <returns> The ID of the new AI Entity  </returns>
         public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot, string nameOfAi)
         {

@@ -16,18 +16,18 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            var a = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmiterComponent>();
+            var a = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmitterComponent>();
             Parallel.ForEach(a, id =>
             {
-                var emiter = ComponentManager.GetEntityComponent<ParticleEmiterComponent>(id);
+                var emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(id);
 
-                emiter.EmiterLife -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (emiter.EmiterLife < 0)
+                emitter.EmitterLife -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (emitter.EmitterLife < 0)
                 {
-                    ComponentManager.RemoveEntity(ComponentManager.GetEntityIDByComponent<ParticleEmiterComponent>(emiter));
-                    emiter = null;
+                    ComponentManager.RemoveEntity(ComponentManager.GetEntityIDByComponent<ParticleEmitterComponent>(emitter));
+                    emitter = null;
                 }
-                if (emiter != null)
+                if (emitter != null)
                 {
                     AddParticle(id, gameTime);
                 }
@@ -42,24 +42,24 @@ namespace GameEngine.Source.Systems
         public void AddParticle(int id, GameTime time)
         {
             Vector3 pos = new Vector3(1, 40, 1);
-            ParticleEmiterComponent emiter = ComponentManager.GetEntityComponent<ParticleEmiterComponent>(id);
+            ParticleEmitterComponent emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(id);
             TransformComponent tran = ComponentManager.GetEntityComponent<TransformComponent>(id);
 
-            if (emiter.NumberOfActiveParticles + 4 == emiter.NumberOfParticles * 4)
+            if (emitter.NumberOfActiveParticles + 4 == emitter.NumberOfParticles * 4)
                 return;
 
-            OffsetIndex(emiter);
-            emiter.NumberOfActiveParticles += 4;
+            OffsetIndex(emitter);
+            emitter.NumberOfActiveParticles += 4;
 
-            float startTime = emiter.LifeTime;
+            float startTime = emitter.LifeTime;
             var pot = SetRandomPos(new Vector3(10, 0, 10), new Vector3(-10, 0, -10));
 
             for (int i = 0; i < 4; i++)
             {
-                emiter.Particles[emiter.StartIndex + i].StartPosition = pos;
-                emiter.Particles[emiter.StartIndex + i].Direction = emiter.Direction;
-                emiter.Particles[emiter.StartIndex + i].Speed = emiter.Speed;
-                emiter.Particles[emiter.StartIndex + i].StartTime = startTime;
+                emitter.Particles[emitter.StartIndex + i].StartPosition = pos;
+                emitter.Particles[emitter.StartIndex + i].Direction = emitter.Direction;
+                emitter.Particles[emitter.StartIndex + i].Speed = emitter.Speed;
+                emitter.Particles[emitter.StartIndex + i].StartTime = startTime;
             }
         }
 
@@ -81,14 +81,14 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Sets index for Particle
         /// </summary>
-        /// <param name="emiter"></param>
-        void OffsetIndex(ParticleEmiterComponent emiter)
+        /// <param name="emitter"></param>
+        void OffsetIndex(ParticleEmitterComponent emitter)
         {
-            for (int i = 0; i < emiter.NumberOfActiveParticles; i++)
+            for (int i = 0; i < emitter.NumberOfActiveParticles; i++)
             {
-                emiter.StartIndex++;
-                if (emiter.StartIndex == emiter.Particles.Length)
-                    emiter.StartIndex = 0;
+                emitter.StartIndex++;
+                if (emitter.StartIndex == emitter.Particles.Length)
+                    emitter.StartIndex = 0;
             }
         }
     }

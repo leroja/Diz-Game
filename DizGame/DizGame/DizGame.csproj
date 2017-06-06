@@ -47,6 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\AI Behaviors\HoardingBehavior.cs" />
+    <Compile Include="Source\Components\SpectatingComponent.cs" />
     <Compile Include="Source\Factories\EntityFactory.cs" />
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
+    <Compile Include="Source\Systems\SpectatingSystem.cs" />
     <Compile Include="Source\Systems\StaticColisionSystem.cs" />
   </ItemGroup>
   <ItemGroup>

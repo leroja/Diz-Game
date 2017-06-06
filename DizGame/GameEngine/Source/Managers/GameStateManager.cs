@@ -60,12 +60,12 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// Function to push a gamestate to the top of the stack and make it the current gamestate
         /// </summary>
-        /// <param name="state">takes an object derived from the gamestate class which sould represent the desirable game state</param>
+        /// <param name="state">takes an object derived from the gamestate class which should represent the desirable game state</param>
         public void Push(GameState state)
         {
             GameState previousState;
             //Means that there is another state on the stack, the pushed state is therefore 
-            //obscuring the state allready on the stack.
+            //obscuring the state already on the stack.
             if (stack.Count > 0)
             {
                 previousState = stack.Peek();
@@ -86,7 +86,7 @@ namespace GameEngine.Source.Managers
 
         /// <summary>
         /// Method for running the current GameStates update logic, in order to 
-        /// run logic that might be nessecary for the gamestate to check condition
+        /// run logic that might be necessary for the gamestate to check condition
         /// in which change of a gamestate might be necessary
         /// </summary>
         public void UpdateGameState(GameTime gameTime)

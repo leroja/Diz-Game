@@ -52,9 +52,9 @@ namespace GameEngine.Source.Systems
             if (V != Vector3.Zero)
             {
                 V.Normalize();
-                float Cd = (float)phy.DragType;                                                     // drag coefficent eg 0.25 to 0.45 for car
+                float Cd = (float)phy.DragType;                                                     // drag coefficient e.g 0.25 to 0.45 for car
                 float A = phy.ReferenceArea;                                                        // reference area
-                Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                       // speed of the object relativ to the fluid???
+                Vector3 v = phy.Velocity; // -Wind; TODO: Från particleSystem                       // speed of the object relative to the fluid???
 
                 Vector3 Fd = -Cd * p * Vector3Pow(v, 2) * A / 2 * V;
                 phy.Acceleration += (Fd / phy.Mass); // A = F / M
@@ -69,7 +69,7 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Checks if worlds fluid dictionary contains the objects
         /// position and returns the corresponding fluid density kg/m^3
-        /// returns Air as standard if not in dicitionary
+        /// returns Air as standard if not in dictionary
         /// </summary>
         /// <param name="world"></param>
         /// <param name="Position"></param>
@@ -114,7 +114,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Funktion to power an Vector3
+        /// Function to power an Vector3
         /// </summary>
         /// <param name="v1"></param>
         /// <param name="scalar"></param>

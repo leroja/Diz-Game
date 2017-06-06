@@ -9,6 +9,7 @@ using DizGame.Source.Factories;
 namespace DizGame.Source.AI_Behaviors
 {
     // todo gör så att AI:n inte roterar direkt mot närmsta fienden utan gör så att den vänder sig mot den och gör så att den inte kan skjuta innan den här helt vänd mot fienden
+    // todo infoga lite spread på skotten, eg lägg på en liten rot
     /// <summary>
     /// A Behavior that makes the AI shoot at the closest enemy
     /// </summary>
@@ -69,11 +70,11 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Check whether the AI chould change behavior
+        /// Check whether the AI should change behavior
         /// If it should then the method changes the behavior
         /// </summary>
         /// <param name="AIComp"> The AI component of the AI </param>
-        /// <param name="transformComp"> The transorm component of the AI </param>
+        /// <param name="transformComp"> The transform component of the AI </param>
         /// <param name="worldComp"> The world component </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transformComp, WorldComponent worldComp)
         {
@@ -84,9 +85,9 @@ namespace DizGame.Source.AI_Behaviors
 
             if (worldComp.Day % worldComp.ModulusValue != 0)
             {
-                if (AIComp.HaveBehavior("Patroll"))
+                if (AIComp.HaveBehavior("Patrol"))
                 {
-                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                    AIComp.ChangeBehavior("Patrol", transformComp.Rotation);
                 }
                 else
                 {

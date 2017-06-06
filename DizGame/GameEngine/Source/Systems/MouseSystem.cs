@@ -41,7 +41,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Uppdates the mouse postions ocg the component
+        /// Updates the mouse positions of the component
         /// </summary>
         /// <param name="mouseComp"></param>
         private void UpdateMousePositions(MouseComponent mouseComp)
@@ -72,7 +72,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// updates state of a specific mousebutton
+        /// updates state of a specific mouse button
         /// </summary>
         /// <param name="mouse"></param>
         /// <param name="curState"></param>

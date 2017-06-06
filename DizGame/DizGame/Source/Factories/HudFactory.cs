@@ -25,13 +25,13 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// Function to create gaming hud.
+        /// Function to create gaming HUD.
         /// </summary>
         /// <param name="healthPosition"></param>
         /// <param name="AmmunitionPosition"></param>
         /// <param name="PlayersRemainingPosition"></param>
         /// <param name="SlotPositions"></param>
-        /// <param name="id"> The id of the Entity that the hud is tracking </param>
+        /// <param name="id"> The id of the Entity that the HUD is tracking </param>
         public int CreateHud(Vector2 healthPosition, Vector2 AmmunitionPosition, Vector2 PlayersRemainingPosition, List<Vector2> SlotPositions, int id)
         {
             int HudID = ComponentManager.Instance.CreateID();

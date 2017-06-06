@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace DizGame.Source.Factories
 {
     /// <summary>
-    /// A fatcory for creating Static game objects
+    /// A factory for creating Static game objects
     /// </summary>
     public class StaticGameObjectsFactory
     {
@@ -299,7 +299,7 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// Gets target number of potitions on heightmap
+        /// Gets target number of positions on heightmap
         /// </summary>
         /// <param name="numberOfPositions"></param>
         /// <returns></returns>

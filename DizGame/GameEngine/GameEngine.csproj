@@ -51,7 +51,7 @@
     <Compile Include="Source\Components\HardwareInstancedComponent.cs" />
     <Compile Include="Source\Components\HeightmapComponentTexture.cs" />
     <Compile Include="Source\Components\MouseComponent.cs" />
-    <Compile Include="Source\Components\ParticleEmiterComponent.cs" />
+    <Compile Include="Source\Components\ParticleEmitterComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsParticleComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsProjectileComponent.cs" />
     <Compile Include="Source\Components\Physics\PhysicsRigidbodyComponent.cs" />

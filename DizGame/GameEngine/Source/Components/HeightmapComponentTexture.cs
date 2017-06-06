@@ -9,7 +9,7 @@ namespace GameEngine.Source.Components
     public class HeightmapComponentTexture : IComponent
     {
         /// <summary>
-        /// HeightData of th eheightmap
+        /// HeightData of the heightmap
         /// </summary>
         public float[,] HeightMapData { get; set; }
         /// <summary>
@@ -26,7 +26,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public int Height { get; set; }
         /// <summary>
-        /// A Bool that says whether the model is vivible or not
+        /// A Bool that says whether the model is visible or not
         /// </summary>
         public bool IsVisible { get; set; }
 

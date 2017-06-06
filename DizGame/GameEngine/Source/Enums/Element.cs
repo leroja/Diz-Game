@@ -63,7 +63,7 @@ namespace GameEngine.Source.Enums
     }
 
     /// <summary>
-    /// Returns an long represending the chosen objects
+    /// Returns an long representing the chosen objects
     /// drag value.
     /// </summary>
     public enum DragType : long

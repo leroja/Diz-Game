@@ -92,11 +92,11 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Check whether the AI chould change behavior
+        /// Check whether the AI should change behavior
         /// If it should then the method changes the behavior
         /// </summary>
         /// <param name="AIComp"> The AI component of the AI </param>
-        /// <param name="transcomp"> The transorm component of the AI </param>
+        /// <param name="transcomp"> The transform component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();

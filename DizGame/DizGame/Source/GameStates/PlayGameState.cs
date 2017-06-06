@@ -21,7 +21,7 @@ namespace DizGame.Source.GameStates
     {
         #region Properties
         /// <summary>
-        /// List with ints representing the entityid's 'active' in this current state
+        /// List with ints representing the entity id's 'active' in this current state
         /// </summary>
         public override List<int> GameStateEntities { get; }
         private static EntityTracingSystem EntityTracingSystem { get; set; }
@@ -93,8 +93,8 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Hides everything visible in the state, except the time and the "hud", dunno if
-        /// we want to hide that. Since that incase the state is obscured, we dont really "want to leave it"
+        /// Hides everything visible in the state, except the time and the "HUD", dunno if
+        /// we want to hide that. Since that in case the state is obscured, we don't really "want to leave it"
         /// we might just wanna check our inventory or such. Needs more adjusting if we want to manage a paused state
         /// only in the single player mode that is.
         /// </summary>
@@ -114,7 +114,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Method to show everything again that's been hidden incase of an obscuring state
+        /// Method to show everything again that's been hidden in case of an obscuring state
         /// might also need some adjustment if we wanna handle a paused state, in single player mode that is.
         /// </summary>
         public override void Revealed()
@@ -133,7 +133,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Method to run durring the update part of the game, should contain logic
+        /// Method to run during the update part of the game, should contain logic
         /// for exiting the gamestate.
         /// </summary>
         public override void Update(GameTime gameTime)
@@ -169,7 +169,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Seperate method for initializing all the systems required by this state
+        /// Separate method for initializing all the systems required by this state
         /// just in order to make the code more readable.
         /// </summary>
         private void InitializeSystems()
@@ -225,7 +225,7 @@ namespace DizGame.Source.GameStates
         {
             EntityFactory entf = EntityFactory.Instance;
 
-            // todo maybe place more AI:s, fine tune thier parameters
+            // todo maybe place more AI:s, fine tune their parameters
             var waypointList = new List<Vector2>()
             {
                 new Vector2(5, -5),
@@ -239,7 +239,7 @@ namespace DizGame.Source.GameStates
                 entf.CreateAI("Dude", new Vector3(100, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9, "AI-1"),
                 entf.CreateAI("Dude", new Vector3(500, 39, -500), 5, 1000, 1000, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7, "AI-2"),
                 entf.CreateAI("Dude", new Vector3(800, 45, -50), 5, 1000, 1000, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5, "AI-3"),
-                entf.CreateAI("Dude", new Vector3(5, 39, -45), 5, 1000, 1000, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.7f, 1f, waypointList, 90, 2, "Ai-4"),
+                entf.CreateAI("Dude", new Vector3(5, 39, -45), 5, 1000, 1000, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.7f, 1f, waypointList, 90, 2, "AI-4"),
                 entf.CreateAI("Dude", new Vector3(800, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.1f, 100, 40, 0.7f, 1f, null, 350, 1, "AI-5"),
                 entf.CreateAI("Dude", new Vector3(75, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-6"),
                 entf.CreateAI("Dude", new Vector3(250, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-7"),
@@ -267,7 +267,7 @@ namespace DizGame.Source.GameStates
             List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100);
             GameStateEntities.AddRange(entityIdList);
 
-            entf.CreateParticleEmiter(new Vector3(1, 2000, 1), "Smoke", 400, 10, 30, new Vector3(0, 1, 0), 5, 120);
+            entf.CreateParticleEmitter(new Vector3(1, 2000, 1), "Smoke", 400, 10, 30, new Vector3(0, 1, 0), 5, 120);
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),

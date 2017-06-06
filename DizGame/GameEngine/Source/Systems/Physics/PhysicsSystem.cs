@@ -100,7 +100,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Using Non Euler order does work but with less accurac        /// except when acceleration is not constant
+        /// Using Non Euler order does work but with less accuracy        /// except when acceleration is not constant
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
@@ -144,7 +144,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Calculates the physic objects Deaceleration
+        /// Calculates the physic objects Deceleration
         /// </summary>
         /// <param name="physic"></param>
         public virtual void UpdateDeceleration(PhysicsComponent physic)
@@ -189,7 +189,7 @@ namespace GameEngine.Source.Systems
         public virtual void UpdateVelocity(PhysicsComponent physic, float dt)
         {
             physic.Velocity += physic.Acceleration * dt;
-            //TODO: physic.Velocity += physic.InitialVelocity + ((physic.Acceleration - frictio) * dt);
+            //TODO: physic.Velocity += physic.InitialVelocity + ((physic.Acceleration - friction) * dt);
             //Console.WriteLine(physic.Velocity);
         }
 
@@ -296,7 +296,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Observer funktion, Updates the reflection on two objects 
+        /// Observer function, Updates the reflection on two objects 
         /// on collision (retrieves data from collision system)
         /// </summary>
         /// <param name="value"></param>

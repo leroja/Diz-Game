@@ -22,7 +22,7 @@ namespace DizGame.Source.GameStates
 
         #region Properties
         /// <summary>
-        /// List whit Entities. Used for cntolling entites in state
+        /// List whit Entities. Used for controlling entities in state
         /// </summary>
         public override List<int> GameStateEntities { get; }
         /// <summary>
@@ -30,15 +30,15 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private SpriteFont SpriteFont;
         /// <summary>
-        /// The previuc keuboardstate to handel input
+        /// The previous keyboardstate to handle input
         /// </summary>
         private KeyboardState oldState;
         /// <summary>
-        /// The newest keyboardstate to chek input. ussed to get to next stage
+        /// The newest keyboardstate to check input. used to get to next stage
         /// </summary>
         private KeyboardState newState;
         /// <summary>
-        /// Textsystem for printing the txt in the scorelist
+        /// Textsystem for printing the text in the scorelist
         /// </summary>
         private TextSystem TextSystem;
         #endregion

@@ -15,16 +15,16 @@ using System.Threading.Tasks;
 namespace ContentProject
 {
     /// <summary>
-    /// AnimationProcessor extending the Modelprocessor class to enable custom content processing.
+    /// AnimationProcessor extending the ModelProcessor class to enable custom content processing.
     /// </summary>
     [ContentProcessor(DisplayName = "AnimatedModelProcessor")]
     public class AnimationProcessor : ModelProcessor
     {
 
         /// <summary>
-        /// Overriden method to enable custom processing of models loaded within the content pipeline
+        /// Overridden method to enable custom processing of models loaded within the content pipeline
         /// </summary>
-        /// <param name="input">the data retrived from the content pipeline</param>
+        /// <param name="input">the data retrieved from the content pipeline</param>
         /// <param name="context"></param>
         /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)

@@ -6,7 +6,7 @@ namespace GameEngine.Source.Managers
 {
     /// <summary>
     /// A manager that holds songs and soundeffects and manages the playing of them
-    /// Also controlls the volume of the sounds that are currently being played
+    /// Also controls the volume of the sounds that are currently being played
     /// </summary>
     public class AudioManager
     {
@@ -67,7 +67,7 @@ namespace GameEngine.Source.Managers
         /// Changes the volume of the mediaplayer
         /// </summary>
         /// <param name="Volume">
-        /// MediaPlayer voume, has to be between 0.0 and 1.0
+        /// MediaPlayer volume, has to be between 0.0 and 1.0
         /// </param>
         public void ChangeSongVolume(float Volume)
         {
@@ -97,7 +97,7 @@ namespace GameEngine.Source.Managers
 
         /// <summary>
         /// Removes the soundeffect from the dictionary
-        /// if there is is a soundeffect with that name
+        /// if there is a soundeffect with that name
         /// </summary>
         /// <param name="effectName">
         /// The name of the soundEffect

@@ -19,7 +19,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Matrix[] MeshWorldMatrices { get; set; }
         /// <summary>
-        /// The boudnin sphere the encapsulates the model
+        /// The bounding sphere the encapsulates the model
         /// </summary>
         public BoundingVolume BoundingVolume { get; set; }
         /// <summary>
@@ -27,7 +27,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public bool IsStatic { get; set; }
         /// <summary>
-        /// A Bool that says whether the model is vivible or not
+        /// A Bool that says whether the model is visible or not
         /// </summary>
         public bool IsVisible { get; set; }
         /// <summary>

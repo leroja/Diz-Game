@@ -28,7 +28,7 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="gd"> Graphics device for drawing Primatives </param>
+        /// <param name="gd"> Graphics device for drawing Primitives </param>
         public ParticleRenderSystem(GraphicsDevice gd)
         {
             CreationTime = DateTime.Now;
@@ -44,18 +44,18 @@ namespace GameEngine.Source.Systems
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.FirstOrDefault());
 
-            var comp = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmiterComponent>();
+            var comp = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmitterComponent>();
             foreach (var i in comp)
             {
-                ParticleEmiterComponent emiter = ComponentManager.GetEntityComponent<ParticleEmiterComponent>(i);
+                ParticleEmitterComponent emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(i);
                 TransformComponent tran = ComponentManager.GetEntityComponent<TransformComponent>(i);
                 TransformComponent camtran = ComponentManager.GetEntityComponent<TransformComponent>(ComponentManager.GetEntityIDByComponent<CameraComponent>(defcame));
-                Effect effect = emiter.Effect;
+                Effect effect = emitter.Effect;
 
                 if (buff == null && indexBuff == null)
                 {
-                    buff = new VertexBuffer(device, typeof(ParticleVertex), emiter.NumberOfParticles * 4, BufferUsage.WriteOnly);
-                    indexBuff = new IndexBuffer(device, IndexElementSize.ThirtyTwoBits, emiter.NumberOfParticles * 6, BufferUsage.WriteOnly);
+                    buff = new VertexBuffer(device, typeof(ParticleVertex), emitter.NumberOfParticles * 4, BufferUsage.WriteOnly);
+                    indexBuff = new IndexBuffer(device, IndexElementSize.ThirtyTwoBits, emitter.NumberOfParticles * 6, BufferUsage.WriteOnly);
                 }
 
                 UpdateBuffers(gameTime, i);
@@ -63,23 +63,23 @@ namespace GameEngine.Source.Systems
                 device.SetVertexBuffer(buff);
                 device.Indices = indexBuff;
 
-                effect.Parameters["ParticleTexture"].SetValue(emiter.Texture);
+                effect.Parameters["ParticleTexture"].SetValue(emitter.Texture);
                 effect.Parameters["View"].SetValue(defcame.View);
                 effect.Parameters["Projection"].SetValue(defcame.Projection);
                 effect.Parameters["Time"].SetValue((float)gameTime.ElapsedGameTime.TotalSeconds);
-                effect.Parameters["Lifespan"].SetValue(emiter.LifeTime);
-                effect.Parameters["wind"].SetValue(emiter.Direction);
+                effect.Parameters["Lifespan"].SetValue(emitter.LifeTime);
+                effect.Parameters["wind"].SetValue(emitter.Direction);
                 effect.Parameters["Size"].SetValue(new Vector2(tran.Scale.X, tran.Scale.Y));
                 effect.Parameters["Up"].SetValue(camtran.Up);
                 effect.Parameters["Side"].SetValue(camtran.Right);
-                effect.Parameters["FadeInTime"].SetValue(emiter.FadeInTime);
+                effect.Parameters["FadeInTime"].SetValue(emitter.FadeInTime);
 
                 device.BlendState = BlendState.Additive;
                 device.DepthStencilState = DepthStencilState.DepthRead;
 
                 effect.CurrentTechnique.Passes[0].Apply();
 
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, emiter.NumberOfParticles * 4);
+                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, emitter.NumberOfParticles * 4);
 
                 device.SetVertexBuffer(null);
                 device.Indices = null;
@@ -93,26 +93,26 @@ namespace GameEngine.Source.Systems
         /// Updates Buffers for ParticleEmitterComponent
         /// </summary>
         /// <param name="gameTime"></param>
-        /// <param name="id"> the entitys ID</param>
+        /// <param name="id"> the entities ID</param>
         public void UpdateBuffers(GameTime gameTime, int id)
         {
-            ParticleEmiterComponent emiter = ComponentManager.GetEntityComponent<ParticleEmiterComponent>(id);
+            ParticleEmitterComponent emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(id);
 
-            int start = emiter.StartIndex;
-            int end = emiter.NumberOfActiveParticles;
+            int start = emitter.StartIndex;
+            int end = emitter.NumberOfActiveParticles;
             for (int i = start; i < end; i++)
             {
-                emiter.Particles[i].StartTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (emiter.Particles[i].StartTime == 0)
+                emitter.Particles[i].StartTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (emitter.Particles[i].StartTime == 0)
                 {
-                    emiter.StartIndex++;
-                    emiter.NumberOfActiveParticles--;
+                    emitter.StartIndex++;
+                    emitter.NumberOfActiveParticles--;
                 }
-                if (emiter.StartIndex == emiter.Particles.Length)
-                    emiter.StartIndex = 0;
+                if (emitter.StartIndex == emitter.Particles.Length)
+                    emitter.StartIndex = 0;
             }
-            buff.SetData<ParticleVertex>(emiter.Particles.ToArray<ParticleVertex>());
-            indexBuff.SetData<int>(emiter.Indices.ToArray<int>());
+            buff.SetData<ParticleVertex>(emitter.Particles.ToArray<ParticleVertex>());
+            indexBuff.SetData<int>(emitter.Indices.ToArray<int>());
         }
     }
 }

@@ -15,7 +15,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public string Text { get; set; }
         /// <summary>
-        /// Position of the text using X and Y cordinates of the screen
+        /// Position of the text using X and Y coordinates of the screen
         /// </summary>
         public Vector2 Position { get; set; }
         /// <summary>
@@ -23,7 +23,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Color Color { get; set; }
         /// <summary>
-        /// The text's font eg. Arial etc
+        /// The text's font e.g. Arial etc
         /// </summary>
         public SpriteFont Font { get; set; }
         /// <summary>
@@ -53,7 +53,7 @@ namespace GameEngine.Source.Components
         #endregion Public Configuration
 
         /// <summary>
-        /// Constructor which takes in all the nessecary parameters
+        /// Constructor which takes in all the necessary parameters
         /// and the sets them.
         /// </summary>
         /// <param name="text"></param>

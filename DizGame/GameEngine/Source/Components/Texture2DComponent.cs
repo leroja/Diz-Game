@@ -53,7 +53,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public int CurrentFrame { get; set; }
         /// <summary>
-        /// Set the aminmations elapsedtime.
+        /// Set the animations elapsed time.
         /// </summary>
         public int ElapsedTime { get; set; }
         /// <summary>
@@ -65,12 +65,12 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float Rotation { get; set; }
         /// <summary>
-        /// Tectures rotation origin.
+        /// Textures rotation origin.
         /// </summary>
         public Vector2 Origin { get; set; }
 
         /// <summary>
-        /// Construtor that takes in all parameters
+        /// Constructor that takes in all parameters
         /// </summary>
         /// <param name="texture"></param>
         /// <param name="color"></param>

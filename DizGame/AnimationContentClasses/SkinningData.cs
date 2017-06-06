@@ -16,7 +16,7 @@ namespace AnimationContentClasses
     public class SkinningData
     {
         /// <summary>
-        /// Dictionary containing all seperate AnimationClips (Which contains data for each seperate animation) 
+        /// Dictionary containing all separate AnimationClips (Which contains data for each separate animation) 
         /// the key is a string which represents the name of the animation and the key is the AnimationClip object itself.
         /// </summary>
         public Dictionary<string, AnimationClip> AnimationClips { get; private set; }

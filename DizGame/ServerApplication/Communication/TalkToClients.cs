@@ -29,7 +29,7 @@ namespace ServerApplication.Communication
 
 
         /// <summary>
-        /// The contructor.
+        /// The constructor.
         /// </summary>
         /// <param name="server">The server in Lidgrens Network to use for communication.</param>
         public TalkToClients(NetServer server)
@@ -40,7 +40,7 @@ namespace ServerApplication.Communication
 
 
         /// <summary>
-        /// Used internally for setting a client's state as percieved by the server.
+        /// Used internally for setting a client's state as perceived by the server.
         /// </summary>
         private enum ClientStateEnum
         {
@@ -54,7 +54,7 @@ namespace ServerApplication.Communication
 
         /// <summary>
         /// This function shall answer the message from the client. 
-        /// The answer is depending of which type of message is recevied.
+        /// The answer is depending of which type of message is received.
         /// </summary>
         /// <param name="message">The message from the clients using Lidgrens Network.</param>
         public void AnswerMessage(NetIncomingMessage message)
@@ -214,7 +214,7 @@ namespace ServerApplication.Communication
 
 
         /// <summary>
-        /// This function shall see how long a client hasnt sent a message.
+        /// This function shall see how long a client hasn't sent a message.
         /// Maybe the client disconnected or the network is lagging.
         /// </summary>
         private void CheckClientsIfConnected()
@@ -231,7 +231,7 @@ namespace ServerApplication.Communication
         }
 
         /// <summary>
-        /// This function shall smoothe the movements of the client until the client is back
+        /// This function shall smooth the movements of the client until the client is back
         /// and have sent a new state.
         /// </summary>
         private void SmootheClientState()
@@ -269,7 +269,7 @@ namespace ServerApplication.Communication
         {
             broadcastMessage = server.CreateMessage();
 
-            //Sendig a 0 because using Byte[] arr on the other side for now.
+            //Sending a 0 because using Byte[] arr on the other side for now.
             broadcastMessage.Write((byte)MessageType.DebugFunction5);
             //broadcastMessage.Write((byte)0);
 

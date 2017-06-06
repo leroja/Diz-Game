@@ -62,7 +62,7 @@ namespace DizGame.Source.Enums
         HeightMapTexture,
 
         /// <summary>
-        /// How many chunks that the mapo will be divided into.
+        /// How many chunks that the map will be divided into.
         /// </summary>
         HeightMapChunksPerSide,
 

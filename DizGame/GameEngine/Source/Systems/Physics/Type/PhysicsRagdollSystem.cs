@@ -20,8 +20,8 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Updates Acceleration, mass, gravity, force, velocity, position and decaeleration
-        /// Using non euler for acceleration
+        /// Updates Acceleration, mass, gravity, force, velocity, position and deceleration
+        /// Using non Euler for acceleration
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>

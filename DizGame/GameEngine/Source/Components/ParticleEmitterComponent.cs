@@ -7,7 +7,7 @@ namespace GameEngine.Source.Components
     /// <summary>
     /// A component for particles
     /// </summary>
-    public class ParticleEmiterComponent : IComponent
+    public class ParticleEmitterComponent : IComponent
     {
         /// <summary>
         /// Name of particle. Used for deciding settings
@@ -15,7 +15,7 @@ namespace GameEngine.Source.Components
         public string ParticleName { get; set; }
 
         /// <summary>
-        /// Number of particles on emiter
+        /// Number of particles on emitter
         /// </summary>
         public int NumberOfParticles { get; set; }
 
@@ -25,9 +25,9 @@ namespace GameEngine.Source.Components
         public float LifeTime { get; set; }
 
         /// <summary>
-        /// Emiter lifetime
+        /// Emitter lifetime
         /// </summary>
-        public float EmiterLife { get; set; }
+        public float EmitterLife { get; set; }
         /// <summary>
         /// Particle texture  
         /// </summary>
@@ -39,7 +39,7 @@ namespace GameEngine.Source.Components
         public float FadeInTime { get; set; }
 
         /// <summary>
-        /// Direkcion of Particles from emiter
+        /// Direction of Particles from emitter
         /// </summary>
         public Vector3 Direction { get; set; }
 
@@ -53,7 +53,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public int StartIndex { get; set; }
         /// <summary>
-        /// Nuber of active particles in queue
+        /// Number of active particles in queue
         /// </summary>
         public int NumberOfActiveParticles { get; set; }
         /// <summary>
@@ -62,7 +62,7 @@ namespace GameEngine.Source.Components
         public int Speed { get; set; }
 
         /// <summary>
-        /// A place to store Emiterns current particles
+        /// A place to store the emitters current particles
         /// </summary>
         public ParticleVertex[] Particles { get; set; }
 
@@ -75,12 +75,12 @@ namespace GameEngine.Source.Components
         /// 
         /// </summary>
         /// <param name="name">Name of particle</param>
-        /// <param name="numberOfParticles">Number of particles on emiter</param>
+        /// <param name="numberOfParticles">Number of particles on emitter</param>
         /// <param name="lifeTime"> Particle lifetime </param>
         /// <param name="texture"> Particle texture  </param>
         /// <param name="FadeTime"> Setting for Fading textures </param>
-        /// <param name="Direction"> Direction of Particles from emiter </param>
-        public ParticleEmiterComponent(string name, int numberOfParticles, float lifeTime, Texture2D texture, float FadeTime, Vector3 Direction)
+        /// <param name="Direction"> Direction of Particles from emitter </param>
+        public ParticleEmitterComponent(string name, int numberOfParticles, float lifeTime, Texture2D texture, float FadeTime, Vector3 Direction)
         {
             this.ParticleName = name;
             this.NumberOfParticles = numberOfParticles;

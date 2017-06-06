@@ -58,7 +58,7 @@ namespace DizGame.Source.LanguageBasedModels
         /// L = Left, ] = pop from the stack, R = Right.</param>
         /// <param name="replicationDepth">How many times the tree will be subdivided and create branches on branches</param>
         /// <param name="scaleReplication">Set to 1f</param>
-        /// <param name="recursiveStrings">The letter(s) that will be replaced by the dna string.</param>
+        /// <param name="recursiveStrings">The letter(s) that will be replaced by the DNA string.</param>
         public TreeModel(GraphicsDevice gd, float unitLength, float rotAroundZAxis,
                     string dna, int replicationDepth,
                     float scaleReplication, string[] recursiveStrings)

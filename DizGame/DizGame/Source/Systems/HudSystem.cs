@@ -7,12 +7,12 @@ using GameEngine.Source.Components;
 namespace DizGame.Source.Systems
 {
     /// <summary>
-    /// Updates the texture components of the entity which has the hud
+    /// Updates the texture components of the entity which has the HUD
     /// </summary>
     public class HudSystem : IUpdate
     {
         /// <summary>
-        /// Updates the tecture components of the hud
+        /// Updates the texture components of the HUD
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)

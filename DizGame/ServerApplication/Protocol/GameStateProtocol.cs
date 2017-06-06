@@ -124,7 +124,7 @@ namespace ServerApplication.Protocol
 
         /// <summary>
         /// This function builds a message for the client and contains the initial settings that 
-        /// the client will load at gamew start.
+        /// the client will load at game start.
         /// </summary>
         /// <param name="outMessage">The built message ready to send.</param>
         /// <param name="gameSetting">The gameSetting the clients will use for loading map, place static objects on locations and so on.</param>

@@ -10,7 +10,7 @@ using DizGame.Source.Systems;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// A behavior that makes the AI patroll between some specified waypoint
+    /// A behavior that makes the AI patrol between some specified waypoint
     /// </summary>
     public class PatrollingBehavior : AiBehavior
     {
@@ -73,11 +73,11 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Check whether the AI chould change behavior
+        /// Check whether the AI should change behavior
         /// If it should then the method changes the behavior
         /// </summary>
         /// <param name="AIComp"> The AI component of the AI </param>
-        /// <param name="transcomp"> The transorm component of the AI </param>
+        /// <param name="transcomp"> The transform component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
@@ -91,7 +91,7 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Gets the rotaion to next waypoint for the AI
+        /// Gets the rotation to next waypoint for the AI
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
@@ -114,7 +114,7 @@ namespace DizGame.Source.AI_Behaviors
         /// <returns></returns>
         public override string ToString()
         {
-            return "Patroll";
+            return "Patrol";
         }
     }
 }

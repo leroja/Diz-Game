@@ -7,7 +7,7 @@ namespace GameEngine.Source.Systems
 {
     /// <summary>
     /// Recalculates the models bounding Spheres if it is necessary.
-    /// If the model is static it is not needed to recalculte the bounding sphere
+    /// If the model is static it is not needed to recalculate the bounding sphere
     /// </summary>
     public class ModelBoundingSystem : IUpdate
     {
@@ -28,7 +28,7 @@ namespace GameEngine.Source.Systems
             Parallel.ForEach(dict, modelEnt =>
             {
                 //var modelComp = ComponentManager.GetEntityComponent<ModelComponent>(modelEnt);
-                //var tcs = ComponentManager.GetEntityComponent<TransformComponent>(modelEnt.Key);
+                //var TC = ComponentManager.GetEntityComponent<TransformComponent>(modelEnt.Key);
                 GetModelBoundingVolume((ModelComponent)modelEnt.Value, modelEnt.Key);
             });
         }

@@ -21,8 +21,8 @@ namespace DizGame.Source.Factories
         /// <summary>
         /// Constructor for creating the ResourceFactory
         /// </summary>
-        /// <param name="ModelDic">Dictoionary containing the models which should represent 
-        /// the different types of resources</param>
+        /// <param name="ModelDic"> Dictionary containing the models which should represent 
+        /// the different types of resources </param>
         public ResourceFactory(Dictionary<string, Model> ModelDic)
         {
             this.ModelDic = ModelDic;

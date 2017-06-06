@@ -8,7 +8,7 @@ namespace DizGame.Source.Components
     public class ScoreComponent : IComponent
     {
         /// <summary>
-        /// Leaderboard position
+        /// LeaderBoard position
         /// </summary>
         public int Position { get; set; }
         /// <summary>
@@ -28,7 +28,7 @@ namespace DizGame.Source.Components
         /// </summary>
         public int Hits { get; set; }
         /// <summary>
-        /// A string of awards an entity has recieved, e.g. winner, most kills, most hits, last alive
+        /// A string of awards an entity has received, e.g. winner, most kills, most hits, last alive
         /// </summary>
         public string Awards { get; set; }
 

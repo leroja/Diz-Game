@@ -8,7 +8,7 @@ using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // todo clean/make pretier
+    // todo clean/make prettier
     /// <summary>
     /// A state that makes the AI Chase either another AI or the Player
     /// </summary>
@@ -51,9 +51,9 @@ namespace DizGame.Source.AI_Behaviors
             {
                 transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                if (AIComp.HaveBehavior("Patroll"))
+                if (AIComp.HaveBehavior("Patrol"))
                 {
-                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                    AIComp.ChangeBehavior("Patrol", transformComp.Rotation);
                 }
                 else
                 {
@@ -64,9 +64,9 @@ namespace DizGame.Source.AI_Behaviors
             {
                 transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                if (AIComp.HaveBehavior("Patroll"))
+                if (AIComp.HaveBehavior("Patrol"))
                 {
-                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                    AIComp.ChangeBehavior("Patrol", transformComp.Rotation);
                 }
                 else
                 {
@@ -77,9 +77,9 @@ namespace DizGame.Source.AI_Behaviors
             {
                 transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                if (AIComp.HaveBehavior("Patroll"))
+                if (AIComp.HaveBehavior("Patrol"))
                 {
-                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                    AIComp.ChangeBehavior("Patrol", transformComp.Rotation);
                 }
                 else
                 {
@@ -90,9 +90,9 @@ namespace DizGame.Source.AI_Behaviors
             {
                 transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                if (AIComp.HaveBehavior("Patroll"))
+                if (AIComp.HaveBehavior("Patrol"))
                 {
-                    AIComp.ChangeBehavior("Patroll", transformComp.Rotation);
+                    AIComp.ChangeBehavior("Patrol", transformComp.Rotation);
                 }
                 else
                 {
@@ -113,11 +113,11 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Check whether the AI chould change behavior
+        /// Check whether the AI should change behavior
         /// If it should then the method changes the behavior
         /// </summary>
         /// <param name="AIComp"> The AI component of the AI </param>
-        /// <param name="transComp"> The transorm component of the AI </param>
+        /// <param name="transComp"> The transform component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transComp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
@@ -129,9 +129,9 @@ namespace DizGame.Source.AI_Behaviors
             }
             else if (DistanceToClosestEnemy > AIComp.ChaseDistance + AIComp.Hysteria)
             {
-                if (AIComp.HaveBehavior("Patroll"))
+                if (AIComp.HaveBehavior("Patrol"))
                 {
-                    AIComp.ChangeBehavior("Patroll", transComp.Rotation);
+                    AIComp.ChangeBehavior("Patrol", transComp.Rotation);
                 }
                 else
                 {

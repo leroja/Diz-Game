@@ -6,7 +6,7 @@
     public enum ButtonStates
     {
         /// <summary>
-        /// For holdning down a Key
+        /// For holding down a Key
         /// </summary>
         Hold,
         /// <summary>

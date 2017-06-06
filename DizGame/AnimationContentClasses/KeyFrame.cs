@@ -6,12 +6,12 @@ namespace AnimationContentClasses
     /// <summary>
     /// An animation consists of multiple keyframes, each keyframe contains the information 
     /// for which part in a model (bone) that should be manipulated (how? with a transformation matrix) 
-    /// durring the current time (Time) in the animation.
+    /// during the current time (Time) in the animation.
     /// </summary>
     public class KeyFrame
     {
         /// <summary>
-        /// The index of the bone which is suposed to be transformed in this keyframe
+        /// The index of the bone which is supposed to be transformed in this keyframe
         /// </summary>
         public int BoneIndex { get; private set; }
 

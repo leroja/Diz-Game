@@ -22,8 +22,8 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Updates Acceleration, mass, gravity, force, velocity, position and decaeleration
-        /// Using non euler for acceleration
+        /// Updates Acceleration, mass, gravity, force, velocity, position and deceleration
+        /// Using non Euler for acceleration
         /// </summary>
         /// <param name="physic"></param>
         /// <param name="dt"></param>
@@ -33,7 +33,7 @@ namespace GameEngine.Source.Systems
             PhysicsSystem.UpdateGravity(physic, dt);
             PhysicsSystem.UpdateVelocity(physic, dt);
 
-            // Creates and send this throught instead of creating globas that takes memory
+            // Creates and send this throught instead of creating globals that takes memory
             PhysicsRigidbodyComponent rigidBody = ComponentManager.GetEntityComponent<PhysicsRigidbodyComponent>(physic.ID);
             TransformComponent transform = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID);
 

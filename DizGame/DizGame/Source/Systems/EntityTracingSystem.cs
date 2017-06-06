@@ -35,7 +35,7 @@ namespace DizGame.Source.Systems
 
 
         /// <summary>
-        /// This funtion records an initial state of the current entityId:s that the client has right now
+        /// This function records an initial state of the current entityId:s that the client has right now
         /// - must be called after all entities have been created initially.
         /// </summary>
         public void RecordInitialEntities()
@@ -45,8 +45,8 @@ namespace DizGame.Source.Systems
 
 
         /// <summary>
-        /// This function needs a ComponentManager that dont reuse old entityIds and also has a reserved range
-        /// for the client (e.g 1000000 - 1999999) - otherwise the function will not recognise the created
+        /// This function needs a ComponentManager that don't reuse old entityIds and also has a reserved range
+        /// for the client (e.g 1000000 - 1999999) - otherwise the function will not recognize the created
         /// entitityIds.
         ///This function returns the newly created entities (the clients may have created bullets for example).
         /// Calling this function will place all entities in an old list - so calling this function twice

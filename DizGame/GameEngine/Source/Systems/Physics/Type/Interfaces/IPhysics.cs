@@ -8,12 +8,12 @@ namespace GameEngine.Source.Systems.Interfaces
     public interface IPhysics
     {
         /// <summary>
-        /// Used to update regular acceleration eg.(A = F/M)
+        /// Used to update regular acceleration e.g.(A = F/M)
         /// </summary>
         /// <param name="physic"></param>
         void UpdateAcceleration(PhysicsComponent physic);
         /// <summary>
-        /// Used to update euler acceleration
+        /// Used to update Euler acceleration
         /// </summary>
         /// <param name="physic"></param>
         void UpdateEulerAcceleration(PhysicsComponent physic);
@@ -24,7 +24,7 @@ namespace GameEngine.Source.Systems.Interfaces
         /// <param name="dt"></param>
         void UpdateVelocity(PhysicsComponent physic, float dt);
         /// <summary>
-        /// Used to update decaceleration
+        /// Used to update deceleration
         /// </summary>
         /// <param name="physic"></param>
         void UpdateDeceleration(PhysicsComponent physic);

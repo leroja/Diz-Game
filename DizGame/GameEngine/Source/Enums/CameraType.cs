@@ -14,7 +14,7 @@
         /// </summary>
         Pov,
         /// <summary>
-        /// Static camera that is imovable (can change position manualy)
+        /// Static camera that is unmovable (can change position manually)
         /// </summary>
         StaticCam
     };

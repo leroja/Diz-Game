@@ -78,7 +78,7 @@ namespace GameEngine.Source.Managers
 
         /// <summary>
         /// Returns the id to the pool so it can be used again
-        /// As a Game developer you also have to remove the the entity from the ComponentManager
+        /// As a Game developer you also have to remove the entity from the ComponentManager
         /// </summary>
         /// <param name="id"></param>
         public void RecycleID(int id)
@@ -178,7 +178,7 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// Returns an entityId if there is an entity linked to the specific component
         /// </summary>
-        /// <typeparam name="T"> The type of compent </typeparam>
+        /// <typeparam name="T"> The type of component </typeparam>
         /// <param name="component"> The specific component </param>
         /// <returns>
         /// An entityId if one is found
@@ -256,7 +256,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Returns a dictionary with all entites that "has" the specific type of component and
+        /// Returns a dictionary with all entities that "has" the specific type of component and
         /// and the components of that type
         /// </summary>
         /// <typeparam name="T"> The type of component </typeparam>
@@ -297,7 +297,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// This function is used for retrieving all the current entityIds that has been created up til now.
+        /// This function is used for retrieving all the current entityIds that has been created up until now.
         /// </summary>
         /// <returns>All current entityIds.</returns>
         public List<int> GetAllCurrentEntityIds()

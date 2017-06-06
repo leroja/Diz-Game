@@ -28,7 +28,7 @@ namespace DizGame.Source.Components
         public HealthComponent()
         {
             Health = MaxHealth;
-            //defult pickup value
+            //default pickup value
             HealthOnPickup = 20;
         }
     }

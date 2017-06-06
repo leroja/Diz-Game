@@ -17,7 +17,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public AnimationClip CurrentClipValue { get; private set; }
         /// <summary>
-        /// The current time to controll where in the animation we are
+        /// The current time to control where in the animation we are
         /// </summary>
         public TimeSpan CurrentTimeValue { get; set; }
         /// <summary>
@@ -43,7 +43,7 @@ namespace GameEngine.Source.Components
         // Backlink to the bind pose and skeleton hierarchy data.
         /// <summary>
         /// SkinningDataValue is the parameter for which the animation data finally are stored.
-        /// This contains the skeleton hierarchy data aswell as the bind pose for the model.
+        /// This contains the skeleton hierarchy data as well as the bind pose for the model.
         /// </summary>
         public SkinningData SkinningDataValue { get; set; }
 

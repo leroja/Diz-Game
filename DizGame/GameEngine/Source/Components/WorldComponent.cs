@@ -35,7 +35,7 @@ namespace GameEngine.Source.Components
         public int ModulusValue { get; set; }
         /// <summary>
         /// This is used if Notation is set as 12hour clock,
-        /// to change the day when "24 hours has past eg. 2x12"
+        /// to change the day when "24 hours has past e.g. 2x12"
         /// </summary>
         public bool Noon { get; set; }
         /// <summary>
@@ -67,11 +67,11 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Matrix World { get; set; }
         /// <summary>
-        /// Defines the hour by ingame seconds
+        /// Defines the hour by in-game seconds
         /// </summary>
         public int DefineHour { get; set; }
         /// <summary>
-        /// Enum used to defines the world current temperatur
+        /// Enum used to defines the world current temperature
         /// </summary>
         public AirTemperature Temperatur { get; set; }
         /// <summary>

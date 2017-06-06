@@ -26,7 +26,7 @@ namespace GameEngine.Source.Components
         #endregion Private attribute
         #region Fields
         /// <summary>
-        /// Size of thte rectangle checking the occulusion.
+        /// Size of the rectangle checking the occlusion.
         /// Default value is 100f;
         /// </summary>
         public float QuerySize
@@ -57,11 +57,11 @@ namespace GameEngine.Source.Components
         public Vector2 LightPosition { get; set; }
         /// <summary>
         /// Used if position should be move during game.
-        /// Should be used for Multiplication eg. Vector3.One is Default.
+        /// Should be used for Multiplication e.g. Vector3.One is Default.
         /// </summary>
         public Vector3 LightDirectionOffset { get; set; }
         /// <summary>
-        /// Light behindcamera
+        /// Light behind camera
         /// </summary>
         public bool LightBehindCamera { get; set; }
         /// <summary>
@@ -92,7 +92,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public bool OcclusionQueryActive { get; set; }
         /// <summary>
-        /// Occulusion alpha
+        /// Occlusion alpha
         /// </summary>
         public float OcclusionAlpha { get; set; }
         /// <summary>

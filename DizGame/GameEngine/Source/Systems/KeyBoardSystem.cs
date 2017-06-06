@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GameEngine.Source.Systems
 {
     /// <summary>
-    /// A system the updates the states of keybord components
+    /// A system the updates the states of keyboard components
     /// </summary>
     public class KeyBoardSystem : IUpdate
     {

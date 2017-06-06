@@ -12,7 +12,7 @@ using DizGame.Source.Systems;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// An Ai behvior for collecting resources
+    /// An AI behavior for collecting resources
     /// </summary>
     public class HoardingBehavior : AiBehavior
     {
@@ -62,11 +62,11 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// Check whether the AI chould change behavior
+        /// Check whether the AI should change behavior
         /// If it should then the method changes the behavior
         /// </summary>
         /// <param name="AIComp"> The AI component of the AI </param>
-        /// <param name="transComp"> The transorm component of the AI </param>
+        /// <param name="transComp"> The transform component of the AI </param>
         private void BehaviorStuff(AIComponent AIComp, TransformComponent transComp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();

@@ -5,7 +5,7 @@ using System;
 namespace DizGame.Source.Components
 {
     /// <summary>
-    /// Class to desribe a resource within the game that can be picked up by
+    /// Class to describe a resource within the game that can be picked up by
     /// players and are placed randomly within the world. Also contains information
     /// regarding which kind of resource the entity represents.
     /// </summary>
@@ -36,9 +36,9 @@ namespace DizGame.Source.Components
         /// </summary>
         public ResourceType thisType;
         /// <summary>
-        /// Duration is a timespan which describes the ammount of time 
+        /// Duration is a timespan which describes the amount of time 
         /// the component is placed within the world, which also could be 
-        /// a unlimited ammount of time. This time is described in seconds.
+        /// a unlimited amount of time. This time is described in seconds.
         /// </summary>
         public TimeSpan duration;
         #endregion
@@ -47,7 +47,7 @@ namespace DizGame.Source.Components
         /// Basic constructor for the ResourceComponent class
         /// </summary>
         /// <param name="type"> takes the type of the resource as a parameter, 
-        /// in order to know the differance between different resources</param>
+        /// in order to know the difference between different resources</param>
         public ResourceComponent(ResourceType type)
         {
             thisType = type;
@@ -58,7 +58,7 @@ namespace DizGame.Source.Components
         /// Alternative constructor for the ResourceComponent
         /// </summary>
         /// <param name="type">Takes the type of the kind of resource, in order to 
-        /// tell the differance between resources</param>
+        /// tell the difference between resources</param>
         /// <param name="duration">Duration should represent the time for which the 
         /// resource should remain in play if not picked up by a player.</param>
         public ResourceComponent(ResourceType type, TimeSpan duration)

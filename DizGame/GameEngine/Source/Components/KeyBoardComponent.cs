@@ -5,13 +5,13 @@ using System.Collections.Generic;
 namespace GameEngine.Source.Components
 {
     /// <summary>
-    /// A component that contains a number of actions and ther corresponing Key, and the current state of that key.
+    /// A component that contains a number of actions and their corresponding Key, and the current state of that key.
     /// Used to get input from the keyboard to the game
     /// </summary>
     public class KeyBoardComponent : IComponent
     {
         /// <summary>
-        /// A dictionary containing actions and their corresponing key
+        /// A dictionary containing actions and their corresponding key
         /// </summary>
         public Dictionary<string, Keys> KeyBoardActions { get; set; }
         /// <summary>
@@ -29,7 +29,7 @@ namespace GameEngine.Source.Components
         }
 
         /// <summary>
-        /// Adds an action and the corresponing key to the dictionary
+        /// Adds an action and the corresponding key to the dictionary
         /// </summary>
         /// <param name="action">
         /// The name of the action

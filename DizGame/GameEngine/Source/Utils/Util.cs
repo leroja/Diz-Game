@@ -9,7 +9,7 @@ namespace GameEngine.Source.Utils
     {
         private static Random _random = new Random();
         /// <summary>
-        /// Returns a random double between minumim and maximun
+        /// Returns a random double between minimum and maximum
         /// </summary>
         /// <param name="minimum"> Minimum Value </param>
         /// <param name="maximum"> Maximum Value </param>

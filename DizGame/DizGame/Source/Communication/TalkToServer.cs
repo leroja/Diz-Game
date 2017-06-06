@@ -49,7 +49,7 @@ namespace DizGame.Source.Communication
 
         /// <summary>
         /// This function shall answer the message from the server - if deemed necessary - or just take action on message.
-        /// The answer or action is depending of which type of message is recevied.
+        /// The answer or action is depending of which type of message is received.
         /// </summary>
         /// <param name="message"></param>
         public void AnswerMessage(NetIncomingMessage message)
@@ -159,7 +159,7 @@ namespace DizGame.Source.Communication
 
 
         /// <summary>
-        /// This function is temporary - dont use it for now other than for testing purposes.
+        /// This function is temporary - don't use it for now other than for testing purposes.
         /// </summary>
         public void SendRequestInitialGameState()
         {

@@ -28,11 +28,11 @@ namespace DizGame.Source.Components
         /// </summary>
         public float Hysteria { get; set; }
         /// <summary>
-        /// A value in seconds for how long the AI will stick to its choosen direction
+        /// A value in seconds for how long the AI will stick to its chosen direction
         /// </summary>
         public float DirectionDuration { get; set; }
         /// <summary>
-        /// In what range the new rotaion can be. eg. -PI --- +PI
+        /// In what range the new rotation can be. e.g. -PI --- +PI
         /// </summary>
         public float DirectionChangeRoation { get; set; }
         /// <summary>
@@ -74,7 +74,7 @@ namespace DizGame.Source.Components
         /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
         public AIComponent(Rectangle boundRec, float shootingCoolDown, List<Vector2> waypoints)
         {
-            // deafult values
+            // default values
             this.Bounds = boundRec;
             this.Hysteria = 50;
             this.DirectionDuration = 2f;
@@ -86,7 +86,7 @@ namespace DizGame.Source.Components
             this.AttackingDistance = 25;
             this.DamagePerShot = 5;
 
-            // the aviable behaviors of an AI
+            // the available behaviors of an AI
             AiBehaviors = new Dictionary<string, AiBehavior>()
             {
                 { "Wander", new WanderBehavior() },
@@ -97,8 +97,8 @@ namespace DizGame.Source.Components
             };
             if (waypoints != null)
             {
-                AiBehaviors.Add("Patroll", new PatrollingBehavior(waypoints));
-                this.CurrentBehaivior = AiBehaviors["Patroll"]; // starting behavior
+                AiBehaviors.Add("Patrol", new PatrollingBehavior(waypoints));
+                this.CurrentBehaivior = AiBehaviors["Patrol"]; // starting behavior
             }
             else
             {
@@ -110,7 +110,7 @@ namespace DizGame.Source.Components
         /// Checks if an AI has an behavior
         /// </summary>
         /// <param name="behavior"> The name of the behavior </param>
-        /// <returns> true if the AI have an instance of the specfied behavior </returns>
+        /// <returns> true if the AI have an instance of the specified behavior </returns>
         public bool HaveBehavior(string behavior)
         {
             return AiBehaviors.ContainsKey(behavior);

@@ -30,12 +30,12 @@ namespace DizGame.Source.Systems
         }
 
         /// <summary>
-        /// Alternate constructor for the resorce system if different settings
+        /// Alternate constructor for the resource system if different settings
         /// are desired.
         /// </summary>
         /// <param name="maxNumberOfResourcesInPlay">this number represent the total number of resources that should
         /// be in play at any given time within the game.</param>
-        /// <param name="healthAmmoRatio"> this number represent the ratio for which newly created resources are determained. 
+        /// <param name="healthAmmoRatio"> this number represent the ratio for which newly created resources are determined. 
         /// For example if the ratio is 5, every 5th resource will be a health resource and the rest ammo resources.</param>
         public ResourceSystem(int maxNumberOfResourcesInPlay, int healthAmmoRatio)
         {
@@ -47,7 +47,7 @@ namespace DizGame.Source.Systems
 
         /// <summary>
         /// Update function to administrate the removal of old resources and
-        /// create additional resources untill there is a maximal number of resources in play
+        /// create additional resources until there is a maximal number of resources in play
         /// </summary>
         /// <param name="gameTime">takes the time since the last update</param>
         public override void Update(GameTime gameTime)

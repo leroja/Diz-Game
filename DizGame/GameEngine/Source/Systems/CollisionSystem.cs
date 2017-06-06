@@ -46,7 +46,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Checks all entities with boundingspherecomponent if they collide and sets those components'
+        /// Checks all entities with boundingsphereComponent if they collide and sets those components'
         /// hasCollided variables to true if they collide.
         /// </summary>
         public void CollisionDetection()
@@ -115,7 +115,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Goes through every boundingsphere in 
+        /// Goes through every bounding sphere in 
         /// </summary>
         /// <param name="volume1"></param>
         /// <param name="volume2"></param>

@@ -3,7 +3,7 @@
 namespace DizGame.Source.Components
 {
     /// <summary>
-    /// Component that contains positions for objects in hud.
+    /// Component that contains positions for objects in HUD.
     /// </summary>
     public class AmmunitionComponent : IComponent
     {

@@ -20,7 +20,7 @@ namespace DizGame.Source.Systems
         /// Updates an objects movement(position) using
         /// Transformcomponents, PhysicComponent and KeyboardComponent.
         /// Updating the velocity instead of the acceleration because
-        /// we want and an constant speed instead of slow accleration
+        /// we want and an constant speed instead of slow acceleration
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)

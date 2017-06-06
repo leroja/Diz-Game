@@ -81,7 +81,7 @@ namespace GameEngine.Source.Systems
 
         // todo borde bara behöva göras en gång, kanske när de skapas
         /// <summary>
-        /// Recalculates/moves the boudning box to its correct placemnet in the world
+        /// Recalculates/moves the bounding box to its correct placement in the world
         /// </summary>
         /// <param name="box"> The boundingBox of the object </param>
         /// <param name="world"> The WorldMatrix of an object </param>

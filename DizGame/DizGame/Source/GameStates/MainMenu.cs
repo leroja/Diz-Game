@@ -20,7 +20,7 @@ namespace DizGame.Source.GameStates
     {
         #region Properties
         /// <summary>
-        /// Contiains the entities for this GameState
+        /// Contains the entities for this GameState
         /// </summary>
         public override List<int> GameStateEntities { get; }
         private string[] ItemNames;
@@ -47,7 +47,7 @@ namespace DizGame.Source.GameStates
 
         /// <summary>
         /// Entered Function for the MainMenu class, responsible
-        /// for initializing all the options in the menu aswell as 
+        /// for initializing all the options in the menu as well as 
         /// creating all the different entities for the menu.
         /// </summary>
         public override void Entered()
@@ -94,8 +94,8 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Method derrived from the baseclass, usefull if there has to be any changes done 
-        /// to specific entities or whatever when another states is pushed ontop of this state.
+        /// Method derived from the baseclass, useful if there has to be any changes done 
+        /// to specific entities or whatever when another states is pushed on top of this state.
         /// </summary>
         public override void Obscuring()
         {
@@ -103,8 +103,8 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Method derrived from the baseclass, if there is some changes that needs to be done
-        /// when this state is revealed again (if some other state previously have beed obscuring this state)
+        /// Method derived from the baseclass, if there is some changes that needs to be done
+        /// when this state is revealed again (if some other state previously have been obscuring this state)
         /// then that logic should be in this method.
         /// </summary>
         public override void Revealed()

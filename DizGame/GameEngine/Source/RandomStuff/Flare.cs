@@ -41,7 +41,7 @@ namespace GameEngine.Source.RandomStuff
         /// </summary>
         public string TextureName { get; set; }
         /// <summary>
-        /// Flare texture ex png picture.
+        /// Flare texture ex PNG picture.
         /// </summary>
         public Texture2D Texture { get; set; }
     }

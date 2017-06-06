@@ -8,8 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace DizGame.Source.Systems
 {
     /// <summary>
-    ///  Defoult scor for hit =  5 
-    ///  Defoult score for kill = 100
+    ///  Default score for hit =  5 
+    ///  Default score for kill = 100
     /// </summary>
     public class HealthSystem : IObserver<Tuple<object, object>>
     {
@@ -66,9 +66,9 @@ namespace DizGame.Source.Systems
         }
 
         /// <summary>
-        /// Logic for handling Resource/player and resourse/Ai collisions
+        /// Logic for handling Resource/player and resource/AI collisions
         /// </summary>
-        /// <param name="HelathID"> ID of Player/Ai to pick upp Resource</param>
+        /// <param name="HelathID"> ID of Player/AI to pick up Resource</param>
         /// <param name="ResourceID"> ID of the resource </param>
 
         private void PlayerResorceColision(int HelathID, int ResourceID)
@@ -100,7 +100,7 @@ namespace DizGame.Source.Systems
         }
 
         /// <summary>
-        /// Handle logic for bullet/player and bullet/Ai collisions. 
+        /// Handle logic for bullet/player and bullet/AI collisions. 
         /// </summary>
         /// <param name="BulletID">ID of bullet.</param>
         /// <param name="HitID">ID of collision target</param>

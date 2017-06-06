@@ -5,7 +5,7 @@ using GameEngine.Source.Systems.Interfaces;
 namespace GameEngine.Source.Systems.AbstractClasses
 {
     /// <summary>
-    /// Abstract class, used for the Physic"Type"Systems eg. (Particle, Rigid, soft etc.)
+    /// Abstract class, used for the Physic"Type"Systems e.g. (Particle, Rigid, soft etc.)
     /// </summary>
     public abstract class IPhysicsTypeSystem : ISystem
     {

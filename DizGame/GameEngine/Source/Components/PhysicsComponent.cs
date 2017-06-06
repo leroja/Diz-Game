@@ -5,7 +5,7 @@ namespace GameEngine.Source.Components
 {
     /// <summary>
     /// PhysicComponent that contains vital attributes 
-    /// used for calculation physics eg. Velocity, acceleration etc.
+    /// used for calculation physics e.g. Velocity, acceleration etc.
     /// </summary>
     public class PhysicsComponent : IComponent
     {
@@ -38,24 +38,24 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 MaxVelocity { get; set; }
         /// <summary>
-        /// Maximum force in X,Y,Z in newtones (kilogram meter per second each second).
+        /// Maximum force in X,Y,Z in newtons (kilogram meter per second each second).
         /// 1N = 1kg-m/s^2
         /// </summary>
         public Vector3 Forces { get; set; }
         /// <summary>
-        /// Sets the physicComponents PhysicType eg. Static, Rigid Projectile etc.
+        /// Sets the physicComponents PhysicType e.g. Static, Rigid Projectile etc.
         /// </summary>
         public PhysicsType PhysicsType { get; set; }
         /// <summary>
-        /// Sets the objects material type eg. Skin, metal etc.
+        /// Sets the objects material type e.g. Skin, metal etc.
         /// </summary>
         public MaterialType MaterialType { get; set; }
         /// <summary>
-        /// Sets the objects drag type eg. Cylinder, Man up right etc.
+        /// Sets the objects drag type e.g. Cylinder, Man up right etc.
         /// </summary>
         public DragType DragType { get; set; }
         /// <summary>
-        /// Sets the objects gravity type eg. World, Self or none.
+        /// Sets the objects gravity type e.g. World, Self or none.
         /// </summary>
         public GravityType GravityType { get; set; }
         /// <summary>
@@ -87,7 +87,7 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float Bounciness { get; set; }
         /// <summary>
-        /// This is used as an negativ force on the acceleration
+        /// This is used as an negative force on the acceleration
         /// </summary>
         public float Friction { get; set; } // TODO: Temp
         /// <summary>
@@ -123,7 +123,7 @@ namespace GameEngine.Source.Components
             LastAcceleration = Vector3.Zero;
             Velocity = Vector3.One;
 
-            Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basi forces to an downforce by regular "gravity constant"
+            Forces += Vector3.Zero; //DEFAULT_GRAVITY * Mass * Vector3.Down; // Sets the basic forces to an downforce by regular "gravity constant"
 
             PhysicsType = PhysicsType.Static;
             MaterialType = MaterialType.None;

@@ -64,17 +64,17 @@ namespace GameEngine.Source.Enums
         /// </summary>
         Brick,
         /// <summary>
-        /// Wetsnow
+        /// Wet snow
         /// </summary>
         WetSnow,
         /// <summary>
-        /// Drysnow
+        /// Dry snow
         /// </summary>
         DrySnow
     }
 
     /// <summary>
-    /// Static class that returns friction coefficents ratio or singular between different materials.
+    /// Static class that returns friction coefficients ratio or singular between different materials.
     /// </summary>
     public static class MaterialFriction
     {

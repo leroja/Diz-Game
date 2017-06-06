@@ -22,7 +22,7 @@ namespace DizGame.Source.Components
         }
 
         /// <summary>
-        /// An enmpty constructor
+        /// An empty constructor
         /// </summary>
         public PlayerComponent()
         {

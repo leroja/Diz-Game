@@ -153,7 +153,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Draws the lensflare sprites, computing the position
+        /// Draws the lens flare sprites, computing the position
         /// of each one based on the current angle of the sun.
         /// </summary>
         private void DrawFlares(FlareComponent flare)
@@ -163,7 +163,7 @@ namespace GameEngine.Source.Systems
 
             Viewport viewport = device.Viewport;
 
-            // Lensflare sprites are positioned at intervals along a line that
+            // Lens flare sprites are positioned at intervals along a line that
             // runs from the 2D light position toward the center of the screen.
             Vector2 screenCenter = new Vector2(viewport.Width, viewport.Height) / 2;
 
@@ -197,7 +197,7 @@ namespace GameEngine.Source.Systems
 
         /// <summary>
         /// Sets renderstates back to their default values after we finish drawing
-        /// the lensflare, to avoid messing up the 3D terrain rendering.
+        /// the lens flare, to avoid messing up the 3D terrain rendering.
         /// </summary>
         private void RestoreRenderStates()
         {

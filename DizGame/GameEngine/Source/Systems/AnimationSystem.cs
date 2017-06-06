@@ -8,7 +8,7 @@ namespace GameEngine.Source.Systems
 {
     /// <summary>
     /// Class for handling components of the type AnimationComponent
-    /// Each component is suposed to be updated to run different kinds of animations,
+    /// Each component is supposed to be updated to run different kinds of animations,
     /// therefore this class contains logic to do the desired updates for the respective
     /// animations
     /// </summary>
@@ -20,7 +20,7 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Update logic required for the AnimationComponents
         /// </summary>
-        /// <param name="gameTime">Takes a GameTime object which should represent the current elapsed gametime</param>
+        /// <param name="gameTime">Takes a GameTime object which should represent the current elapsed gameTime</param>
         public override void Update(GameTime gameTime)
         {
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DizGame.Source.Systems
 {
     /// <summary>
-    /// A system that controlls the deletion of bullets taht has exceeded their maximun range
+    /// A system that controls the deletion of bullets that has exceeded their maximum range
     /// </summary>
     public class BulletSystem : IUpdate
     {

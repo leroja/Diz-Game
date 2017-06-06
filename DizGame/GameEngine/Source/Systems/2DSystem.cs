@@ -12,7 +12,7 @@ namespace GameEngine.Source.Systems
         private SpriteBatch spriteBatch;
 
         /// <summary>
-        /// Constructor that takes spritebatch as parameter.
+        /// Constructor that takes spriteBatch as parameter.
         /// </summary>
         /// <param name="spriteBatch"></param>
         public _2DSystem(SpriteBatch spriteBatch)

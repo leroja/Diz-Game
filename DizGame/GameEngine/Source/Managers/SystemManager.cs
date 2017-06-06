@@ -16,7 +16,7 @@ namespace GameEngine.Source.Managers
         private static SystemManager instance;
 
         /// <summary>
-        /// A spritebatch
+        /// A spriteBatch
         /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
 
@@ -99,8 +99,8 @@ namespace GameEngine.Source.Managers
         /// <summary>
         /// A method for retrieving a specific system
         /// </summary>
-        /// <typeparam name="T"> The type of the system. eg Update or Render </typeparam>
-        /// <param name="system"> the name of the system. eg CameraSystem </param>
+        /// <typeparam name="T"> The type of the system. e.g Update or Render </typeparam>
+        /// <param name="system"> the name of the system. e.g CameraSystem </param>
         /// <returns></returns>
         public ISystem RetrieveSystem<T>(string system) where T : ISystem
         {
@@ -121,7 +121,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Runs all updateable systems
+        /// Runs all updatable systems
         /// </summary>
         //public void RunUpdateSystems()
         public void RunUpdateSystems(GameTime gameTime)

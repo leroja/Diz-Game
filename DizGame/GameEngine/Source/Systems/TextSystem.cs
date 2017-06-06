@@ -27,7 +27,7 @@ namespace GameEngine.Source.Systems
         }
 
         /// <summary>
-        /// Function that loops throught the TextComponents and then drawing them.
+        /// Function that loops through the TextComponents and then drawing them.
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)

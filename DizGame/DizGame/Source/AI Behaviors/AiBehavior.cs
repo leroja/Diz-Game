@@ -75,7 +75,7 @@ namespace DizGame.Source.AI_Behaviors
 
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
-            // Find wich Enemy Entity is the closest one
+            // Find which Enemy Entity is the closest one
             foreach (var entityId in PlayerIds)
             {
                 var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityId);
@@ -117,7 +117,7 @@ namespace DizGame.Source.AI_Behaviors
 
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
 
-            // Find wich Resource Entity is the closest one
+            // Find which Resource Entity is the closest one
             foreach (var entityId in ResourceIds)
             {
                 var resourceComp = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(entityId);
@@ -146,7 +146,7 @@ namespace DizGame.Source.AI_Behaviors
         /// Calculates the rotation to the position
         /// </summary>
         /// <param name="AIComp"> The current AI </param>
-        /// <param name="OtherPosition"> Postion to rotate to </param>
+        /// <param name="OtherPosition"> Position to rotate to </param>
         /// <returns> A new rotation Vector </returns>
         public Vector3 GetRotationTo(AIComponent AIComp, Vector3 OtherPosition)
         {

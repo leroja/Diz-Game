@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AnimationContentClasses
 {
     /// <summary>
-    /// Abstract class IBounding3D. Used to handle boundings in the same way
+    /// Abstract class IBounding3D. Used to handle all bounding volumes in the same way
     /// </summary>
     public abstract class IBounding3D
     {
