@@ -38,6 +38,7 @@ namespace DizGame.Source.Systems
                     PhysicsComponent physicsComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(id1);
                     TransformComponent trans = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id1);
                     trans.Position = trans.PreviousPosition;
+
                 }
             }
             else if (((ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(id2) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(id2)) 
@@ -50,14 +51,6 @@ namespace DizGame.Source.Systems
                     PhysicsComponent physicsComp1 = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(id2);
                     PhysicsComponent physicsComp2 = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(id1);
                     TransformComponent trans = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id2);
-                    //Vector3 dir = physicsComp.Velocity;
-                    //dir.Normalize();
-                    //Ray ray = new Ray(trans.Position, dir);
-                    //if ()
-                    //if (trans.Position == trans.PreviousPosition)
-                    //{
-                    //    physicsComp.Velocity -= physicsComp.Velocity;
-                    //}
                     trans.Position = trans.PreviousPosition;
                 }
             }

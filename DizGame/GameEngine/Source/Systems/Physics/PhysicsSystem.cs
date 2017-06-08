@@ -267,6 +267,7 @@ namespace GameEngine.Source.Systems
             {
                 float tmp = 1.0f / (target.Mass + hit.Mass);
                 float e = 0.0f;
+                e = hit.Bounciness * target.Bounciness;
                 if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
                 {
                     Vector3 velocity1 = (
@@ -284,8 +285,6 @@ namespace GameEngine.Source.Systems
                 }
                 else if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
                 {
-                    Vector3 dir = target.Velocity;
-                    dir.Normalize();
                     Vector3 velocity = (
                         (e + 1.0f) * hit.Mass * hit.Velocity +
                         target.Velocity * (target.Mass - (e * hit.Mass))
@@ -294,8 +293,6 @@ namespace GameEngine.Source.Systems
                 }
                 else if (target.PhysicsType == PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
                 {
-                    Vector3 dir = hit.Velocity;
-                    dir.Normalize();
                     Vector3 velocity = (
                         (e + 1.0f) * target.Mass * target.Velocity +
                         hit.Velocity * (target.Mass - (e * target.Mass))
