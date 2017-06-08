@@ -244,28 +244,32 @@ namespace GameEngine.Source.Systems
         {
             if (target != null && hit != null)
             {
-                int N = 1; //dunno
-                int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
+                if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
+                {
+                    int N = 1; //dunno
+                    int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
 
 
-                float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
-                float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
-                Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
-                Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
+                    float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
+                    float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
+                    Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
+                    Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
 
-                target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
-                hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
+                    target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
+                    hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
+                }
             }
         }
+
         private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit)
         {
             if (target != null && hit != null)
             {
+                float tmp = 1.0f / (target.Mass + hit.Mass);
+                float e = 0.0f;
+                e = hit.Bounciness * target.Bounciness;
                 if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
                 {
-                    float tmp = 1.0f / (target.Mass + hit.Mass);
-                    float e = 0.0f;
-
                     Vector3 velocity1 = (
                         (e + 1.0f) * hit.Mass * hit.Velocity +
                         target.Velocity * (target.Mass - (e * hit.Mass))
@@ -281,16 +285,19 @@ namespace GameEngine.Source.Systems
                 }
                 else if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
                 {
-                    Vector3 dir = target.Velocity;
-                    dir.Normalize();
-                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position += (-dir * 2) * target.Velocity * dt;
-                    //target.Velocity = Vector3.Zero;
-                    //target.Velocity *= -dir * new Vector3(1, 0, 1);
-                    //ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position *= target.Velocity * dt;
-                    //Console.WriteLine(ComponentManager.GetEntityComponent<TransformComponent>(target.ID).Position);
-
-                    //Console.WriteLine(target.Velocity);
-                    // TODO: Fixa collisionen
+                    Vector3 velocity = (
+                        (e + 1.0f) * hit.Mass * hit.Velocity +
+                        target.Velocity * (target.Mass - (e * hit.Mass))
+                        ) * tmp;
+                    target.Velocity = velocity;
+                }
+                else if (target.PhysicsType == PhysicsType.Static && hit.PhysicsType != PhysicsType.Static)
+                {
+                    Vector3 velocity = (
+                        (e + 1.0f) * target.Mass * target.Velocity +
+                        hit.Velocity * (target.Mass - (e * target.Mass))
+                        ) * tmp;
+                    hit.Velocity = velocity;
                 }
             }
         }
@@ -302,7 +309,7 @@ namespace GameEngine.Source.Systems
         /// <param name="value"></param>
         public void OnNext(Tuple<object, object> value)
         {
-            //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2));
+            UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2));
             //UpdateReflection2(ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item2), ComponentManager.GetEntityComponent<PhysicsComponent>((int)value.Item1));
         }
 
