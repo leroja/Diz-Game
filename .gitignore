@@ -261,3 +261,6 @@ __pycache__/
 *.pyc
 /DizGame/ServerApplication
 /DizGame/ServerSupportedCommunication
+/DizGame/GameEngine/Tools/Spatial_structure
+/DizGame/GameEngine/Tools/Spatial_structure/Node.cs
+*.cs
