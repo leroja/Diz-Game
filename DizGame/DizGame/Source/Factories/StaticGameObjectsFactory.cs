@@ -81,10 +81,10 @@ namespace DizGame.Source.Factories
                 }
             }
 
-            if(rockPositions.Count > 0)
-                entityIdList.Add(CreateDryGrass(10, rockPositions[0], new Vector3(0.1f)));
-            else
-                entityIdList.Add(CreateDryGrass(10, GetModelPositions(1)[0], new Vector3(0.1f)));
+            //if(rockPositions.Count > 0)
+            //    entityIdList.Add(CreateDryGrass(10, rockPositions[0], new Vector3(0.1f)));
+            //else
+            //    entityIdList.Add(CreateDryGrass(10, GetModelPositions(1)[0], new Vector3(0.1f)));
 
             return entityIdList;
         }
@@ -119,14 +119,12 @@ namespace DizGame.Source.Factories
                 case "Tree":
                     foreach (ModelMesh mesh in model.Meshes)
                     {
-                        //scale = new Vector3(5, 5, 5);
                         foreach (BasicEffect effect in mesh.Effects)
                         {
                             effect.FogEnabled = true;
                             effect.FogColor = Color.LightGray.ToVector3();
                             effect.FogStart = 10;
                             effect.FogEnd = 400;
-                            //effect.EnableDefaultLighting();
                         }
                     }
                     scale = new Vector3(5, 5, 5);

@@ -74,6 +74,7 @@ namespace DizGame.Source.Components
         /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
         public AIComponent(Rectangle boundRec, float shootingCoolDown, List<Vector2> waypoints)
         {
+            // deafult values
             this.Bounds = boundRec;
             this.Hysteria = 50;
             this.DirectionDuration = 2f;
@@ -85,18 +86,23 @@ namespace DizGame.Source.Components
             this.AttackingDistance = 25;
             this.DamagePerShot = 5;
 
+            // the aviable behaviors of an AI
             AiBehaviors = new Dictionary<string, AiBehavior>()
             {
-                {"Wander", new WanderBehavior() },
-                {"Chase", new ChaseBehavior() },
-                {"Evade", new EvadeBehavior() },
-                {"Attacking", new AttackingBehavior(ShootingCooldown) }
+                { "Wander", new WanderBehavior() },
+                { "Chase", new ChaseBehavior() },
+                { "Evade", new EvadeBehavior() },
+                { "Attacking", new AttackingBehavior(ShootingCooldown) },
+                { "Hoarding", new HoardingBehavior() },
             };
-            this.CurrentBehaivior = AiBehaviors["Wander"];
             if (waypoints != null)
             {
                 AiBehaviors.Add("Patroll", new PatrollingBehavior(waypoints));
-                this.CurrentBehaivior = AiBehaviors["Patroll"];
+                this.CurrentBehaivior = AiBehaviors["Patroll"]; // starting behavior
+            }
+            else
+            {
+                this.CurrentBehaivior = AiBehaviors["Wander"]; // starting behavior
             }
         }
 

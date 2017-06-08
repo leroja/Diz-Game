@@ -40,11 +40,19 @@ namespace DizGame.Source.Factories
 
             HealthComponent health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(id);
             AmmunitionComponent ammo = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(id);
-            Texture2DComponent slot1 = new Texture2DComponent(Content.Load<Texture2D>("Icons\\squareTest"))
+            //Texture2DComponent slot1 = new Texture2DComponent(Content.Load<Texture2D>("Icons\\squareTest"))
+            //Texture2DComponent slot1 = new Texture2DComponent(Content.Load<Texture2D>("Icons\\Ak47Icon"))
+            //{
+            //    Scale = new Vector2(0.07f, 0.07f),
+            //};
+            //slot1.Position = new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 100);
+            //slot1.Position = new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2 - ((slot1.Width * slot1.Scale.X) / 2), GameOne.Instance.GraphicsDevice.Viewport.Height);
+            //Texture2DComponent slot1 = new Texture2DComponent(Content.Load<Texture2D>("Icons\\squareTest"))
+            Texture2DComponent slot2 = new Texture2DComponent(Content.Load<Texture2D>("Weapons\\AK47FPS"))
             {
-                Scale = new Vector2(0.2f, 0.2f),
+                Scale = new Vector2(0.7f, 0.7f),
             };
-            slot1.Position = new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2 - ((slot1.Width * slot1.Scale.X) / 2), GameOne.Instance.GraphicsDevice.Viewport.Height);
+            slot2.Position = new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2 - ((slot2.Width * slot2.Scale.X) / 2) + 80, GameOne.Instance.GraphicsDevice.Viewport.Height);
 
             List<TextComponent> textComponents = new List<TextComponent>
             {
@@ -59,14 +67,14 @@ namespace DizGame.Source.Factories
             };
             foreach (Vector2 slots in SlotPositions)
             {
-
             }
 
             List<IComponent> components = new List<IComponent>
             {
-                slot1,
+                //slot1,
+                slot2,
                 new TextComponent(names, textComponents),
-                new HudComponent{ TrackedEntity = id},
+                new HudComponent{ TrackedEntity = id },
             };
             ComponentManager.Instance.AddAllComponents(HudID, components);
 

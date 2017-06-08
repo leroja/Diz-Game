@@ -46,6 +46,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Source\AI Behaviors\HoardingBehavior.cs" />
     <Compile Include="Source\Factories\EntityFactory.cs" />
     <Compile Include="GameOne.cs" />
     <Compile Include="Program.cs" />
@@ -110,17 +111,21 @@
     <Content Include="Content\HeightMapStuff\grass.png" />
     <Content Include="Content\HeightMapStuff\heightmap.png" />
     <Content Include="Content\HeightMapStuff\Map3.jpg" />
-    <Content Include="Content\Icons\crosshair.png" />
-    <Content Include="Content\Icons\crosshairTrans.png" />
+    <Content Include="Content\Icons\Ak47Icon.png" />
+    <Content Include="Content\Icons\crosshairTransparent.png" />
     <Content Include="Content\Icons\squareTest.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\MapObjects\Rock\Stone texture.jpg" />
+    <Content Include="Content\MapObjects\Skybox\509d97aea7d06.jpg" />
+    <Content Include="Content\MapObjects\Skybox\skybox_texture.jpg" />
     <Content Include="Content\Songs\GameSong.mp3" />
     <Content Include="Content\Songs\MenuSong.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
     <Content Include="Content\ParticleTexture\Smoke.png" />
+    <Content Include="Content\SoundEffects\menu-selection-sound.wav" />
     <Content Include="Icon.ico" />
+    <Content Include="Content\Weapons\AK47FPS.png" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
@@ -152,6 +157,8 @@
     <None Include="Content\MapObjects\Heart\Heart.fbx" />
     <None Include="Content\MapObjects\Rock\Rock.mtl" />
     <None Include="Content\MapObjects\Rock\Rock.obj" />
+    <None Include="Content\MapObjects\Skybox\skybox2.fbx" />
+    <None Include="Content\MapObjects\Skybox\skybox3.fbx" />
     <None Include="Content\MapObjects\Tree\lowpolytree.mtl" />
     <None Include="Content\MapObjects\Tree\lowpolytree.obj" />
     <None Include="Content\MapObjects\WoodHouse\WoodHouse1.mtl" />

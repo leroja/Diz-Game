@@ -24,7 +24,6 @@ namespace GameEngine
         /// A GraphicsDevice
         /// </summary>
         public GraphicsDevice Device { get; set; }
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -33,6 +32,7 @@ namespace GameEngine
             Graphics = new GraphicsDeviceManager(this)
             {
                 SynchronizeWithVerticalRetrace = false
+                 
             };
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";
@@ -77,7 +77,6 @@ namespace GameEngine
         {
             // kommentera ut denna om vi börjar använda ThreadUpdateSystems igen
             SystemManager.Instance.RunUpdateSystems(gameTime);
-
             base.Update(gameTime);
         }
 
@@ -87,9 +86,8 @@ namespace GameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
             SystemManager.Instance.RunRenderSystems(gameTime);
-
             base.Draw(gameTime);
         }
     }

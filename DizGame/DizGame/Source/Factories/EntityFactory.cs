@@ -76,18 +76,18 @@ namespace DizGame.Source.Factories
                 { "Rock", Content.Load<Model>("MapObjects/Rock/Rock") },
                 { "Dude", Content.Load<Model>("Dude/Dude72") },
                 { "Heart", Content.Load<Model>("MapObjects/Heart/Heart") },
-                { "WoodHouse", Content.Load<Model>("MapObjects/WoodHouse/WoodHouse1")},
-                {"skybox", Content.Load<Model>("MapObjects/Skybox/skybox3") },
+                { "WoodHouse", Content.Load<Model>("MapObjects/WoodHouse/WoodHouse1") },
+                { "skybox", Content.Load<Model>("MapObjects/Skybox/skybox3") },
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
-                {"BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
-                {"canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap")},
-                {"heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
-                {"RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
-                {"Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
-                {"Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
-                {"CrossHair", Content.Load<Texture2D>("Icons/crosshairTrans") },
+                { "BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
+                { "canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap") },
+                { "heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
+                { "RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
+                { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
+                { "Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
+                { "CrossHair", Content.Load<Texture2D>("Icons/crosshairTransparent") },
             };
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
             HudFactory = new HudFactory(Content);
@@ -135,9 +135,10 @@ namespace DizGame.Source.Factories
 
             var textureComp = new Texture2DComponent(Texture2dDic["CrossHair"])
             {
-                Position = position,
                 Scale = new Vector2(0.1f, 0.1f),
+                
             };
+            textureComp.Position = new Vector2(position.X - 7f, position.Y);
 
             ComponentManager.Instance.AddComponentToEntity(Id, textureComp);
 

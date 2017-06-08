@@ -26,7 +26,7 @@ namespace DizGame.Source.Systems
             {
                 var AIComponent = ComponentManager.GetEntityComponent<AIComponent>(EntId);
                 AIComponent.CurrentBehaivior.FindClosestEnemy(AIComponent);
-
+                AIComponent.CurrentBehaivior.FindClosestResource(AIComponent);
 
                 AIComponent.CurrentBehaivior.Update(AIComponent, gameTime);
             });

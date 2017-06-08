@@ -117,7 +117,7 @@ namespace GameEngine.Source.Systems
                         c = 0;
                     }
                     c += dt;
-                    if (flare.LightDirection.Z > 10)
+                    if (flare.LightDirection.Z > 2)
                     {
                         flare.LightDirection = new Vector3(flare.LightDirection.X,
                             flare.StartLightDirection.Y,

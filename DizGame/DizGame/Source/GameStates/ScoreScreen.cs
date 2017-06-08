@@ -14,6 +14,12 @@ namespace DizGame.Source.GameStates
 {
     class ScoreScreen : GameState
     {
+        //private const int start = 55;
+        private const int BetweenNameAndScore = 155;
+        private const int BetweenScoreAndKills = 255;
+        private const int BetweenKillsAndHits = 355;
+        private const int BetweenHitsAndAdditional = 455;
+
         #region Properties
         /// <summary>
         /// List whit Entities. Used for cntolling entites in state
@@ -38,7 +44,7 @@ namespace DizGame.Source.GameStates
         #endregion
 
         /// <summary>
-        /// Basic constructor for ScoreSreen
+        /// Basic constructor for ScoreScreen
         /// </summary>
         public ScoreScreen()
         {
@@ -49,33 +55,61 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// metod calld uppon entering gamestate. fixes whit potitions for text and prints the score list 
+        /// method called upon entering gamestate. fixes with positions for text and prints the score list 
         /// </summary>
         public override void Entered()
         {
+            var world = ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>();
+            var ev = ComponentManager.Instance.GetEntityComponent<TextComponent>(world.FirstOrDefault());
+            ev.Color = Color.Black;
+            ev.Position = new Vector2(700, 10);
+            
+            SystemManager.Instance.AddSystem(TextSystem);
+
             int entiID = ComponentManager.Instance.CreateID();
             GameStateEntities.Add(entiID);
-            var textComp = new TextComponent("Name " + "       " + "Score " + "      " + "Kills" + "      " + "Hits", new Vector2(80, 10), Color.DarkTurquoise, SpriteFont, true);
-            ComponentManager.Instance.AddComponentToEntity(entiID, textComp);
 
+            var longestNameLenght = GetLongestName().Length;
+            int start = 55 - longestNameLenght;
+
+            List<string> names = new List<string>()
+            {
+                "Name",
+                "Score",
+                "Kills",
+                "Hits",
+                "Additional Stuff"
+            };
+            List<TextComponent> li = new List<TextComponent>()
+            {
+                new TextComponent("Name", new Vector2(start, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Score", new Vector2(BetweenNameAndScore, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Kills", new Vector2(BetweenScoreAndKills, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Hits", new Vector2(BetweenKillsAndHits, 10), Color.Navy, SpriteFont, true),
+                new TextComponent("Awards", new Vector2(BetweenHitsAndAdditional, 10), Color.Navy, SpriteFont, true), 
+            };
+
+            var textComp = new TextComponent(names, li);
+            ComponentManager.Instance.AddComponentToEntity(entiID, textComp);
+            
             int y = 50;
-            Color color;
             TextComponent textComponent;
-            SystemManager.Instance.AddSystem(TextSystem);
             List<int> ids = GetScoreStatistics();
             for (int i = 0; i < ids.Count; i++)
             {
-                Vector2 position = new Vector2(80, y);
-                color = Color.LightPink;
                 ScoreComponent score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ids[i]);
-                if (i == 0)
+                
+                li = new List<TextComponent>()
                 {
-                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score + "        " + score.Kills + "        " + score.Hits + "      " + "Winner", position, color, SpriteFont, true);
-                }
-                else
-                {
-                    textComponent = new TextComponent(score.NameOfScorer + "        " + score.Score + "        " + score.Kills + "        " + score.Hits, position, color, SpriteFont, true);
-                }
+                    new TextComponent(score.NameOfScorer, new Vector2(start, y), Color.DeepPink, SpriteFont, true),
+                    new TextComponent(score.Score.ToString(), new Vector2(BetweenNameAndScore + 10, y), Color.OrangeRed, SpriteFont, true),
+                    new TextComponent(score.Kills.ToString(), new Vector2(BetweenScoreAndKills + 10, y), Color.DarkRed, SpriteFont, true),
+                    new TextComponent(score.Hits.ToString(), new Vector2(BetweenKillsAndHits + 10, y), Color.YellowGreen, SpriteFont, true),
+                    new TextComponent(score.Awards, new Vector2(BetweenHitsAndAdditional, y), Color.Navy, SpriteFont, true),
+                };
+
+                textComponent = new TextComponent(names, li);
+
                 int entityID = ComponentManager.Instance.CreateID();
                 GameStateEntities.Add(entityID);
                 ComponentManager.Instance.AddComponentToEntity(entityID, textComponent);
@@ -84,7 +118,7 @@ namespace DizGame.Source.GameStates
 
             int entID = ComponentManager.Instance.CreateID();
             GameStateEntities.Add(entID);
-            textComp = new TextComponent("Press Space to continue", new Vector2(250, GameOne.Instance.Window.ClientBounds.Height - 100), Color.Black, SpriteFont, true);
+            textComp = new TextComponent("Press Space to continue", new Vector2(GameOne.Instance.Window.ClientBounds.Width / 2 - 100, GameOne.Instance.Window.ClientBounds.Height - 50), Color.Black, SpriteFont, true);
             ComponentManager.Instance.AddComponentToEntity(entID, textComp);
 
             AudioManager.Instance.PlaySong("MenuSong");
@@ -93,7 +127,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Fixes the list whit Scorers so it is in order for printing
+        /// Fixes the list with Scorers so it is in order for printing
         /// </summary>
         /// <returns></returns>
         private List<int> GetScoreStatistics()
@@ -106,13 +140,36 @@ namespace DizGame.Source.GameStates
                 Score.Add(ComponentManager.Instance.GetEntityComponent<ScoreComponent>(id));
             }
 
-            List<ScoreComponent> orderdList = Score.OrderBy(o => o.Score).ToList();
+            List<ScoreComponent> orderdList = Score.OrderByDescending(o => o.Score).ToList();
+            orderdList[0].Awards += " Winner,";
             foreach (var scorecomp in orderdList)
             {
                 temp.Add(scorecomp.ID);
             }
-            temp.Reverse();
+
+            orderdList = Score.OrderByDescending(o => o.Kills).ToList();
+            orderdList[0].Awards += " Most Kills,";
+            orderdList = Score.OrderByDescending(o => o.Hits).ToList();
+            orderdList[0].Awards += " Most Hits,";
+
             return temp;
+        }
+
+        /// <summary>
+        /// Find the longest name of the all the Players/AIs
+        /// </summary>
+        /// <returns></returns>
+        private string GetLongestName()
+        {
+            List<ScoreComponent> Score = new List<ScoreComponent>();
+            List<string> temp = new List<string>();
+            var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<ScoreComponent>();
+            foreach (var id in a)
+            {
+                Score.Add(ComponentManager.Instance.GetEntityComponent<ScoreComponent>(id));
+            }
+
+            return Score.OrderByDescending(o => o.NameOfScorer).ToList()[0].NameOfScorer;
         }
 
         /// <summary>
