@@ -181,6 +181,7 @@ namespace DizGame.Source.GameStates
             cSys.Subscribe(ammo);
             cSys.Subscribe(new StaticColisionSystem());
             cSys.Subscribe(pSys);
+            cSys.Subscribe(new HandleCollisionSystem());
             SystemManager.Instance.AddSystem(pSys);
             SystemManager.Instance.AddSystem(ammo);
             SystemManager.Instance.AddSystem(new ModelSystem(GameOne.Instance.GraphicsDevice));
