@@ -200,6 +200,8 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
+            SystemManager.Instance.AddSystem(new SpectatingSystem());
+
             //EntityTracingSystem = new EntityTracingSystem();
             //EntityTracingSystem.RecordInitialEntities();
             //SystemManager.Instance.AddSystem(EntityTracingSystem);
@@ -261,7 +263,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.Add(idC);
 
             int heightmapID = entf.CreateHeightMap("Map3", "BetterGrass", 10);
-            //Add hightmap entityid to this state
+            //Add heightmap entity id to this state
             GameStateEntities.Add(heightmapID);
 
             //Add all static objects to this state i.e rocks, houses etc.
