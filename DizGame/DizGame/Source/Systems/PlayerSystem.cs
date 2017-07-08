@@ -35,8 +35,7 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var PlayerEntityIds = ComponentManager.GetAllEntitiesWithComponentType<PlayerComponent>();
-            var worldTemp = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
-            var worldComp = (WorldComponent)worldTemp.Values.First();
+            
 
             foreach (var playerId in PlayerEntityIds)
             {
@@ -59,7 +58,7 @@ namespace DizGame.Source.Systems
                 transformComp.Rotation += new Vector3(m.Y, m.X, 0) * mouseComp.MouseSensitivity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 transformComp.Rotation = WrapAngle(transformComp.Rotation);
 
-                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)
+                if (mouseComp.GetState("Fire") == ButtonStates.Pressed && CanFire())
                 {
                     if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).CurrentAmmoInMag > 0)
                     {
@@ -69,6 +68,17 @@ namespace DizGame.Source.Systems
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool CanFire()
+        {
+            var worldTemp = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
+            var worldComp = (WorldComponent)worldTemp.Values.First();
+            return worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0;
         }
 
         /// <summary>

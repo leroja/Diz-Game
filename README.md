@@ -9,3 +9,7 @@ A Game made during a game programming course
 * **Rasmus Bäckerhall** - *n/a* - [Rasmus15](https://github.com/Rasmus15)
 * **Henrik Wistbacka** - *n/a* - [henwist](https://github.com/henwist)
 * **Dragana Todorovic** - *n/a* - [DraganaTod](https://github.com/DraganaTod)
+
+
+## Requirements
+The game requires Monogame to run. 

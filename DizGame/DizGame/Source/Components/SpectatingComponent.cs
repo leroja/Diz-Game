@@ -28,21 +28,6 @@ namespace DizGame.Source.Components
         public SpectatingComponent()
         {
             Time = 5;
-            //var available = ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>();
-            //var availableAis = ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>();
-
-            //List<int> availableEnts = available.Concat(availableAis).ToList();
-
-            //SpectatedEntity = availableEnts.FirstOrDefault();
-            //EntityFactory.Instance.RemoveCam();
-            //EntityFactory.Instance.AddChaseCamToEntity(SpectatedEntity, new Vector3(0, 10, 25));
-
-            //var hud = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<HudComponent>().FirstOrDefault();
-            //var hudComp = (HudComponent)hud.Value;
-            //hudComp.TrackedEntity = SpectatedEntity;
-
-            //var textComp = ComponentManager.Instance.GetEntityComponent<Texture2DComponent>(hud.Key);
-            //ComponentManager.Instance.RemoveComponentFromEntity(hud.Key, textComp);
         }
     }
 }

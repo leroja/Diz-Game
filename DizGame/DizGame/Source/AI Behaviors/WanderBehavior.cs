@@ -67,23 +67,19 @@ namespace DizGame.Source.AI_Behaviors
 
             if (transformComp.Position.X >= AIComp.Bounds.Height)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                Border(transformComp, gameTime);
             }
             else if (transformComp.Position.X <= 3)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                Border(transformComp, gameTime);
             }
             else if (transformComp.Position.Z <= -AIComp.Bounds.Width)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                Border(transformComp, gameTime);
             }
             else if (transformComp.Position.Z >= -3)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+                Border(transformComp, gameTime);
             }
 
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
@@ -110,6 +106,18 @@ namespace DizGame.Source.AI_Behaviors
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transformComp"></param>
+        /// <param name="gameTime"></param>
+        private void Border(TransformComponent transformComp, GameTime gameTime)
+        {
+            transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            desiredRotation += MathHelper.Pi;
         }
 
         /// <summary>

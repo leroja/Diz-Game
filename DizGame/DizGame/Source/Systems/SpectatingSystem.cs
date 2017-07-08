@@ -6,6 +6,7 @@ using DizGame.Source.Components;
 using DizGame.Source.Factories;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Components;
+using GameEngine.Source.Enums;
 
 namespace DizGame.Source.Systems
 {
@@ -32,6 +33,7 @@ namespace DizGame.Source.Systems
             foreach (var id in ids)
             {
                 var SpecComp = ComponentManager.GetEntityComponent<SpectatingComponent>(id);
+                var keyboardComp = ComponentManager.GetEntityComponent<KeyBoardComponent>(id);
 
                 if (SpecComp.Time < 0)
                 {
@@ -40,14 +42,22 @@ namespace DizGame.Source.Systems
 
                     available.AddRange(availableAis);
 
-                    if (!available.Contains(SpecComp.SpectatedEntity))
-                    {
-                        SpecComp.SpectatedEntity = available.FirstOrDefault();
-                        EntityFactory.Instance.RemoveCam();
-                        EntityFactory.Instance.AddChaseCamToEntity(SpecComp.SpectatedEntity, new Vector3(0, 10, 25));
-                    }
+                    //if (!available.Contains(SpecComp.SpectatedEntity))
+                    //{
+                    //    SpecComp.SpectatedEntity = available.FirstOrDefault();
+                    //    EntityFactory.Instance.RemoveCam();
+                    //    EntityFactory.Instance.AddChaseCamToEntity(SpecComp.SpectatedEntity, new Vector3(0, 10, 25));
+                    //}
 
-                    if (curState.IsKeyDown(Keys.Up) && prevState.IsKeyUp(Keys.Up))
+                    // not tested
+                    //if (!available.Contains(SpecComp.SpectatedEntity))
+                    //{
+                    //    var transComp = ComponentManager.GetEntityComponent<TransformComponent>(SpecComp.SpectatedEntity);
+                    //    EntityFactory.Instance.RemoveCam();
+                    //    EntityFactory.Instance.CreateStaticCam(transComp.Position + new Vector3(0, 0, 50), transComp.Position);
+                    //}
+
+                    if (keyboardComp.GetState("SpectateUp") == ButtonStates.Pressed)
                     {
                         int index = available.FindIndex(a => a == SpecComp.SpectatedEntity);
                         if (index + 1 == available.Count)
@@ -65,7 +75,7 @@ namespace DizGame.Source.Systems
                         hudComp.TrackedEntity = SpecComp.SpectatedEntity;
                     }
 
-                    if (curState.IsKeyDown(Keys.Down) && prevState.IsKeyUp(Keys.Down))
+                    if (keyboardComp.GetState("SpectateDown") == ButtonStates.Pressed)
                     {
                         int index = available.FindIndex(a => a == SpecComp.SpectatedEntity);
                         if (index == 0)

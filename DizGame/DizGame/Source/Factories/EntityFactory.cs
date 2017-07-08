@@ -161,6 +161,8 @@ namespace DizGame.Source.Factories
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
             keys.AddActionAndKey("Mute", Keys.M);
+            keys.AddActionAndKey("SpectateUp", Keys.Up);
+            keys.AddActionAndKey("SpectateDown", Keys.Down);
 
 
             MouseComponent mouse = new MouseComponent();
@@ -222,8 +224,6 @@ namespace DizGame.Source.Factories
                         }
                     }
                 }
-
-
             }
             //List<int> spawnPositions = new List<int>();
             //List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
@@ -337,8 +337,7 @@ namespace DizGame.Source.Factories
             var temp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<CameraComponent>();
             ComponentManager.Instance.RemoveComponentFromEntity(temp.Keys.First(), temp.Values.First());
         }
-
-
+        
         /// <summary>
         /// Adds a POV camera to an entity
         /// </summary>
@@ -445,15 +444,6 @@ namespace DizGame.Source.Factories
             Dictionary<string, object> dict = (Dictionary<string, object>)mcp.Model.Tag;
             BoundingVolume volume = (BoundingVolume)dict["BoundingVolume"];
             Util.ScaleBoundingVolume(ref volume, tcp.Scale.X, tcp.Position, out BoundingVolume scaledVolume);
-            //volume.Bounding = new BoundingSphere3D(sphere);
-            //foreach (BoundingVolume v in volume.Volume)
-            //{
-            //    BoundingSphere innerSphere = ((BoundingSphere3D)v.Bounding).Sphere;
-            //    innerSphere.Radius = ((BoundingSphere3D)volume.Bounding).Sphere.Radius * tcp.Scale.X;
-            //    innerSphere.Center = tcp.Position;
-            //    innerSphere.Center.Y += innerSphere.Radius;
-            //    volume.Bounding = new BoundingSphere3D(sphere);
-            //}
             mcp.BoundingVolume = scaledVolume;
         }
 
@@ -503,6 +493,16 @@ namespace DizGame.Source.Factories
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (SkinnedEffect effect in mesh.Effects)
+                {
+                    effect.FogEnabled = true;
+                    effect.FogColor = Color.LightGray.ToVector3();
+                    effect.FogStart = 10;
+                    effect.FogEnd = 400;
+                }
+            }
 
             var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
 

@@ -28,7 +28,7 @@ namespace DizGame.Source.GameStates
         private bool multiplayerGame;
 
         #endregion
-         
+
         /// <summary>
         /// Basic constructor for the PlayGame-state 
         /// </summary>
@@ -256,9 +256,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.Add(entf.PlaceCrossHair(new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2, GameOne.Instance.GraphicsDevice.Viewport.Height / 2 + 20f)));
 
             var idC = entf.CreateDude("Player-1");
-            //entf.AddChaseCamToEntity(idC, new Vector3(0, 10, 25), true);
             entf.AddPOVCamToEntity(idC);
-            //entf.CreateStaticCam(new Vector3(-20, 45, 20), new Vector3(45, 50, -30));
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);
 
@@ -278,14 +276,6 @@ namespace DizGame.Source.GameStates
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
 
-            //var ids = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            //foreach (var modelEnt in ids)
-            //{
-            //    var modelComp = ComponentManager.Instance.GetEntityComponent<ModelComponent>(modelEnt);
-            //    var transComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(modelEnt);
-            //    modelComp.BoundingVolume = new BoundingVolume(0, new BoundingSphere3D(
-            //        new BoundingSphere(new Vector3(transComp.Position.X, transComp.Position.Y, transComp.Position.Z), 3)));
-            //}
             entf.SpawnProtection();
         }
 
@@ -301,7 +291,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Function for deciding if Criteria for endgame has been found.
+        /// Function for deciding if criteria for endgame has been found.
         /// </summary>
         /// <returns></returns>
         private bool CheckEndCriteria()

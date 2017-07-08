@@ -46,9 +46,7 @@ namespace GameEngine.Source.Components
         /// This contains the skeleton hierarchy data as well as the bind pose for the model.
         /// </summary>
         public SkinningData SkinningDataValue { get; set; }
-
-        //public Effect AnimationEffect { get; set; }
-        //AnimatedModelEffect AnimatedModelEffect {get; set;}
+        
         #endregion
 
         /// <summary>
