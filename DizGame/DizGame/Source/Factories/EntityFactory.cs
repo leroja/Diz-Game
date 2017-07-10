@@ -107,7 +107,7 @@ namespace DizGame.Source.Factories
                     IsSunActive = true,
                     DefineHour = 1,
                     Day = 1,
-                    Hour = 16,
+                    Hour = 0,
                     ModulusValue = 2,
                 },
             };
@@ -161,6 +161,7 @@ namespace DizGame.Source.Factories
             keys.AddActionAndKey("Left", Keys.A);
             keys.AddActionAndKey("Up", Keys.Space);
             keys.AddActionAndKey("Mute", Keys.M);
+            keys.AddActionAndKey("Sprint", Keys.LeftShift);
             keys.AddActionAndKey("SpectateUp", Keys.Up);
             keys.AddActionAndKey("SpectateDown", Keys.Down);
 

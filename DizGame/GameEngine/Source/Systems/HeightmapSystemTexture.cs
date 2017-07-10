@@ -8,7 +8,7 @@ using System.Linq;
 namespace GameEngine.Source.Systems
 {
     /// <summary>
-    /// A system that is used for drawing height maps
+    /// A system that is used for drawing heightmaps
     /// </summary>
     public class HeightmapSystemTexture : IRender
     {
@@ -78,8 +78,8 @@ namespace GameEngine.Source.Systems
 
             }
         }
-
-        // todo borde bara behöva göras en gång, kanske när de skapas
+        
+        // TODO Should only be needed to be done once, maybe when they are created
         /// <summary>
         /// Recalculates/moves the bounding box to its correct placement in the world
         /// </summary>

@@ -8,8 +8,7 @@ using DizGame.Source.Factories;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // todo gör så att AI:n inte roterar direkt mot närmsta fienden utan gör så att den vänder sig mot den och gör så att den inte kan skjuta innan den här helt vänd mot fienden
-    // todo infoga lite spread på skotten, eg lägg på en liten rot
+    // TODO insert some spread on the shots, e.g. add a little rotation
     /// <summary>
     /// A Behavior that makes the AI shoot at the closest enemy
     /// </summary>
@@ -17,7 +16,7 @@ namespace DizGame.Source.AI_Behaviors
     {
         private float time;
         private float coolDown;
-
+        private float desiredRotation;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -34,6 +33,7 @@ namespace DizGame.Source.AI_Behaviors
         public override void OnEnter(Vector3 rotation)
         {
             this.time = coolDown;
+            desiredRotation = rotation.Y;
         }
 
         /// <summary>
@@ -47,16 +47,17 @@ namespace DizGame.Source.AI_Behaviors
             var worldComp = (WorldComponent)worldTemp.Values.First();
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
-            physComp.Velocity = Vector3.Zero; // todo temp
-            physComp.Acceleration = Vector3.Zero;  // todo temp
+            physComp.Velocity = Vector3.Zero;
+            physComp.Acceleration = Vector3.Zero;
 
             time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            transformComp.Rotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position);
+            desiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y;
+            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * 4 * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
             transformComp.Position = new Vector3(transformComp.Position.X, MovingSystem.GetHeight(transformComp.Position), transformComp.Position.Z);
             if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && time < 0)
             {
-                if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag > 0)
+                if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag > 0 && desiredRotation == transformComp.Rotation.Y)
                 {
                     var rot = GetRotationForAimingAtEnemy(AIComp);
 

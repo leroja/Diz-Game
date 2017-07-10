@@ -6,9 +6,9 @@ using System;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // todo fixa så att AI:n letar efter ammo och hälsa om de har lågt värde
-    // Todo gör att AI:n går ur attacking när den inte här några kulor kvar och/eller lite hälsa
-    // Todo decide how to and where it's best change between the different behaviors, open to ideas
+    // Todo fix so that the AI looks for ammo and health when they are low
+    // Todo make the AI go out attacking behavior when it is out of bullets and/or the health is low
+    // Todo decide how to and where it's best change between the different behaviors
 
     /// <summary>
     /// The abstract base class for the AI behaviors

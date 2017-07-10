@@ -7,7 +7,6 @@ using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Managers;
 using DizGame.Source.Factories;
-using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
@@ -36,7 +35,6 @@ namespace DizGame.Source.Systems
         {
             var PlayerEntityIds = ComponentManager.GetAllEntitiesWithComponentType<PlayerComponent>();
             
-
             foreach (var playerId in PlayerEntityIds)
             {
                 var playerComp = ComponentManager.GetEntityComponent<PlayerComponent>(playerId);

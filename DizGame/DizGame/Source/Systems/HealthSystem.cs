@@ -57,10 +57,14 @@ namespace DizGame.Source.Systems
                 if (ComponentManager.Instance.CheckIfEntityHasComponent<BulletComponent>(id1))
                 {
                     BulletPlayerColision(id1, id2);
+                    ComponentManager.Instance.RemoveEntity(id1);
+                    ComponentManager.Instance.RecycleID(id1);
                 }
                 else
                 {
                     BulletPlayerColision(id2, id1);
+                    ComponentManager.Instance.RemoveEntity(id2);
+                    ComponentManager.Instance.RecycleID(id2);
                 }
             }
         }

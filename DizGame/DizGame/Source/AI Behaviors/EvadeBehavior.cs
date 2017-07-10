@@ -12,12 +12,14 @@ namespace DizGame.Source.AI_Behaviors
     /// </summary>
     public class EvadeBehavior : AiBehavior
     {
+        private float desiredRotation;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="rotation"> The current rotation of the AI </param>
         public override void OnEnter(Vector3 rotation)
         {
+            desiredRotation = rotation.Y;
         }
 
         /// <summary>
@@ -32,9 +34,9 @@ namespace DizGame.Source.AI_Behaviors
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
             var pos = transformComp.Position;
 
-            var rotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position);
+            desiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y - MathHelper.Pi;// -MathHelper.Pi gör så att AI:n får en motsatt rotaion till närmsta fienden;
 
-            transformComp.Rotation = rotation + new Vector3(0, -MathHelper.Pi, 0); // -MathHelper.Pi gör så att AI:n får en motsatt rotaion till närmsta fienden
+            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * 5 * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
 
 
             physComp.Velocity = transformComp.Forward * 10;
@@ -47,27 +49,19 @@ namespace DizGame.Source.AI_Behaviors
 
             if (transformComp.Position.X >= AIComp.Bounds.Height)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                Border(transformComp, AIComp, gameTime);
             }
             else if (transformComp.Position.X <= 3)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                Border(transformComp, AIComp, gameTime);
             }
             else if (transformComp.Position.Z <= -AIComp.Bounds.Width)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                Border(transformComp, AIComp, gameTime);
             }
             else if (transformComp.Position.Z >= -3)
             {
-                transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-                AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+                Border(transformComp, AIComp, gameTime);
             }
 
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
@@ -75,6 +69,16 @@ namespace DizGame.Source.AI_Behaviors
             BehaviorStuff(AIComp, transformComp);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Border(TransformComponent transformComp, AIComponent AIComp, GameTime gameTime)
+        {
+            transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            AIComp.ChangeBehavior("Wander", transformComp.Rotation);
+        }
+        
         /// <summary>
         /// Check whether the AI should change behavior
         /// If it should then the method changes the behavior

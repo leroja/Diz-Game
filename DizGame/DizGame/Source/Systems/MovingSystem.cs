@@ -18,7 +18,7 @@ namespace DizGame.Source.Systems
     {
         /// <summary>
         /// Updates an objects movement(position) using
-        /// Transformcomponents, PhysicComponent and KeyboardComponent.
+        /// TransformComponent, PhysicComponent and KeyboardComponent.
         /// Updating the velocity instead of the acceleration because
         /// we want and an constant speed instead of slow acceleration
         /// </summary>
@@ -53,7 +53,12 @@ namespace DizGame.Source.Systems
 
                 if (!phys.IsInAir)
                 {
-                    if (key.GetState("Forward") == ButtonStates.Hold)
+                    if(key.GetState("Forward") == ButtonStates.Hold && key.GetState("Sprint") == ButtonStates.Hold)
+                    {
+                        move += trans.Forward * 40;
+                        animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds * 2);
+                    }
+                    else if(key.GetState("Forward") == ButtonStates.Hold)
                     {
                         move += trans.Forward * 20;
                         animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);

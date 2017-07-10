@@ -46,7 +46,7 @@ namespace GameEngine.Source.Components
         /// This contains the skeleton hierarchy data as well as the bind pose for the model.
         /// </summary>
         public SkinningData SkinningDataValue { get; set; }
-        
+
         #endregion
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace GameEngine.Source.Components
         public void StartClip(string clipName)
         {
             if (clipName == null)
-                throw new ArgumentNullException("clipname is missing");
+                throw new ArgumentNullException("clip name is missing");
 
             CurrentClipValue = (SkinningDataValue.AnimationClips[clipName]);
 

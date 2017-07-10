@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace GameEngine.Source.Managers
 {
     /// <summary>
-    /// A manager that holds songs and soundeffects and manages the playing of them
+    /// A manager that holds songs and sound effects and manages the playing of them
     /// Also controls the volume of the sounds that are currently being played
     /// </summary>
     public class AudioManager
@@ -55,16 +55,16 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Checks whether the mediaplayer is muted
+        /// Checks whether the media player is muted
         /// </summary>
-        /// <returns> True if the mediaplayer is muted </returns>
+        /// <returns> True if the media player is muted </returns>
         public bool IsMuted()
         {
             return MediaPlayer.IsMuted;
         }
 
         /// <summary>
-        /// Changes the volume of the mediaplayer
+        /// Changes the volume of the media player
         /// </summary>
         /// <param name="Volume">
         /// MediaPlayer volume, has to be between 0.0 and 1.0
@@ -78,7 +78,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Adds the soundEffect to the soundeffect "pool"
+        /// Adds the soundEffect to the sound effect "pool"
         /// </summary>
         /// <param name="effectName"> Name of the soundEffect </param>
         /// <param name="effect"> The soundEffect </param>
@@ -96,8 +96,8 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Removes the soundeffect from the dictionary
-        /// if there is a soundeffect with that name
+        /// Removes the sound effect from the dictionary
+        /// if there is a sound effect with that name
         /// </summary>
         /// <param name="effectName">
         /// The name of the soundEffect
@@ -110,7 +110,7 @@ namespace GameEngine.Source.Managers
             }
         }
         /// <summary>
-        /// Plays a specific soundeffect
+        /// Plays a specific sound effect
         /// </summary>
         /// <param name="SoundEffect"> name of the soundEffect</param>
         /// <param name="pan"></param>
@@ -141,7 +141,7 @@ namespace GameEngine.Source.Managers
         }
 
         /// <summary>
-        /// Changes the repeat states of the mediaplayer
+        /// Changes the repeat states of the media player
         /// </summary>
         public void ChangeRepeat()
         {

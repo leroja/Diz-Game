@@ -40,10 +40,10 @@ namespace GameEngine.Source.Factories
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="heightMap"></param>
-        /// <param name="heightMapTexture"></param>
-        /// <param name="fractions_per_side"></param>
-        /// <returns></returns>
+        /// <param name="heightMap"> The texture from which the heightmap will be created from </param>
+        /// <param name="heightMapTexture"> The texture that each chunk of the heightmap will use </param>
+        /// <param name="fractions_per_side"> How many chunks/fractions the heightmap will have per side </param>
+        /// <returns> A heightmapComponent that contains the created heightmap </returns>
         public HeightmapComponentTexture CreateTexturedHeightMap(Texture2D heightMap, Texture2D heightMapTexture, int fractions_per_side)
         {
             HeightmapComponentTexture heightMapComponent = new HeightmapComponentTexture();
@@ -232,7 +232,7 @@ namespace GameEngine.Source.Factories
             };
 
             var indices = InitIndices(terrainRect);
-            chunk.IndicesDiv3 = indices.Length / 3; // för att slipa göra den här divisionen flera gånger
+            chunk.IndicesDiv3 = indices.Length / 3;
 
             CopyNormals(vertexNormals, chunkVertices);
 

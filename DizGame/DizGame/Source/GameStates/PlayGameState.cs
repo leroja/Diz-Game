@@ -73,8 +73,6 @@ namespace DizGame.Source.GameStates
         {
             AudioManager.Instance.ChangeSongVolume(1f);
             AudioManager.Instance.StopSong();
-            //TODO: observera att vi kanske inte vill ta bort precis alla entiteter i detta statet,
-            //Tex vill vi kanske ha kvar spelarna + tillhörande componenter för att göra typ en "score-screen" i slutet.
             List<int> ScoreID = ComponentManager.Instance.GetAllEntitiesWithComponentType<ScoreComponent>();
             foreach (var id in ScoreID)
             {
@@ -138,23 +136,8 @@ namespace DizGame.Source.GameStates
         /// </summary>
         public override void Update(GameTime gameTime)
         {
-            //Bara för att testa så att obscuring och revealed metoderna fungerar.
-            //Allting döljs men det återstår väl o se om tex AI:n fortfarande "rör" sig/och kan
-            //attakera under tiden som allting är "dolt" eller vad man ska säga, för updatesen bör fortfarande
-            //Göras som vanligt bara att modell-systemet inte ritar ut modellerna liksom
-            //KeyboardState state = Keyboard.GetState();
-            //if (state.IsKeyDown(Keys.B))
-            //    Obscuring();
-            //if (state.IsKeyDown(Keys.V))
-            //    Revealed();
-
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                // todo temporärt, vill snabbt se score screen medan jag gör ändringar där
-                //GameStateEntities.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<WorldComponent>());
-                //MainMenu main = new MainMenu();
-                //GameStateManager.Instance.Pop();
-                //GameStateManager.Instance.Push(main);
                 ScoreScreen Score = new ScoreScreen();
                 GameStateManager.Instance.Pop();
                 GameStateManager.Instance.Push(Score);
@@ -186,7 +169,6 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(ammo);
             SystemManager.Instance.AddSystem(new ModelSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
-            //SystemManager.Instance.AddSystem(new GameTransformSystem());
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
@@ -227,8 +209,7 @@ namespace DizGame.Source.GameStates
         private void CreateEntitiesForSinglePlayerGame()
         {
             EntityFactory entf = EntityFactory.Instance;
-
-            // todo maybe place more AI:s, fine tune their parameters
+            
             var waypointList = new List<Vector2>()
             {
                 new Vector2(5, -5),
