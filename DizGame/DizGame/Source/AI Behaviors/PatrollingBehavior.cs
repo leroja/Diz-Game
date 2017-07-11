@@ -30,15 +30,7 @@ namespace DizGame.Source.AI_Behaviors
                 waypoints.Enqueue(waypoint);
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rotation"></param>
-        public override void OnEnter(Vector3 rotation)
-        {
-        }
-
+        
         /// <summary>
         /// 
         /// </summary>

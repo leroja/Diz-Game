@@ -7,8 +7,8 @@ using System;
 namespace DizGame.Source.AI_Behaviors
 {
     // Todo fix so that the AI looks for ammo and health when they are low
-    // Todo make the AI go out attacking behavior when it is out of bullets and/or the health is low
     // Todo decide how to and where it's best change between the different behaviors
+    // TODO Rename the badly named functions/methods
 
     /// <summary>
     /// The abstract base class for the AI behaviors
@@ -49,6 +49,19 @@ namespace DizGame.Source.AI_Behaviors
         /// </summary>
         public float DistanceToClosestHealth { get; set; }
 
+        /// <summary>
+        /// The rotation the AI wants to have
+        /// </summary>
+        public float DesiredRotation { get; set; }
+        /// <summary>
+        /// How long since the AI last updated its desired rotation
+        /// </summary>
+        public float CurrentTimeForRotation { get; set; }
+        /// <summary>
+        /// Time left until the AI can shot again
+        /// </summary>
+        public float Time { get; set; }
+        
         #endregion properties
 
         /// <summary>
@@ -57,13 +70,7 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="AIComp"></param>
         /// <param name="gameTime"></param>
         public abstract void Update(AIComponent AIComp, GameTime gameTime);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rotation"> The current rotation of the AI </param>
-        public abstract void OnEnter(Vector3 rotation);
-
+        
         /// <summary>
         /// Finds the closest enemy entity
         /// </summary>

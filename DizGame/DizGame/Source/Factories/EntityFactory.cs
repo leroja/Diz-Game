@@ -122,8 +122,7 @@ namespace DizGame.Source.Factories
                 true));
             return worldEntId;
         }
-
-        // fixa till så cross hair är där skotten går, inte riktigt helt 100 just nu
+        
         /// <summary>
         /// 
         /// </summary>
@@ -226,32 +225,6 @@ namespace DizGame.Source.Factories
                     }
                 }
             }
-            //List<int> spawnPositions = new List<int>();
-            //List<int> modelId = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-
-            //spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<PlayerComponent>());
-            //spawnPositions.AddRange(ComponentManager.Instance.GetAllEntitiesWithComponentType<AIComponent>());
-            //foreach (var id in spawnPositions)
-            //{
-            //    TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(id);
-            //    float minX = tran.Position.X - 10;
-            //    float minZ = tran.Position.Z + 10;
-            //    float maxX = tran.Position.X + 10;
-            //    float maxZ = tran.Position.Z - 10;
-
-            //    foreach (var model in modelId)
-            //    {
-            //        ModelComponent mod = ComponentManager.Instance.GetEntityComponent<ModelComponent>(model);
-            //        TransformComponent Comp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(model);
-            //        if (Comp != null && mod.IsStatic == true)
-            //        {
-            //            if ((Comp.Position.X >= minX && Comp.Position.X <= maxX) && (Comp.Position.Z <= minZ && Comp.Position.Z >= maxZ))
-            //            {
-            //                ComponentManager.Instance.RemoveEntity(model);
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         /// <summary>
@@ -454,7 +427,7 @@ namespace DizGame.Source.Factories
         /// <param name="heightmap"> Name of the heightMap texture that shall be used to build the hieghtMap </param>
         /// <param name="heightTexture"> the texture that each chunk of the height map will have </param>
         /// <param name="numberOfChunksPerSide"> number of chunks per side
-        /// eg 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
+        /// e.g 10 chunks per side will create a total of 100 chunks for the whole heightmap </param>
         public int CreateHeightMap(string heightmap, string heightTexture, int numberOfChunksPerSide)
         {
             int HeightmapEnt = ComponentManager.Instance.CreateID();

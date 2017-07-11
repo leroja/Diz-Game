@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace DizGame.Source.Components
 {
-    // todo gör så at AI:n inte kan hamna utanför bounds, delvis klart, vissa behavior funkar
     // todo ta bort / flytta en del properties till bättre ställen
     /// <summary>
     /// A component for the AI:s
@@ -14,6 +13,7 @@ namespace DizGame.Source.Components
     {
         private Dictionary<string, AiBehavior> AiBehaviors;
 
+        #region properties
         /// <summary>
         /// The current Behavior/state of the AI Entity
         /// </summary>
@@ -63,7 +63,7 @@ namespace DizGame.Source.Components
         /// How much damage the AI does per shot
         /// </summary>
         public float DamagePerShot { get; set; }
-
+        #endregion
 
         /// <summary>
         /// Constructor
@@ -91,7 +91,7 @@ namespace DizGame.Source.Components
                 { "Wander", new WanderBehavior() },
                 { "Chase", new ChaseBehavior() },
                 { "Evade", new EvadeBehavior() },
-                { "Attacking", new AttackingBehavior(ShootingCooldown) },
+                { "Attacking", new AttackingBehavior() },
                 { "Hoarding", new HoardingBehavior() },
             };
             if (waypoints != null)
@@ -124,7 +124,9 @@ namespace DizGame.Source.Components
         {
             var behave = AiBehaviors[Behavior];
             CurrentBehaivior = behave;
-            CurrentBehaivior.OnEnter(currentRoation);
+            CurrentBehaivior.DesiredRotation = currentRoation.Y;
+            CurrentBehaivior.CurrentTimeForRotation = 0;
+            CurrentBehaivior.Time = ShootingCooldown;
         }
     }
 }

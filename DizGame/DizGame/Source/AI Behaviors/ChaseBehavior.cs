@@ -13,19 +13,6 @@ namespace DizGame.Source.AI_Behaviors
     /// </summary>
     public class ChaseBehavior : AiBehavior
     {
-        private float currentTimeForRot;
-        private float desiredRotation;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rotation"> The current rotation of the AI </param>
-        public override void OnEnter(Vector3 rotation)
-        {
-            currentTimeForRot = 0;
-            desiredRotation = rotation.Y;
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -33,7 +20,7 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="gameTime"></param>
         public override void Update(AIComponent AIComp, GameTime gameTime)
         {
-            currentTimeForRot += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            CurrentTimeForRotation += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             var transformComp = ComponentManager.Instance.GetEntityComponent<TransformComponent>(AIComp.ID);
             var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
@@ -64,12 +51,12 @@ namespace DizGame.Source.AI_Behaviors
             }
             else
             {
-                if (currentTimeForRot > AIComp.UpdateFrequency)
+                if (CurrentTimeForRotation > AIComp.UpdateFrequency)
                 {
-                    desiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y;
-                    currentTimeForRot = 0f;
+                    DesiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y;
+                    CurrentTimeForRotation = 0f;
                 }
-                transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+                transformComp.Rotation = new Vector3(0, TurnToFace(DesiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
                 BehaviorStuff(AIComp, transformComp);
             }
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);

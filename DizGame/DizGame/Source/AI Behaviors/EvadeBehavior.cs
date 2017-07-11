@@ -12,16 +12,6 @@ namespace DizGame.Source.AI_Behaviors
     /// </summary>
     public class EvadeBehavior : AiBehavior
     {
-        private float desiredRotation;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rotation"> The current rotation of the AI </param>
-        public override void OnEnter(Vector3 rotation)
-        {
-            desiredRotation = rotation.Y;
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -34,9 +24,9 @@ namespace DizGame.Source.AI_Behaviors
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
             var pos = transformComp.Position;
 
-            desiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y - MathHelper.Pi;// -MathHelper.Pi gör så att AI:n får en motsatt rotaion till närmsta fienden;
+            DesiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y - MathHelper.Pi;// -MathHelper.Pi gör så att AI:n får en motsatt rotaion till närmsta fienden;
 
-            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * 5 * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            transformComp.Rotation = new Vector3(0, TurnToFace(DesiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * 5 * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
 
 
             physComp.Velocity = transformComp.Forward * 10;

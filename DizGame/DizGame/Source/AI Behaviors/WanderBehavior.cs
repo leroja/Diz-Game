@@ -9,31 +9,20 @@ using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
+    // TODO decide the best condition when to enter the hoarding behavior
     /// <summary>
     /// A behavior for the AI that makes it wander around the map
     /// </summary>
     public class WanderBehavior : AiBehavior
     {
-        private float currentTimeForDir;
-        private float desiredRotation;
-
         /// <summary>
         /// Constructor
         /// </summary>
         public WanderBehavior()
         {
-            currentTimeForDir = 0f;
+            CurrentTimeForRotation = 0f;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rotation"> The current rotation of the AI </param>
-        public override void OnEnter(Vector3 rotation)
-        {
-            currentTimeForDir = 0f;
-            desiredRotation = rotation.Y;
-        }
 
         /// <summary>
         /// 
@@ -46,15 +35,15 @@ namespace DizGame.Source.AI_Behaviors
             var animComp = ComponentManager.Instance.GetEntityComponent<AnimationComponent>(AIComp.ID);
             var physComp = ComponentManager.Instance.GetEntityComponent<PhysicsComponent>(AIComp.ID);
 
-            currentTimeForDir += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            CurrentTimeForRotation += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (currentTimeForDir > AIComp.DirectionDuration)
+            if (CurrentTimeForRotation > AIComp.DirectionDuration)
             {
-                desiredRotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
-                desiredRotation = WrapAngle(desiredRotation);
-                currentTimeForDir = 0f;
+                DesiredRotation = (float)Util.GetRandomNumber(-AIComp.DirectionChangeRoation, AIComp.DirectionChangeRoation);
+                DesiredRotation = WrapAngle(DesiredRotation);
+                CurrentTimeForRotation = 0f;
             }
-            transformComp.Rotation = new Vector3(0, TurnToFace(desiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+            transformComp.Rotation = new Vector3(0, TurnToFace(DesiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
 
 
             physComp.Velocity = transformComp.Forward * 10;
@@ -97,11 +86,17 @@ namespace DizGame.Source.AI_Behaviors
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
+            var ammoComp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID);
+            var healthComp = ComponentManager.Instance.GetEntityComponent<HealthComponent>(AIComp.ID);
 
             if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)))
             {
                 AIComp.ChangeBehavior("Evade", transcomp.Rotation);
             }
+            //else if (ammoComp.AmmountOfActiveMagazines < 2 || (healthComp.Health / healthComp.MaxHealth) <= 0.6)
+            //{
+            //    AIComp.ChangeBehavior("Hoarding", transcomp.Rotation);
+            //}
             else if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance - AIComp.Hysteria)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);
@@ -117,7 +112,7 @@ namespace DizGame.Source.AI_Behaviors
         {
             transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
             transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
-            desiredRotation += MathHelper.Pi;
+            DesiredRotation += MathHelper.Pi;
         }
 
         /// <summary>
