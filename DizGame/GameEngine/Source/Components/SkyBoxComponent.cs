@@ -18,11 +18,11 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// 
         /// </summary>
-        public float Size { get; set; } = 295;
+        public float Size { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        public Texture2D SkyboxTextureCube { get; set; }
+        public TextureCube SkyboxTextureCube { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -30,8 +30,6 @@ namespace GameEngine.Source.Components
         public SkyBoxComponent(Model skyboxModel)
         {
             SkyboxModel = skyboxModel;
-            //SkyboxTextureCube = texture;
-            //this.SkyboxEffect = SkyboxEffect;
         }
     }
 }

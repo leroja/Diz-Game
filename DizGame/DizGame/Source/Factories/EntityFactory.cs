@@ -16,6 +16,7 @@ using System.Linq;
 
 namespace DizGame.Source.Factories
 {
+    // TODO refine fog effect parameters
     /// <summary>
     /// Factory for creating various entities which might be used by the game in the end.
     /// </summary>
@@ -77,7 +78,6 @@ namespace DizGame.Source.Factories
                 { "Dude", Content.Load<Model>("Dude/Dude72") },
                 { "Heart", Content.Load<Model>("MapObjects/Heart/Heart") },
                 { "WoodHouse", Content.Load<Model>("MapObjects/WoodHouse/WoodHouse1") },
-                { "skybox", Content.Load<Model>("MapObjects/Skybox/skybox3") },
             };
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
@@ -122,7 +122,7 @@ namespace DizGame.Source.Factories
                 true));
             return worldEntId;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -135,7 +135,7 @@ namespace DizGame.Source.Factories
             var textureComp = new Texture2DComponent(Texture2dDic["CrossHair"])
             {
                 Scale = new Vector2(0.1f, 0.1f),
-                
+
             };
             textureComp.Position = new Vector2(position.X - 7f, position.Y);
 
@@ -311,7 +311,7 @@ namespace DizGame.Source.Factories
             var temp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<CameraComponent>();
             ComponentManager.Instance.RemoveComponentFromEntity(temp.Keys.First(), temp.Values.First());
         }
-        
+
         /// <summary>
         /// Adds a POV camera to an entity
         /// </summary>
@@ -519,25 +519,28 @@ namespace DizGame.Source.Factories
             return AIEntityID;
         }
 
+        // TODO choose the best Skybox texture
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public int CreateNewSkyBox()
         {
-            int skyboxid = ComponentManager.Instance.CreateID();
-            Model model = ModelDic["skybox"];
-            //Texture2D texture = Content.Load<Texture2D>("MapObjects/Skybox/skybox_texture");
-            //Effect skyBoxEffect = Content.Load<Effect>("Effects/SkyBox");
-
+            int skyboxId = ComponentManager.Instance.CreateID();
+            Model model = Content.Load<Model>("Skybox/cube");
+            Effect skyBoxEffect = Content.Load<Effect>("Effects/Skybox");
+            TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/Sunset");
             List<IComponent> newcmpList = new List<IComponent>
             {
-                new SkyBoxComponent(model), //507 och 505 rör du inte!
-                new TransformComponent(new Vector3(507,45,-510), new Vector3(505,200,510))
+                new SkyBoxComponent(model){
+                    SkyboxTextureCube = skyboxTexture,
+                    SkyboxEffect = skyBoxEffect,
+                    Size = 750
+                },
             };
-            ComponentManager.Instance.AddAllComponents(skyboxid, newcmpList);
+            ComponentManager.Instance.AddAllComponents(skyboxId, newcmpList);
 
-            return skyboxid;
+            return skyboxId;
         }
     }
 }

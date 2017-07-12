@@ -29,7 +29,7 @@ namespace DizGame.Source.AI_Behaviors
             transformComp.Rotation = new Vector3(0, TurnToFace(DesiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * 5 * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
 
 
-            physComp.Velocity = transformComp.Forward * 10;
+            physComp.Velocity = transformComp.Forward * 30;
             physComp.Acceleration = new Vector3(physComp.Acceleration.X, 0, physComp.Acceleration.Z);
 
             var height = MovingSystem.GetHeight(transformComp.Position);
@@ -54,7 +54,7 @@ namespace DizGame.Source.AI_Behaviors
                 Border(transformComp, AIComp, gameTime);
             }
 
-            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
+            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds * 3);
 
             BehaviorStuff(AIComp, transformComp);
         }

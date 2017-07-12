@@ -229,7 +229,7 @@ namespace DizGame.Source.GameStates
                 entf.CreateAI("Dude", new Vector3(250, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-7"),
                 entf.CreateAI("Dude", new Vector3(50, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-8"),
                 entf.CreateAI("Dude", new Vector3(250, 45, -500), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-9"),
-                entf.CreateAI("Dude", new Vector3(500, 45, -500), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-10"),
+                entf.CreateAI("Dude", new Vector3(500, 45, -600), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-10"),
             };
             GameStateEntities.AddRange(aiEntityList);
 

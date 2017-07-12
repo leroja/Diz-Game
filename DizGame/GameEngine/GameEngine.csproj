@@ -67,6 +67,7 @@
     <Compile Include="Source\RandomStuff\ParticleVertex.cs" />
     <Compile Include="Source\RandomStuff\Flare.cs" />
     <Compile Include="Source\Systems\2DSystem.cs" />
+    <Compile Include="Source\Systems\3DSoundSystem.cs" />
     <Compile Include="Source\Systems\AnimationSystem.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
     <Compile Include="Source\Systems\EnvironmentSystem.cs" />

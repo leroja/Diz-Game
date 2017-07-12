@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DizGame.Source.Systems
 {
+    // TODO play some sound effects on pickup
     /// <summary>
     ///  Default score for hit =  5 
     ///  Default score for kill = 100

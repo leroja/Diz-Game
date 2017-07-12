@@ -91,55 +91,42 @@ namespace GameEngine.Source.Systems
 
         private void RenderSkyBox(int EntityID)
         {
-            device.DepthStencilState = DepthStencilState.DepthRead;
             SkyBoxComponent skybox = ComponentManager.GetEntityComponent<SkyBoxComponent>(EntityID);
             Effect skyBoxEffect = skybox.SkyboxEffect;
             TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(EntityID);
+            TransformComponent trandXomp = ComponentManager.GetEntityComponent<TransformComponent>(defaultCam.ID);
+            
+            var rs = new RasterizerState { CullMode = CullMode.CullClockwiseFace };
+            device.RasterizerState = rs;
 
-            // Draw all of the components of the mesh, but we know the cube really
-            // only has one mesh
-            foreach (ModelMesh mesh in skybox.SkyboxModel.Meshes)
+            // Go through each pass in the effect, but we know there is only one...
+            foreach (EffectPass pass in skyBoxEffect.CurrentTechnique.Passes)
             {
-                foreach (BasicEffect effect in mesh.Effects)
+                pass.Apply();
+
+                // Draw all of the components of the mesh, but we know the cube really
+                // only has one mesh
+                foreach (ModelMesh mesh in skybox.SkyboxModel.Meshes)
                 {
-                    effect.World = tcp.ObjectMatrix * world.World;
-
-                    effect.View = defaultCam.View;
-                    effect.Projection = defaultCam.Projection;
-
-                    if (world != null && world.IsSunActive)
+                    // Assign the appropriate values to each of the parameters
+                    foreach (ModelMeshPart part in mesh.MeshParts)
                     {
-                        FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
-                        effect.LightingEnabled = true;
-
-                        //effect.DiffuseColor = flare.Diffuse;
-                        //effect.AmbientLightColor = flare.AmbientLight;
-
-                        effect.DirectionalLight0.Enabled = true;
-                        effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
-                        effect.DirectionalLight0.Direction = flare.LightDirection;
-
-                        effect.DirectionalLight1.Enabled = true;
-                        effect.DirectionalLight1.DiffuseColor = flare.Diffuse;
-                        effect.DirectionalLight1.Direction = -flare.LightDirection;
-
-                        effect.DirectionalLight2.Enabled = true;
-                        effect.DirectionalLight2.DiffuseColor = flare.Diffuse;
-                        effect.DirectionalLight2.Direction = tcp.Up;
-
-                        //effect.Alpha = 1;
+                        part.Effect = skyBoxEffect;
+                        part.Effect.Parameters["World"].SetValue(
+                            Matrix.CreateScale(skybox.Size) * Matrix.CreateTranslation(trandXomp.Position));
+                        part.Effect.Parameters["View"].SetValue(defaultCam.View);
+                        part.Effect.Parameters["Projection"].SetValue(defaultCam.Projection);
+                        part.Effect.Parameters["SkyBoxTexture"].SetValue(skybox.SkyboxTextureCube);
+                        part.Effect.Parameters["CameraPosition"].SetValue(trandXomp.Position);
                     }
 
-                    effect.PreferPerPixelLighting = true;
-                    foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                    {
-                        pass.Apply();
-                        mesh.Draw();
-
-                    }
+                    // Draw the mesh with the skybox effect
+                    mesh.Draw();
                 }
             }
-            device.DepthStencilState = DepthStencilState.Default;
+
+            var rs2 = new RasterizerState { CullMode = CullMode.CullCounterClockwiseFace };
+            device.RasterizerState = rs2;
         }
 
         /// <summary>

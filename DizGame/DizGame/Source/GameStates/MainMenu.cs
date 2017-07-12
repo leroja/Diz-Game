@@ -54,7 +54,7 @@ namespace DizGame.Source.GameStates
         {
             time = 1;
             SystemManager.Instance.AddSystem(TextSystem);
-            string[] itemNames = { "One Player Game", "Multiplayer Game", "Settings", "Whatever", "Exit" };
+            string[] itemNames = { "Single-player", "Multiplayer", "Settings", "Whatever", "Exit" };
             ItemNames = itemNames;
 
             int y = 30;
