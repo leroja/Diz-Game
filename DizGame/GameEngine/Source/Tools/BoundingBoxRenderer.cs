@@ -4,8 +4,11 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using AnimationContentClasses;
 
-namespace GameEngine.Tools
+namespace GameEngine.Source.Tools
 {
+    /// <summary>
+    /// A system for rendering BoundingBoxes
+    /// </summary>
     public class BoundingBoxRenderer : IRender
     {
         #region Fields
@@ -30,9 +33,12 @@ namespace GameEngine.Tools
         };
 
         BasicEffect effect;
-        VertexDeclaration vertDecl;
         GraphicsDevice graphicsDevice;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="device"></param>
         public BoundingBoxRenderer(GraphicsDevice device)
         {
             graphicsDevice = device;
@@ -41,6 +47,10 @@ namespace GameEngine.Tools
             vBuffer = new VertexBuffer(device, VertexPositionColor.VertexDeclaration, 8, BufferUsage.WriteOnly);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
             var dict = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();
@@ -64,9 +74,6 @@ namespace GameEngine.Tools
         /// Renders the bounding box for debugging purposes.
         /// </summary>
         /// <param name="box">The box to render.</param>
-        /// <param name="graphicsDevice">The graphics device to use when rendering.</param>
-        /// <param name="view">The current view matrix.</param>
-        /// <param name="projection">The current projection matrix.</param>
         /// <param name="color">The color to use drawing the lines of the box.</param>
         public void DrawBox(
             BoundingBox3D box,
@@ -76,9 +83,11 @@ namespace GameEngine.Tools
             CameraComponent cc = ComponentManager.GetEntityComponent<CameraComponent>(ent);
             if (effect == null)
             {
-                effect = new BasicEffect(graphicsDevice);
-                effect.VertexColorEnabled = true;
-                effect.LightingEnabled = false;
+                effect = new BasicEffect(graphicsDevice)
+                {
+                    VertexColorEnabled = true,
+                    LightingEnabled = false,
+                };
                 //effect.EnableDefaultLighting();
             }
 

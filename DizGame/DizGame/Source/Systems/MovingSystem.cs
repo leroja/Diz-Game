@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
+    // TODO make so that you can move over the edge, e.g add invisible borders
     /// <summary>
     /// System handles moving of an object,
     /// using inheritance from IUpdate
@@ -143,10 +144,10 @@ namespace DizGame.Source.Systems
         /// <returns></returns>
         public static float GetHeight(Vector3 position)
         {
-            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            List<int> temp = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponent>();
             if (temp.Count != 0)
             {
-                HeightmapComponentTexture hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(temp.First());
+                HeightmapComponent hmap = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(temp.First());
                 float gridSquareSize = (hmap.Width * hmap.Height) / ((float)hmap.HeightMapData.Length - 1);
                 int gridX = (int)Math.Floor(position.X / gridSquareSize);
                 int gridZ = -(int)Math.Floor(position.Z / gridSquareSize);

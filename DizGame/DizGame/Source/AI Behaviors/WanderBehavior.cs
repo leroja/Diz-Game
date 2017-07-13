@@ -104,14 +104,14 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// 
+        /// Code that executes when the AI collides with its defined border
         /// </summary>
-        /// <param name="transformComp"></param>
-        /// <param name="gameTime"></param>
+        /// <param name="transformComp"> The AI:s transform component </param>
+        /// <param name="gameTime"> the current GameTime </param>
         private void Border(TransformComponent transformComp, GameTime gameTime)
         {
-            transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds; // move the AI away from the border
+            transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0); // rotate the AI 180 degrees
             DesiredRotation += MathHelper.Pi;
         }
 

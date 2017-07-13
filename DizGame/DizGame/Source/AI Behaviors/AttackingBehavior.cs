@@ -5,6 +5,7 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using DizGame.Source.Systems;
 using DizGame.Source.Factories;
+using System;
 
 namespace DizGame.Source.AI_Behaviors
 {
@@ -50,6 +51,8 @@ namespace DizGame.Source.AI_Behaviors
                     EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot, AIComp.ID);
                     ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag--;
                     Time = AIComp.ShootingCooldown;
+                    var sound = ComponentManager.Instance.GetEntityComponent<SoundEffectComponent>(AIComp.ID);
+                    sound.SoundEffectsToBePlayed.Add(Tuple.Create("ShotEffect", 0f, 1f));
                 }
             }
 

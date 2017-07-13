@@ -25,7 +25,7 @@ namespace DizGame.Source.Systems
         /// </summary>
         public ResourceSystem()
         {
-            maxNumberOfResourcesInPlay = 25;
+            maxNumberOfResourcesInPlay = 30;
             healthAmmoRatio = 3;
         }
 
@@ -80,15 +80,28 @@ namespace DizGame.Source.Systems
 
         private void AddNewResources(int currentNumberOfResources)
         {
+            var Health = 0;
+            foreach (var item in ComponentManager.GetAllEntitiesWithComponentType<ResourceComponent>())
+            {
+                var rComp = ComponentManager.GetEntityComponent<ResourceComponent>(item);
+                if (rComp.thisType == ResourceComponent.ResourceType.Health)
+                {
+                    Health++;
+                }
+            }
+
+            var healthTarget = maxNumberOfResourcesInPlay / healthAmmoRatio;
+
             int keepTrack = 0;
 
             List<Vector3> positions = GetMapPositions(maxNumberOfResourcesInPlay - currentNumberOfResources);
 
             while (currentNumberOfResources != maxNumberOfResourcesInPlay)
             {
-                if (keepTrack % healthAmmoRatio == 1)
+                if (Health < healthTarget)
                 {
                     EntityFactory.Instance.ResourceFactory.CreateHealthResource(positions.ElementAt(keepTrack));
+                    Health++;
                     keepTrack++;
                     currentNumberOfResources++;
                 }
@@ -115,8 +128,8 @@ namespace DizGame.Source.Systems
             Random r = new Random();
             int mapWidht;
             int mapHeight;
-            List<int> heightList = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            HeightmapComponentTexture heigt = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
+            List<int> heightList = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponent>();
+            HeightmapComponent heigt = ComponentManager.GetEntityComponent<HeightmapComponent>(heightList[0]);
             mapWidht = heigt.Width;
             mapHeight = heigt.Height;
             for (int i = 0; i < numberToCreate; i++)

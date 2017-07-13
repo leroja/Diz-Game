@@ -8,8 +8,6 @@ namespace DizGame.Source.AI_Behaviors
 {
     // Todo fix so that the AI looks for ammo and health when they are low
     // Todo decide how to and where it's best change between the different behaviors
-    // TODO Rename the badly named functions/methods
-
     /// <summary>
     /// The abstract base class for the AI behaviors
     /// </summary>

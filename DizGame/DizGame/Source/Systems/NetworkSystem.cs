@@ -40,7 +40,7 @@ namespace DizGame.Source.Systems
         /// <summary>
         /// Alternate constructor, if another portnumber is desired.
         /// </summary>
-        /// <param name="portnumber"></param>
+        /// <param name="portNumber"></param>
         public NetworkSystem(int portNumber)
         {
             portNum = portNumber;

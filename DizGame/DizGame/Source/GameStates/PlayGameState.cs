@@ -5,7 +5,6 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
-using GameEngine.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +13,8 @@ using System.Collections.Generic;
 
 namespace DizGame.Source.GameStates
 {
+    // TODO change the heightmap, so that it blends in more with the skybox e.g raise the edges up or something
+    // OR maybe add water at the edges or something similar
     /// <summary>
     /// PlayGameState is a state which represents the basic gameplay logic.
     /// </summary>
@@ -101,7 +102,7 @@ namespace DizGame.Source.GameStates
             foreach (int entityId in GameStateEntities)
             {
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityId);
-                HeightmapComponentTexture hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(entityId);
+                HeightmapComponent hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(entityId);
                 if (mc != null)
                     mc.IsVisible = false;
                 if (hmct != null)
@@ -120,7 +121,7 @@ namespace DizGame.Source.GameStates
             foreach (int entityId in GameStateEntities)
             {
                 ModelComponent mc = ComponentManager.Instance.GetEntityComponent<ModelComponent>(entityId);
-                HeightmapComponentTexture hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(entityId);
+                HeightmapComponent hmct = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(entityId);
                 if (mc != null)
                     mc.IsVisible = true;
                 if (hmct != null)
@@ -168,7 +169,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(pSys);
             SystemManager.Instance.AddSystem(ammo);
             SystemManager.Instance.AddSystem(new ModelSystem(GameOne.Instance.GraphicsDevice));
-            SystemManager.Instance.AddSystem(new HeightmapSystemTexture(GameOne.Instance.GraphicsDevice));
+            SystemManager.Instance.AddSystem(new HeightmapSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
             SystemManager.Instance.AddSystem(new MovingSystem());
@@ -182,6 +183,8 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
 
+            SystemManager.Instance.AddSystem(new SoundEffectSystem());
+            SystemManager.Instance.AddSystem(new _3DSoundSystem());
             SystemManager.Instance.AddSystem(new SpectatingSystem());
 
             //EntityTracingSystem = new EntityTracingSystem();
@@ -209,7 +212,7 @@ namespace DizGame.Source.GameStates
         private void CreateEntitiesForSinglePlayerGame()
         {
             EntityFactory entf = EntityFactory.Instance;
-            
+
             var waypointList = new List<Vector2>()
             {
                 new Vector2(5, -5),

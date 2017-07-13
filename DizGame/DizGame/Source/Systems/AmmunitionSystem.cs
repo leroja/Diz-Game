@@ -3,6 +3,7 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using System;
 using Microsoft.Xna.Framework;
+using GameEngine.Source.Components;
 
 namespace DizGame.Source.Systems
 {
@@ -48,6 +49,9 @@ namespace DizGame.Source.Systems
                         ComponentManager.Instance.RemoveEntity(id1);
                         ComponentManager.Instance.RecycleID(id1);
                         amo.AmmountOfActiveMagazines++;
+
+                        var sound = ComponentManager.GetEntityComponent<SoundEffectComponent>(id2);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 0f, 1f));
                     }
                 }
             }
@@ -62,6 +66,9 @@ namespace DizGame.Source.Systems
                         ComponentManager.Instance.RemoveEntity(id2);
                         ComponentManager.Instance.RecycleID(id2);
                         amo.AmmountOfActiveMagazines++;
+
+                        var sound = ComponentManager.GetEntityComponent<SoundEffectComponent>(id1);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 0f, 1f));
                     }
                 }
 

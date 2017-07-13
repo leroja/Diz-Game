@@ -11,6 +11,8 @@ using System.Collections.Generic;
 
 namespace DizGame.Source.Factories
 {
+    // TODO change so that objects can't spawn close to the edge
+
     /// <summary>
     /// A factory for creating Static game objects
     /// </summary>
@@ -44,7 +46,7 @@ namespace DizGame.Source.Factories
             List<Vector3> unablePositions = new List<Vector3>();
             List<Vector3> rockPositions = new List<Vector3>();
 
-            var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponent>();
             positions = GetModelPositions(numberOfHouses);
             for (int i = 0; i < numberOfHouses; i++)
             {
@@ -236,9 +238,10 @@ namespace DizGame.Source.Factories
             bindings[0] = new VertexBufferBinding(tree.VertexBuffer);
             bindings[1] = new VertexBufferBinding(matriceVB, 0, 1);
 
-            RasterizerState rs = new RasterizerState();
-            rs.CullMode = CullMode.None;
-            rs.FillMode = FillMode.Solid;
+            RasterizerState rs = new RasterizerState() {
+                CullMode = CullMode.None,
+                FillMode = FillMode.Solid,
+            };
 
             HardwareInstancedComponent hwinstanced = new HardwareInstancedComponent()
             {
@@ -311,8 +314,8 @@ namespace DizGame.Source.Factories
             int mapHeight;
 
             List<Vector3> SpawnProtection = new List<Vector3>();
-            List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
+            List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponent>();
+            HeightmapComponent heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(heightList[0]);
 
             mapWidht = heigt.Width;
             mapHeight = heigt.Height;

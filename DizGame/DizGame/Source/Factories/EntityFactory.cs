@@ -107,7 +107,7 @@ namespace DizGame.Source.Factories
                     IsSunActive = true,
                     DefineHour = 1,
                     Day = 1,
-                    Hour = 0,
+                    Hour = 22,
                     ModulusValue = 2,
                 },
             };
@@ -171,6 +171,7 @@ namespace DizGame.Source.Factories
 
             List<IComponent> components = new List<IComponent>
             {
+                new SoundEffectComponent(),
                 new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(chuck),
                 keys,
@@ -482,6 +483,7 @@ namespace DizGame.Source.Factories
 
             List<IComponent> components = new List<IComponent>
             {
+                new SoundEffectComponent(),
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),
                 new HealthComponent(),

@@ -6,7 +6,6 @@ using GameEngine.Source.RandomStuff;
 
 namespace GameEngine.Source.Factories
 {
-    // todo write comments
     /// <summary>
     /// A factory for creating heightmaps
     /// </summary>
@@ -38,15 +37,15 @@ namespace GameEngine.Source.Factories
         }
 
         /// <summary>
-        /// 
+        /// Creates a heightmap
         /// </summary>
         /// <param name="heightMap"> The texture from which the heightmap will be created from </param>
         /// <param name="heightMapTexture"> The texture that each chunk of the heightmap will use </param>
         /// <param name="fractions_per_side"> How many chunks/fractions the heightmap will have per side </param>
         /// <returns> A heightmapComponent that contains the created heightmap </returns>
-        public HeightmapComponentTexture CreateTexturedHeightMap(Texture2D heightMap, Texture2D heightMapTexture, int fractions_per_side)
+        public HeightmapComponent CreateTexturedHeightMap(Texture2D heightMap, Texture2D heightMapTexture, int fractions_per_side)
         {
-            HeightmapComponentTexture heightMapComponent = new HeightmapComponentTexture();
+            HeightmapComponent heightMapComponent = new HeightmapComponent();
             this.heightMap = heightMap;
             this.heightMapTexture = heightMapTexture;
             this.fractions_per_side = fractions_per_side;
@@ -55,10 +54,10 @@ namespace GameEngine.Source.Factories
         }
 
         /// <summary>
-        /// 
+        /// Sets the different heightmap data to the heightmap Component
         /// </summary>
         /// <param name="comp"></param>
-        private void SetHeightMapData(ref HeightmapComponentTexture comp)
+        private void SetHeightMapData(ref HeightmapComponent comp)
         {
             Width = heightMap.Width;
             Height = heightMap.Height;
@@ -163,10 +162,10 @@ namespace GameEngine.Source.Factories
         }
 
         /// <summary>
-        /// 
+        /// Sets up the chunks
         /// </summary>
         /// <param name="heightMapComp"></param>
-        private void SetUpHeightMapChunks(ref HeightmapComponentTexture heightMapComp)
+        private void SetUpHeightMapChunks(ref HeightmapComponent heightMapComp)
         {
             for (int x = 0; x < Width - chunk_width; x += chunk_width)
             {

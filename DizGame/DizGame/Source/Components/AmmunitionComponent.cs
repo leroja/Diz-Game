@@ -15,7 +15,7 @@ namespace DizGame.Source.Components
         /// <summary>
         /// Tuple which is used as Tuple(AmmunitionType, Bullets left, MagasineSize)
         /// </summary>
-       // public Tuple<AmmunitionType, int, int> ActiveMagazine { get; set; }
+        //public Tuple<AmmunitionType, int, int> ActiveMagazine { get; set; }
         /// <summary>
         /// Total amount of Magazines of the current ActiveMagazine.
         /// </summary>

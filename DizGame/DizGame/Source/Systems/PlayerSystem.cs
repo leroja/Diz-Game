@@ -7,6 +7,7 @@ using GameEngine.Source.Enums;
 using Microsoft.Xna.Framework.Input;
 using GameEngine.Source.Managers;
 using DizGame.Source.Factories;
+using System;
 
 namespace DizGame.Source.Systems
 {
@@ -62,7 +63,8 @@ namespace DizGame.Source.Systems
                     {
                         EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 17, new Vector3(.1f, .1f, .1f), 1000, 1000, transformComp.Rotation, 10, playerId);
                         ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(playerId).CurrentAmmoInMag--;
-                        AudioManager.Instance.PlaySoundEffect("ShotEffect", 0f, 1f);
+                        var sound = ComponentManager.GetEntityComponent<SoundEffectComponent>(playerId);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("ShotEffect", 0f, 1f));
                     }
                 }
             }

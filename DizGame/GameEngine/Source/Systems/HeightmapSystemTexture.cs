@@ -8,9 +8,9 @@ using System.Linq;
 namespace GameEngine.Source.Systems
 {
     /// <summary>
-    /// A system that is used for drawing heightmaps
+    /// A system that is used for drawing textured heightmaps
     /// </summary>
-    public class HeightmapSystemTexture : IRender
+    public class HeightmapSystem : IRender
     {
         private GraphicsDevice device;
 
@@ -18,7 +18,7 @@ namespace GameEngine.Source.Systems
         /// A constructor that takes a GrapicsDevice as a parameter
         /// </summary>
         /// <param name="device"></param>
-        public HeightmapSystemTexture(GraphicsDevice device)
+        public HeightmapSystem(GraphicsDevice device)
         {
             this.device = device;
         }
@@ -29,7 +29,7 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
-            var ents = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            var ents = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponent>();
 
             List<int> temp = ComponentManager.GetAllEntitiesWithComponentType<WorldComponent>();
             WorldComponent world = ComponentManager.GetEntityComponent<WorldComponent>(temp.First());
@@ -39,7 +39,7 @@ namespace GameEngine.Source.Systems
 
             foreach (int heightMapId in ents)
             {
-                var heightMap = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(heightMapId);
+                var heightMap = ComponentManager.GetEntityComponent<HeightmapComponent>(heightMapId);
                 if (heightMap.IsVisible)
                 {
                     var transformComp = ComponentManager.GetEntityComponent<TransformComponent>(heightMapId);
@@ -78,7 +78,7 @@ namespace GameEngine.Source.Systems
 
             }
         }
-        
+
         // TODO Should only be needed to be done once, maybe when they are created
         /// <summary>
         /// Recalculates/moves the bounding box to its correct placement in the world

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace GameEngine.Source.Components
 {
     /// <summary>
-    /// A component that contain information for a heightmap
+    /// A component that contains information for a textured heightmap
     /// </summary>
-    public class HeightmapComponentTexture : IComponent
+    public class HeightmapComponent : IComponent
     {
         /// <summary>
         /// HeightData of the heightmap
@@ -33,7 +33,7 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        public HeightmapComponentTexture()
+        public HeightmapComponent()
         {
             HeightMapChunks = new List<HeightMapChunk>();
             IsVisible = true;

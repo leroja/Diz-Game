@@ -130,6 +130,7 @@
     <Content Include="Content\Skybox\skybox_texture.jpg" />
     <Content Include="Content\Songs\GameSong.mp3" />
     <Content Include="Content\Songs\MenuSong.mp3" />
+    <Content Include="Content\SoundEffects\Chambering A Round.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
     <Content Include="Content\ParticleTexture\Smoke.png" />
     <Content Include="Content\SoundEffects\menu-selection-sound.wav" />

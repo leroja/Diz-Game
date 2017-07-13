@@ -22,6 +22,10 @@ namespace DizGame
         private Thread netClientThread;
 
         private static Game instance;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public static Rectangle bounds;
 
         /// <summary>
@@ -77,6 +81,7 @@ namespace DizGame
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
             AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
             AudioManager.Instance.AddSoundEffect("MenuChange", Content.Load<SoundEffect>("SoundEffects/menu-selection-sound"));
+            AudioManager.Instance.AddSoundEffect("Ammo-Pickup", Content.Load<SoundEffect>("SoundEffects/Chambering A Round"));
 
             MainMenu startState = new MainMenu();
             GameStateManager.Instance.Push(startState);
