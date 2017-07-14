@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 
 namespace GameEngine.Source.Managers
@@ -18,6 +19,8 @@ namespace GameEngine.Source.Managers
 
         private AudioManager()
         {
+            SoundEffect.DopplerScale = 0.1f;
+            SoundEffect.DistanceScale = 10f;
         }
 
         /// <summary>
@@ -127,13 +130,22 @@ namespace GameEngine.Source.Managers
             return null;
         }
 
-        public SoundEffectInstance Play3DSoundEffect(string soundEffect, AudioEmitter audioEmitter, AudioListener audioListener)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="soundEffect"></param>
+        /// <param name="volume"></param>
+        /// <param name="audioEmitter"></param>
+        /// <param name="audioListener"></param>
+        /// <returns></returns>
+        public SoundEffectInstance Play3DSoundEffect(string soundEffect, float volume, AudioEmitter audioEmitter, AudioListener audioListener)
         {
             if (soundEffDic.ContainsKey(soundEffect))
             {
                 var inst = soundEffDic[soundEffect].CreateInstance();
                 
-
+                inst.Volume = volume;
+                inst.Apply3D(audioListener, audioEmitter);
                 inst.Play();
                 return inst;
             }

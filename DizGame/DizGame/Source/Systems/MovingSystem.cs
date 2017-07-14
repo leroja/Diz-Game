@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace DizGame.Source.Systems
 {
     // TODO make so that you can move over the edge, e.g add invisible borders
+    // TODO add some form of stamina so that u can't run all the time.
     /// <summary>
     /// System handles moving of an object,
     /// using inheritance from IUpdate

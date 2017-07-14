@@ -538,3 +538,33 @@
 /processorParam:Quality=Best
 /build:SoundEffects/Chambering A Round.mp3
 
+#begin SoundEffects/Anti Aircraft Gun.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Anti Aircraft Gun.wav
+
+#begin SoundEffects/Blast.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Blast.wav
+
+#begin SoundEffects/NoNo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/NoNo.wav
+
+#begin SoundEffects/Pick Up Health.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Pick Up Health.wav
+
+#begin SoundEffects/AK-47 Reload.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/AK-47 Reload.wav
+

@@ -50,8 +50,11 @@ namespace DizGame.Source.Systems
                         ComponentManager.Instance.RecycleID(id1);
                         amo.AmmountOfActiveMagazines++;
 
-                        var sound = ComponentManager.GetEntityComponent<SoundEffectComponent>(id2);
-                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 0f, 1f));
+                        //var sound = ComponentManager.GetEntityComponent<SoundEffectComponent>(id2);
+                        //sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 0f, 1f));
+
+                        var sound = ComponentManager.GetEntityComponent<_3DSoundEffectComponent>(id2);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 1f));
                     }
                 }
             }
@@ -67,8 +70,11 @@ namespace DizGame.Source.Systems
                         ComponentManager.Instance.RecycleID(id2);
                         amo.AmmountOfActiveMagazines++;
 
-                        var sound = ComponentManager.GetEntityComponent<SoundEffectComponent>(id1);
-                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 0f, 1f));
+                        //var sound = ComponentManager.GetEntityComponent<SoundEffectComponent>(id1);
+                        //sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 0f, 1f));
+
+                        var sound = ComponentManager.GetEntityComponent<_3DSoundEffectComponent>(id1);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 1f));
                     }
                 }
 
@@ -82,15 +88,18 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var list = ComponentManager.Instance.GetAllEntitiesWithComponentType<AmmunitionComponent>();
-            foreach (var ammoid in list)
+            foreach (var ammoID in list)
             {
-                var ammocomp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(ammoid);
-                if (ammocomp.CurrentAmmoInMag <= 0)
+                var ammoComp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(ammoID);
+                if (ammoComp.CurrentAmmoInMag <= 0)
                 {
-                    if (ammocomp.AmmountOfActiveMagazines > 0)
+                    if (ammoComp.AmmountOfActiveMagazines > 0)
                     {
-                        ammocomp.CurrentAmmoInMag = ammocomp.MaxAmmoInMag;
-                        ammocomp.AmmountOfActiveMagazines--;
+                        ammoComp.CurrentAmmoInMag = ammoComp.MaxAmmoInMag;
+                        ammoComp.AmmountOfActiveMagazines--;
+
+                        //var sound = ComponentManager.Instance.GetEntityComponent<_3DSoundEffectComponent>(ammoID);
+                        //sound.SoundEffectsToBePlayed.Add(Tuple.Create("Reload", 1f));
                     }
                 }
             }

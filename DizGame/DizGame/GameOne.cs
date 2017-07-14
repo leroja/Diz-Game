@@ -13,6 +13,7 @@ using System.Threading;
 
 namespace DizGame
 {
+    // TODO add more parallel for each, later
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -82,6 +83,11 @@ namespace DizGame
             AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
             AudioManager.Instance.AddSoundEffect("MenuChange", Content.Load<SoundEffect>("SoundEffects/menu-selection-sound"));
             AudioManager.Instance.AddSoundEffect("Ammo-Pickup", Content.Load<SoundEffect>("SoundEffects/Chambering A Round"));
+            AudioManager.Instance.AddSoundEffect("Kill-Sound", Content.Load<SoundEffect>("SoundEffects/Anti Aircraft Gun"));
+            AudioManager.Instance.AddSoundEffect("Kill-Sound1", Content.Load<SoundEffect>("SoundEffects/Blast"));
+            AudioManager.Instance.AddSoundEffect("DeathSound", Content.Load<SoundEffect>("SoundEffects/NoNo"));
+            AudioManager.Instance.AddSoundEffect("HealthPickUp", Content.Load<SoundEffect>("SoundEffects/Pick Up Health"));
+            AudioManager.Instance.AddSoundEffect("Reload", Content.Load<SoundEffect>("SoundEffects/AK-47 Reload"));
 
             MainMenu startState = new MainMenu();
             GameStateManager.Instance.Push(startState);

@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DizGame.Source.Systems
 {
-    // TODO play some sound effects on pickup
     /// <summary>
     ///  Default score for hit =  5 
     ///  Default score for kill = 100
@@ -73,32 +72,34 @@ namespace DizGame.Source.Systems
         /// <summary>
         /// Logic for handling Resource/player and resource/AI collisions
         /// </summary>
-        /// <param name="HelathID"> ID of Player/AI to pick up Resource</param>
+        /// <param name="HealthID"> ID of Player/AI to pick up Resource</param>
         /// <param name="ResourceID"> ID of the resource </param>
 
-        private void PlayerResorceColision(int HelathID, int ResourceID)
+        private void PlayerResorceColision(int HealthID, int ResourceID)
         {
-            var hel = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID);
+            var hel = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HealthID);
             var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(ResourceID);
             if (res != null)
             {
                 if (res.thisType == ResourceComponent.ResourceType.Health)
                 {
-                    if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HelathID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HelathID))
+                    if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HealthID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HealthID))
                     {
                         if (hel.Health + hel.HealthOnPickup >= 100)
                         {
-                            ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).Health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).MaxHealth;
+                            ComponentManager.Instance.GetEntityComponent<HealthComponent>(HealthID).Health = ComponentManager.Instance.GetEntityComponent<HealthComponent>(HealthID).MaxHealth;
                             ComponentManager.Instance.RemoveEntity(ResourceID);
                             ComponentManager.Instance.RecycleID(ResourceID);
 
                         }
                         else
                         {
-                            ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).Health += ComponentManager.Instance.GetEntityComponent<HealthComponent>(HelathID).HealthOnPickup;
+                            ComponentManager.Instance.GetEntityComponent<HealthComponent>(HealthID).Health += ComponentManager.Instance.GetEntityComponent<HealthComponent>(HealthID).HealthOnPickup;
                             ComponentManager.Instance.RemoveEntity(ResourceID);
                             ComponentManager.Instance.RecycleID(ResourceID);
                         }
+                        var sound = ComponentManager.Instance.GetEntityComponent<_3DSoundEffectComponent>(HealthID);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("HealthPickUp", 1f));
                     }
                 }
             }
@@ -138,6 +139,11 @@ namespace DizGame.Source.Systems
                         score.Kills += 1;
                         score.Hits += 1;
                         score.Score += 100;
+
+                        var sound = ComponentManager.Instance.GetEntityComponent<SoundEffectComponent>(ComponentManager.Instance.GetEntityComponent<BulletComponent>(BulletID).Owner);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Kill-Sound", 0f, 1f));
+                        var _3Dsound = ComponentManager.Instance.GetEntityComponent<_3DSoundEffectComponent>(HitID);
+                        _3Dsound.SoundEffectsToBePlayed.Add(Tuple.Create("DeathSound", 1f));
                     }
                     else
                     {

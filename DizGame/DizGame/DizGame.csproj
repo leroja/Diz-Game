@@ -130,10 +130,15 @@
     <Content Include="Content\Skybox\skybox_texture.jpg" />
     <Content Include="Content\Songs\GameSong.mp3" />
     <Content Include="Content\Songs\MenuSong.mp3" />
+    <Content Include="Content\SoundEffects\AK-47 Reload.wav" />
+    <Content Include="Content\SoundEffects\Anti Aircraft Gun.wav" />
+    <Content Include="Content\SoundEffects\Blast.wav" />
     <Content Include="Content\SoundEffects\Chambering A Round.mp3" />
     <Content Include="Content\SoundEffects\Gun-Shot.wav" />
     <Content Include="Content\ParticleTexture\Smoke.png" />
     <Content Include="Content\SoundEffects\menu-selection-sound.wav" />
+    <Content Include="Content\SoundEffects\NoNo.wav" />
+    <Content Include="Content\SoundEffects\Pick Up Health.wav" />
     <Content Include="Icon.ico" />
     <Content Include="Content\Weapons\AK47FPS.png" />
   </ItemGroup>

@@ -171,6 +171,8 @@ namespace DizGame.Source.Factories
 
             List<IComponent> components = new List<IComponent>
             {
+                new _3DAudioListenerComponent(),
+                new _3DSoundEffectComponent(),
                 new SoundEffectComponent(),
                 new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(chuck),
@@ -483,6 +485,7 @@ namespace DizGame.Source.Factories
 
             List<IComponent> components = new List<IComponent>
             {
+                new _3DSoundEffectComponent(),
                 new SoundEffectComponent(),
                 new TransformComponent(position, new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(model),

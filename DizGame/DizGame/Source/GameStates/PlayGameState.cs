@@ -63,8 +63,8 @@ namespace DizGame.Source.GameStates
             InitializeSystems();
 
             AudioManager.Instance.PlaySong("GameSong");
-            AudioManager.Instance.ChangeSongVolume(0.25f);
-            AudioManager.Instance.ChangeGlobalSoundEffectVolume(0.75f);
+            AudioManager.Instance.ChangeSongVolume(0.15f);
+            AudioManager.Instance.ChangeGlobalSoundEffectVolume(1f);
         }
 
         /// <summary>
