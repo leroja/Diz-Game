@@ -115,7 +115,7 @@
     <Compile Include="Source\Systems\SoundEffectSystem.cs" />
     <Compile Include="Source\Systems\TextSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />
-    <Compile Include="Source\Systems\WindowTitleFPSSystem.cs" />
+    <Compile Include="Source\Systems\FPSSystem.cs" />
     <Compile Include="Source\Systems\WorldSystem.cs" />
     <Compile Include="Source\Utils\Util.cs" />
     <Compile Include="Source\Tools\BoundingBoxRenderer.cs" />
@@ -142,9 +142,6 @@
     <Content Include="Content\Flare\glow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Shaders\AllEff.fx" />
-    <Content Include="Content\Shaders\Shadow.fx" />
-    <Content Include="Content\Shaders\WaterShader.fx" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

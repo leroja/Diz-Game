@@ -86,7 +86,7 @@ namespace GameEngine.Source.Factories
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    heightMapData[x, y] = greyValues[x + y * Width].R * 0.2f;
+                    heightMapData[x, y] = greyValues[x + y * Width].R * 0.5f;
                 }
             }
         }
@@ -224,7 +224,7 @@ namespace GameEngine.Source.Factories
             {
                 FogEnabled = true,
                 FogStart = 10f,
-                FogColor = Color.LightGray.ToVector3(),
+                FogColor = Color.Orange.ToVector3(),
                 FogEnd = 400f,
                 TextureEnabled = true,
                 Texture = texture
@@ -274,7 +274,7 @@ namespace GameEngine.Source.Factories
             {
                 for (int y = terrainRect.Y; y < terrainRect.Y + terrainRect.Height; ++y)
                 {
-                    heightInfo[x - terrainRect.X, y - terrainRect.Y] = colors[x + y * width].R * 0.2f;
+                    heightInfo[x - terrainRect.X, y - terrainRect.Y] = colors[x + y * width].R * 0.5f;
                 }
             }
             return heightInfo;

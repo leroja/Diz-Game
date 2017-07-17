@@ -1,11 +1,13 @@
 ﻿using DizGame.Source.AI_Behaviors;
+using DizGame.Source.Random_Stuff;
 using GameEngine.Source.Components;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace DizGame.Source.Components
 {
-    // todo ta bort / flytta en del properties till bättre ställen
+    // TODO remove/move a couple of properties to better places
     /// <summary>
     /// A component for the AI:s
     /// </summary>
@@ -19,9 +21,9 @@ namespace DizGame.Source.Components
         /// </summary>
         public AiBehavior CurrentBehaivior { get; set; }
         /// <summary>
-        /// In what bounds the AI can move, based from origo
+        /// In what bounds the AI can move
         /// </summary>
-        public Rectangle Bounds { get; set; }
+        public Border Bounds { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -68,13 +70,13 @@ namespace DizGame.Source.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="boundRec"></param>
+        /// <param name="border"></param>
         /// <param name="shootingCoolDown"></param>
         /// <param name="waypoints"> A list of waypoints for the patrolling AI. If the AI not patrolling this can be null </param>
-        public AIComponent(Rectangle boundRec, float shootingCoolDown, List<Vector2> waypoints)
+        public AIComponent(Border border, float shootingCoolDown, List<Vector2> waypoints)
         {
             // default values
-            this.Bounds = boundRec;
+            this.Bounds = border;
             this.Hysteria = 50;
             this.DirectionDuration = 2f;
             this.DirectionChangeRoation = MathHelper.Pi;

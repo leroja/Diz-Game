@@ -9,7 +9,7 @@ using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // TODO decide the best condition when to enter the hoarding behavior
+    // TODO decide the best condition of when to enter the hoarding behavior
     /// <summary>
     /// A behavior for the AI that makes it wander around the map
     /// </summary>
@@ -22,7 +22,6 @@ namespace DizGame.Source.AI_Behaviors
         {
             CurrentTimeForRotation = 0f;
         }
-
 
         /// <summary>
         /// 
@@ -54,19 +53,19 @@ namespace DizGame.Source.AI_Behaviors
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
 
-            if (transformComp.Position.X >= AIComp.Bounds.Height)
+            if (transformComp.Position.X >= AIComp.Bounds.HighX)
             {
                 Border(transformComp, gameTime);
             }
-            else if (transformComp.Position.X <= 3)
+            else if (transformComp.Position.X <= AIComp.Bounds.LowX)
             {
                 Border(transformComp, gameTime);
             }
-            else if (transformComp.Position.Z <= -AIComp.Bounds.Width)
+            else if (transformComp.Position.Z <= AIComp.Bounds.HighZ)
             {
                 Border(transformComp, gameTime);
             }
-            else if (transformComp.Position.Z >= -3)
+            else if (transformComp.Position.Z >= AIComp.Bounds.LowZ)
             {
                 Border(transformComp, gameTime);
             }

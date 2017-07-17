@@ -40,7 +40,7 @@ namespace GameEngine.Source.Systems
                 }
                 soundEffectComponent.SoundEffectsToBePlayed.Clear();
             }
-            
+
 
             for (int i = 0; i < activeSoundEffects.Count; i++)
             {

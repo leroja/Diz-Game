@@ -1,5 +1,6 @@
 ﻿using DizGame.Source.Components;
 using DizGame.Source.Factories;
+using DizGame.Source.Random_Stuff;
 using DizGame.Source.Systems;
 using GameEngine.Source.Components;
 using GameEngine.Source.Components.Abstract_Classes;
@@ -13,8 +14,6 @@ using System.Collections.Generic;
 
 namespace DizGame.Source.GameStates
 {
-    // TODO change the heightmap, so that it blends in more with the skybox e.g raise the edges up or something
-    // OR maybe add water at the edges or something similar
     /// <summary>
     /// PlayGameState is a state which represents the basic gameplay logic.
     /// </summary>
@@ -27,6 +26,14 @@ namespace DizGame.Source.GameStates
         public override List<int> GameStateEntities { get; }
         private static EntityTracingSystem EntityTracingSystem { get; set; }
         private bool multiplayerGame;
+
+        private Border border = new Border()
+        {
+            HighX = 954,
+            LowX = 73,
+            HighZ = -943,
+            LowZ = -57
+        };
 
         #endregion
 
@@ -172,7 +179,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new HeightmapSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new TransformSystem());
             SystemManager.Instance.AddSystem(new KeyBoardSystem());
-            SystemManager.Instance.AddSystem(new MovingSystem());
+            SystemManager.Instance.AddSystem(new MovingSystem(border));
             SystemManager.Instance.AddSystem(new CameraSystem());
             SystemManager.Instance.AddSystem(new EnvironmentSystem());
             SystemManager.Instance.AddSystem(new MouseSystem());
@@ -186,19 +193,15 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new SoundEffectSystem());
             SystemManager.Instance.AddSystem(new _3DSoundSystem());
             SystemManager.Instance.AddSystem(new SpectatingSystem());
-
-            //EntityTracingSystem = new EntityTracingSystem();
-            //EntityTracingSystem.RecordInitialEntities();
-            //SystemManager.Instance.AddSystem(EntityTracingSystem);
             SystemManager.Instance.AddSystem(new ModelBoundingSystem());
             var id = ComponentManager.Instance.CreateID();
             GameStateEntities.Add(id);
-            SystemManager.Instance.AddSystem(new WindowTitleFPSSystem(GameOne.Instance, GameOne.Instance.Content.Load<SpriteFont>("Fonts/font"), id));
+            SystemManager.Instance.AddSystem(new FPSSystem(GameOne.Instance.Content.Load<SpriteFont>("Fonts/font"), id));
             SystemManager.Instance.AddSystem(new WorldSystem(GameOne.Instance));
             SystemManager.Instance.AddSystem(new _2DSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new TextSystem(SystemManager.Instance.SpriteBatch));
             SystemManager.Instance.AddSystem(new FlareSystem(SystemManager.Instance.SpriteBatch));
-            SystemManager.Instance.AddSystem(new ResourceSystem());
+            SystemManager.Instance.AddSystem(new ResourceSystem(this.border));
             //SystemManager.Instance.AddSystem(new BoundingSphereRenderer(GameOne.Instance.GraphicsDevice));
             //SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(cSys);
@@ -215,24 +218,25 @@ namespace DizGame.Source.GameStates
 
             var waypointList = new List<Vector2>()
             {
-                new Vector2(5, -5),
-                new Vector2(290, -5),
+                new Vector2(105, -105),
+                new Vector2(290, -105),
                 new Vector2(290, -290),
-                new Vector2(5, -290),
+                new Vector2(105, -290),
             };
+
 
             List<int> aiEntityList = new List<int>
             {
-                entf.CreateAI("Dude", new Vector3(100, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9, "AI-1"),
-                entf.CreateAI("Dude", new Vector3(500, 39, -500), 5, 1000, 1000, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7, "AI-2"),
-                entf.CreateAI("Dude", new Vector3(800, 45, -50), 5, 1000, 1000, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5, "AI-3"),
-                entf.CreateAI("Dude", new Vector3(5, 39, -45), 5, 1000, 1000, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.7f, 1f, waypointList, 90, 2, "AI-4"),
-                entf.CreateAI("Dude", new Vector3(800, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.1f, 100, 40, 0.7f, 1f, null, 350, 1, "AI-5"),
-                entf.CreateAI("Dude", new Vector3(75, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-6"),
-                entf.CreateAI("Dude", new Vector3(250, 45, -10), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-7"),
-                entf.CreateAI("Dude", new Vector3(50, 45, -800), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-8"),
-                entf.CreateAI("Dude", new Vector3(250, 45, -500), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-9"),
-                entf.CreateAI("Dude", new Vector3(500, 45, -600), 5, 1000, 1000, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-10"),
+                entf.CreateAI("Dude", new Vector3(100, 45, -800), 5, border, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9, "AI-1"),
+                entf.CreateAI("Dude", new Vector3(500, 39, -500), 5, border, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7, "AI-2"),
+                entf.CreateAI("Dude", new Vector3(800, 45, -150), 5, border, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5, "AI-3"),
+                entf.CreateAI("Dude", new Vector3(100, 39, -105), 5, border, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.7f, 1f, waypointList, 90, 2, "AI-4"),
+                entf.CreateAI("Dude", new Vector3(800, 45, -800), 5, border, 3f, MathHelper.Pi, 0.1f, 100, 40, 0.7f, 1f, null, 350, 1, "AI-5"),
+                entf.CreateAI("Dude", new Vector3(105, 45, -150), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-6"),
+                entf.CreateAI("Dude", new Vector3(250, 45, -110), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-7"),
+                entf.CreateAI("Dude", new Vector3(150, 45, -800), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-8"),
+                entf.CreateAI("Dude", new Vector3(250, 45, -500), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-9"),
+                entf.CreateAI("Dude", new Vector3(500, 45, -600), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-10"),
             };
             GameStateEntities.AddRange(aiEntityList);
 
@@ -249,7 +253,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.Add(heightmapID);
 
             //Add all static objects to this state i.e rocks, houses etc.
-            List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100);
+            List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100, border);
             GameStateEntities.AddRange(entityIdList);
 
             entf.CreateParticleEmitter(new Vector3(1, 2000, 1), "Smoke", 400, 10, 30, new Vector3(0, 1, 0), 5, 120);

@@ -7,7 +7,6 @@ using System;
 namespace DizGame.Source.AI_Behaviors
 {
     // Todo fix so that the AI looks for ammo and health when they are low
-    // Todo decide how to and where it's best change between the different behaviors
     /// <summary>
     /// The abstract base class for the AI behaviors
     /// </summary>
@@ -59,7 +58,7 @@ namespace DizGame.Source.AI_Behaviors
         /// Time left until the AI can shot again
         /// </summary>
         public float Time { get; set; }
-        
+
         #endregion properties
 
         /// <summary>
@@ -68,7 +67,7 @@ namespace DizGame.Source.AI_Behaviors
         /// <param name="AIComp"></param>
         /// <param name="gameTime"></param>
         public abstract void Update(AIComponent AIComp, GameTime gameTime);
-        
+
         /// <summary>
         /// Finds the closest enemy entity
         /// </summary>
@@ -135,12 +134,12 @@ namespace DizGame.Source.AI_Behaviors
                     ClosestResource = entityId;
                     DistanceToClosestResource = dist;
                 }
-                if (dist < DistanceToClosestAmmo && resourceComp.thisType == ResourceComponent.ResourceType.Ammo)
+                if (dist < DistanceToClosestAmmo && resourceComp.thisType == ResourceType.Ammo)
                 {
                     ClosestAmmo = entityId;
                     DistanceToClosestAmmo = dist;
                 }
-                if (dist < DistanceToClosestHealth && resourceComp.thisType == ResourceComponent.ResourceType.Health)
+                if (dist < DistanceToClosestHealth && resourceComp.thisType == ResourceType.Health)
                 {
                     ClosestHealth = entityId;
                     DistanceToClosestHealth = dist;

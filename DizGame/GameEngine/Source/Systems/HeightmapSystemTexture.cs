@@ -53,12 +53,12 @@ namespace GameEngine.Source.Systems
                         if (world != null && world.IsSunActive)
                         {
                             FlareComponent flare = ComponentManager.GetEntityComponent<FlareComponent>(world.ID);
-                            chunk.Effect.LightingEnabled = true;
-                            //chunk.Effect.DiffuseColor = flare.Diffuse;
-                            //chunk.Effect.AmbientLightColor = flare.AmbientLight;
-                            chunk.Effect.DirectionalLight0.Enabled = true;
-                            chunk.Effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
-                            chunk.Effect.DirectionalLight0.Direction = flare.LightDirection;
+                            //chunk.Effect.LightingEnabled = true;
+                            ////chunk.Effect.DiffuseColor = flare.Diffuse;
+                            ////chunk.Effect.AmbientLightColor = flare.AmbientLight;
+                            //chunk.Effect.DirectionalLight0.Enabled = true;
+                            //chunk.Effect.DirectionalLight0.DiffuseColor = flare.Diffuse;
+                            //chunk.Effect.DirectionalLight0.Direction = flare.LightDirection;
                         }
 
                         BoundingBox3D box = new BoundingBox3D(ConvertBoundingBoxToWorldCoords(chunk.BoundingBox, chunk.Effect.World));
@@ -75,7 +75,6 @@ namespace GameEngine.Source.Systems
                         }
                     }
                 }
-
             }
         }
 

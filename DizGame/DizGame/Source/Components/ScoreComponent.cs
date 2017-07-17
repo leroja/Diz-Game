@@ -8,15 +8,11 @@ namespace DizGame.Source.Components
     public class ScoreComponent : IComponent
     {
         /// <summary>
-        /// LeaderBoard position
-        /// </summary>
-        public int Position { get; set; }
-        /// <summary>
         /// The players score
         /// </summary>
         public int Score { get; set; }
         /// <summary>
-        /// Name of the entity the scorecomponent is on
+        /// Name of the entity the score component is on
         /// </summary>
         public string NameOfScorer { get; set; }
         /// <summary>

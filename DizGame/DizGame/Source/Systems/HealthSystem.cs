@@ -38,9 +38,7 @@ namespace DizGame.Source.Systems
         {
             int id1 = (int)value.Item1;
             int id2 = (int)value.Item2;
-
-            var temp = ComponentManager.Instance.GetAllEntityComponents(id1);
-            var temp2 = ComponentManager.Instance.GetAllEntityComponents(id2);
+            
             if (ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id1) || ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id2))
             {
                 if (ComponentManager.Instance.CheckIfEntityHasComponent<HealthComponent>(id1))
@@ -81,7 +79,7 @@ namespace DizGame.Source.Systems
             var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(ResourceID);
             if (res != null)
             {
-                if (res.thisType == ResourceComponent.ResourceType.Health)
+                if (res.thisType == ResourceType.Health)
                 {
                     if (ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(HealthID) || ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(HealthID))
                     {

@@ -15,15 +15,14 @@ namespace GameEngine.Source.Systems
         /// 
         /// </summary>
         /// <param name="gameTime"></param>
-        /// 
         public abstract void Draw(GameTime gameTime);
+
         /// <summary>
         /// Thread safe function 
         /// </summary>
         /// <param name="gameTime"></param>
         public void DrawThreadSafe(GameTime gameTime)
         {
-            //Console.WriteLine(this.ToString());
             lock (_lock)
             {
                 Draw(gameTime);

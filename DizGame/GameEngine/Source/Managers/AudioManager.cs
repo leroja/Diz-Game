@@ -143,7 +143,7 @@ namespace GameEngine.Source.Managers
             if (soundEffDic.ContainsKey(soundEffect))
             {
                 var inst = soundEffDic[soundEffect].CreateInstance();
-                
+
                 inst.Volume = volume;
                 inst.Apply3D(audioListener, audioEmitter);
                 inst.Play();

@@ -7,10 +7,11 @@ using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using System.Threading.Tasks;
+using DizGame.Source.Random_Stuff;
 
 namespace DizGame.Source.Systems
 {
-    // TODO make so that you can move over the edge, e.g add invisible borders
+    // TODO make so that you can't move over the edge, e.g add invisible borders
     // TODO add some form of stamina so that u can't run all the time.
     /// <summary>
     /// System handles moving of an object,
@@ -18,6 +19,17 @@ namespace DizGame.Source.Systems
     /// </summary>
     public class MovingSystem : IUpdate
     {
+        private Border border;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="border"></param>
+        public MovingSystem(Border border)
+        {
+            this.border = border;
+        }
+
         /// <summary>
         /// Updates an objects movement(position) using
         /// TransformComponent, PhysicComponent and KeyboardComponent.
@@ -55,12 +67,12 @@ namespace DizGame.Source.Systems
 
                 if (!phys.IsInAir)
                 {
-                    if(key.GetState("Forward") == ButtonStates.Hold && key.GetState("Sprint") == ButtonStates.Hold)
+                    if (key.GetState("Forward") == ButtonStates.Hold && key.GetState("Sprint") == ButtonStates.Hold)
                     {
                         move += trans.Forward * 40;
                         animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds * 2);
                     }
-                    else if(key.GetState("Forward") == ButtonStates.Hold)
+                    else if (key.GetState("Forward") == ButtonStates.Hold)
                     {
                         move += trans.Forward * 20;
                         animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
@@ -73,7 +85,7 @@ namespace DizGame.Source.Systems
                     if (key.GetState("Left") == ButtonStates.Hold)
                     {
                         move += -trans.Right * 20;
-                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds); // todo hur ska vi göra när man går åt sidan?
+                        //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds); // TODO hur ska vi göra när man går åt sidan?
                     }
                     if (key.GetState("Right") == ButtonStates.Hold)
                     {
@@ -94,6 +106,22 @@ namespace DizGame.Source.Systems
                         }
                     }
                 }
+                //if (trans.Position.X >= border.HighX)
+                //{
+                //    move = -move;
+                //}
+                //else if (trans.Position.X <= border.LowX)
+                //{
+                //    move = -move;
+                //}
+                //else if (trans.Position.Z <= border.HighZ)
+                //{
+                //    move = -move;
+                //}
+                //else if (trans.Position.Z >= border.LowZ)
+                //{
+                //    move = -move;
+                //}
                 if (phys != null)
                 {
                     float he = GetHeight(trans.Position);
@@ -123,6 +151,7 @@ namespace DizGame.Source.Systems
                     float he = GetHeight(trans.Position);
                     trans.Position = new Vector3(trans.Position.X, he, trans.Position.Z);
                 }
+
             });
         }
         private Vector3 CheckMaxVelocityAndGetVector(PhysicsComponent physic, Vector3 move)

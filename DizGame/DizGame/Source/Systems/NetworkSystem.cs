@@ -1,13 +1,6 @@
 ﻿using Lidgren.Network;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//using GameEngine.Source.Communication;
-using GameEngine.Source.Enums;
 using DizGame.Source.Communication;
-using System.Threading;
 
 namespace DizGame.Source.Systems
 {

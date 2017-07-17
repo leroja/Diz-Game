@@ -25,20 +25,12 @@ namespace GameEngine.Source.RandomStuff
         /// </summary>
         public BoundingBox BoundingBox { get; set; }
         /// <summary>
-        /// The position offset from the startingpoint of the heightmap
+        /// The position offset from the starting point of the heightmap
         /// </summary>
         public Vector3 OffsetPosition { get; set; }
         /// <summary>
         /// How many indices there are in the index buffer divided by three
         /// </summary>
         public int IndicesDiv3 { get; set; }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public HeightMapChunk()
-        {
-
-        }
     }
 }

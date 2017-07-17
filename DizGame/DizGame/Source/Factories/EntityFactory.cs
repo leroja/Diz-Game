@@ -1,6 +1,7 @@
 ﻿using AnimationContentClasses;
 using AnimationContentClasses.Utils;
 using DizGame.Source.Components;
+using DizGame.Source.Random_Stuff;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
@@ -86,7 +87,7 @@ namespace DizGame.Source.Factories
                 { "heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
                 { "RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
                 { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
-                { "Map3", Content.Load<Texture2D>("HeightMapStuff/Map3") },
+                { "Map3", Content.Load<Texture2D>("HeightMapStuff/Map11") },
                 { "CrossHair", Content.Load<Texture2D>("Icons/crosshairTransparent") },
             };
             hmFactory = new HeightMapFactory(GameOne.Instance.GraphicsDevice);
@@ -107,7 +108,7 @@ namespace DizGame.Source.Factories
                     IsSunActive = true,
                     DefineHour = 1,
                     Day = 1,
-                    Hour = 22,
+                    Hour = 1,
                     ModulusValue = 2,
                 },
             };
@@ -124,7 +125,7 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// 
+        /// Places a crosshair on the screen
         /// </summary>
         /// <param name="position"> Position of the crosshair on the screen </param>
         /// <returns></returns>
@@ -164,7 +165,6 @@ namespace DizGame.Source.Factories
             keys.AddActionAndKey("SpectateUp", Keys.Up);
             keys.AddActionAndKey("SpectateDown", Keys.Down);
 
-
             MouseComponent mouse = new MouseComponent();
             mouse.AddActionToButton("Fire", "LeftButton");
             mouse.MouseSensitivity = 0.2f;
@@ -174,7 +174,7 @@ namespace DizGame.Source.Factories
                 new _3DAudioListenerComponent(),
                 new _3DSoundEffectComponent(),
                 new SoundEffectComponent(),
-                new TransformComponent(new Vector3(20,45,-10), new Vector3(0.1f, 0.1f, 0.1f)),
+                new TransformComponent(new Vector3(120,45,-100), new Vector3(0.1f, 0.1f, 0.1f)),
                 new ModelComponent(chuck),
                 keys,
                 mouse,
@@ -219,7 +219,8 @@ namespace DizGame.Source.Factories
                     {
                         if (ModComp2 != null && ModComp1 != null && ModComp1.BoundingVolume.Bounding.Intersects(ModComp2.BoundingVolume.Bounding))
                         {
-                            if (!ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(ModComp2.ID) && !ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(ModComp2.ID))
+                            if (!ComponentManager.Instance.CheckIfEntityHasComponent<PlayerComponent>(ModComp2.ID) &&
+                                !ComponentManager.Instance.CheckIfEntityHasComponent<AIComponent>(ModComp2.ID))
                             {
                                 ComponentManager.Instance.RemoveEntity(ModComp2.ID);
                                 ComponentManager.Instance.RemoveEntity(ModComp2.ID);
@@ -451,8 +452,7 @@ namespace DizGame.Source.Factories
         /// <param name="ModelName"> The name of the model the AI should use </param>
         /// <param name="position"> The initial position of the AI </param>
         /// <param name="hysteria">  </param>
-        /// <param name="widthBound">  </param>
-        /// <param name="heightBound">  </param>
+        /// <param name="border">  </param>
         /// <param name="DirectionDuration"> A value in seconds for how long the AI will stick to its chosen direction </param>
         /// <param name="rotation"> In what range the new rotation can be. e.g. -PI --- +PI </param>
         /// <param name="shootingCoolDown"> The delay between the shoots for when the AI is shooting
@@ -466,7 +466,7 @@ namespace DizGame.Source.Factories
         /// <param name="DamagePerShot"> How much damage the AI does per shot </param>
         /// <param name="nameOfAi"> The name of the AI used for scoring</param>
         /// <returns> The ID of the new AI Entity  </returns>
-        public int CreateAI(string ModelName, Vector3 position, float hysteria, int widthBound, int heightBound, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot, string nameOfAi)
+        public int CreateAI(string ModelName, Vector3 position, float hysteria, Border border, float DirectionDuration, float rotation, float shootingCoolDown, float attackingDistance, float evadeDist, float turningSpeed, float updateFreq, List<Vector2> waypoints, float chaseDist, float DamagePerShot, string nameOfAi)
         {
             int AIEntityID = ComponentManager.Instance.CreateID();
             Model model = ModelDic[ModelName];
@@ -475,13 +475,11 @@ namespace DizGame.Source.Factories
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
                     effect.FogEnabled = true;
-                    effect.FogColor = Color.LightGray.ToVector3();
+                    effect.FogColor = Color.Orange.ToVector3();
                     effect.FogStart = 10;
                     effect.FogEnd = 400;
                 }
             }
-
-            var BoundRec = new Rectangle(0, 0, widthBound, heightBound);
 
             List<IComponent> components = new List<IComponent>
             {
@@ -504,7 +502,7 @@ namespace DizGame.Source.Factories
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
                 },
-                new AIComponent(BoundRec, shootingCoolDown, waypoints){
+                new AIComponent(border, shootingCoolDown, waypoints){
                     Hysteria = hysteria,
                     AttackingDistance = attackingDistance,
                     DirectionChangeRoation = rotation,
@@ -526,9 +524,9 @@ namespace DizGame.Source.Factories
 
         // TODO choose the best Skybox texture
         /// <summary>
-        /// 
+        /// Creates a new skybox
         /// </summary>
-        /// <returns></returns>
+        /// <returns> The enityID of the skybox entity </returns>
         public int CreateNewSkyBox()
         {
             int skyboxId = ComponentManager.Instance.CreateID();

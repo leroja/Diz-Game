@@ -10,6 +10,7 @@ namespace GameEngine.Source.Systems
     public abstract class IUpdate : ISystem
     {
         private static object _lock = new object();
+
         /// <summary>
         /// 
         /// </summary>

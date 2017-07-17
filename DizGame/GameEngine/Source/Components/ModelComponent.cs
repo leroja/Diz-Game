@@ -30,10 +30,6 @@ namespace GameEngine.Source.Components
         /// A Bool that says whether the model is visible or not
         /// </summary>
         public bool IsVisible { get; set; }
-        /// <summary>
-        /// A float that says where the middle position of model is, on the y axis
-        /// </summary>
-        public Vector3 MiddlePos { get; set; }
 
         #endregion Public Properties
 

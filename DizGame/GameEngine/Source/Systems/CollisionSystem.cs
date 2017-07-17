@@ -54,7 +54,6 @@ namespace GameEngine.Source.Systems
         public void CollisionDetection()
         {
             List<int> boundingEntities = ComponentManager.Instance.GetAllEntitiesWithComponentType<ModelComponent>();
-            //List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>> collidedVolumes = new List<Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>>();
 
             for (int i = 0; i < boundingEntities.Count - 1; i++)
             {
@@ -88,40 +87,6 @@ namespace GameEngine.Source.Systems
                 observers.Add(observer);
             return new Unsubscriber(observers, observer);
         }
-
-        ///// <summary>
-        ///// Goes through every boundingsphere 
-        ///// 
-        ///// </summary>
-        ///// <param name="volume1"></param>
-        ///// <param name="volume2"></param>
-        ///// <param name="tuple"></param>
-        ///// <returns>true if any of spheres1's and spheres2's spheres collide. Otherwise false</returns>
-        //private bool FindFirstHit(KeyValuePair<int, List<BoundingVolume>> volume1, KeyValuePair<int, List<BoundingVolume>> volume2, out Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>> tuple)
-        //{
-        //    BoundingVolume s1 = volume1.Value.FirstOrDefault();
-        //    BoundingVolume s2 = volume2.Value.FirstOrDefault();
-        //    if (s1 != null || s2 != null)
-        //    {
-        //        if (s1.Bounding.Intersects(s2.Bounding))
-        //        {
-        //            tuple = new Tuple<KeyValuePair<int, IBounding3D>, KeyValuePair<int, IBounding3D>>(new KeyValuePair<int, IBounding3D>(volume1.Key, s1.Bounding), new KeyValuePair<int, IBounding3D>(volume2.Key, s2.Bounding));
-        //            return true;
-        //        }
-        //        else if (volume1.Value.Count > volume2.Value.Count)
-        //        {
-        //            volume1.Value.Remove(s1);
-        //            FindFirstHit(volume1, volume2, out tuple);
-        //        }
-        //        else if (volume1.Value.Count < volume2.Value.Count)
-        //        {
-        //            volume2.Value.Remove(s2);
-        //            FindFirstHit(volume1, volume2, out tuple);
-        //        }
-        //    }
-        //    tuple = null;
-        //    return false;
-        //}
 
         /// <summary>
         /// 

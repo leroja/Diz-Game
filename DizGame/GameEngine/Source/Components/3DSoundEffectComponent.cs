@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
@@ -16,7 +13,7 @@ namespace GameEngine.Source.Components
         /// sound effect name, volume
         /// </summary>
         public List<Tuple<string, float>> SoundEffectsToBePlayed { get; set; }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>

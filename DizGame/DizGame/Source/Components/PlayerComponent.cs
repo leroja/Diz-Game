@@ -7,26 +7,6 @@ namespace DizGame.Source.Components
     /// </summary>
     public class PlayerComponent : IComponent
     {
-        /// <summary>
-        /// The ID of the player
-        /// </summary>
-        public int PlayerID { get; set; }
 
-        /// <summary>
-        /// A constructor
-        /// </summary>
-        /// <param name="PlayerId"></param>
-        public PlayerComponent(int PlayerId)
-        {
-            this.PlayerID = PlayerID;
-        }
-
-        /// <summary>
-        /// An empty constructor
-        /// </summary>
-        public PlayerComponent()
-        {
-
-        }
     }
 }

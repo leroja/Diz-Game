@@ -13,7 +13,7 @@ namespace DizGame.Source.Components
         public float Health { get; set; }
 
         /// <summary>
-        /// 
+        /// The max health of the entity
         /// </summary>
         public float MaxHealth = 100;
 

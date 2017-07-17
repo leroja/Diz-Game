@@ -37,19 +37,19 @@ namespace DizGame.Source.AI_Behaviors
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
 
-            if (transformComp.Position.X >= AIComp.Bounds.Height)
+            if (transformComp.Position.X >= AIComp.Bounds.HighX)
             {
                 Border(transformComp, AIComp, gameTime);
             }
-            else if (transformComp.Position.X <= 3)
+            else if (transformComp.Position.X <= AIComp.Bounds.LowX)
             {
                 Border(transformComp, AIComp, gameTime);
             }
-            else if (transformComp.Position.Z <= -AIComp.Bounds.Width)
+            else if (transformComp.Position.Z <= AIComp.Bounds.HighZ)
             {
                 Border(transformComp, AIComp, gameTime);
             }
-            else if (transformComp.Position.Z >= -3)
+            else if (transformComp.Position.Z >= AIComp.Bounds.LowZ)
             {
                 Border(transformComp, AIComp, gameTime);
             }
@@ -71,7 +71,7 @@ namespace DizGame.Source.AI_Behaviors
             transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
             AIComp.ChangeBehavior("Wander", transformComp.Rotation);
         }
-        
+
         /// <summary>
         /// Check whether the AI should change behavior
         /// If it should then the method changes the behavior

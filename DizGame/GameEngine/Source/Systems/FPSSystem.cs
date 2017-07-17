@@ -12,9 +12,8 @@ namespace GameEngine.Source.Systems
     /// <summary>
     /// A basic system that calculates the current FPS of the game
     /// </summary>
-    public class WindowTitleFPSSystem : IUpdate
+    public class FPSSystem : IUpdate
     {
-        private Game g;
         private int framecount;
         private TimeSpan timeSinceLastUpdate;
         private int frameCounter;
@@ -46,12 +45,10 @@ namespace GameEngine.Source.Systems
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="game"></param>
         /// <param name="font"> Font of the FPS text </param>
         /// <param name="EntityId"> A new entityID that the FPS text shall use </param>
-        public WindowTitleFPSSystem(Game game, SpriteFont font, int EntityId)
+        public FPSSystem(SpriteFont font, int EntityId)
         {
-            g = game;
             framecount = 0;
             timeSinceLastUpdate = TimeSpan.Zero;
             frameCounter = 0;

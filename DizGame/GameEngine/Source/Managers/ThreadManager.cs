@@ -64,6 +64,5 @@ namespace GameEngine.Source.Managers
                 }
             }
         }
-
     }
 }
