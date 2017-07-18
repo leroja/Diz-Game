@@ -165,6 +165,7 @@ namespace DizGame.Source.GameStates
         /// </summary>
         private void InitializeSystems()
         {
+            SystemManager.Instance.AddSystem(new SkyboxSystem(GameOne.Instance.GraphicsDevice));
             AmmunitionSystem ammo = new AmmunitionSystem();
             CollisionSystem cSys = new CollisionSystem();
             PhysicsSystem pSys = new PhysicsSystem();
@@ -190,8 +191,6 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
             SystemManager.Instance.AddSystem(new SmokeSystem());
-
-            SystemManager.Instance.AddSystem(new SkyboxSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new SoundEffectSystem());
             SystemManager.Instance.AddSystem(new _3DSoundSystem());
             SystemManager.Instance.AddSystem(new SpectatingSystem());
@@ -258,8 +257,8 @@ namespace DizGame.Source.GameStates
             List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100, border);
             GameStateEntities.AddRange(entityIdList);
 
-            entf.CreateParticleEmitter(new Vector3(5, 39, -45),"Smoke", 15);
-       
+            entf.CreateParticleEmitter(new Vector3(5, 39, -45), "Smoke", 15);
+
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(0, 0), new List<Vector2>(), idC);
