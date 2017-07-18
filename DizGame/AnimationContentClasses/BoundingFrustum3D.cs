@@ -8,16 +8,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AnimationContentClasses
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BoundingFrustum3D : IBounding3D
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public BoundingFrustum Frustum { get; set; }
 
         private BoundingFrustum3D() { }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="frustum"></param>
         public BoundingFrustum3D(BoundingFrustum frustum)
         {
             Frustum = frustum;
         }
+
         /// <summary>
         /// Checks if this Frustum intersects with another IBounding3D
         /// </summary>

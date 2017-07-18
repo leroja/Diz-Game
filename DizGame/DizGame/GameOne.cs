@@ -6,14 +6,10 @@ using DizGame.Source.GameStates;
 using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
-using GameEngine.Source.Factories;
-using GameEngine.Source.Components;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace DizGame
 {
-    // TODO add more parallel for each, later
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -74,7 +70,7 @@ namespace DizGame
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
- 
+
 
             InitNetworkClient();
 
@@ -91,10 +87,10 @@ namespace DizGame
 
             MainMenu startState = new MainMenu();
             GameStateManager.Instance.Push(startState);
-            
+
             base.Initialize();
         }
-        
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.

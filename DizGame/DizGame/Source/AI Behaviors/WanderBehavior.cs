@@ -9,7 +9,6 @@ using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // TODO decide the best condition of when to enter the hoarding behavior
     /// <summary>
     /// A behavior for the AI that makes it wander around the map
     /// </summary>
@@ -80,8 +79,8 @@ namespace DizGame.Source.AI_Behaviors
         /// If it should then the method changes the behavior
         /// </summary>
         /// <param name="AIComp"> The AI component of the AI </param>
-        /// <param name="transcomp"> The transform component of the AI </param>
-        private void BehaviorStuff(AIComponent AIComp, TransformComponent transcomp)
+        /// <param name="transComp"> The transform component of the AI </param>
+        private void BehaviorStuff(AIComponent AIComp, TransformComponent transComp)
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
@@ -90,15 +89,15 @@ namespace DizGame.Source.AI_Behaviors
 
             if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy && !((worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0)))
             {
-                AIComp.ChangeBehavior("Evade", transcomp.Rotation);
+                AIComp.ChangeBehavior("Evade", transComp.Rotation);
             }
-            //else if (ammoComp.AmmountOfActiveMagazines < 2 || (healthComp.Health / healthComp.MaxHealth) <= 0.6)
-            //{
-            //    AIComp.ChangeBehavior("Hoarding", transcomp.Rotation);
-            //}
+            else if (ammoComp.AmmountOfActiveMagazines < 2 || (healthComp.Health / healthComp.MaxHealth) <= 0.6)
+            {
+                AIComp.ChangeBehavior("Hoarding", transComp.Rotation);
+            }
             else if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance - AIComp.Hysteria)
             {
-                AIComp.ChangeBehavior("Chase", transcomp.Rotation);
+                AIComp.ChangeBehavior("Chase", transComp.Rotation);
             }
         }
 

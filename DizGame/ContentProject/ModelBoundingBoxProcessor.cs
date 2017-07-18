@@ -62,6 +62,12 @@ namespace ContentProject
             return model;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="scale"></param>
+        /// <returns></returns>
         public static BoundingVolume Loop(NodeContent content, float scale)
         {
             BoundingVolume volume = new BoundingVolume(1);

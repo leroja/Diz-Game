@@ -21,6 +21,13 @@ namespace ContentProject
     public class ModelBoundingSphereProcessor : ModelProcessor
     {
         private static BoundingSphere sphere;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
             ModelContent model = base.Process(input, context);
@@ -56,6 +63,12 @@ namespace ContentProject
             return model;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="scale"></param>
+        /// <returns></returns>
         public static BoundingVolume Loop(NodeContent content, float scale)
         {
             BoundingVolume volume = new BoundingVolume(1);

@@ -11,7 +11,10 @@ namespace GameEngine.Source.Systems
     /// </summary>
     public class WorldSystem : IUpdate
     {
+
+        private float c = 0;
         private Game game;
+
         /// <summary>
         /// Basic constructor.
         /// </summary>
@@ -89,9 +92,7 @@ namespace GameEngine.Source.Systems
 
             text.Text = "Day: " + world.Day + "\n" + hour + ":" + minute + ":" + second;
         }
-
-        private float c = 0;
-        private bool reverse = false;
+        
         /// <summary>
         /// Updates the sun rotation
         /// </summary>

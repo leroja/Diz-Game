@@ -74,8 +74,7 @@ namespace DizGame.Source.AI_Behaviors
         {
             var worldTemp = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
             var worldComp = (WorldComponent)worldTemp.Values.First();
-
-
+            
             if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && DistanceToClosestEnemy < AIComp.ChaseDistance)
             {
                 AIComp.ChangeBehavior("Chase", transcomp.Rotation);

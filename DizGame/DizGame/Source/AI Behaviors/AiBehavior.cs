@@ -6,7 +6,6 @@ using System;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // Todo fix so that the AI looks for ammo and health when they are low
     /// <summary>
     /// The abstract base class for the AI behaviors
     /// </summary>

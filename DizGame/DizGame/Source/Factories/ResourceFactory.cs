@@ -49,7 +49,7 @@ namespace DizGame.Source.Factories
                 effect.DiffuseColor = Color.DeepPink.ToVector3();
                 effect.AmbientLightColor = Color.AntiqueWhite.ToVector3();
                 effect.FogEnabled = true;
-                effect.FogColor = Color.Orange.ToVector3();
+                effect.FogColor = Color.LightGray.ToVector3();
                 effect.FogStart = 10;
                 effect.FogEnd = 400;
             }
@@ -99,7 +99,7 @@ namespace DizGame.Source.Factories
                 BasicEffect effect = (BasicEffect)modelpart.Effects[0];
                 effect.EnableDefaultLighting();
                 effect.FogEnabled = true;
-                effect.FogColor = Color.Orange.ToVector3();
+                effect.FogColor = Color.LightGray.ToVector3();
                 effect.FogStart = 10;
                 effect.FogEnd = 400;
             }

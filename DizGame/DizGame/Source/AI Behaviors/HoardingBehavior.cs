@@ -8,9 +8,8 @@ using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // TODO decide when to break from the hoarding behavior, I don't want them be in this behavior for to long but at the same time I want them to at least collect some ammo and/or health
     /// <summary>
-    /// An AI behavior for collecting resources
+    /// An AI behavior that makes the AI collect the closest resources
     /// </summary>
     public class HoardingBehavior : AiBehavior
     {
@@ -72,15 +71,12 @@ namespace DizGame.Source.AI_Behaviors
             var healthComp = ComponentManager.Instance.GetEntityComponent<HealthComponent>(AIComp.ID);
             var ammoComp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID);
 
-            if (healthComp.Health == healthComp.MaxHealth && ammoComp.AmmountOfActiveMagazines >= 2)
+            if (AIComp.EvadeDistance - AIComp.Hysteria > AIComp.CurrentBehaivior.DistanceToClosestEnemy)
             {
-                AIComp.ChangeBehavior("Wander", transComp.Rotation);
+                AIComp.ChangeBehavior("Evade", transComp.Rotation);
             }
-            else if (true)
-            {
-                AIComp.ChangeBehavior("Wander", transComp.Rotation);
-            }
-            else if (false)
+
+            if ((healthComp.Health / healthComp.MaxHealth) >= 0.8 && ammoComp.AmmountOfActiveMagazines >= 2)
             {
                 AIComp.ChangeBehavior("Wander", transComp.Rotation);
             }

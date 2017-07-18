@@ -108,7 +108,7 @@ namespace DizGame.Source.Factories
                     IsSunActive = true,
                     DefineHour = 1,
                     Day = 1,
-                    Hour = 1,
+                    Hour = 22,
                     ModulusValue = 2,
                 },
             };
@@ -475,7 +475,7 @@ namespace DizGame.Source.Factories
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
                     effect.FogEnabled = true;
-                    effect.FogColor = Color.Orange.ToVector3();
+                    effect.FogColor = Color.LightGray.ToVector3();
                     effect.FogStart = 10;
                     effect.FogEnd = 400;
                 }
@@ -522,7 +522,7 @@ namespace DizGame.Source.Factories
             return AIEntityID;
         }
 
-        // TODO choose the best Skybox texture
+        // TODO choose the best Skybox texture and the best size
         /// <summary>
         /// Creates a new skybox
         /// </summary>
@@ -532,7 +532,19 @@ namespace DizGame.Source.Factories
             int skyboxId = ComponentManager.Instance.CreateID();
             Model model = Content.Load<Model>("Skybox/cube");
             Effect skyBoxEffect = Content.Load<Effect>("Effects/Skybox");
-            TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/Sunset");
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/Islands"); // looks nice
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/orionss20"); // nice colours, but doesn't fit in
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/SkyBox"); // could work
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/SpaceCube"); // could have worked if it weren't for the planet
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/Sunset"); // looks nice
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/EmptySpace"); // looks ok, little hard to see the stars
+
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/FullMoon"); // Looks nice
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/CloudyLightRays"); // Clouds look fucked up
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/DarkStormy"); // Looks nice
+            TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/ThickCloudsWater"); // Looks nice
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/SunSet1"); // Looks ok, the clouds are a bit too pixelated
+            //TextureCube skyboxTexture = Content.Load<TextureCube>("Skybox/SkyboxTextures/TropicalSunnyDay"); // looks nice, the mountains might be a bit too tall for this one
             List<IComponent> newcmpList = new List<IComponent>
             {
                 new SkyBoxComponent(model){

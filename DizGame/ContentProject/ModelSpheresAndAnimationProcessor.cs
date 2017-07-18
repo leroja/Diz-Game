@@ -14,8 +14,6 @@ namespace ContentProject
     [ContentProcessor(DisplayName = "ModelSpheresWithAnimationProcessor")]
     class ModelSpheresAndAnimationProcessor : AnimationProcessor
     {
-        BoundingSphere sphere;
-        List<BoundingSphere> sphereList = new List<BoundingSphere>();
         Dictionary<string, object> modeldict;
 
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
@@ -23,12 +21,6 @@ namespace ContentProject
             ModelContent model = base.Process(input, context);
 
             modeldict = (Dictionary<string, object>)model.Tag;
-            //foreach (ModelMeshContent meshContent in model.Meshes)
-            //{
-            //    sphereList.Add(meshContent.BoundingSphere);
-            //    sphere = BoundingSphere.CreateMerged(sphere, meshContent.BoundingSphere);
-            //}
-            //sphereList.Insert(0, sphere);
 
             modeldict.Add("BoundingVolume", ModelBoundingSphereProcessor.Loop(input, this.Scale));
             model.Tag = modeldict;

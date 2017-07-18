@@ -106,7 +106,7 @@ namespace DizGame.Source.Factories
                             effect.TextureEnabled = true;
                             effect.Texture = _Texture2dDictionary["RockTexture"];
                             effect.FogEnabled = true;
-                            effect.FogColor = Color.Orange.ToVector3();
+                            effect.FogColor = Color.LightGray.ToVector3();
                             effect.FogStart = 10;
                             effect.FogEnd = 400;
                         }
@@ -118,7 +118,7 @@ namespace DizGame.Source.Factories
                         foreach (BasicEffect effect in mesh.Effects)
                         {
                             effect.FogEnabled = true;
-                            effect.FogColor = Color.Orange.ToVector3();
+                            effect.FogColor = Color.LightGray.ToVector3();
                             effect.FogStart = 10;
                             effect.FogEnd = 400;
                         }
@@ -175,7 +175,7 @@ namespace DizGame.Source.Factories
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.FogEnabled = true;
-                    effect.FogColor = Color.Orange.ToVector3();
+                    effect.FogColor = Color.LightGray.ToVector3();
                     effect.FogStart = 10;
                     effect.FogEnd = 400;
                 }

@@ -224,7 +224,7 @@ namespace GameEngine.Source.Factories
             {
                 FogEnabled = true,
                 FogStart = 10f,
-                FogColor = Color.Orange.ToVector3(),
+                FogColor = Color.LightGray.ToVector3(),
                 FogEnd = 400f,
                 TextureEnabled = true,
                 Texture = texture

@@ -70,7 +70,7 @@ namespace DizGame.Source.GameStates
             GameStateEntities.Add(entiID);
 
             var longestNameLenght = GetLongestName().Length;
-            int start = 55 - longestNameLenght;
+            int start = 35 - longestNameLenght;
 
             List<string> names = new List<string>()
             {
@@ -168,8 +168,7 @@ namespace DizGame.Source.GameStates
             {
                 Score.Add(ComponentManager.Instance.GetEntityComponent<ScoreComponent>(id));
             }
-
-            return Score.OrderByDescending(o => o.NameOfScorer).ToList()[0].NameOfScorer;
+            return Score.OrderByDescending(o => o.NameOfScorer.Length).ToList()[0].NameOfScorer;
         }
 
         /// <summary>

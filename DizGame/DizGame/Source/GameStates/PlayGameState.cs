@@ -189,7 +189,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new ParticleUpdateSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
-
+            SystemManager.Instance.AddSystem(new SkyboxSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new SoundEffectSystem());
             SystemManager.Instance.AddSystem(new _3DSoundSystem());
             SystemManager.Instance.AddSystem(new SpectatingSystem());
@@ -227,23 +227,23 @@ namespace DizGame.Source.GameStates
 
             List<int> aiEntityList = new List<int>
             {
-                entf.CreateAI("Dude", new Vector3(100, 45, -800), 5, border, 3f, MathHelper.Pi, 0.9f, 100, 40, 0.7f, 1f, null, 150, 9, "AI-1"),
-                entf.CreateAI("Dude", new Vector3(500, 39, -500), 5, border, 2.5f, MathHelper.Pi, 1.5f, 50f, 25f, 0.7f, 1f, null, 150, 7, "AI-2"),
-                entf.CreateAI("Dude", new Vector3(800, 45, -150), 5, border, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5, "AI-3"),
-                entf.CreateAI("Dude", new Vector3(100, 39, -105), 5, border, 1, MathHelper.Pi, 1.5f, 15f, 25f, 0.7f, 1f, waypointList, 90, 2, "AI-4"),
-                entf.CreateAI("Dude", new Vector3(800, 45, -800), 5, border, 3f, MathHelper.Pi, 0.1f, 100, 40, 0.7f, 1f, null, 350, 1, "AI-5"),
-                entf.CreateAI("Dude", new Vector3(105, 45, -150), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-6"),
-                entf.CreateAI("Dude", new Vector3(250, 45, -110), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-7"),
-                entf.CreateAI("Dude", new Vector3(150, 45, -800), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-8"),
-                entf.CreateAI("Dude", new Vector3(250, 45, -500), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-9"),
-                entf.CreateAI("Dude", new Vector3(500, 45, -600), 5, border, 3f, MathHelper.Pi, 0.3f, 100, 40, 0.7f, 1f, null, 350, 3, "AI-10"),
+                entf.CreateAI("Dude", new Vector3(100, 45, -800), 7, border, 3f, MathHelper.Pi, 0.9f, 100, 50, 0.7f, 1f, null, 150, 9, "AI 1"),
+                entf.CreateAI("Dude", new Vector3(500, 39, -500), 7, border, 2.5f, MathHelper.Pi, 1.5f, 70f, 35f, 0.7f, 1f, null, 150, 7, "AI 2"),
+                entf.CreateAI("Dude", new Vector3(800, 45, -150), 7, border, 2f, MathHelper.Pi, 0.2f, 25f, 15f, 0.7f, 1f, null, 150, 5, "AI 3"),
+                entf.CreateAI("Dude", new Vector3(100, 39, -105), 7, border, 1, MathHelper.Pi, 1.5f, 75f, 50f, 0.7f, 1f, waypointList, 90, 2, "Patrolling AI"),
+                entf.CreateAI("Dude", new Vector3(800, 45, -800), 7, border, 3f, MathHelper.Pi, 0.1f, 100, 50, 0.7f, 1f, null, 350, 1, "AI 5"),
+                entf.CreateAI("Dude", new Vector3(105, 45, -150), 7, border, 3f, MathHelper.Pi, 0.3f, 100, 50, 0.7f, 1f, null, 350, 3, "AI 6"),
+                entf.CreateAI("Dude", new Vector3(250, 45, -110), 7, border, 3f, MathHelper.Pi, 0.3f, 100, 50, 0.7f, 1f, null, 350, 3, "AI 7"),
+                entf.CreateAI("Dude", new Vector3(150, 45, -800), 7, border, 3f, MathHelper.Pi, 0.3f, 100,50, 0.7f, 1f, null, 350, 3, "AI 8"),
+                entf.CreateAI("Dude", new Vector3(250, 45, -500), 7, border, 3f, MathHelper.Pi, 0.3f, 100, 50, 0.7f, 1f, null, 350, 3, "AI 9"),
+                entf.CreateAI("Dude", new Vector3(500, 45, -600), 7, border, 3f, MathHelper.Pi, 0.3f, 100, 50, 0.7f, 1f, null, 350, 3, "AI 10"),
             };
             GameStateEntities.AddRange(aiEntityList);
 
 
             GameStateEntities.Add(entf.PlaceCrossHair(new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 2, GameOne.Instance.GraphicsDevice.Viewport.Height / 2 + 20f)));
 
-            var idC = entf.CreateDude("Player-1");
+            var idC = entf.CreateDude("Player 1");
             entf.AddPOVCamToEntity(idC);
             //Add entity for the dude to this state
             GameStateEntities.Add(idC);

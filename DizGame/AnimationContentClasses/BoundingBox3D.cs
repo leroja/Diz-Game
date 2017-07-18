@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace AnimationContentClasses
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BoundingBox3D : IBounding3D
     {
         /// <summary>
@@ -27,6 +30,7 @@ namespace AnimationContentClasses
         {
             Box = box;
         }
+
         /// <summary>
         /// Checks if this Box intersect with another IBounding3D
         /// </summary>
@@ -48,6 +52,7 @@ namespace AnimationContentClasses
             }
             return false;
         }
+
         /// <summary>
         /// Merges this Box with another IBounding3D
         /// </summary>

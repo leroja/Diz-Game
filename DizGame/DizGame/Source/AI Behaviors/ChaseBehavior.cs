@@ -9,7 +9,7 @@ using DizGame.Source.Systems;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// A state that makes the AI Chase either another AI or the Player
+    /// A state that makes the AI chase either another AI or the Player
     /// </summary>
     public class ChaseBehavior : AiBehavior
     {

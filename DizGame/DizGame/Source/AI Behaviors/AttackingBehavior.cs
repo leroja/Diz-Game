@@ -6,24 +6,15 @@ using GameEngine.Source.Components;
 using DizGame.Source.Systems;
 using DizGame.Source.Factories;
 using System;
+using GameEngine.Source.Utils;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // TODO insert some spread on the shots, e.g. add a little rotation
     /// <summary>
     /// A Behavior that makes the AI shoot at the closest enemy
     /// </summary>
     public class AttackingBehavior : AiBehavior
     {
-        private Random rand;
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public AttackingBehavior()
-        {
-            rand = new Random();
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -52,10 +43,12 @@ namespace DizGame.Source.AI_Behaviors
                 if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag > 0 &&
                     DesiredRotation == transformComp.Rotation.Y)
                 {
-                    var rot = GetRotationForAimingAtEnemy(AIComp);
+                    var rot = new Vector3(GetRotationForAimingAtEnemy(AIComp), 0, 0);
+
+                    rot += GetSpread();
 
                     EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7,
-                        new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0),
+                        new Vector3(.1f, .1f, .1f), 1000, 1000, transformComp.Rotation + rot,
                         AIComp.DamagePerShot, AIComp.ID);
 
                     ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag--;
@@ -105,6 +98,21 @@ namespace DizGame.Source.AI_Behaviors
                 }
             }
         }
+
+        /// <summary>
+        /// Returns a new Vector3 with some small random numbers
+        /// </summary>
+        /// <returns></returns>
+        private Vector3 GetSpread()
+        {
+            float min = -MathHelper.PiOver4 / 20;
+            float max = MathHelper.PiOver4 / 20;
+            float x = (float)Util.GetRandomNumber(min, max);
+            float y = (float)Util.GetRandomNumber(min, max);
+            float z = (float)Util.GetRandomNumber(min, max);
+            return new Vector3(x, y, z);
+        }
+
 
         /// <summary>
         /// Override of object.ToString

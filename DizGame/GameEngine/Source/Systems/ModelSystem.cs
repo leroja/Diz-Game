@@ -17,7 +17,6 @@ namespace GameEngine.Source.Systems
         WorldComponent world;
         CameraComponent defaultCam;
         int defaultCamID;
-
         GraphicsDevice device;
 
         /// <summary>
@@ -48,8 +47,6 @@ namespace GameEngine.Source.Systems
             {
                 DrawModel(ent);
             }
-            foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<SkyBoxComponent>())
-                RenderSkyBox(entityID);
 
             foreach (int entityID in ComponentManager.GetAllEntitiesWithComponentType<HardwareInstancedComponent>())
                 RenderHardwareInstanced(entityID);
@@ -86,49 +83,6 @@ namespace GameEngine.Source.Systems
                     hwComponent.IndexBuffer.IndexCount / hwComponent.IndicesPerPrimitive, hwComponent.InstanceCount);
 
             }
-        }
-
-        /// <summary>
-        /// Renders a skybox
-        /// </summary>
-        /// <param name="EntityID"> The entityID of the skybox </param>
-        private void RenderSkyBox(int EntityID)
-        {
-            SkyBoxComponent skybox = ComponentManager.GetEntityComponent<SkyBoxComponent>(EntityID);
-            Effect skyBoxEffect = skybox.SkyboxEffect;
-            TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(EntityID);
-            TransformComponent trandXomp = ComponentManager.GetEntityComponent<TransformComponent>(defaultCam.ID);
-
-            var old_rs = device.RasterizerState;
-            device.RasterizerState = new RasterizerState { CullMode = CullMode.CullClockwiseFace };
-
-            // Go through each pass in the effect, but we know there is only one...
-            foreach (EffectPass pass in skyBoxEffect.CurrentTechnique.Passes)
-            {
-                pass.Apply();
-
-                // Draw all of the components of the mesh, but we know the cube really
-                // only has one mesh
-                foreach (ModelMesh mesh in skybox.SkyboxModel.Meshes)
-                {
-                    // Assign the appropriate values to each of the parameters
-                    foreach (ModelMeshPart part in mesh.MeshParts)
-                    {
-                        part.Effect = skyBoxEffect;
-                        part.Effect.Parameters["World"].SetValue(
-                            Matrix.CreateScale(skybox.Size) * Matrix.CreateTranslation(trandXomp.Position));
-                        part.Effect.Parameters["View"].SetValue(defaultCam.View);
-                        part.Effect.Parameters["Projection"].SetValue(defaultCam.Projection);
-                        part.Effect.Parameters["SkyBoxTexture"].SetValue(skybox.SkyboxTextureCube);
-                        part.Effect.Parameters["CameraPosition"].SetValue(trandXomp.Position);
-                    }
-
-                    // Draw the mesh with the skybox effect
-                    mesh.Draw();
-                }
-            }
-
-            device.RasterizerState = old_rs;
         }
 
         /// <summary>

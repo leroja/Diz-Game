@@ -8,11 +8,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AnimationContentClasses
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BoundingSphere3D : IBounding3D
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public BoundingSphere Sphere;
 
         private BoundingSphere3D() { }
+
         /// <summary>
         /// 
         /// </summary>
@@ -21,6 +28,7 @@ namespace AnimationContentClasses
         {
             Sphere = ball;
         }
+
         /// <summary>
         /// Checks if this Sphere intersects with another IBounding3D
         /// </summary>

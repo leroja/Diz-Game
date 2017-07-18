@@ -112,6 +112,7 @@
     <Compile Include="Source\Systems\KeyBoardSystem.cs" />
     <Compile Include="Source\Systems\ModelSystem.cs" />
     <Compile Include="Source\Systems\Physics\PhysicsSystem.cs" />
+    <Compile Include="Source\Systems\SkyboxSystem.cs" />
     <Compile Include="Source\Systems\SoundEffectSystem.cs" />
     <Compile Include="Source\Systems\TextSystem.cs" />
     <Compile Include="Source\Systems\TransformSystem.cs" />

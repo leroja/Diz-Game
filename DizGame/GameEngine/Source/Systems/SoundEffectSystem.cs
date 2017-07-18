@@ -4,6 +4,7 @@ using GameEngine.Source.Components;
 using Microsoft.Xna.Framework.Audio;
 using GameEngine.Source.Managers;
 using System;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems
 {
@@ -30,7 +31,7 @@ namespace GameEngine.Source.Systems
         {
             var soundEffectCompIDs = ComponentManager.GetAllEntitiesWithComponentType<SoundEffectComponent>();
 
-            foreach (var Id in soundEffectCompIDs)
+            Parallel.ForEach(soundEffectCompIDs, Id =>
             {
                 var soundEffectComponent = ComponentManager.GetEntityComponent<SoundEffectComponent>(Id);
 
@@ -39,8 +40,7 @@ namespace GameEngine.Source.Systems
                     activeSoundEffects.Add(AudioManager.Instance.PlaySoundEffect(soundEffect.Item1, soundEffect.Item2, soundEffect.Item3));
                 }
                 soundEffectComponent.SoundEffectsToBePlayed.Clear();
-            }
-
+            });
 
             for (int i = 0; i < activeSoundEffects.Count; i++)
             {

@@ -520,18 +520,6 @@
 /processorParam:TextureFormat=Color
 /build:Skybox/SkyboxTextures/Sunset.dds
 
-#begin Skybox/SkyboxTextures/Stars.dds
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=False
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Skybox/SkyboxTextures/Stars.dds
-
 #begin SoundEffects/Chambering A Round.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor
@@ -603,4 +591,88 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HeightMapStuff/Map11.png
+
+#begin Skybox/SkyboxTextures/EmptySpace.dds
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Skybox/SkyboxTextures/EmptySpace.dds
+
+#begin Skybox/SkyboxTextures/FullMoon.dds
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Skybox/SkyboxTextures/FullMoon.dds
+
+#begin Skybox/SkyboxTextures/CloudyLightRays.dds
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Skybox/SkyboxTextures/CloudyLightRays.dds
+
+#begin Skybox/SkyboxTextures/DarkStormy.dds
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Skybox/SkyboxTextures/DarkStormy.dds
+
+#begin Skybox/SkyboxTextures/SunSet1.dds
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Skybox/SkyboxTextures/SunSet1.dds
+
+#begin Skybox/SkyboxTextures/ThickCloudsWater.dds
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Skybox/SkyboxTextures/ThickCloudsWater.dds
+
+#begin Skybox/SkyboxTextures/TropicalSunnyDay.dds
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=False
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Skybox/SkyboxTextures/TropicalSunnyDay.dds
 
