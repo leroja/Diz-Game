@@ -1,93 +1,108 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameEngine.Source.RandomStuff;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using GameEngine.Source.RandomStuff;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
-    /// <summary>
-    /// A component for particles
-    /// </summary>
     public class ParticleEmitterComponent : IComponent
     {
         /// <summary>
-        /// Name of particle. Used for deciding settings
+        /// ParticleType for controlling uppdating
         /// </summary>
-        public string ParticleName { get; set; }
-
+        public string ParticleType { get; set; } 
         /// <summary>
-        /// Number of particles on emitter
-        /// </summary>
-        public int NumberOfParticles { get; set; }
-
-        /// <summary>
-        /// Particle lifetime 
+        /// LifeTime Of emiter
         /// </summary>
         public float LifeTime { get; set; }
 
         /// <summary>
-        /// Emitter lifetime
+        /// the used partical effect for this emiter
         /// </summary>
-        public float EmitterLife { get; set; }
-        /// <summary>
-        /// Particle texture  
-        /// </summary>
-        public Texture2D Texture { get; set; }
+        public Effect particleEffect { get; set; }
 
         /// <summary>
-        /// Setting for Fading textures
+        /// an array of particles
         /// </summary>
-        public float FadeInTime { get; set; }
+        public ParticleVertex[] particles { get; set; }
 
         /// <summary>
-        /// Direction of Particles from emitter
+        ///  A vertex buffer holding our particles.
         /// </summary>
-        public Vector3 Direction { get; set; }
+        public DynamicVertexBuffer vertexBuffer { get; set; }
 
         /// <summary>
-        /// Used for drawing Emitter Particles
+        /// Index buffer turns sets of four vertices into particle quads (pairs of triangles).
         /// </summary>
-        public Effect Effect { get; set; }
+        public IndexBuffer indexBuffer { get; set; }
 
         /// <summary>
-        /// start index for queue 
+        /// First active particle in particles
         /// </summary>
-        public int StartIndex { get; set; }
+        public int firstActiveParticle { get; set; }
         /// <summary>
-        /// Number of active particles in queue
+        /// first new particle in particles
         /// </summary>
-        public int NumberOfActiveParticles { get; set; }
+        public int firstNewParticle { get; set; }
         /// <summary>
-        /// Speed of particle
+        /// First free particle in particles
         /// </summary>
-        public int Speed { get; set; }
+        public int firstFreeParticle { get; set; }
+        /// <summary>
+        /// first retired particle
+        /// </summary>
+        public int firstRetiredParticle { get; set; }
+        /// <summary>
+        ///  Store the current time, in seconds.
+        /// </summary>
+        public float currentTime { get; set; }
+
 
         /// <summary>
-        /// A place to store the emitters current particles
+        /// Counts howe many times draw has been caled. used for uppdating
         /// </summary>
-        public ParticleVertex[] Particles { get; set; }
+        public int drawCounter { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int[] Indices { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name">Name of particle</param>
-        /// <param name="numberOfParticles">Number of particles on emitter</param>
-        /// <param name="lifeTime"> Particle lifetime </param>
-        /// <param name="texture"> Particle texture  </param>
-        /// <param name="FadeTime"> Setting for Fading textures </param>
-        /// <param name="Direction"> Direction of Particles from emitter </param>
-        public ParticleEmitterComponent(string name, int numberOfParticles, float lifeTime, Texture2D texture, float FadeTime, Vector3 Direction)
+        /// <param name="device"></param>
+        /// <param name="maxParticles">Max number of particels</param>
+        public ParticleEmitterComponent(GraphicsDevice device,int maxParticles)
         {
-            this.ParticleName = name;
-            this.NumberOfParticles = numberOfParticles;
-            this.LifeTime = lifeTime;
-            this.Texture = texture;
-            this.FadeInTime = FadeTime;
-            this.Direction = Direction;
+            particles = new ParticleVertex[maxParticles * 4];
+
+            for (int i = 0; i < maxParticles; i++)
+            {
+                particles[i * 4 + 0].Corner = new Vector2(-1, -1);
+                particles[i * 4 + 1].Corner = new Vector2(1, -1);
+                particles[i * 4 + 2].Corner = new Vector2(1, 1);
+                particles[i * 4 + 3].Corner = new Vector2(-1, 1);
+            }
+            vertexBuffer = new DynamicVertexBuffer(device, ParticleVertex.VertexDeclaration,
+                                                  maxParticles * 4, BufferUsage.WriteOnly);
+
+            ushort[] indices = new ushort[maxParticles * 6];
+
+            for (int i = 0; i < maxParticles; i++)
+            {
+                indices[i * 6 + 0] = (ushort)(i * 4 + 0);
+                indices[i * 6 + 1] = (ushort)(i * 4 + 1);
+                indices[i * 6 + 2] = (ushort)(i * 4 + 2);
+
+                indices[i * 6 + 3] = (ushort)(i * 4 + 0);
+                indices[i * 6 + 4] = (ushort)(i * 4 + 2);
+                indices[i * 6 + 5] = (ushort)(i * 4 + 3);
+            }
+
+            indexBuffer = new IndexBuffer(device, typeof(ushort), indices.Length, BufferUsage.WriteOnly);
+
+            indexBuffer.SetData(indices);
+
         }
     }
 }

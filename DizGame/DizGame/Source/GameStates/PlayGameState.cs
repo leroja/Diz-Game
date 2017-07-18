@@ -181,6 +181,7 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new ParticleUpdateSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
             SystemManager.Instance.AddSystem(new AISystem());
+            SystemManager.Instance.AddSystem(new SmokeSystem());
 
             SystemManager.Instance.AddSystem(new SpectatingSystem());
 
@@ -249,8 +250,8 @@ namespace DizGame.Source.GameStates
             List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100);
             GameStateEntities.AddRange(entityIdList);
 
-            entf.CreateParticleEmitter(new Vector3(1, 2000, 1), "Smoke", 400, 10, 30, new Vector3(0, 1, 0), 5, 120);
-
+            entf.CreateParticleEmitter(new Vector3(5, 39, -45),"Smoke", 15);
+       
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(0, 0), new List<Vector2>(), idC);

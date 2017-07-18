@@ -89,6 +89,7 @@
     <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
+    <Compile Include="Source\Systems\SmokeSystem.cs" />
     <Compile Include="Source\Systems\SpectatingSystem.cs" />
     <Compile Include="Source\Systems\StaticColisionSystem.cs" />
   </ItemGroup>
@@ -107,6 +108,7 @@
   <ItemGroup>
     <Content Include="Content\Effects\HardwareInstancedEffect.fx" />
     <Content Include="Content\Effects\ParticleEffect.fx" />
+    <Content Include="Content\Effects\ParticleEffect_Old.fx" />
     <Content Include="Content\Effects\Skybox.fx" />
     <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
     <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />

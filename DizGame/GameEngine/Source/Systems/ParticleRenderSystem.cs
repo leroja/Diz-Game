@@ -15,8 +15,6 @@ namespace GameEngine.Source.Systems
     public class ParticleRenderSystem : IRender
     {
         private GraphicsDevice device;
-        private VertexBuffer buff;
-        private IndexBuffer indexBuff;
         private CameraComponent defcame;
         DateTime CreationTime;
 
@@ -26,7 +24,7 @@ namespace GameEngine.Source.Systems
         public ParticleRenderSystem() { }
 
         /// <summary>
-        /// 
+        /// Constructor for ParticleRenderSystem
         /// </summary>
         /// <param name="gd"> Graphics device for drawing Primitives </param>
         public ParticleRenderSystem(GraphicsDevice gd)
@@ -44,75 +42,129 @@ namespace GameEngine.Source.Systems
             List<int> entitiesWithCamera = ComponentManager.GetAllEntitiesWithComponentType<CameraComponent>();
             defcame = ComponentManager.GetEntityComponent<CameraComponent>(entitiesWithCamera.FirstOrDefault());
 
-            var comp = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmitterComponent>();
+            var comp = ComponentManager.GetAllEntitiesWithComponentType<ParticleSettingsComponent>();
             foreach (var i in comp)
             {
+                ParticleSettingsComponent setings = ComponentManager.GetEntityComponent<ParticleSettingsComponent>(i);
                 ParticleEmitterComponent emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(i);
                 TransformComponent tran = ComponentManager.GetEntityComponent<TransformComponent>(i);
                 TransformComponent camtran = ComponentManager.GetEntityComponent<TransformComponent>(ComponentManager.GetEntityIDByComponent<CameraComponent>(defcame));
-                Effect effect = emitter.Effect;
-
-                if (buff == null && indexBuff == null)
+                Effect effect = emitter.particleEffect;
+                LoadEffectParameters(i);
+                if (emitter.vertexBuffer.IsContentLost)
                 {
-                    buff = new VertexBuffer(device, typeof(ParticleVertex), emitter.NumberOfParticles * 4, BufferUsage.WriteOnly);
-                    indexBuff = new IndexBuffer(device, IndexElementSize.ThirtyTwoBits, emitter.NumberOfParticles * 6, BufferUsage.WriteOnly);
+                    emitter.vertexBuffer.SetData(emitter.particles);
+                }
+                if (emitter.firstNewParticle != emitter.firstFreeParticle)
+                {
+                    AddNewParticlesToVertexBuffer(i);
                 }
 
-                UpdateBuffers(gameTime, i);
+                if (emitter.firstActiveParticle != emitter.firstFreeParticle)
+                {
+                    device.BlendState = setings.BlendState;
+                    device.DepthStencilState = DepthStencilState.DepthRead;
 
-                device.SetVertexBuffer(buff);
-                device.Indices = indexBuff;
+                    device.SetVertexBuffer(emitter.vertexBuffer);
+                    device.Indices = emitter.indexBuffer;
 
-                effect.Parameters["ParticleTexture"].SetValue(emitter.Texture);
-                effect.Parameters["View"].SetValue(defcame.View);
-                effect.Parameters["Projection"].SetValue(defcame.Projection);
-                effect.Parameters["Time"].SetValue((float)gameTime.ElapsedGameTime.TotalSeconds);
-                effect.Parameters["Lifespan"].SetValue(emitter.LifeTime);
-                effect.Parameters["wind"].SetValue(emitter.Direction);
-                effect.Parameters["Size"].SetValue(new Vector2(tran.Scale.X, tran.Scale.Y));
-                effect.Parameters["Up"].SetValue(camtran.Up);
-                effect.Parameters["Side"].SetValue(camtran.Right);
-                effect.Parameters["FadeInTime"].SetValue(emitter.FadeInTime);
+                   
+                    foreach (EffectPass pass in emitter.particleEffect.CurrentTechnique.Passes)
+                    {
+                        pass.Apply();
+                        if (emitter.firstActiveParticle < emitter.firstFreeParticle)
+                        {
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (setings.MaxParticles - emitter.firstActiveParticle) * 2);
+                        }
+                        else
+                        {
+                            
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, (setings.MaxParticles - emitter.firstActiveParticle) * 2);
 
-                device.BlendState = BlendState.Additive;
-                device.DepthStencilState = DepthStencilState.DepthRead;
+                            if (emitter.firstFreeParticle > 0)
+                            {
+                                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, emitter.firstFreeParticle * 2);
+                            }
+                        }
+                    }
 
-                effect.CurrentTechnique.Passes[0].Apply();
+                    device.DepthStencilState = DepthStencilState.Default;
+                }
 
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, emitter.NumberOfParticles * 4);
-
-                device.SetVertexBuffer(null);
-                device.Indices = null;
-
-                device.BlendState = BlendState.Opaque;
-                device.DepthStencilState = DepthStencilState.Default;
+                emitter.drawCounter++;
             }
         }
 
-        /// <summary>
-        /// Updates Buffers for ParticleEmitterComponent
-        /// </summary>
-        /// <param name="gameTime"></param>
-        /// <param name="id"> the entities ID</param>
-        public void UpdateBuffers(GameTime gameTime, int id)
+        private void LoadEffectParameters(int id)
         {
+            ParticleSettingsComponent setings = ComponentManager.GetEntityComponent<ParticleSettingsComponent>(id);
             ParticleEmitterComponent emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(id);
 
-            int start = emitter.StartIndex;
-            int end = emitter.NumberOfActiveParticles;
-            for (int i = start; i < end; i++)
-            {
-                emitter.Particles[i].StartTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (emitter.Particles[i].StartTime == 0)
-                {
-                    emitter.StartIndex++;
-                    emitter.NumberOfActiveParticles--;
-                }
-                if (emitter.StartIndex == emitter.Particles.Length)
-                    emitter.StartIndex = 0;
-            }
-            buff.SetData<ParticleVertex>(emitter.Particles.ToArray<ParticleVertex>());
-            indexBuff.SetData<int>(emitter.Indices.ToArray<int>());
+            EffectParameterCollection parameters =  emitter.particleEffect.Parameters;
+
+            
+            //emitter.effectViewportScaleParameter = parameters["ViewportScale"];
+
+
+            // Set the values of parameters that do not change.
+            parameters["View"].SetValue(defcame.View);
+            parameters["Projection"].SetValue(defcame.Projection);
+            parameters["CurrentTime"].SetValue(emitter.currentTime);
+            parameters["ViewportScale"].SetValue(new Vector2(0.5f / device.Viewport.AspectRatio, -0.5f));
+            parameters["Duration"].SetValue((float)setings.Duration.TotalSeconds);
+            parameters["DurationRandomness"].SetValue(setings.DurationRandomness);
+            parameters["Gravity"].SetValue(setings.Gravity);
+            parameters["EndVelocity"].SetValue(setings.EndVelocity);
+            parameters["MinColor"].SetValue(setings.MinColor.ToVector4());
+            parameters["MaxColor"].SetValue(setings.MaxColor.ToVector4());
+
+            parameters["RotateSpeed"].SetValue(
+                new Vector2(setings.MinRotateSpeed, setings.MaxRotateSpeed));
+
+            parameters["StartSize"].SetValue(
+                new Vector2(setings.MinStartSize, setings.MaxStartSize));
+
+            parameters["EndSize"].SetValue(
+                new Vector2(setings.MinEndSize, setings.MaxEndSize));
+            parameters["Texture"].SetValue(setings.texture);
         }
+    
+
+        void AddNewParticlesToVertexBuffer(int id)
+        {
+            ParticleSettingsComponent setings = ComponentManager.GetEntityComponent<ParticleSettingsComponent>(id);
+            ParticleEmitterComponent emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(id);
+            int stride = ParticleVertex.sizeInBytes;
+
+            if (emitter.firstNewParticle < emitter.firstFreeParticle)
+            {
+                // If the new particles are all in one consecutive range,
+                // we can upload them all in a single call.
+                emitter.vertexBuffer.SetData(emitter.firstNewParticle * stride * 4, emitter.particles,
+                                     emitter.firstNewParticle * 4,
+                                     (emitter.firstFreeParticle - emitter.firstNewParticle) * 4,
+                                     stride, SetDataOptions.NoOverwrite);
+            }
+            else
+            {
+                // If the new particle range wraps past the end of the queue
+                // back to the start, we must split them over two upload calls.
+                emitter.vertexBuffer.SetData(emitter.firstNewParticle * stride * 4, emitter.particles,
+                                     emitter.firstNewParticle * 4,
+                                     (setings.MaxParticles - emitter.firstNewParticle) * 4,
+                                     stride, SetDataOptions.NoOverwrite);
+
+                if (emitter.firstFreeParticle > 0)
+                {
+                    emitter.vertexBuffer.SetData(0, emitter.particles,
+                                         0, emitter.firstFreeParticle * 4,
+                                         stride, SetDataOptions.NoOverwrite);
+                }
+            }
+
+            // Move the particles we just uploaded from the new to the active queue.
+            emitter.firstNewParticle = emitter.firstFreeParticle;
+        }
+
     }
 }

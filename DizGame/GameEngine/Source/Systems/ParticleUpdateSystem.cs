@@ -16,79 +16,69 @@ namespace GameEngine.Source.Systems
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            var a = ComponentManager.GetAllEntitiesWithComponentType<ParticleEmitterComponent>();
+            var a = ComponentManager.GetAllEntitiesWithComponentType<ParticleSettingsComponent>();
             Parallel.ForEach(a, id =>
             {
                 var emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(id);
+                var settings = ComponentManager.GetEntityComponent<ParticleSettingsComponent>(id);
 
-                emitter.EmitterLife -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (emitter.EmitterLife < 0)
-                {
-                    ComponentManager.RemoveEntity(ComponentManager.GetEntityIDByComponent<ParticleEmitterComponent>(emitter));
-                    emitter = null;
-                }
-                if (emitter != null)
-                {
-                    AddParticle(id, gameTime);
-                }
-            });
+                if (gameTime == null)
+                    throw new ArgumentNullException("gameTime");
+
+                emitter.currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                RetireActiveParticles(settings,emitter);
+                FreeRetiredParticles(settings,emitter);
+
+                if (emitter.firstActiveParticle == emitter.firstFreeParticle)
+                    emitter.currentTime = 0;
+
+                if (emitter.firstRetiredParticle == emitter.firstActiveParticle)
+                    emitter.drawCounter = 0;
+
+            }
+            );
         }
-
         /// <summary>
-        /// Adds particle to ParticelEmitterComponent
+        /// Fre retired particles from particle vector in Emitter
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="time"></param>
-        public void AddParticle(int id, GameTime time)
+        /// <param name="settings">ParticleSettingsComponent for Settings</param>
+        /// <param name="emitter">ParticleEmitterComponent For uppdating particles vector</param>
+        private void FreeRetiredParticles(ParticleSettingsComponent settings, ParticleEmitterComponent emitter)
         {
-            Vector3 pos = new Vector3(1, 40, 1);
-            ParticleEmitterComponent emitter = ComponentManager.GetEntityComponent<ParticleEmitterComponent>(id);
-            TransformComponent tran = ComponentManager.GetEntityComponent<TransformComponent>(id);
-
-            if (emitter.NumberOfActiveParticles + 4 == emitter.NumberOfParticles * 4)
-                return;
-
-            OffsetIndex(emitter);
-            emitter.NumberOfActiveParticles += 4;
-
-            float startTime = emitter.LifeTime;
-            var pot = SetRandomPos(new Vector3(10, 0, 10), new Vector3(-10, 0, -10));
-
-            for (int i = 0; i < 4; i++)
+            while (emitter.firstRetiredParticle != emitter.firstActiveParticle)
             {
-                emitter.Particles[emitter.StartIndex + i].StartPosition = pos;
-                emitter.Particles[emitter.StartIndex + i].Direction = emitter.Direction;
-                emitter.Particles[emitter.StartIndex + i].Speed = emitter.Speed;
-                emitter.Particles[emitter.StartIndex + i].StartTime = startTime;
+                
+                int age = emitter.drawCounter - (int)emitter.particles[emitter.firstRetiredParticle * 4].Time;
+                if (age < 3)
+                    break;
+                emitter.firstRetiredParticle++;
+
+                if (emitter.firstRetiredParticle >= settings.MaxParticles)
+                    emitter.firstRetiredParticle = 0;
             }
         }
-
         /// <summary>
-        /// Sets a random position inside of bounds
+        /// Retire active particles in particle vector
         /// </summary>
-        /// <param name="min"> Min positions of all position X,Y,Z in a vector3</param>
-        /// <param name="max"> Max positions of all position X,Y,Z in a vector3</param>
-        /// <returns></returns>
-        private Vector3 SetRandomPos(Vector3 min, Vector3 max)
+        /// <param name="settings">ParticleSettingsComponent for Settings</param>
+        /// <param name="emitter">ParticleEmitterComponent For uppdating particles vector</param>
+        private void RetireActiveParticles(ParticleSettingsComponent settings, ParticleEmitterComponent emitter)
         {
-            Random r = new Random();
-            return new Vector3(
-                min.X + (float)r.NextDouble() * (max.X - min.X),
-                min.Y + (float)r.NextDouble() * (max.Y - min.Y),
-                min.Z + (float)r.NextDouble() * (max.Z - min.Z));
-        }
+            float particleDuration = (float)settings.Duration.TotalSeconds;
 
-        /// <summary>
-        /// Sets index for Particle
-        /// </summary>
-        /// <param name="emitter"></param>
-        void OffsetIndex(ParticleEmitterComponent emitter)
-        {
-            for (int i = 0; i < emitter.NumberOfActiveParticles; i++)
+            while (emitter.firstActiveParticle != emitter.firstNewParticle)
             {
-                emitter.StartIndex++;
-                if (emitter.StartIndex == emitter.Particles.Length)
-                    emitter.StartIndex = 0;
+                float particleAge = emitter.currentTime - emitter.particles[emitter.firstActiveParticle * 4].Time;
+
+                if (particleAge < particleDuration)
+                    break;
+
+                emitter.particles[emitter.firstActiveParticle * 4].Time = emitter.drawCounter;
+                emitter.firstActiveParticle++;
+
+                if (emitter.firstActiveParticle >= settings.MaxParticles)
+                    emitter.firstActiveParticle = 0;
             }
         }
     }

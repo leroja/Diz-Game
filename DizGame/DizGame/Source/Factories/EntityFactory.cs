@@ -228,62 +228,103 @@ namespace DizGame.Source.Factories
         }
 
         /// <summary>
-        /// Creates a particle emitter and sets positions and options
+        /// 
         /// </summary>
-        /// <param name="Position"> Position of emitter</param>
-        /// <param name="TextureName">Name of texture</param>
-        /// <param name="nParticles">maximum number of particles in emitter. Used for size of vectors</param>
-        /// <param name="Particlelifetime"> lifetime of particle </param>
-        /// <param name="FadeTime">Fade time on particles</param>
-        /// <param name="direction">Direction of particles</param>
-        /// <param name="scale">Scale on Particle</param>
-        /// <param name="EmitterLifeTime">Life time on emitter</param>
-        public void CreateParticleEmitter(Vector3 Position, String TextureName, int nParticles, float Particlelifetime, float FadeTime, Vector3 direction, int scale, int EmitterLifeTime)
+        /// <param name="Position"></param>
+        /// <param name="typeOfParticle"></param>
+        /// <param name="EmitterLifeTime"></param>
+        public void CreateParticleEmitter(Vector3 Position,string typeOfParticle, float EmitterLifeTime)
         {
-            TransformComponent tran = new TransformComponent(Position, new Vector3(scale));
-            ParticleEmitterComponent emitter = new ParticleEmitterComponent(TextureName, nParticles, Particlelifetime, Texture2dDic[TextureName], FadeTime, direction)
+            switch (typeOfParticle)
             {
-                EmitterLife = EmitterLifeTime,
-                Effect = Content.Load<Effect>("Effects/ParticleEffect"),
-            };
-            int id = ComponentManager.Instance.CreateID();
-            GenerateParticle(emitter);
+                case "Smoke":
+                   ParticleSettingsComponent setting = CreateSmokeSettings();
+                    ParticleEmitterComponent emitter = new ParticleEmitterComponent(GameOne.Instance.GraphicsDevice,6000);
+                    emitter.particleEffect = Content.Load<Effect>("Effects//ParticleEffect");
+                    TransformComponent tran = new TransformComponent();
+                    tran.Position = Position;
+                    emitter.LifeTime = 30;
+                    emitter.ParticleType = "Smoke";
+                    setting.Duration = TimeSpan.FromSeconds(EmitterLifeTime-1);
+                    var a = ComponentManager.Instance.CreateID();
+                    ComponentManager.Instance.AddComponentToEntity(a, setting);
+                    ComponentManager.Instance.AddComponentToEntity(a, emitter);
+                    ComponentManager.Instance.AddComponentToEntity(a, tran);
+                    break;
+                case "Blood":
+                    ParticleSettingsComponent settingB = CreateBloodSettings();
+                    ParticleEmitterComponent emitterB = new ParticleEmitterComponent(GameOne.Instance.GraphicsDevice, 600);
+                    emitterB.particleEffect = Content.Load<Effect>("Effects//ParticleEffect");
+                    TransformComponent tranB = new TransformComponent();
+                    tranB.Position = Position;
+                    emitterB.LifeTime = 0.3f;
+                    emitterB.ParticleType = "Blood";
+                    settingB.Duration = TimeSpan.FromSeconds(EmitterLifeTime - 1);
+                    var aB = ComponentManager.Instance.CreateID();
+                    ComponentManager.Instance.AddComponentToEntity(aB, settingB);
+                    ComponentManager.Instance.AddComponentToEntity(aB, emitterB);
+                    ComponentManager.Instance.AddComponentToEntity(aB, tranB);
+                    break;
 
-            ComponentManager.Instance.AddComponentToEntity(id, tran);
-            ComponentManager.Instance.AddComponentToEntity(id, emitter);
-        }
-
-        /// <summary>
-        /// Called for instancing a vector to store the particles in
-        /// </summary>
-        /// <param name="emitter"> ParticleEmitterComponent</param>
-        public void GenerateParticle(ParticleEmitterComponent emitter)
-        {
-            emitter.Particles = new ParticleVertex[emitter.NumberOfParticles * 4];
-            emitter.Indices = new int[emitter.NumberOfParticles * 6];
-
-            var z = Vector3.Zero;
-            var pos = new Vector3(10, 10, 10);
-            int x = 0;
-            for (int i = 0; i < emitter.NumberOfParticles * 4; i += 4)
-            {
-                emitter.Particles[i + 0] = new ParticleVertex(pos, new Vector2(0, 0),
-                pos, 0, -1);
-                emitter.Particles[i + 1] = new ParticleVertex(pos, new Vector2(0, 1),
-                pos, 0, -1);
-                emitter.Particles[i + 2] = new ParticleVertex(pos, new Vector2(1, 1),
-                pos, 0, -1);
-                emitter.Particles[i + 3] = new ParticleVertex(pos, new Vector2(1, 0),
-                pos, 0, -1);
-
-                emitter.Indices[x++] = i + 0;
-                emitter.Indices[x++] = i + 3;
-                emitter.Indices[x++] = i + 2;
-                emitter.Indices[x++] = i + 2;
-                emitter.Indices[x++] = i + 1;
-                emitter.Indices[x++] = i + 0;
+                default:
+                    break;
             }
+
+
         }
+        /// <summary>
+        /// Sets settings for Smoke Particles
+        /// </summary>
+        /// <returns>settings for smoke particles</returns>
+        private ParticleSettingsComponent CreateBloodSettings()
+        {
+            ParticleSettingsComponent setting = new ParticleSettingsComponent();
+            setting.texture = Texture2dDic["Smoke"];
+            setting.MaxParticles = 600;
+            setting.Duration = TimeSpan.FromSeconds(10);
+            setting.MinHorizontalVelocity = -20;
+            setting.MaxHorizontalVelocity = 20;
+            setting.MinVerticalVelocity = -5;
+            setting.MaxVerticalVelocity = 5;
+            setting.Gravity = new Vector3(0, 0, 0);
+            setting.EndVelocity = 1;
+            setting.MaxColor = Color.Red;
+            setting.MinColor = Color.Red;
+            setting.MinRotateSpeed = -1;
+            setting.MaxRotateSpeed = 1;
+            setting.MinStartSize = 4;
+            setting.MaxStartSize = 7;
+            setting.MinEndSize = 10;
+            setting.MaxEndSize = 50;
+
+            return setting;
+        }
+        /// <summary>
+        /// sets setings for blood particles
+        /// </summary>
+        /// <returns>settings for blood particles</returns>
+        private ParticleSettingsComponent CreateSmokeSettings()
+        {
+            ParticleSettingsComponent setting = new ParticleSettingsComponent();
+            setting.texture = Texture2dDic["Smoke"];
+            setting.MaxParticles = 6000;
+            setting.Duration = TimeSpan.FromSeconds(10);
+            setting.MinHorizontalVelocity = 0;
+            setting.MaxHorizontalVelocity = 15;
+            setting.MinVerticalVelocity = 10;
+            setting.MaxVerticalVelocity = 20;
+            setting.Gravity = new Vector3(-20, -5, 0);
+            setting.EndVelocity = 1;
+            setting.MinRotateSpeed = -1;
+            setting.MaxRotateSpeed = 1;
+            setting.MinStartSize = 4;
+            setting.MaxStartSize = 50;
+            setting.MinEndSize = 35;
+            setting.MaxEndSize = 140;
+
+            return setting;
+        }
+
 
         /// <summary>
         /// Creates a static camera on the specified position and that is looking at the specified lookAt
