@@ -25,60 +25,61 @@ namespace GameEngine.Source.Systems
                 if (gameTime == null)
                     throw new ArgumentNullException("gameTime");
 
-                emitter.currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                emitter.CurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                RetireActiveParticles(settings,emitter);
-                FreeRetiredParticles(settings,emitter);
+                RetireActiveParticles(settings, emitter);
+                FreeRetiredParticles(settings, emitter);
 
-                if (emitter.firstActiveParticle == emitter.firstFreeParticle)
-                    emitter.currentTime = 0;
+                if (emitter.FirstActiveParticle == emitter.FirstFreeParticle)
+                    emitter.CurrentTime = 0;
 
-                if (emitter.firstRetiredParticle == emitter.firstActiveParticle)
-                    emitter.drawCounter = 0;
+                if (emitter.FirstRetiredParticle == emitter.FirstActiveParticle)
+                    emitter.DrawCounter = 0;
 
             }
             );
         }
+
         /// <summary>
-        /// Fre retired particles from particle vector in Emitter
+        /// Free retired particles from particle vector in Emitter
         /// </summary>
         /// <param name="settings">ParticleSettingsComponent for Settings</param>
-        /// <param name="emitter">ParticleEmitterComponent For uppdating particles vector</param>
+        /// <param name="emitter">ParticleEmitterComponent For updating particles vector</param>
         private void FreeRetiredParticles(ParticleSettingsComponent settings, ParticleEmitterComponent emitter)
         {
-            while (emitter.firstRetiredParticle != emitter.firstActiveParticle)
+            while (emitter.FirstRetiredParticle != emitter.FirstActiveParticle)
             {
-                
-                int age = emitter.drawCounter - (int)emitter.particles[emitter.firstRetiredParticle * 4].Time;
+                int age = emitter.DrawCounter - (int)emitter.Particles[emitter.FirstRetiredParticle * 4].Time;
                 if (age < 3)
                     break;
-                emitter.firstRetiredParticle++;
+                emitter.FirstRetiredParticle++;
 
-                if (emitter.firstRetiredParticle >= settings.MaxParticles)
-                    emitter.firstRetiredParticle = 0;
+                if (emitter.FirstRetiredParticle >= settings.MaxParticles)
+                    emitter.FirstRetiredParticle = 0;
             }
         }
+
         /// <summary>
         /// Retire active particles in particle vector
         /// </summary>
         /// <param name="settings">ParticleSettingsComponent for Settings</param>
-        /// <param name="emitter">ParticleEmitterComponent For uppdating particles vector</param>
+        /// <param name="emitter">ParticleEmitterComponent For updating particles vector</param>
         private void RetireActiveParticles(ParticleSettingsComponent settings, ParticleEmitterComponent emitter)
         {
             float particleDuration = (float)settings.Duration.TotalSeconds;
 
-            while (emitter.firstActiveParticle != emitter.firstNewParticle)
+            while (emitter.FirstActiveParticle != emitter.FirstNewParticle)
             {
-                float particleAge = emitter.currentTime - emitter.particles[emitter.firstActiveParticle * 4].Time;
+                float particleAge = emitter.CurrentTime - emitter.Particles[emitter.FirstActiveParticle * 4].Time;
 
                 if (particleAge < particleDuration)
                     break;
 
-                emitter.particles[emitter.firstActiveParticle * 4].Time = emitter.drawCounter;
-                emitter.firstActiveParticle++;
+                emitter.Particles[emitter.FirstActiveParticle * 4].Time = emitter.DrawCounter;
+                emitter.FirstActiveParticle++;
 
-                if (emitter.firstActiveParticle >= settings.MaxParticles)
-                    emitter.firstActiveParticle = 0;
+                if (emitter.FirstActiveParticle >= settings.MaxParticles)
+                    emitter.FirstActiveParticle = 0;
             }
         }
     }

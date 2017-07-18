@@ -8,15 +8,15 @@ namespace GameEngine.Source.RandomStuff
     /// </summary>
     public struct ParticleVertex : IVertexType
     {
-        // Stores the starting position of the particle.
+        /// Stores the starting position of the particle.
         public Vector3 Position;
-        // Stores which corner of the particle quad this vertex represents.
+        /// Stores which corner of the particle quad this vertex represents.
         public Vector2 Corner;
-        // Stores the starting velocity of the particle.
+        /// Stores the starting velocity of the particle.
         public Vector3 Velocity;
-        // Four random values, used to make each particle look slightly different.
+        /// Four random values, used to make each particle look slightly different.
         public Color Random;
-        // The time (in seconds) at which this particle was created.
+        /// The time (in seconds) at which this particle was created.
         public float Time;
 
         VertexDeclaration IVertexType.VertexDeclaration
@@ -28,9 +28,9 @@ namespace GameEngine.Source.RandomStuff
         }
 
 
-        // Describe the layout of this vertex structure.
+        /// Describe the layout of this vertex structure.
         public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration
-(
+        (
           new VertexElement(0, VertexElementFormat.Vector3,
                                  VertexElementUsage.Position, 0),
           new VertexElement(12, VertexElementFormat.Vector2,
@@ -41,7 +41,7 @@ namespace GameEngine.Source.RandomStuff
                                  VertexElementUsage.Color, 0),
           new VertexElement(36, VertexElementFormat.Single,
                                  VertexElementUsage.TextureCoordinate, 0)
-);
+        );
 
         public const int sizeInBytes = 40;
     }

@@ -10,10 +10,13 @@ using System.Threading.Tasks;
 
 namespace DizGame.Source.Systems
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SmokeSystem : IUpdate
     {
         /// <summary>
-        /// Uppdates all particle components and compares if component should be removed or not
+        /// Updates all particle components and compares if component should be removed or not
         /// </summary>
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
@@ -47,23 +50,23 @@ namespace DizGame.Source.Systems
             });
         }
         /// <summary>
-        /// Function for adding particles to emiters
+        /// Function for adding particles to emitters
         /// </summary>
-        /// <param name="emitter">ParticlEemmiterComponent for saving and uppdating particles </param>
-        /// <param name="settings">ParticleSettingsEmitter</param>
-        /// <param name="tran">tranmsformcomponent for particle</param>
-        /// <param name="velocity">velocity of new particle</param>
+        /// <param name="emitter"> ParticlEemmiterComponent for saving and updating particles </param>
+        /// <param name="settings"> ParticleSettingsEmitter </param>
+        /// <param name="tran"> transformComponent for particle </param>
+        /// <param name="velocity"> velocity of new particle </param>
         public void AddParticle(ParticleEmitterComponent emitter, ParticleSettingsComponent settings, TransformComponent tran, Vector3 velocity)
         {
             Random random = new Random();
-           
-            int nextFreeParticle = emitter.firstFreeParticle + 1;
+
+            int nextFreeParticle = emitter.FirstFreeParticle + 1;
 
             if (nextFreeParticle >= settings.MaxParticles)
                 nextFreeParticle = 0;
 
-     
-            if (nextFreeParticle == emitter.firstRetiredParticle)
+
+            if (nextFreeParticle == emitter.FirstRetiredParticle)
                 return;
             velocity *= settings.EmitterVelocitySensitivity;
 
@@ -87,19 +90,20 @@ namespace DizGame.Source.Systems
 
             for (int i = 0; i < 4; i++)
             {
-                emitter.particles[emitter.firstFreeParticle * 4 + i].Position = tran.Position;
-                emitter.particles[emitter.firstFreeParticle * 4 + i].Velocity = velocity;
-                emitter.particles[emitter.firstFreeParticle * 4 + i].Random = randomValues;
-                emitter.particles[emitter.firstFreeParticle * 4 + i].Time = emitter.currentTime;
+                emitter.Particles[emitter.FirstFreeParticle * 4 + i].Position = tran.Position;
+                emitter.Particles[emitter.FirstFreeParticle * 4 + i].Velocity = velocity;
+                emitter.Particles[emitter.FirstFreeParticle * 4 + i].Random = randomValues;
+                emitter.Particles[emitter.FirstFreeParticle * 4 + i].Time = emitter.CurrentTime;
             }
 
-            emitter.firstFreeParticle = nextFreeParticle;
+            emitter.FirstFreeParticle = nextFreeParticle;
         }
+
         /// <summary>
-        /// Function for geting positions of the hightmap
+        /// Function for geting positions of the heightmap
         /// </summary>
-        /// <param name="numberToCreate">number of position</param>
-        /// <returns>list with positions</returns>
+        /// <param name="numberToCreate"> number of position </param>
+        /// <returns> list with positions </returns>
         public List<Vector3> GetMapPositions(int numberToCreate)
         {
             List<Vector3> positions = new List<Vector3>();
@@ -107,8 +111,8 @@ namespace DizGame.Source.Systems
             Random r = new Random();
             int mapWidht;
             int mapHeight;
-            List<int> heightList = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            HeightmapComponentTexture heigt = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
+            List<int> heightList = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponent>();
+            HeightmapComponent heigt = ComponentManager.GetEntityComponent<HeightmapComponent>(heightList[0]);
             mapWidht = heigt.Width;
             mapHeight = heigt.Height;
             for (int i = 0; i < numberToCreate; i++)
@@ -130,5 +134,3 @@ namespace DizGame.Source.Systems
         }
     }
 }
-
- 

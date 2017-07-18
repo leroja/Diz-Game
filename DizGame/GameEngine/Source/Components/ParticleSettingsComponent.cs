@@ -6,20 +6,21 @@ using System;
 namespace GameEngine.Source.Components
 {
     /// <summary>
-    /// Component for controlling setting of particle effect. this components make it posible to controll how the particles from the emiter is printed and uppdated
+    /// Component for controlling setting of particle effect. this components make it possible to control how the particles from the emitter is printed and updated
     /// </summary>
     public class ParticleSettingsComponent : IComponent
     {
+        #region properties
         /// <summary>
         /// texture used on the particle
         /// </summary>
-        public Texture2D texture { get; set; }
+        public Texture2D Texture { get; set; }
         /// <summary>
-        /// Max number of particls on emitter used for uppdating and controlling size of vertex and index buffer
+        /// Max number of particles on emitter used for updating and controlling size of vertex and index buffer
         /// </summary>
         public int MaxParticles { get; set; }
         /// <summary>
-        /// Duration of a singel particle makes all the particles have a lifetime befor disepering
+        /// Duration of a single particle makes all the particles have a lifetime before disappearing
         /// </summary>
         public TimeSpan Duration { get; set; }
 
@@ -29,43 +30,43 @@ namespace GameEngine.Source.Components
         public float DurationRandomness { get; set; }
 
         /// <summary>
-        /// decieds how sensitiv the velcity of the particles
+        /// decides how sensitiv the velocity of the particles
         /// </summary>
         public float EmitterVelocitySensitivity { get; set; }
         /// <summary>
-        /// Min value for horizontal velcity
+        /// Min value for horizontal velocity
         /// </summary>
         public float MinHorizontalVelocity { get; set; }
 
         /// <summary>
-        /// Max value for Horizonal Velocity
+        /// Max value for Horizontal Velocity
         /// </summary>
         public float MaxHorizontalVelocity { get; set; }
         /// <summary>
-        /// Min value for Vertical velcity
+        /// Min value for Vertical velocity
         /// </summary>
         public float MinVerticalVelocity { get; set; }
 
         /// <summary>
-        /// max value for vartical velcity
+        /// max value for vertical velocity
         /// </summary>
         public float MaxVerticalVelocity { get; set; }
         /// <summary>
-        /// used to control the movment of particles when uppdating can be used as gravity or as a wind 
+        /// used to control the moment of particles when updating can be used as gravity or as a wind 
         /// </summary>
         public Vector3 Gravity { get; set; }
-    /// <summary>
-    /// velocity at en of duration
-    /// </summary>
+        /// <summary>
+        /// velocity at en of duration
+        /// </summary>
         public float EndVelocity { get; set; }
         /// <summary>
-        /// min color value of particle. Defult white
+        /// min color value of particle. Default white
         /// </summary>
         public Color MinColor { get; set; }
         /// <summary>
-        /// Max value for color. defult White
+        /// Max value for color. default White
         /// </summary>
-        public Color MaxColor  { get; set; }
+        public Color MaxColor { get; set; }
 
         /// <summary>
         /// Min Rotation of particles
@@ -92,11 +93,13 @@ namespace GameEngine.Source.Components
         /// </summary>
         public float MaxEndSize { get; set; }
         /// <summary>
-        /// Blendsate
+        /// Blendstate
         /// </summary>
         public BlendState BlendState { get; set; }
+        #endregion
+
         /// <summary>
-        /// Defult constructor sets defult values for all setting.
+        /// Default constructor sets default values for all setting.
         /// </summary>
         public ParticleSettingsComponent()
         {
@@ -108,7 +111,7 @@ namespace GameEngine.Source.Components
             this.MaxHorizontalVelocity = 0;
             this.MinVerticalVelocity = 0;
             this.MaxVerticalVelocity = 0;
-            this.Gravity =Vector3.Zero;
+            this.Gravity = Vector3.Zero;
             this.MinColor = Color.White;
             this.MaxColor = Color.White;
             this.EndVelocity = 1;

@@ -243,12 +243,16 @@ namespace DizGame.Source.Factories
             {
                 case "Smoke":
                    ParticleSettingsComponent setting = CreateSmokeSettings();
-                    ParticleEmitterComponent emitter = new ParticleEmitterComponent(GameOne.Instance.GraphicsDevice,6000);
-                    emitter.particleEffect = Content.Load<Effect>("Effects//ParticleEffect");
-                    TransformComponent tran = new TransformComponent();
-                    tran.Position = Position;
-                    emitter.LifeTime = 30;
-                    emitter.ParticleType = "Smoke";
+                    ParticleEmitterComponent emitter = new ParticleEmitterComponent(GameOne.Instance.GraphicsDevice, 6000)
+                    {
+                        ParticleEffect = Content.Load<Effect>("Effects//ParticleEffect"),
+                        LifeTime = 30,
+                        ParticleType = "Smoke"
+                    };
+                    TransformComponent tran = new TransformComponent()
+                    {
+                        Position = Position
+                    };
                     setting.Duration = TimeSpan.FromSeconds(EmitterLifeTime-1);
                     var a = ComponentManager.Instance.CreateID();
                     ComponentManager.Instance.AddComponentToEntity(a, setting);
@@ -257,12 +261,16 @@ namespace DizGame.Source.Factories
                     break;
                 case "Blood":
                     ParticleSettingsComponent settingB = CreateBloodSettings();
-                    ParticleEmitterComponent emitterB = new ParticleEmitterComponent(GameOne.Instance.GraphicsDevice, 600);
-                    emitterB.particleEffect = Content.Load<Effect>("Effects//ParticleEffect");
-                    TransformComponent tranB = new TransformComponent();
-                    tranB.Position = Position;
-                    emitterB.LifeTime = 0.3f;
-                    emitterB.ParticleType = "Blood";
+                    ParticleEmitterComponent emitterB = new ParticleEmitterComponent(GameOne.Instance.GraphicsDevice, 600)
+                    {
+                        ParticleEffect = Content.Load<Effect>("Effects//ParticleEffect"),
+                        LifeTime = 0.3f,
+                        ParticleType = "Blood"
+                    };
+                    TransformComponent tranB = new TransformComponent()
+                    {
+                        Position = Position
+                    };
                     settingB.Duration = TimeSpan.FromSeconds(EmitterLifeTime - 1);
                     var aB = ComponentManager.Instance.CreateID();
                     ComponentManager.Instance.AddComponentToEntity(aB, settingB);
@@ -282,25 +290,26 @@ namespace DizGame.Source.Factories
         /// <returns>settings for smoke particles</returns>
         private ParticleSettingsComponent CreateBloodSettings()
         {
-            ParticleSettingsComponent setting = new ParticleSettingsComponent();
-            setting.texture = Texture2dDic["Smoke"];
-            setting.MaxParticles = 600;
-            setting.Duration = TimeSpan.FromSeconds(10);
-            setting.MinHorizontalVelocity = -20;
-            setting.MaxHorizontalVelocity = 20;
-            setting.MinVerticalVelocity = -5;
-            setting.MaxVerticalVelocity = 5;
-            setting.Gravity = new Vector3(0, 0, 0);
-            setting.EndVelocity = 1;
-            setting.MaxColor = Color.Red;
-            setting.MinColor = Color.Red;
-            setting.MinRotateSpeed = -1;
-            setting.MaxRotateSpeed = 1;
-            setting.MinStartSize = 4;
-            setting.MaxStartSize = 7;
-            setting.MinEndSize = 10;
-            setting.MaxEndSize = 50;
-
+            ParticleSettingsComponent setting = new ParticleSettingsComponent()
+            {
+                Texture = Texture2dDic["Smoke"],
+                MaxParticles = 600,
+                Duration = TimeSpan.FromSeconds(10),
+                MinHorizontalVelocity = -20,
+                MaxHorizontalVelocity = 20,
+                MinVerticalVelocity = -5,
+                MaxVerticalVelocity = 5,
+                Gravity = new Vector3(0, 0, 0),
+                EndVelocity = 1,
+                MaxColor = Color.Red,
+                MinColor = Color.Red,
+                MinRotateSpeed = -1,
+                MaxRotateSpeed = 1,
+                MinStartSize = 4,
+                MaxStartSize = 7,
+                MinEndSize = 10,
+                MaxEndSize = 50
+            };
             return setting;
         }
         /// <summary>
@@ -309,23 +318,24 @@ namespace DizGame.Source.Factories
         /// <returns>settings for blood particles</returns>
         private ParticleSettingsComponent CreateSmokeSettings()
         {
-            ParticleSettingsComponent setting = new ParticleSettingsComponent();
-            setting.texture = Texture2dDic["Smoke"];
-            setting.MaxParticles = 6000;
-            setting.Duration = TimeSpan.FromSeconds(10);
-            setting.MinHorizontalVelocity = 0;
-            setting.MaxHorizontalVelocity = 15;
-            setting.MinVerticalVelocity = 10;
-            setting.MaxVerticalVelocity = 20;
-            setting.Gravity = new Vector3(-20, -5, 0);
-            setting.EndVelocity = 1;
-            setting.MinRotateSpeed = -1;
-            setting.MaxRotateSpeed = 1;
-            setting.MinStartSize = 4;
-            setting.MaxStartSize = 50;
-            setting.MinEndSize = 35;
-            setting.MaxEndSize = 140;
-
+            ParticleSettingsComponent setting = new ParticleSettingsComponent()
+            {
+                Texture = Texture2dDic["Smoke"],
+                MaxParticles = 6000,
+                Duration = TimeSpan.FromSeconds(10),
+                MinHorizontalVelocity = 0,
+                MaxHorizontalVelocity = 15,
+                MinVerticalVelocity = 10,
+                MaxVerticalVelocity = 20,
+                Gravity = new Vector3(-20, -5, 0),
+                EndVelocity = 1,
+                MinRotateSpeed = -1,
+                MaxRotateSpeed = 1,
+                MinStartSize = 4,
+                MaxStartSize = 50,
+                MinEndSize = 35,
+                MaxEndSize = 140
+            };
             return setting;
         }
 
