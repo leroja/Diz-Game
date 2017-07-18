@@ -147,6 +147,9 @@ namespace DizGame.Source.Systems
                     {
                         ComponentManager.Instance.GetEntityComponent<HealthComponent>(HitID).Health -= bullet.Damage;
                         var score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(bullet.Owner);
+                        TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(HitID);
+                        Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y+5, tran.Position.Z);
+                        Factories.EntityFactory.Instance.CreateParticleEmitter(pos, "Blood", 5);
                         score.Hits += 1;
                         score.Score += 5;
                     }

@@ -1,66 +1,144 @@
-﻿float4x4 View;
-float4x4 Projection;
+﻿#if OPENGL
+#define SV_POSITION POSITION
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
+#else
+#define VS_SHADERMODEL vs_4_0_level_9_1
+#define PS_SHADERMODEL ps_4_0_level_9_1
+#endif
 
-texture ParticleTexture;
-sampler2D texSampler = sampler_state
+
+float4x4 View;
+float4x4 Projection;
+float2 ViewportScale;
+
+
+
+float CurrentTime;
+
+
+float Duration;
+float DurationRandomness;
+float3 Gravity;
+float EndVelocity;
+float4 MinColor;
+float4 MaxColor;
+
+
+
+float2 RotateSpeed;
+float2 StartSize;
+float2 EndSize;
+
+
+texture Texture;
+
+sampler Sampler = sampler_state
 {
-	texture = <ParticleTexture>;
+    Texture = (Texture);
+    
+    MinFilter = Linear;
+    MagFilter = Linear;
+    MipFilter = Point;
+    
+    AddressU = Clamp;
+    AddressV = Clamp;
 };
-float Time;
-float Lifespan;
-float2 Size;
-float3 wind;
-float3 Side;
-float3 Up;
-float FadeInTime;
+
 
 struct VertexShaderInput
 {
-	float4 Position : POSITION0;
-	float2 UV : TEXCOORD0;
-	float3 Direction : TEXCOORD1;
-	float Speed : TEXCOORD2;
-	float StartTime : TEXCOORD3;
+    float3 Position : SV_POSITION;
+    float2 Corner : NORMAL0;
+    float3 Velocity : NORMAL1;
+    float4 Random : COLOR0;
+    float Time : TEXCOORD0;
 };
+
 
 struct VertexShaderOutput
 {
-	float4 Position : POSITION0;
-	float2 UV : TEXCOORD0;
-    float2 RelativeTime : TEXCOORD1;
+    float4 Position : POSITION0;
+    float4 Color : COLOR0;
+    float2 TextureCoordinate : COLOR1;
 };
 
 
-VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
+float4 ComputeParticlePosition(float3 position, float3 velocity,
+                               float age, float normalizedAge)
 {
-	VertexShaderOutput output;
-	float3 position = (float3)input.Position;
-	float2 offset = Size * float2((input.UV.x - 0.5f) * 2.0f, -(input.UV.y - 0.5f) * 2.0f);    
-    position += offset.x * Side + offset.y * Up;
-	float relativeTime = (Time - input.StartTime);    
-    output.RelativeTime = relativeTime;
-	output.Position = mul(float4(position, 1), mul(View,Projection));    
-    output.UV = input.UV;
-	return output;
-
+    float startVelocity = length(velocity);
+    float endVelocity = startVelocity * EndVelocity;
+    float velocityIntegral = startVelocity * normalizedAge +
+                             (endVelocity - startVelocity) * normalizedAge *
+                                                             normalizedAge / 2; 
+    position += normalize(velocity) * velocityIntegral * Duration;
+    position += Gravity * age * normalizedAge;
+    return mul(mul(float4(position, 1), View), Projection);
 }
 
-float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
-{
 
-	clip(input.RelativeTime);
-	float4 color = tex2D(texSampler, input.UV);
-	float d = (float)clamp(1.0f - pow((input.RelativeTime / Lifespan), 10),0, 1);
-	d *= (float)clamp((input.RelativeTime / FadeInTime), 0, 1);
-	return float4(color * d); 
+float ComputeParticleSize(float randomValue, float normalizedAge)
+{
+    float startSize = lerp(StartSize.x, StartSize.y, randomValue);
+    float endSize = lerp(EndSize.x, EndSize.y, randomValue);   
+    float size = lerp(startSize, endSize, normalizedAge);
+    return size * Projection._m11;
 }
 
-technique Technique1
+
+float4 ComputeParticleColor(float4 projectedPosition,
+                            float randomValue, float normalizedAge)
 {
-	pass Pass1
-	{
-		VertexShader = compile vs_4_0 VertexShaderFunction();
-		PixelShader = compile ps_4_0 PixelShaderFunction();
-	}
+
+    float4 color = lerp(MinColor, MaxColor, randomValue); 
+    color.a *= normalizedAge * (1 - normalizedAge) * (1 - normalizedAge) * 6.7;
+   
+    return color;
 }
 
+
+VertexShaderOutput MainVS(VertexShaderInput input)
+{
+    VertexShaderOutput output;
+    float age = CurrentTime - input.Time;
+    age *= 1 + input.Random.x * DurationRandomness;
+
+    float normalizedAge = saturate(age / Duration);
+    output.Position = ComputeParticlePosition(input.Position, input.Velocity,
+                                              age, normalizedAge);
+
+    float size = ComputeParticleSize(input.Random.y, normalizedAge);
+
+
+    
+
+    float rotateSpeed = lerp(RotateSpeed.x, RotateSpeed.y, input.Random.w);
+    
+    float rot = rotateSpeed * age;
+    float c = cos(rot);
+    float s = sin(rot);
+
+    float2x2 rotation = float2x2(c, -s, s, c);
+
+    output.Position.xy += mul(input.Corner, rotation) * size * ViewportScale;
+    
+    output.Color = ComputeParticleColor(output.Position, input.Random.z, normalizedAge);
+    output.TextureCoordinate = (input.Corner + 1) / 2;
+    
+    return output;
+}
+
+float4 MainPS(VertexShaderOutput input) : COLOR0
+{
+    return tex2D(Sampler, input.TextureCoordinate) * input.Color;
+}
+
+technique BasicColorDrawing
+{
+    pass P0
+    {
+        VertexShader = compile VS_SHADERMODEL MainVS();
+        PixelShader = compile PS_SHADERMODEL MainPS();
+    }
+};
