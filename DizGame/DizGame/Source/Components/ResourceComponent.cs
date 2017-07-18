@@ -5,6 +5,25 @@ using System;
 namespace DizGame.Source.Components
 {
     /// <summary>
+    /// enum that describes what kind of resource the entity
+    /// should represent. Other resource types could be added 
+    /// if needed.
+    /// </summary>
+    public enum ResourceType : int
+    {
+        /// <summary>
+        /// Health is the resource type for which the health component should be updated for 
+        /// the player when picked up.
+        /// </summary>
+        Health,
+        /// <summary>
+        /// Ammo is the resource type for which the ammunition component for the player
+        /// should be manipulated when picked up.
+        /// </summary>
+        Ammo
+    };
+
+    /// <summary>
     /// Class to describe a resource within the game that can be picked up by
     /// players and are placed randomly within the world. Also contains information
     /// regarding which kind of resource the entity represents.
@@ -12,24 +31,6 @@ namespace DizGame.Source.Components
     public class ResourceComponent : IComponent
     {
         #region Properties
-        /// <summary>
-        /// enum that describes what kind of resource the entity
-        /// should represent. Other resource types could be added 
-        /// if needed.
-        /// </summary>
-        public enum ResourceType : int
-        {
-            /// <summary>
-            /// Health is the resource type for which the healthcomponent should be updated for 
-            /// the player when picked up.
-            /// </summary>
-            Health,
-            /// <summary>
-            /// Ammo is the resource type for which the ammocomponent for the player
-            /// should be manipulated when picked up.
-            /// </summary>
-            Ammo
-        };
 
         /// <summary>
         /// The type of resource

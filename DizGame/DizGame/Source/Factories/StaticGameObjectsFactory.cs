@@ -1,6 +1,7 @@
 ﻿using AnimationContentClasses;
 using AnimationContentClasses.Utils;
 using DizGame.Source.LanguageBasedModels;
+using DizGame.Source.Random_Stuff;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Managers;
@@ -16,7 +17,7 @@ namespace DizGame.Source.Factories
     /// </summary>
     public class StaticGameObjectsFactory
     {
-
+        private Border border;
         private Dictionary<string, Model> _ModelDictionary;
         private Dictionary<string, Texture2D> _Texture2dDictionary;
 
@@ -36,15 +37,16 @@ namespace DizGame.Source.Factories
         /// </summary>
         /// <param name="numberOfHouses"> Number of houses </param>
         /// <param name="numberOfStaticObjects"> Number of static objects </param>
-        public List<int> MakeMap(int numberOfHouses, int numberOfStaticObjects)
+        /// <param name="border">  </param>
+        public List<int> MakeMap(int numberOfHouses, int numberOfStaticObjects, Border border)
         {
+            this.border = border;
             List<int> entityIdList = new List<int>();
 
             List<Vector3> positions = new List<Vector3>();
             List<Vector3> unablePositions = new List<Vector3>();
-            List<Vector3> rockPositions = new List<Vector3>();
 
-            var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
+            var a = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponent>();
             positions = GetModelPositions(numberOfHouses);
             for (int i = 0; i < numberOfHouses; i++)
             {
@@ -62,6 +64,7 @@ namespace DizGame.Source.Factories
                     }
                 }
             }
+
             positions = GetModelPositions(numberOfStaticObjects);
             for (int j = 0; j < numberOfStaticObjects; j++)
             {
@@ -75,25 +78,19 @@ namespace DizGame.Source.Factories
                             break;
                         case 1:
                             entityIdList.Add(CreateStaticObject("Rock", positions[j]));
-                            rockPositions.Add(positions[j]);
                             break;
                     }
                 }
             }
-
-            //if(rockPositions.Count > 0)
-            //    entityIdList.Add(CreateDryGrass(10, rockPositions[0], new Vector3(0.1f)));
-            //else
-            //    entityIdList.Add(CreateDryGrass(10, GetModelPositions(1)[0], new Vector3(0.1f)));
-
             return entityIdList;
         }
 
         /// <summary>
-        /// creates the static objects
+        /// Creates a static game object
         /// </summary>
-        /// <param name="nameOfModel"></param>
-        /// <param name="position"></param>
+        /// <param name="nameOfModel"> The name of the objects model </param>
+        /// <param name="position"> The position of the object </param>
+        /// <returns> The entityID of the object </returns>
         public int CreateStaticObject(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
@@ -109,12 +106,11 @@ namespace DizGame.Source.Factories
                             effect.TextureEnabled = true;
                             effect.Texture = _Texture2dDictionary["RockTexture"];
                             effect.FogEnabled = true;
-                            effect.FogColor = Color.LightGray.ToVector3();
+                            effect.FogColor = Color.Orange.ToVector3();
                             effect.FogStart = 10;
                             effect.FogEnd = 400;
                         }
                     }
-
                     break;
                 case "Tree":
                     foreach (ModelMesh mesh in model.Meshes)
@@ -122,7 +118,7 @@ namespace DizGame.Source.Factories
                         foreach (BasicEffect effect in mesh.Effects)
                         {
                             effect.FogEnabled = true;
-                            effect.FogColor = Color.LightGray.ToVector3();
+                            effect.FogColor = Color.Orange.ToVector3();
                             effect.FogStart = 10;
                             effect.FogEnd = 400;
                         }
@@ -134,9 +130,7 @@ namespace DizGame.Source.Factories
             Util.ScaleBoundingVolume(ref volume, scale.X, position, out BoundingVolume scaledVolume);
 
             int entityID = ComponentManager.Instance.CreateID();
-            
-            //Vector3 mid = Vector3.Cross(min, max) / 2;
-            //BoundingBox box1 = new BoundingBox(position - mid, position + mid);
+
             ModelComponent comp = new ModelComponent(model)
             {
                 IsStatic = true,
@@ -161,8 +155,8 @@ namespace DizGame.Source.Factories
         /// Creates a house of given model
         /// </summary>
         /// <param name="nameOfModel"> Name of the house model </param>
-        /// <param name="position"> position of the  house </param>
-        /// <returns></returns>
+        /// <param name="position"> Position of the  house </param>
+        /// <returns> The entityID of the house </returns>
         public int CreateHouse(string nameOfModel, Vector3 position)
         {
             Vector3 scale = new Vector3();
@@ -181,7 +175,7 @@ namespace DizGame.Source.Factories
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.FogEnabled = true;
-                    effect.FogColor = Color.LightGray.ToVector3();
+                    effect.FogColor = Color.Orange.ToVector3();
                     effect.FogStart = 10;
                     effect.FogEnd = 400;
                 }
@@ -211,7 +205,6 @@ namespace DizGame.Source.Factories
             return entityID;
         }
 
-
         public int CreateDryGrass(int numberOfObjects, Vector3 position, Vector3 scale)
         {
             TreeModel tree = new TreeModel(GameOne.Instance.GraphicsDevice, 1f, MathHelper.PiOver4 - 0.5f, "F[LF]F[RF]F", 4, 1f, new string[] { "F" });
@@ -236,9 +229,11 @@ namespace DizGame.Source.Factories
             bindings[0] = new VertexBufferBinding(tree.VertexBuffer);
             bindings[1] = new VertexBufferBinding(matriceVB, 0, 1);
 
-            RasterizerState rs = new RasterizerState();
-            rs.CullMode = CullMode.None;
-            rs.FillMode = FillMode.Solid;
+            RasterizerState rs = new RasterizerState()
+            {
+                CullMode = CullMode.None,
+                FillMode = FillMode.Solid,
+            };
 
             HardwareInstancedComponent hwinstanced = new HardwareInstancedComponent()
             {
@@ -273,7 +268,6 @@ namespace DizGame.Source.Factories
             return entityID;
         }
 
-
         private void InitObjectMatrices(ref Matrix[] objectMatrices, Vector3 position, Vector3 scale)
         {
             for (int i = 0; i < objectMatrices.Length; i++)
@@ -287,48 +281,31 @@ namespace DizGame.Source.Factories
         {
             Random rnd = new Random();
 
-            for(int i=0; i<objectMatrices.Length; i++)
+            for (int i = 0; i < objectMatrices.Length; i++)
             {
                 objectMatrices[i] *= Matrix.CreateTranslation(
                     new Vector3(rnd.Next(-spread, spread),
                                 0,
                                 rnd.Next(-spread, spread)));
-
-
             }
         }
 
         /// <summary>
         /// Gets target number of positions on heightmap
         /// </summary>
-        /// <param name="numberOfPositions"></param>
-        /// <returns></returns>
+        /// <param name="numberOfPositions">  </param>
+        /// <returns>  </returns>
         private List<Vector3> GetModelPositions(int numberOfPositions)
         {
             List<Vector3> positions = new List<Vector3>();
             Random r = new Random();
-            int mapWidht;
-            int mapHeight;
 
-            List<Vector3> SpawnProtection = new List<Vector3>();
-            List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            HeightmapComponentTexture heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
-
-            mapWidht = heigt.Width;
-            mapHeight = heigt.Height;
+            List<int> heightList = ComponentManager.Instance.GetAllEntitiesWithComponentType<HeightmapComponent>();
+            HeightmapComponent heigt = ComponentManager.Instance.GetEntityComponent<HeightmapComponent>(heightList[0]);
             for (int i = 0; i < numberOfPositions; i++)
             {
-                var pot = new Vector3(r.Next(mapWidht - 20), 0, r.Next(mapHeight - 20));
-
+                var pot = new Vector3(r.Next((int)border.LowX, (int)border.HighX), 0, r.Next(Math.Abs((int)border.LowZ), Math.Abs((int)border.HighZ)));
                 pot.Y = heigt.HeightMapData[(int)pot.X, (int)pot.Z];
-                if (pot.X < 10)
-                {
-                    pot.X = pot.X + 10;
-                }
-                if (pot.Z < 10)
-                {
-                    pot.Z = pot.Z - 10;
-                }
                 pot.Z = -pot.Z;
                 positions.Add(pot);
             }

@@ -514,6 +514,78 @@
 /processorParam:TextureFormat=Color
 /build:Skybox/SkyboxTextures/Stars.dds
 
+#begin SoundEffects/Chambering A Round.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Chambering A Round.mp3
+
+#begin SoundEffects/Anti Aircraft Gun.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Anti Aircraft Gun.wav
+
+#begin SoundEffects/Blast.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Blast.wav
+
+#begin SoundEffects/NoNo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/NoNo.wav
+
+#begin SoundEffects/Pick Up Health.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Pick Up Health.wav
+
+#begin SoundEffects/AK-47 Reload.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/AK-47 Reload.wav
+
+#begin HeightMapStuff/Map9.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HeightMapStuff/Map9.png
+
+#begin HeightMapStuff/Map10.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HeightMapStuff/Map10.png
+
+#begin HeightMapStuff/Map11.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HeightMapStuff/Map11.png
+
 #begin ParticleTexture/Smoke_Old.png
 /importer:TextureImporter
 /processor:TextureProcessor

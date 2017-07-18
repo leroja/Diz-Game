@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace AnimationContentClasses.Utils
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Util
     {
         /// <summary>
-        /// Gets the right min and max vector3 for the models boundingbox
+        /// Gets the right min and max vector3 for the models boundingBox
         /// </summary>
         /// <param name="box"></param>
         /// <param name="scale"></param>

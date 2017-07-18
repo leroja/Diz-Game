@@ -9,7 +9,7 @@ using DizGame.Source.Systems;
 
 namespace DizGame.Source.AI_Behaviors
 {
-    // TODO decide the best condition when to enter the hoarding behavior
+    // TODO decide the best condition of when to enter the hoarding behavior
     /// <summary>
     /// A behavior for the AI that makes it wander around the map
     /// </summary>
@@ -22,7 +22,6 @@ namespace DizGame.Source.AI_Behaviors
         {
             CurrentTimeForRotation = 0f;
         }
-
 
         /// <summary>
         /// 
@@ -54,19 +53,19 @@ namespace DizGame.Source.AI_Behaviors
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
 
-            if (transformComp.Position.X >= AIComp.Bounds.Height)
+            if (transformComp.Position.X >= AIComp.Bounds.HighX)
             {
                 Border(transformComp, gameTime);
             }
-            else if (transformComp.Position.X <= 3)
+            else if (transformComp.Position.X <= AIComp.Bounds.LowX)
             {
                 Border(transformComp, gameTime);
             }
-            else if (transformComp.Position.Z <= -AIComp.Bounds.Width)
+            else if (transformComp.Position.Z <= AIComp.Bounds.HighZ)
             {
                 Border(transformComp, gameTime);
             }
-            else if (transformComp.Position.Z >= -3)
+            else if (transformComp.Position.Z >= AIComp.Bounds.LowZ)
             {
                 Border(transformComp, gameTime);
             }
@@ -104,14 +103,14 @@ namespace DizGame.Source.AI_Behaviors
         }
 
         /// <summary>
-        /// 
+        /// Code that executes when the AI collides with its defined border
         /// </summary>
-        /// <param name="transformComp"></param>
-        /// <param name="gameTime"></param>
+        /// <param name="transformComp"> The AI:s transform component </param>
+        /// <param name="gameTime"> the current GameTime </param>
         private void Border(TransformComponent transformComp, GameTime gameTime)
         {
-            transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0);
+            transformComp.Position -= transformComp.Forward * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds; // move the AI away from the border
+            transformComp.Rotation += new Vector3(0, MathHelper.Pi, 0); // rotate the AI 180 degrees
             DesiredRotation += MathHelper.Pi;
         }
 

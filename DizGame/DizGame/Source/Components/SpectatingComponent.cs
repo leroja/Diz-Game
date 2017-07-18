@@ -1,9 +1,4 @@
-﻿using DizGame.Source.Factories;
-using GameEngine.Source.Components;
-using GameEngine.Source.Managers;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using System.Linq;
+﻿using GameEngine.Source.Components;
 
 namespace DizGame.Source.Components
 {

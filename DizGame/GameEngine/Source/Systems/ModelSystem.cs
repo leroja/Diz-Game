@@ -82,22 +82,25 @@ namespace GameEngine.Source.Systems
                 pass.Apply();
 
                 hwComponent.GraphicsDevice.DrawInstancedPrimitives(
-                    PrimitiveType.LineList, 0, 0, hwComponent.VertexBuffer.VertexCount, 0, 
+                    PrimitiveType.LineList, 0, 0, hwComponent.VertexBuffer.VertexCount, 0,
                     hwComponent.IndexBuffer.IndexCount / hwComponent.IndicesPerPrimitive, hwComponent.InstanceCount);
 
             }
         }
 
-
+        /// <summary>
+        /// Renders a skybox
+        /// </summary>
+        /// <param name="EntityID"> The entityID of the skybox </param>
         private void RenderSkyBox(int EntityID)
         {
             SkyBoxComponent skybox = ComponentManager.GetEntityComponent<SkyBoxComponent>(EntityID);
             Effect skyBoxEffect = skybox.SkyboxEffect;
             TransformComponent tcp = ComponentManager.GetEntityComponent<TransformComponent>(EntityID);
             TransformComponent trandXomp = ComponentManager.GetEntityComponent<TransformComponent>(defaultCam.ID);
-            
-            var rs = new RasterizerState { CullMode = CullMode.CullClockwiseFace };
-            device.RasterizerState = rs;
+
+            var old_rs = device.RasterizerState;
+            device.RasterizerState = new RasterizerState { CullMode = CullMode.CullClockwiseFace };
 
             // Go through each pass in the effect, but we know there is only one...
             foreach (EffectPass pass in skyBoxEffect.CurrentTechnique.Passes)
@@ -125,8 +128,7 @@ namespace GameEngine.Source.Systems
                 }
             }
 
-            var rs2 = new RasterizerState { CullMode = CullMode.CullCounterClockwiseFace };
-            device.RasterizerState = rs2;
+            device.RasterizerState = old_rs;
         }
 
         /// <summary>

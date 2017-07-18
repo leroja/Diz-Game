@@ -3,6 +3,7 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Systems;
 using System;
 using Microsoft.Xna.Framework;
+using GameEngine.Source.Components;
 
 namespace DizGame.Source.Systems
 {
@@ -40,7 +41,7 @@ namespace DizGame.Source.Systems
             if (ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id1))
             {
                 var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(id1);
-                if (res.thisType == ResourceComponent.ResourceType.Ammo)
+                if (res.thisType == ResourceType.Ammo)
                 {
                     if (ComponentManager.Instance.CheckIfEntityHasComponent<AmmunitionComponent>(id2))
                     {
@@ -48,13 +49,16 @@ namespace DizGame.Source.Systems
                         ComponentManager.Instance.RemoveEntity(id1);
                         ComponentManager.Instance.RecycleID(id1);
                         amo.AmmountOfActiveMagazines++;
+
+                        var sound = ComponentManager.GetEntityComponent<_3DSoundEffectComponent>(id2);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 1f));
                     }
                 }
             }
             else if (ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id2))
             {
                 var res = ComponentManager.Instance.GetEntityComponent<ResourceComponent>(id2);
-                if (res.thisType == ResourceComponent.ResourceType.Ammo)
+                if (res.thisType == ResourceType.Ammo)
                 {
                     if (ComponentManager.Instance.CheckIfEntityHasComponent<AmmunitionComponent>(id1))
                     {
@@ -62,6 +66,9 @@ namespace DizGame.Source.Systems
                         ComponentManager.Instance.RemoveEntity(id2);
                         ComponentManager.Instance.RecycleID(id2);
                         amo.AmmountOfActiveMagazines++;
+
+                        var sound = ComponentManager.GetEntityComponent<_3DSoundEffectComponent>(id1);
+                        sound.SoundEffectsToBePlayed.Add(Tuple.Create("Ammo-Pickup", 1f));
                     }
                 }
 
@@ -75,15 +82,18 @@ namespace DizGame.Source.Systems
         public override void Update(GameTime gameTime)
         {
             var list = ComponentManager.Instance.GetAllEntitiesWithComponentType<AmmunitionComponent>();
-            foreach (var ammoid in list)
+            foreach (var ammoID in list)
             {
-                var ammocomp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(ammoid);
-                if (ammocomp.CurrentAmmoInMag <= 0)
+                var ammoComp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(ammoID);
+                if (ammoComp.CurrentAmmoInMag <= 0)
                 {
-                    if (ammocomp.AmmountOfActiveMagazines > 0)
+                    if (ammoComp.AmmountOfActiveMagazines > 0)
                     {
-                        ammocomp.CurrentAmmoInMag = ammocomp.MaxAmmoInMag;
-                        ammocomp.AmmountOfActiveMagazines--;
+                        ammoComp.CurrentAmmoInMag = ammoComp.MaxAmmoInMag;
+                        ammoComp.AmmountOfActiveMagazines--;
+
+                        //var sound = ComponentManager.Instance.GetEntityComponent<_3DSoundEffectComponent>(ammoID);
+                        //sound.SoundEffectsToBePlayed.Add(Tuple.Create("Reload", 1f));
                     }
                 }
             }

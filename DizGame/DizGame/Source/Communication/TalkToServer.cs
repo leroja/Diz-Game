@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//using GameEngine.Source.Communication;
 using GameEngine.Source.Components;
-//using ServerApplication.Enums;
 using GameEngine.Source.Managers;
 using Lidgren.Network;
 using ServerSupportedCommunication.Enums;
@@ -17,7 +12,6 @@ namespace DizGame.Source.Communication
 {
     class TalkToServer
     {
-
         private NetOutgoingMessage broadcastMessage;
         private NetIncomingMessage incommingMessage;
 
@@ -38,7 +32,7 @@ namespace DizGame.Source.Communication
         public static int Seed { get; private set; }
 
         //Variables that are received from server when asking for WhoIsTheMaster
-        public static bool IsMaster  { get; private set; }
+        public static bool IsMaster { get; private set; }
 
         public TalkToServer(NetClient client)
         {
@@ -71,15 +65,13 @@ namespace DizGame.Source.Communication
                             //Functions that need debugging:
                             //This uses DebugThisFunction5();
                             SendCreatedNewBullet(1, "Bullet", new Vector3(1, 1, 1), new Vector3(.1f, .1f, .1f), 100, 1000, new Vector3(1, 1, 1), 10);
-
                             break;
 
                         case (byte)MessageType.YouAreTheMaster:
                             IAmTheMaster(message);
                             break;
 
-
-                            //Use these cases when debugging messages:
+                        //Use these cases when debugging messages:
                         case (byte)MessageType.DebugFunction0:
                             DebugThisFunction0(message);
                             break;
@@ -106,7 +98,6 @@ namespace DizGame.Source.Communication
             }
         }
 
-
         private void IAmTheMaster(NetIncomingMessage message)
         {
             //Byte[] convertArray = message.ReadBytes(message.LengthBytes);
@@ -118,7 +109,6 @@ namespace DizGame.Source.Communication
             IsMaster = message.ReadBoolean();
 
         }
-
 
         /// <summary>
         /// This function shall receive the initial game state when asked for by the clients.
@@ -182,17 +172,17 @@ namespace DizGame.Source.Communication
         {
             IComponent component = null;
 
-            foreach(int entityId in entityIds)
+            foreach (int entityId in entityIds)
             {
                 foreach (ComponentType type in Enum.GetValues(typeof(ComponentType)))
                 {
                     component = null;
 
-                    switch(type)
+                    switch (type)
                     {
                         case ComponentType.TransformComponent:
                             component = ComponentManager.Instance.GetEntityComponent<TransformComponent>(entityId);
-                            if(component != null) //Not sure if this always will be null when componentManager fails...
+                            if (component != null) //Not sure if this always will be null when componentManager fails...
                                 SendCreatedNewTransformComponent(entityId, (TransformComponent)component);
                             break;
 
@@ -202,7 +192,6 @@ namespace DizGame.Source.Communication
                 }
             }
         }
-
 
         private static void SendCreatedNewBullet(int entityId, string modelName, Vector3 position, Vector3 scale, float maxRange, float initialVelocity,
                                                  Vector3 rotation, float damage)
@@ -297,7 +286,7 @@ namespace DizGame.Source.Communication
             //int pos = ConvertFromByteArray.ConvertValue(message.ReadBytes(message.LengthBytes), 0, out what);
         }
 
-    
+
         private void DebugThisFunction1(NetIncomingMessage message)
         {
 
@@ -320,7 +309,7 @@ namespace DizGame.Source.Communication
 
         private void DebugThisFunction5(NetIncomingMessage message)
         {
-            ;
+            
         }
     }
 }

@@ -6,17 +6,19 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
 using AnimationContentClasses;
 
-namespace GameEngine.Tools
+namespace GameEngine.Source.Tools
 {
+    /// <summary>
+    /// A system for rendering BoundingSpheres
+    /// </summary>
     public class BoundingSphereRenderer : IRender
     {
-        public static float RADIANS_FOR_90DEGREES = MathHelper.ToRadians(90);//(float)(Math.PI / 2.0);
-        public static float RADIANS_FOR_180DEGREES = RADIANS_FOR_90DEGREES * 2;
-
         private GraphicsDevice graphicsDevice = null;
 
+        /// <summary>
+        /// VertexBuffer
+        /// </summary>
         protected VertexBuffer buffer;
-        protected VertexDeclaration vertexDecl;
 
         private BasicEffect basicEffect;
 
@@ -26,12 +28,19 @@ namespace GameEngine.Tools
 
         //private Matrix[] modelBoneTransforms;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="device"></param>
         public BoundingSphereRenderer(GraphicsDevice device)
         {
             graphicsDevice = device;
             OnCreateDevice();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void OnCreateDevice()
         {
             basicEffect = new BasicEffect(graphicsDevice);
@@ -39,62 +48,42 @@ namespace GameEngine.Tools
             CreateShape();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void CreateShape()
         {
             double angle = MathHelper.TwoPi / CIRCLE_NUM_POINTS;
 
             _vertices = new VertexPositionNormalTexture[CIRCLE_NUM_POINTS * 3 + 4];
 
-            _vertices[0] = new VertexPositionNormalTexture(
-                Vector3.Zero, Vector3.Forward, Vector2.One);
+            _vertices[0] = new VertexPositionNormalTexture(Vector3.Zero, Vector3.Forward, Vector2.One);
 
             for (int i = 1; i <= CIRCLE_NUM_POINTS; i++)
             {
                 float x = (float)Math.Round(Math.Sin(angle * i), 4);
                 float y = (float)Math.Round(Math.Cos(angle * i), 4);
-                Vector3 point = new Vector3(
-                                 x,
-                                 y,
-                                 0.0f);
+                Vector3 point = new Vector3(x, y, 0);
 
-
-
-                _vertices[i] = new VertexPositionNormalTexture(
-                    point,
-                    Vector3.Forward,
-                    new Vector2());
+                _vertices[i] = new VertexPositionNormalTexture(point, Vector3.Forward, new Vector2());
             }
+
             for (int i = CIRCLE_NUM_POINTS + 1; i <= CIRCLE_NUM_POINTS * 2 + 1; i++)
             {
                 float z = (float)Math.Round(Math.Sin(angle * i), 4);
                 float x = (float)Math.Round(Math.Cos(angle * i), 4);
-                Vector3 point = new Vector3(
-                                 x,
-                                 0.0f,
-                                 z);
+                Vector3 point = new Vector3(x, 0, z);
 
-
-
-                _vertices[i] = new VertexPositionNormalTexture(
-                    point,
-                    Vector3.Forward,
-                    new Vector2());
+                _vertices[i] = new VertexPositionNormalTexture(point, Vector3.Forward, new Vector2());
             }
+
             for (int i = CIRCLE_NUM_POINTS * 2 + 2; i <= CIRCLE_NUM_POINTS * 3 + 3; i++)
             {
                 float y = (float)Math.Round(Math.Sin(angle * i), 4);
                 float z = (float)Math.Round(Math.Cos(angle * i), 4);
-                Vector3 point = new Vector3(
-                                 0.0f,
-                                 y,
-                                 z);
+                Vector3 point = new Vector3(0, y, z);
 
-
-
-                _vertices[i] = new VertexPositionNormalTexture(
-                    point,
-                    Vector3.Forward,
-                    new Vector2());
+                _vertices[i] = new VertexPositionNormalTexture(point, Vector3.Forward, new Vector2());
             }
 
             // Initialize the vertex buffer, allocating memory for each vertex
@@ -136,6 +125,11 @@ namespace GameEngine.Tools
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="volume"></param>
+        /// <param name="color"></param>
         public void DrawSpheres(BoundingVolume volume, Color color)
         {
             if (volume != null)
@@ -172,6 +166,10 @@ namespace GameEngine.Tools
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Draw(GameTime gameTime)
         {
             var entities = ComponentManager.Instance.GetAllEntitiesAndComponentsWithComponentType<ModelComponent>();

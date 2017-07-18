@@ -7,26 +7,29 @@ using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using DizGame.Source.Factories;
 using System.Threading.Tasks;
+using DizGame.Source.Random_Stuff;
 
 namespace DizGame.Source.Systems
 {
     /// <summary>
-    /// System to manage the different kinds of resources placed within the game
-    /// world. These are available for players to pick up and gain additional resources.
+    /// System to manage the different kinds of resources placed within the game world. 
+    /// These are available for players to pick up and gain additional resources.
     /// </summary>
     public class ResourceSystem : IUpdate
     {
         private int maxNumberOfResourcesInPlay;
         private int numberOfRemovedResources;
         private int healthAmmoRatio;
+        private Border border;
 
         /// <summary>
         /// Basic constructor for the resource system
         /// </summary>
-        public ResourceSystem()
+        public ResourceSystem(Border border)
         {
-            maxNumberOfResourcesInPlay = 25;
+            maxNumberOfResourcesInPlay = 30;
             healthAmmoRatio = 3;
+            this.border = border;
         }
 
         /// <summary>
@@ -37,12 +40,14 @@ namespace DizGame.Source.Systems
         /// be in play at any given time within the game.</param>
         /// <param name="healthAmmoRatio"> this number represent the ratio for which newly created resources are determined. 
         /// For example if the ratio is 5, every 5th resource will be a health resource and the rest ammo resources.</param>
-        public ResourceSystem(int maxNumberOfResourcesInPlay, int healthAmmoRatio)
+        /// <param name="border"> The bounds in which the resources can spawn </param>
+        public ResourceSystem(int maxNumberOfResourcesInPlay, int healthAmmoRatio, Border border)
         {
             if (healthAmmoRatio == 0)
-                healthAmmoRatio = 2; //   50 / 50 ammo & hälsa
+                healthAmmoRatio = 2;
             this.maxNumberOfResourcesInPlay = maxNumberOfResourcesInPlay;
             this.healthAmmoRatio = healthAmmoRatio;
+            this.border = border;
         }
 
         /// <summary>
@@ -80,15 +85,28 @@ namespace DizGame.Source.Systems
 
         private void AddNewResources(int currentNumberOfResources)
         {
+            var Health = 0;
+            foreach (var item in ComponentManager.GetAllEntitiesWithComponentType<ResourceComponent>())
+            {
+                var rComp = ComponentManager.GetEntityComponent<ResourceComponent>(item);
+                if (rComp.thisType == ResourceType.Health)
+                {
+                    Health++;
+                }
+            }
+
+            var healthTarget = maxNumberOfResourcesInPlay / healthAmmoRatio;
+
             int keepTrack = 0;
 
             List<Vector3> positions = GetMapPositions(maxNumberOfResourcesInPlay - currentNumberOfResources);
 
             while (currentNumberOfResources != maxNumberOfResourcesInPlay)
             {
-                if (keepTrack % healthAmmoRatio == 1)
+                if (Health < healthTarget)
                 {
                     EntityFactory.Instance.ResourceFactory.CreateHealthResource(positions.ElementAt(keepTrack));
+                    Health++;
                     keepTrack++;
                     currentNumberOfResources++;
                 }
@@ -113,24 +131,12 @@ namespace DizGame.Source.Systems
             List<Vector3> positions = new List<Vector3>();
 
             Random r = new Random();
-            int mapWidht;
-            int mapHeight;
-            List<int> heightList = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponentTexture>();
-            HeightmapComponentTexture heigt = ComponentManager.GetEntityComponent<HeightmapComponentTexture>(heightList[0]);
-            mapWidht = heigt.Width;
-            mapHeight = heigt.Height;
+            List<int> heightList = ComponentManager.GetAllEntitiesWithComponentType<HeightmapComponent>();
+            HeightmapComponent heigt = ComponentManager.GetEntityComponent<HeightmapComponent>(heightList[0]);
             for (int i = 0; i < numberToCreate; i++)
             {
-                var pot = new Vector3(r.Next(mapWidht - 10), 0, r.Next(mapHeight - 10));
+                var pot = new Vector3(r.Next((int)border.LowX, (int)border.HighX), 0, r.Next(Math.Abs((int)border.LowZ), Math.Abs((int)border.HighZ)));
                 pot.Y = heigt.HeightMapData[(int)pot.X, (int)pot.Z];
-                if (pot.X < 10)
-                {
-                    pot.X = pot.X + 10;
-                }
-                if (pot.Z < 10)
-                {
-                    pot.Z = pot.Z - 10;
-                }
                 pot.Z = -pot.Z;
                 positions.Add(pot);
             }

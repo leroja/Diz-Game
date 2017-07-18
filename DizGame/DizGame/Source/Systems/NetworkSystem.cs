@@ -1,13 +1,6 @@
 ﻿using Lidgren.Network;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//using GameEngine.Source.Communication;
-using GameEngine.Source.Enums;
 using DizGame.Source.Communication;
-using System.Threading;
 
 namespace DizGame.Source.Systems
 {
@@ -40,7 +33,7 @@ namespace DizGame.Source.Systems
         /// <summary>
         /// Alternate constructor, if another portnumber is desired.
         /// </summary>
-        /// <param name="portnumber"></param>
+        /// <param name="portNumber"></param>
         public NetworkSystem(int portNumber)
         {
             portNum = portNumber;

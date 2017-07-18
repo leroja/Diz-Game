@@ -7,12 +7,18 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Managers
 {
+    /// <summary>
+    /// A thread manager
+    /// </summary>
     public class ThreadManager
     {
         private static ThreadManager instance;
         object _lock = new object();
         List<Thread> threads;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ThreadManager()
         {
             this.threads = new List<Thread>();
@@ -32,6 +38,13 @@ namespace GameEngine.Source.Managers
                 return instance;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="method"></param>
+        /// <param name="param"></param>
         public void RunOnNewThread<T>(Action<T> method, T param)
         {
             lock (_lock)
@@ -51,6 +64,5 @@ namespace GameEngine.Source.Managers
                 }
             }
         }
-
     }
 }

@@ -63,7 +63,7 @@ namespace DizGame.Source.GameStates
             var ev = ComponentManager.Instance.GetEntityComponent<TextComponent>(world.FirstOrDefault());
             ev.Color = Color.Black;
             ev.Position = new Vector2(700, 10);
-            
+
             SystemManager.Instance.AddSystem(TextSystem);
 
             int entiID = ComponentManager.Instance.CreateID();
@@ -86,19 +86,19 @@ namespace DizGame.Source.GameStates
                 new TextComponent("Score", new Vector2(BetweenNameAndScore, 10), Color.Navy, SpriteFont, true),
                 new TextComponent("Kills", new Vector2(BetweenScoreAndKills, 10), Color.Navy, SpriteFont, true),
                 new TextComponent("Hits", new Vector2(BetweenKillsAndHits, 10), Color.Navy, SpriteFont, true),
-                new TextComponent("Awards", new Vector2(BetweenHitsAndAdditional, 10), Color.Navy, SpriteFont, true), 
+                new TextComponent("Awards", new Vector2(BetweenHitsAndAdditional, 10), Color.Navy, SpriteFont, true),
             };
 
             var textComp = new TextComponent(names, li);
             ComponentManager.Instance.AddComponentToEntity(entiID, textComp);
-            
+
             int y = 50;
             TextComponent textComponent;
             List<int> ids = GetScoreStatistics();
             for (int i = 0; i < ids.Count; i++)
             {
                 ScoreComponent score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(ids[i]);
-                
+
                 li = new List<TextComponent>()
                 {
                     new TextComponent(score.NameOfScorer, new Vector2(start, y), Color.DeepPink, SpriteFont, true),
@@ -204,7 +204,7 @@ namespace DizGame.Source.GameStates
         }
 
         /// <summary>
-        /// Method to run durring the update part of the game, should contain logic
+        /// Method to run during the update part of the game, should contain logic
         /// for exiting the gamestate.
         /// </summary>
         public override void Update(GameTime gameTime)

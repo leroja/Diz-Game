@@ -5,6 +5,7 @@ using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using DizGame.Source.Systems;
 using DizGame.Source.Factories;
+using System;
 
 namespace DizGame.Source.AI_Behaviors
 {
@@ -14,14 +15,15 @@ namespace DizGame.Source.AI_Behaviors
     /// </summary>
     public class AttackingBehavior : AiBehavior
     {
+        private Random rand;
         /// <summary>
         /// Constructor
         /// </summary>
         public AttackingBehavior()
         {
-            
+            rand = new Random();
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -39,17 +41,27 @@ namespace DizGame.Source.AI_Behaviors
             Time -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             DesiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestEnemy).Position).Y;
-            transformComp.Rotation = new Vector3(0, TurnToFace(DesiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * 4 * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+
+            transformComp.Rotation = new Vector3(0, TurnToFace(DesiredRotation, transformComp.Rotation.Y,
+                AIComp.TurningSpeed * 4 * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
+
             transformComp.Position = new Vector3(transformComp.Position.X, MovingSystem.GetHeight(transformComp.Position), transformComp.Position.Z);
+
             if (worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0 && Time < 0)
             {
-                if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag > 0 && DesiredRotation == transformComp.Rotation.Y)
+                if (ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag > 0 &&
+                    DesiredRotation == transformComp.Rotation.Y)
                 {
                     var rot = GetRotationForAimingAtEnemy(AIComp);
 
-                    EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7, new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0), AIComp.DamagePerShot, AIComp.ID);
+                    EntityFactory.Instance.CreateBullet("Bullet", transformComp.Position + transformComp.Forward * 7,
+                        new Vector3(.1f, .1f, .1f), 100, 1000, transformComp.Rotation + new Vector3(rot, 0, 0),
+                        AIComp.DamagePerShot, AIComp.ID);
+
                     ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID).CurrentAmmoInMag--;
                     Time = AIComp.ShootingCooldown;
+                    var sound = ComponentManager.Instance.GetEntityComponent<_3DSoundEffectComponent>(AIComp.ID);
+                    sound.SoundEffectsToBePlayed.Add(Tuple.Create("ShotEffect", 1f));
                 }
             }
 

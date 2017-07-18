@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DizGame.Source.Components;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Managers;
@@ -37,7 +34,7 @@ namespace DizGame.Source.AI_Behaviors
 
             transformComp.Position = new Vector3(transformComp.Position.X, height, transformComp.Position.Z);
 
-         
+
             if (CurrentTimeForRotation > AIComp.UpdateFrequency)
             {
                 var healthComp = ComponentManager.Instance.GetEntityComponent<HealthComponent>(AIComp.ID);
@@ -46,7 +43,7 @@ namespace DizGame.Source.AI_Behaviors
                 {
                     DesiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestAmmo).Position).Y;
                 }
-                else if(ammoComp.AmmountOfActiveMagazines >= 2 && healthComp.Health != healthComp.MaxHealth)
+                else if (ammoComp.AmmountOfActiveMagazines >= 2 && healthComp.Health != healthComp.MaxHealth)
                 {
                     DesiredRotation = GetRotationTo(AIComp, ComponentManager.Instance.GetEntityComponent<TransformComponent>(ClosestHealth).Position).Y;
                 }
@@ -58,7 +55,7 @@ namespace DizGame.Source.AI_Behaviors
             }
             transformComp.Rotation = new Vector3(0, TurnToFace(DesiredRotation, transformComp.Rotation.Y, AIComp.TurningSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds), 0);
             BehaviorStuff(AIComp, transformComp);
-            
+
             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
         }
 
@@ -74,7 +71,7 @@ namespace DizGame.Source.AI_Behaviors
             var worldComp = (WorldComponent)worldTemp.Values.First();
             var healthComp = ComponentManager.Instance.GetEntityComponent<HealthComponent>(AIComp.ID);
             var ammoComp = ComponentManager.Instance.GetEntityComponent<AmmunitionComponent>(AIComp.ID);
-            
+
             if (healthComp.Health == healthComp.MaxHealth && ammoComp.AmmountOfActiveMagazines >= 2)
             {
                 AIComp.ChangeBehavior("Wander", transComp.Rotation);
@@ -82,11 +79,11 @@ namespace DizGame.Source.AI_Behaviors
             else if (true)
             {
                 AIComp.ChangeBehavior("Wander", transComp.Rotation);
-            }else if (false)
+            }
+            else if (false)
             {
                 AIComp.ChangeBehavior("Wander", transComp.Rotation);
             }
         }
-
     }
 }

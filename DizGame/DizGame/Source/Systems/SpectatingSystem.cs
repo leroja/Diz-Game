@@ -42,21 +42,6 @@ namespace DizGame.Source.Systems
 
                     available.AddRange(availableAis);
 
-                    //if (!available.Contains(SpecComp.SpectatedEntity))
-                    //{
-                    //    SpecComp.SpectatedEntity = available.FirstOrDefault();
-                    //    EntityFactory.Instance.RemoveCam();
-                    //    EntityFactory.Instance.AddChaseCamToEntity(SpecComp.SpectatedEntity, new Vector3(0, 10, 25));
-                    //}
-
-                    // not tested
-                    //if (!available.Contains(SpecComp.SpectatedEntity))
-                    //{
-                    //    var transComp = ComponentManager.GetEntityComponent<TransformComponent>(SpecComp.SpectatedEntity);
-                    //    EntityFactory.Instance.RemoveCam();
-                    //    EntityFactory.Instance.CreateStaticCam(transComp.Position + new Vector3(0, 0, 50), transComp.Position);
-                    //}
-
                     if (keyboardComp.GetState("SpectateUp") == ButtonStates.Pressed)
                     {
                         int index = available.FindIndex(a => a == SpecComp.SpectatedEntity);

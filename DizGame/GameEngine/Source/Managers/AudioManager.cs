@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
 
 namespace GameEngine.Source.Managers
@@ -13,11 +14,13 @@ namespace GameEngine.Source.Managers
         private static AudioManager instance;
         private float prevVol = 1.0f;
         private Dictionary<string, Song> songDic = new Dictionary<string, Song>();
-        private Dictionary<string, SoundEffectInstance> soundEffInstDic = new Dictionary<string, SoundEffectInstance>();
+        private Dictionary<string, SoundEffect> soundEffDic = new Dictionary<string, SoundEffect>();
 
 
         private AudioManager()
         {
+            SoundEffect.DopplerScale = 0.1f;
+            SoundEffect.DistanceScale = 10f;
         }
 
         /// <summary>
@@ -86,11 +89,9 @@ namespace GameEngine.Source.Managers
         {
             if (effect != null)
             {
-                SoundEffectInstance inst = effect.CreateInstance();
-
-                if (!soundEffInstDic.ContainsKey(effectName))
+                if (!soundEffDic.ContainsKey(effectName))
                 {
-                    soundEffInstDic.Add(effectName, inst);
+                    soundEffDic.Add(effectName, effect);
                 }
             }
         }
@@ -104,9 +105,9 @@ namespace GameEngine.Source.Managers
         /// </param>
         public void RemoveSoundEffect(string effectName)
         {
-            if (soundEffInstDic.ContainsKey(effectName))
+            if (soundEffDic.ContainsKey(effectName))
             {
-                soundEffInstDic.Remove(effectName);
+                soundEffDic.Remove(effectName);
             }
         }
         /// <summary>
@@ -115,15 +116,42 @@ namespace GameEngine.Source.Managers
         /// <param name="SoundEffect"> name of the soundEffect</param>
         /// <param name="pan"></param>
         /// <param name="pitch"></param>
-        public void PlaySoundEffect(string SoundEffect, float pan, float pitch)
+        /// <returns> returns the soundEffectInstance of the player sound effect </returns>
+        public SoundEffectInstance PlaySoundEffect(string SoundEffect, float pan, float pitch)
         {
-            if (soundEffInstDic.ContainsKey(SoundEffect))
+            if (soundEffDic.ContainsKey(SoundEffect))
             {
-                soundEffInstDic[SoundEffect].Pan = pan;
-                soundEffInstDic[SoundEffect].Pitch = pitch;
-                soundEffInstDic[SoundEffect].Play();
+                var inst = soundEffDic[SoundEffect].CreateInstance();
+                inst.Pan = pan;
+                inst.Pitch = pitch;
+                inst.Play();
+                return inst;
             }
+            return null;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="soundEffect"></param>
+        /// <param name="volume"></param>
+        /// <param name="audioEmitter"></param>
+        /// <param name="audioListener"></param>
+        /// <returns></returns>
+        public SoundEffectInstance Play3DSoundEffect(string soundEffect, float volume, AudioEmitter audioEmitter, AudioListener audioListener)
+        {
+            if (soundEffDic.ContainsKey(soundEffect))
+            {
+                var inst = soundEffDic[soundEffect].CreateInstance();
+
+                inst.Volume = volume;
+                inst.Apply3D(audioListener, audioEmitter);
+                inst.Play();
+                return inst;
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// Changes the Volume of the soundEffects

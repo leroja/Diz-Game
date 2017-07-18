@@ -10,7 +10,7 @@ using DizGame.Source.Systems;
 namespace DizGame.Source.AI_Behaviors
 {
     /// <summary>
-    /// A behavior that makes the AI patrol between some specified waypoint
+    /// A behavior that makes the AI patrol between some specified waypoints
     /// </summary>
     public class PatrollingBehavior : AiBehavior
     {
@@ -30,7 +30,7 @@ namespace DizGame.Source.AI_Behaviors
                 waypoints.Enqueue(waypoint);
             }
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -85,8 +85,8 @@ namespace DizGame.Source.AI_Behaviors
         /// <summary>
         /// Gets the rotation to next waypoint for the AI
         /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
+        /// <param name="ID"> The entityID of the AI </param>
+        /// <returns> a vector3 that contains the rotation the next waypoint </returns>
         private Vector3 GetRotationToNextWayPoint(int ID)
         {
             var nextWaypoint = waypoints.Peek();
