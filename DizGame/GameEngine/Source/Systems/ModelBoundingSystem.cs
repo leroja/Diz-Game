@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using AnimationContentClasses;
+using ContentProject;
 using System.Threading.Tasks;
 
 namespace GameEngine.Source.Systems

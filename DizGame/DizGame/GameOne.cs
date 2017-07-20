@@ -3,7 +3,6 @@ using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using DizGame.Source.GameStates;
-using DizGame.Source.LanguageBasedModels;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Threading;
@@ -15,9 +14,6 @@ namespace DizGame
     /// </summary>
     public class GameOne : GameEngine.GameEngine
     {
-        NetworkSystem client;
-        private Thread netClientThread;
-
         private static Game instance;
 
         /// <summary>
@@ -31,7 +27,6 @@ namespace DizGame
         public GameOne()
         {
             instance = this;
-            //this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -44,15 +39,7 @@ namespace DizGame
                 return instance;
             }
         }
-
-        private void InitNetworkClient()
-        {
-            client = new NetworkSystem();
-            client.ConnectToServer();
-            netClientThread = new Thread(new ThreadStart(client.ReadMessages));
-            netClientThread.Start();
-        }
-
+        
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -70,9 +57,7 @@ namespace DizGame
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
-
-
-            InitNetworkClient();
+            
 
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
@@ -97,7 +82,6 @@ namespace DizGame
         /// </summary>
         protected override void LoadContent()
         {
-            TreeModel tree = new TreeModel(Device, 1f, MathHelper.PiOver4 - 0.4f, "F[LF]F[RF]F", 0, 1f, new string[] { "F" });
         }
 
         /// <summary>
@@ -106,12 +90,10 @@ namespace DizGame
         /// </summary>
         protected override void UnloadContent()
         {
-            client.EndExecution();
-            netClientThread.Join();
         }
 
         /// <summary>
-        /// Updateloop for the game, other stuff that's not updated in the Gameengine could be handled here.
+        /// Update loop for the game, other stuff that's not updated in the Game Engine could be handled here.
         /// </summary>
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)

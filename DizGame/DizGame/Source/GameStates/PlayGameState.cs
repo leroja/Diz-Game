@@ -24,7 +24,6 @@ namespace DizGame.Source.GameStates
         /// List with ints representing the entity id's 'active' in this current state
         /// </summary>
         public override List<int> GameStateEntities { get; }
-        private static EntityTracingSystem EntityTracingSystem { get; set; }
         private bool multiplayerGame;
 
         private Border border = new Border()

@@ -45,10 +45,6 @@ namespace GameEngine.Source.Components
         /// </summary>
         public Vector3 Scale { get; set; }
         /// <summary>
-        /// Matrix which is the ModelMatrix for an object
-        /// </summary>
-        public Matrix ModelMatrix { get; set; }
-        /// <summary>
         /// Matrix which is the ObjectMatrix for an object
         /// </summary>
         public Matrix ObjectMatrix { get; set; }
@@ -66,7 +62,6 @@ namespace GameEngine.Source.Components
             this.Scale = scale;
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;
-            this.ModelMatrix = Matrix.Identity;
         }
 
         /// <summary>
@@ -80,7 +75,6 @@ namespace GameEngine.Source.Components
             this.Scale = Vector3.One;
             this.QuaternionRotation = Quaternion.Identity;
             this.Orientation = Quaternion.Identity;
-            this.ModelMatrix = Matrix.Identity;
         }
     }
 }

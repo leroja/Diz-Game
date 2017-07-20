@@ -1,4 +1,4 @@
-﻿using AnimationContentClasses;
+﻿using ContentProject;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using Microsoft.Xna.Framework;

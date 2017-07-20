@@ -1,12 +1,11 @@
-﻿using AnimationContentClasses;
-using AnimationContentClasses.Utils;
+﻿using ContentProject;
+using ContentProject.Utils;
 using DizGame.Source.Components;
 using DizGame.Source.Random_Stuff;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
-using GameEngine.Source.RandomStuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

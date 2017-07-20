@@ -43,6 +43,9 @@ namespace GameEngine.Source.RandomStuff
                                  VertexElementUsage.TextureCoordinate, 0)
         );
 
+        /// <summary>
+        /// 
+        /// </summary>
         public const int sizeInBytes = 40;
     }
 }

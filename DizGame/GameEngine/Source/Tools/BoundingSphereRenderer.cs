@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GameEngine.Source.Managers;
 using GameEngine.Source.Components;
 using GameEngine.Source.Systems;
-using AnimationContentClasses;
+using ContentProject;
 
 namespace GameEngine.Source.Tools
 {

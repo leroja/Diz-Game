@@ -1,5 +1,5 @@
-﻿using AnimationContentClasses;
-using AnimationContentClasses.Utils;
+﻿using ContentProject;
+using ContentProject.Utils;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;

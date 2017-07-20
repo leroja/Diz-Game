@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
-using AnimationContentClasses;
+using ContentProject;
 
 namespace GameEngine.Source.Systems
 {

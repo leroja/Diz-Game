@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ContentProject</RootNamespace>
     <AssemblyName>ContentProject</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +68,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationClip.cs" />
+    <Compile Include="BoundingBox3D.cs" />
+    <Compile Include="BoundingFrustum3D.cs" />
+    <Compile Include="BoundingSphere3D.cs" />
+    <Compile Include="BoundingVolume.cs" />
+    <Compile Include="IBounding3D.cs" />
+    <Compile Include="KeyFrame.cs" />
     <Compile Include="ModelBoundingBoxProcessor.cs" />
     <Compile Include="ModelBoundingSphereProcessor.cs" />
     <Compile Include="AnimationProcessor.cs" />
@@ -78,6 +86,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SkinningData.cs" />
+    <Compile Include="Utils\Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Content.mgcb" />
@@ -88,12 +98,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
-      <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
-      <Name>AnimationContentClasses</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace GameEngine.Source.Components
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ParticleEmitterComponent : IComponent
     {
         /// <summary>

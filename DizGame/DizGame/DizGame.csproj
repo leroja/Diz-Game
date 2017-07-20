@@ -13,7 +13,7 @@
     <AssemblyName>DizGame</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
   </PropertyGroup>
@@ -59,7 +59,6 @@
     <Compile Include="Source\AI Behaviors\PatrollingBehavior.cs" />
     <Compile Include="Source\AI Behaviors\WanderBehavior.cs" />
     <Compile Include="Source\Components\AIComponent.cs" />
-    <Compile Include="Source\Communication\TalkToServer.cs" />
     <Compile Include="Source\Components\BulletComponent.cs" />
     <Compile Include="Source\Components\HealthComponent.cs" />
     <Compile Include="Source\Components\AmmunitionComponent.cs" />
@@ -74,19 +73,15 @@
     <Compile Include="Source\GameStates\MainMenu.cs" />
     <Compile Include="Source\GameStates\PlayGameState.cs" />
     <Compile Include="Source\GameStates\ScoreScreen.cs" />
-    <Compile Include="Source\LanguageBasedModels\TreeModel.cs" />
     <Compile Include="Source\Random Stuff\Border.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\AmmunitionSystem.cs" />
     <Compile Include="Source\Enums\GameSettingsType.cs" />
-    <Compile Include="Source\Settings\GameSettings.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
-    <Compile Include="Source\Systems\EntityTracingSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />
     <Compile Include="Source\Systems\HudSystem.cs" />
     <Compile Include="Source\Systems\MovingSystem.cs" />
-    <Compile Include="Source\Systems\NetworkSystem.cs" />
     <Compile Include="Source\Systems\PlayerSystem.cs" />
     <Compile Include="Source\Systems\ResourceSystem.cs" />
     <Compile Include="Source\Systems\SmokeSystem.cs" />
@@ -106,7 +101,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Effects\HardwareInstancedEffect.fx" />
     <Content Include="Content\Effects\ParticleEffect.fx" />
     <Content Include="Content\Effects\ParticleEffect_Old.fx" />
     <Content Include="Content\Effects\Skybox.fx" />
@@ -191,10 +185,6 @@
     <None Include="Content\MapObjects\WoodHouse\WoodHouseTextures\TELHA3.tga" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
-      <Project>{44CB33F7-2F30-435E-AD1C-E659F42B3AC5}</Project>
-      <Name>AnimationContentClasses</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ContentProject\ContentProject.csproj">
       <Project>{2020d833-ad3f-446e-9609-b751490b0800}</Project>
       <Name>ContentProject</Name>
@@ -202,10 +192,6 @@
     <ProjectReference Include="..\GameEngine\GameEngine.csproj">
       <Project>{beb5aa74-8cd7-4ded-86d9-693fa6e9aaf0}</Project>
       <Name>GameEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServerSupportedCommunication\ServerSupportedCommunication.csproj">
-      <Project>{72d628ae-d696-472c-b147-368d3e5facfd}</Project>
-      <Name>ServerSupportedCommunication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -33,8 +33,6 @@ namespace GameEngine.Source.Systems
                 tfc.ObjectMatrix = Matrix.CreateScale(tfc.Scale)
                     * Matrix.CreateFromQuaternion(tfc.QuaternionRotation)
                     * Matrix.CreateTranslation(tfc.Position);
-
-                tfc.ModelMatrix = tfc.ObjectMatrix;
             });
         }
     }

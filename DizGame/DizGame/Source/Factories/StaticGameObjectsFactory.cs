@@ -1,6 +1,5 @@
-﻿using AnimationContentClasses;
-using AnimationContentClasses.Utils;
-using DizGame.Source.LanguageBasedModels;
+﻿using ContentProject;
+using ContentProject.Utils;
 using DizGame.Source.Random_Stuff;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
@@ -203,91 +202,6 @@ namespace DizGame.Source.Factories
             ComponentManager.Instance.AddAllComponents(entityID, components);
 
             return entityID;
-        }
-
-        public int CreateDryGrass(int numberOfObjects, Vector3 position, Vector3 scale)
-        {
-            TreeModel tree = new TreeModel(GameOne.Instance.GraphicsDevice, 1f, MathHelper.PiOver4 - 0.5f, "F[LF]F[RF]F", 4, 1f, new string[] { "F" });
-            int instanceCount = numberOfObjects;
-
-            VertexDeclaration matriceVD = new VertexDeclaration(
-                                     new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 0),
-                                     new VertexElement(16, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 1),
-                                     new VertexElement(32, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 2),
-                                     new VertexElement(48, VertexElementFormat.Vector4, VertexElementUsage.TextureCoordinate, 3)
-                                     );
-
-            Matrix[] objectWorldMatrices = new Matrix[instanceCount];
-            InitObjectMatrices(ref objectWorldMatrices, position, scale);
-            //SpreadTheGrassAroundPosition(ref objectWorldMatrices, position, 2);
-
-            VertexBuffer matriceVB = new VertexBuffer(GameOne.Instance.GraphicsDevice, matriceVD, instanceCount, BufferUsage.None);
-            matriceVB.SetData(objectWorldMatrices);
-
-            VertexBufferBinding[] bindings = new VertexBufferBinding[2];
-
-            bindings[0] = new VertexBufferBinding(tree.VertexBuffer);
-            bindings[1] = new VertexBufferBinding(matriceVB, 0, 1);
-
-            RasterizerState rs = new RasterizerState()
-            {
-                CullMode = CullMode.None,
-                FillMode = FillMode.Solid,
-            };
-
-            HardwareInstancedComponent hwinstanced = new HardwareInstancedComponent()
-            {
-                GraphicsDevice = GameOne.Instance.GraphicsDevice,
-
-                Effect = GameOne.Instance.Content.Load<Effect>("Effects/HardwareInstancedEffect"),
-
-                IndexBuffer = tree.IndexBuffer,
-                VertexBuffer = tree.VertexBuffer,
-
-                IndicesPerPrimitive = 2,
-                InstanceCount = instanceCount,
-
-                MatriceVB = matriceVB,
-                Bindings = bindings,
-                MatriceVD = matriceVD,
-                ObjectWorldMatrices = objectWorldMatrices,
-
-                Texture = GameOne.Instance.Content.Load<Texture2D>("HeightMapStuff/drygrass"),
-
-                RasterizerState = rs,
-
-            };
-
-            TransformComponent transform = new TransformComponent(position, scale);
-
-            int entityID = ComponentManager.Instance.CreateID();
-
-            ComponentManager.Instance.AddComponentToEntity(entityID, hwinstanced);
-            ComponentManager.Instance.AddComponentToEntity(entityID, transform);
-
-            return entityID;
-        }
-
-        private void InitObjectMatrices(ref Matrix[] objectMatrices, Vector3 position, Vector3 scale)
-        {
-            for (int i = 0; i < objectMatrices.Length; i++)
-                objectMatrices[i] = Matrix.Identity
-                                  * Matrix.CreateScale(scale)
-                                  * Matrix.CreateRotationY(i * MathHelper.PiOver4)
-                                  * Matrix.CreateTranslation(position);
-        }
-
-        private void SpreadTheGrassAroundPosition(ref Matrix[] objectMatrices, Vector3 position, int spread)
-        {
-            Random rnd = new Random();
-
-            for (int i = 0; i < objectMatrices.Length; i++)
-            {
-                objectMatrices[i] *= Matrix.CreateTranslation(
-                    new Vector3(rnd.Next(-spread, spread),
-                                0,
-                                rnd.Next(-spread, spread)));
-            }
         }
 
         /// <summary>

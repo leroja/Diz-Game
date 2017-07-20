@@ -10,7 +10,6 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\ContentProject\bin\Debug\AnimationContentClasses.dll
 /reference:..\..\ContentProject\bin\Debug\ContentProject.dll
 
 #---------------------------------- Content ---------------------------------#
@@ -258,12 +257,6 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Death.spritefont
-
-#begin Effects/HardwareInstancedEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Effects/HardwareInstancedEffect.fx
 
 #begin HeightMapStuff/drygrass.png
 /importer:TextureImporter

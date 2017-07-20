@@ -1,16 +1,7 @@
-﻿using AnimationContentClasses;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContentProject
 {
@@ -31,32 +22,6 @@ namespace ContentProject
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
             ModelContent model = base.Process(input, context);
-            //MeshContent mFirst = input as MeshContent;
-            //if (mFirst == null)
-            //{
-            //    foreach (NodeContent node in input.Children)
-            //    {
-            //        MeshContent m = node as MeshContent;
-            //        foreach (GeometryContent g in m.Geometry)
-            //        {
-            //            BoundingBox tempBox = BoundingBox.CreateFromPoints(g.Vertices.Positions);
-            //            boxList.Add(tempBox);
-            //            box = BoundingBox.CreateMerged(box, tempBox);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    foreach (GeometryContent g in mFirst.Geometry)
-            //    {
-            //        BoundingBox tempBox = BoundingBox.CreateFromPoints(g.Vertices.Positions);
-            //        boxList.Add(tempBox);
-            //        box = BoundingBox.CreateMerged(box, tempBox);
-            //    }
-            //}
-            ////Loop(input);
-            //boxList.Insert(0, box);
-            //System.Diagnostics.Debugger.Launch();
             sphere = default(BoundingSphere);
             model.Tag = Loop(input, this.Scale);
 

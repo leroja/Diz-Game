@@ -43,14 +43,11 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Source\Communication\ConvertFromByteArray.cs" />
     <Compile Include="Source\Components\3DAudioListenerComponent.cs" />
     <Compile Include="Source\Components\3DSoundEffectComponent.cs" />
     <Compile Include="Source\Components\Abstract Classes\GameState.cs" />
-    <Compile Include="Source\Communication\ConvertToByteArray.cs" />
     <Compile Include="Source\Components\AnimationComponent.cs" />
     <Compile Include="Source\Components\FlareComponent.cs" />
-    <Compile Include="Source\Components\HardwareInstancedComponent.cs" />
     <Compile Include="Source\Components\HeightmapComponentTexture.cs" />
     <Compile Include="Source\Components\MouseComponent.cs" />
     <Compile Include="Source\Components\ParticleEmitterComponent.cs" />
@@ -62,12 +59,14 @@
     <Compile Include="Source\Components\SoundEffectComponent.cs" />
     <Compile Include="Source\Components\TextComponent.cs" />
     <Compile Include="Source\Components\Texture2DComponent.cs" />
-    <Compile Include="Source\Enums\MessageType.cs" />
     <Compile Include="Source\Enums\Element.cs" />
     <Compile Include="Source\Factories\FlareFactory.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
     <Compile Include="Source\Managers\ThreadManager.cs" />
+    <Compile Include="Source\NetworkStuff\ComponentType.cs" />
+    <Compile Include="Source\NetworkStuff\XNAComponentExtensions.cs" />
+    <Compile Include="Source\NetworkStuff\XNAExtensions.cs" />
     <Compile Include="Source\RandomStuff\ParticleVertex.cs" />
     <Compile Include="Source\RandomStuff\Flare.cs" />
     <Compile Include="Source\Systems\2DSystem.cs" />
@@ -153,10 +152,17 @@
     <None Include="Content\Fonts\font.spritefont" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnimationContentClasses\AnimationContentClasses.csproj">
-      <Project>{44cb33f7-2f30-435e-ad1c-e659f42b3ac5}</Project>
-      <Name>AnimationContentClasses</Name>
+    <ProjectReference Include="..\ContentProject\ContentProject.csproj">
+      <Project>{2020D833-AD3F-446E-9609-B751490B0800}</Project>
+      <Name>ContentProject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{49ba1c69-6104-41ac-a5d8-b54fa9f696e8}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Source\Communication\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
