@@ -15,14 +15,14 @@ namespace GameEngine.Source.Systems
     /// </summary>
     public class _3DSoundSystem : IUpdate
     {
-        private List<SoundEffectInstance> activeSoundEffects;
+        private List<Sound> activeSoundEffects;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public _3DSoundSystem()
         {
-            activeSoundEffects = new List<SoundEffectInstance>();
+            activeSoundEffects = new List<Sound>();
         }
 
         /// <summary>
@@ -63,7 +63,13 @@ namespace GameEngine.Source.Systems
 
                 foreach (var soundEffect in soundEffectComponent.SoundEffectsToBePlayed)
                 {
-                    activeSoundEffects.Add(AudioManager.Instance.Play3DSoundEffect(soundEffect.Item1, soundEffect.Item2, emitter, listener));
+                    var sound = new Sound()
+                    {
+                        SoundEffectInstance = AudioManager.Instance.Play3DSoundEffect(soundEffect.Item1, soundEffect.Item2, emitter, listener),
+                        Emitter = emitter,
+                        Listener = listener
+                    };
+                    activeSoundEffects.Add(sound);
                 }
                 soundEffectComponent.SoundEffectsToBePlayed.Clear();
             });
@@ -72,15 +78,27 @@ namespace GameEngine.Source.Systems
             {
                 var activeSound = activeSoundEffects[i];
 
-                if (activeSound.State == SoundState.Stopped)
+                if (activeSound.SoundEffectInstance.State == SoundState.Stopped)
                 {
                     // If the sound has stopped playing, dispose it.
-                    activeSound.Dispose();
+                    activeSound.SoundEffectInstance.Dispose();
 
                     // Remove it from the active list.
                     activeSoundEffects.RemoveAt(i);
                 }
+                else
+                {
+                    activeSound.Listener = listener;
+                    activeSound.SoundEffectInstance.Apply3D(activeSound.Listener, activeSound.Emitter);
+                }
             }
+        }
+
+        private class Sound
+        {
+            public SoundEffectInstance SoundEffectInstance { get; set; }
+            public AudioEmitter Emitter { get; set; }
+            public AudioListener Listener { get; set; }
         }
     }
 }

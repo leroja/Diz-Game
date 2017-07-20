@@ -4,6 +4,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using DizGame.Source.Factories;
 
 namespace DizGame.Source.Systems
 {
@@ -38,7 +39,7 @@ namespace DizGame.Source.Systems
         {
             int id1 = (int)value.Item1;
             int id2 = (int)value.Item2;
-            
+
             if (ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id1) || ComponentManager.Instance.CheckIfEntityHasComponent<ResourceComponent>(id2))
             {
                 if (ComponentManager.Instance.CheckIfEntityHasComponent<HealthComponent>(id1))
@@ -147,9 +148,9 @@ namespace DizGame.Source.Systems
                     {
                         ComponentManager.Instance.GetEntityComponent<HealthComponent>(HitID).Health -= bullet.Damage;
                         var score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(bullet.Owner);
-                        TransformComponent tran = ComponentManager.Instance.GetEntityComponent<TransformComponent>(HitID);
-                        Vector3 pos = new Vector3(tran.Position.X, tran.Position.Y+5, tran.Position.Z);
-                        Factories.EntityFactory.Instance.CreateParticleEmitter(pos, "Blood", 5);
+                        var t = ComponentManager.Instance.GetEntityComponent<TransformComponent>(BulletID);
+                        Vector3 pos = new Vector3(t.Position.X, t.Position.Y + 1, t.Position.Z);
+                        EntityFactory.Instance.CreateParticleEmitter(pos, "Blood", 5);
                         score.Hits += 1;
                         score.Score += 5;
                     }

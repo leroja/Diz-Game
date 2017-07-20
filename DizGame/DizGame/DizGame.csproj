@@ -111,14 +111,9 @@
     <Content Include="Content\Effects\ParticleEffect_Old.fx" />
     <Content Include="Content\Effects\Skybox.fx" />
     <Content Include="Content\HeightMapStuff\BetterGrass.jpg" />
-    <Content Include="Content\HeightMapStuff\canyonHeightMap.jpg" />
     <Content Include="Content\HeightMapStuff\drygrass.png" />
     <Content Include="Content\HeightMapStuff\grass.png" />
-    <Content Include="Content\HeightMapStuff\heightmap.png" />
-    <Content Include="Content\HeightMapStuff\Map10.png" />
     <Content Include="Content\HeightMapStuff\Map11.png" />
-    <Content Include="Content\HeightMapStuff\Map3.jpg" />
-    <Content Include="Content\HeightMapStuff\Map9.png" />
     <Content Include="Content\Icons\Ak47Icon.png" />
     <Content Include="Content\Icons\crosshairTransparent.png" />
     <Content Include="Content\Icons\squareTest.png">

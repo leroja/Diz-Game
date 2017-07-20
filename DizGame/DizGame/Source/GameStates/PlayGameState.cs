@@ -189,10 +189,10 @@ namespace DizGame.Source.GameStates
             SystemManager.Instance.AddSystem(new ParticleRenderSystem(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(new ParticleUpdateSystem());
             SystemManager.Instance.AddSystem(new AnimationSystem());
-            SystemManager.Instance.AddSystem(new AISystem());
             SystemManager.Instance.AddSystem(new SmokeSystem());
             SystemManager.Instance.AddSystem(new SoundEffectSystem());
             SystemManager.Instance.AddSystem(new _3DSoundSystem());
+            SystemManager.Instance.AddSystem(new AISystem());
             SystemManager.Instance.AddSystem(new SpectatingSystem());
             SystemManager.Instance.AddSystem(new ModelBoundingSystem());
             var id = ComponentManager.Instance.CreateID();

@@ -83,8 +83,6 @@ namespace DizGame.Source.Factories
 
             Texture2dDic = new Dictionary<string, Texture2D>() {
                 { "BetterGrass", Content.Load<Texture2D>("HeightMapStuff/BetterGrass") },
-                { "canyonHeightMap", Content.Load<Texture2D>("HeightMapStuff/canyonHeightMap") },
-                { "heightmap", Content.Load<Texture2D>("HeightMapStuff/heightmap") },
                 { "RockTexture", Content.Load<Texture2D>("MapObjects/Rock/Stone Texture") },
                 { "Smoke", Content.Load<Texture2D>("ParticleTexture/Smoke") },
                 { "Map3", Content.Load<Texture2D>("HeightMapStuff/Map11") },
@@ -231,18 +229,19 @@ namespace DizGame.Source.Factories
             }
         }
 
+        #region particles
         /// <summary>
         /// 
         /// </summary>
         /// <param name="Position"></param>
         /// <param name="typeOfParticle"></param>
         /// <param name="EmitterLifeTime"></param>
-        public void CreateParticleEmitter(Vector3 Position,string typeOfParticle, float EmitterLifeTime)
+        public void CreateParticleEmitter(Vector3 Position, string typeOfParticle, float EmitterLifeTime)
         {
             switch (typeOfParticle)
             {
                 case "Smoke":
-                   ParticleSettingsComponent setting = CreateSmokeSettings();
+                    ParticleSettingsComponent setting = CreateSmokeSettings();
                     ParticleEmitterComponent emitter = new ParticleEmitterComponent(GameOne.Instance.GraphicsDevice, 6000)
                     {
                         ParticleEffect = Content.Load<Effect>("Effects//ParticleEffect"),
@@ -253,7 +252,7 @@ namespace DizGame.Source.Factories
                     {
                         Position = Position
                     };
-                    setting.Duration = TimeSpan.FromSeconds(EmitterLifeTime-1);
+                    setting.Duration = TimeSpan.FromSeconds(EmitterLifeTime - 1);
                     var a = ComponentManager.Instance.CreateID();
                     ComponentManager.Instance.AddComponentToEntity(a, setting);
                     ComponentManager.Instance.AddComponentToEntity(a, emitter);
@@ -312,8 +311,9 @@ namespace DizGame.Source.Factories
             };
             return setting;
         }
+
         /// <summary>
-        /// sets setings for blood particles
+        /// sets settings for blood particles
         /// </summary>
         /// <returns>settings for blood particles</returns>
         private ParticleSettingsComponent CreateSmokeSettings()
@@ -338,8 +338,9 @@ namespace DizGame.Source.Factories
             };
             return setting;
         }
+        #endregion
 
-
+        #region Cameras
         /// <summary>
         /// Creates a static camera on the specified position and that is looking at the specified lookAt
         /// </summary>
@@ -395,6 +396,7 @@ namespace DizGame.Source.Factories
             };
             ComponentManager.Instance.AddComponentToEntity(EntityId, chaseCam);
         }
+        #endregion
 
         /// <summary>
         /// Creates a new bullet
