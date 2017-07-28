@@ -54,7 +54,7 @@ namespace DizGame.Source.GameStates
         {
             time = 1;
             SystemManager.Instance.AddSystem(TextSystem);
-            string[] itemNames = { "Single-player", "Multiplayer", "Settings", "Whatever", "Exit" };
+            string[] itemNames = { "Single-player", "Host Multiplayer (WIP)", "Join Multiplayer (WIP)", "Settings", "Whatever", "Exit" };
             ItemNames = itemNames;
 
             int y = 30;
@@ -125,7 +125,6 @@ namespace DizGame.Source.GameStates
             if (newState.IsKeyDown(Keys.Escape) && !oldState.IsKeyUp(Keys.Escape) && time < 0)
             {
                 GameOne.Instance.Exit();
-                //SystemManager.Instance.ThreadUpdateSystems.Abort();
             }
 
             if (newState.IsKeyDown(Keys.Up))
@@ -179,22 +178,29 @@ namespace DizGame.Source.GameStates
                 switch (SelectedItem)
                 {
                     case 0:
-                        PlayGameState newGame = new PlayGameState(false);
+                        PlayGameState newGame = new PlayGameState();
                         GameStateManager.Instance.Pop();
                         GameStateManager.Instance.Push(newGame);
                         break;
                     case 1:
-                        PlayGameState newMultGame = new PlayGameState(true);
+                        //MPGameState newMultGame = new MPGameState();
+                        //GameStateManager.Instance.Pop();
+                        //GameStateManager.Instance.Push(newMultGame);
+                        LobbyGameState lobby = new LobbyGameState(40001);
                         GameStateManager.Instance.Pop();
-                        GameStateManager.Instance.Push(newMultGame);
+                        GameStateManager.Instance.Push(lobby);
                         break;
                     case 2:
+                        LobbyGameState lobby2 = new LobbyGameState(40002);
+                        GameStateManager.Instance.Pop();
+                        GameStateManager.Instance.Push(lobby2);
                         break;
                     case 3:
                         break;
                     case 4:
+                        break;
+                    case 5:
                         GameOne.Instance.Exit();
-                        //SystemManager.Instance.ThreadUpdateSystems.Abort();
                         break;
                 }
             }

@@ -106,22 +106,28 @@ namespace DizGame.Source.Systems
                         }
                     }
                 }
-                //if (trans.Position.X >= border.HighX)
-                //{
-                //    move = -move;
-                //}
-                //else if (trans.Position.X <= border.LowX)
-                //{
-                //    move = -move;
-                //}
-                //else if (trans.Position.Z <= border.HighZ)
-                //{
-                //    move = -move;
-                //}
-                //else if (trans.Position.Z >= border.LowZ)
-                //{
-                //    move = -move;
-                //}
+#if !DEBUG
+                if (trans.Position.X >= border.HighX)
+                {
+                    trans.Position = trans.PreviousPosition;
+                    move = -move;
+                }
+                else if (trans.Position.X <= border.LowX)
+                {
+                    trans.Position = trans.PreviousPosition;
+                    move = -move;
+                }
+                else if (trans.Position.Z <= border.HighZ)
+                {
+                    trans.Position = trans.PreviousPosition;
+                    move = -move;
+                }
+                else if (trans.Position.Z >= border.LowZ)
+                {
+                    trans.Position = trans.PreviousPosition;
+                    move = -move;
+                }
+#endif
                 if (phys != null)
                 {
                     float he = GetHeight(trans.Position);

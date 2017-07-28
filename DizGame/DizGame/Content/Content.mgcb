@@ -609,3 +609,9 @@
 /processorParam:DebugMode=Auto
 /build:Effects/ParticleEffect.fx
 
+#begin Songs/LobbySong.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Songs/LobbySong.mp3
+

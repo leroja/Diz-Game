@@ -64,22 +64,22 @@
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
     <Compile Include="Source\Managers\ThreadManager.cs" />
-    <Compile Include="Source\NetworkStuff\ComponentType.cs" />
-    <Compile Include="Source\NetworkStuff\XNAComponentExtensions.cs" />
+    <Compile Include="Source\NetworkStuff\MessageType.cs" />
+    <Compile Include="Source\NetworkStuff\NetworkSystem.cs" />
     <Compile Include="Source\NetworkStuff\XNAExtensions.cs" />
     <Compile Include="Source\RandomStuff\ParticleVertex.cs" />
     <Compile Include="Source\RandomStuff\Flare.cs" />
-    <Compile Include="Source\Systems\2DSystem.cs" />
-    <Compile Include="Source\Systems\3DSoundSystem.cs" />
-    <Compile Include="Source\Systems\AnimationSystem.cs" />
+    <Compile Include="Source\Systems\Render\2DSystem.cs" />
+    <Compile Include="Source\Systems\Update\3DSoundSystem.cs" />
+    <Compile Include="Source\Systems\Update\AnimationSystem.cs" />
     <Compile Include="Source\RandomStuff\HeightMapChunk.cs" />
-    <Compile Include="Source\Systems\EnvironmentSystem.cs" />
-    <Compile Include="Source\Systems\FlareSystem.cs" />
-    <Compile Include="Source\Systems\HeightmapSystemTexture.cs" />
-    <Compile Include="Source\Systems\ModelBoundingSystem.cs" />
-    <Compile Include="Source\Systems\MouseSystem.cs" />
-    <Compile Include="Source\Systems\ParticleRenderSystem.cs" />
-    <Compile Include="Source\Systems\ParticleUpdateSystem.cs" />
+    <Compile Include="Source\Systems\Update\EnvironmentSystem.cs" />
+    <Compile Include="Source\Systems\Render\FlareSystem.cs" />
+    <Compile Include="Source\Systems\Render\HeightmapSystemTexture.cs" />
+    <Compile Include="Source\Systems\Update\ModelBoundingSystem.cs" />
+    <Compile Include="Source\Systems\Update\MouseSystem.cs" />
+    <Compile Include="Source\Systems\Render\ParticleRenderSystem.cs" />
+    <Compile Include="Source\Systems\Update\ParticleUpdateSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\Interfaces\IPhysics.cs" />
     <Compile Include="Source\Systems\Physics\Type\AbstractClasses\IPhysicsTypeSystem.cs" />
     <Compile Include="Source\Systems\Physics\Type\PhysicsParticleSystem.cs" />
@@ -107,20 +107,20 @@
     <Compile Include="Source\Systems\Abstract classes\Update.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Systems\CameraSystem.cs" />
-    <Compile Include="Source\Systems\CollisionSystem.cs" />
-    <Compile Include="Source\Systems\KeyBoardSystem.cs" />
-    <Compile Include="Source\Systems\ModelSystem.cs" />
+    <Compile Include="Source\Systems\Update\CameraSystem.cs" />
+    <Compile Include="Source\Systems\Update\CollisionSystem.cs" />
+    <Compile Include="Source\Systems\Update\KeyBoardSystem.cs" />
+    <Compile Include="Source\Systems\Render\ModelSystem.cs" />
     <Compile Include="Source\Systems\Physics\PhysicsSystem.cs" />
-    <Compile Include="Source\Systems\SkyboxSystem.cs" />
-    <Compile Include="Source\Systems\SoundEffectSystem.cs" />
-    <Compile Include="Source\Systems\TextSystem.cs" />
-    <Compile Include="Source\Systems\TransformSystem.cs" />
-    <Compile Include="Source\Systems\FPSSystem.cs" />
-    <Compile Include="Source\Systems\WorldSystem.cs" />
+    <Compile Include="Source\Systems\Render\SkyboxSystem.cs" />
+    <Compile Include="Source\Systems\Update\SoundEffectSystem.cs" />
+    <Compile Include="Source\Systems\Render\TextSystem.cs" />
+    <Compile Include="Source\Systems\Update\TransformSystem.cs" />
+    <Compile Include="Source\Systems\Update\FPSSystem.cs" />
+    <Compile Include="Source\Systems\Update\WorldSystem.cs" />
     <Compile Include="Source\Utils\Util.cs" />
-    <Compile Include="Source\Tools\BoundingBoxRenderer.cs" />
-    <Compile Include="Source\Tools\BoundingSphereRenderer.cs" />
+    <Compile Include="Source\Utils\BoundingBoxRenderer.cs" />
+    <Compile Include="Source\Utils\BoundingSphereRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -148,7 +148,6 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Content\Fonts\font.spritefont" />
   </ItemGroup>
   <ItemGroup>

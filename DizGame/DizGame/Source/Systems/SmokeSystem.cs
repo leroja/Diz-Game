@@ -43,16 +43,15 @@ namespace DizGame.Source.Systems
                             ComponentManager.RemoveEntity(id);
                             ComponentManager.RecycleID(id);
                             break;
-
                     }
                 }
-
             });
         }
+
         /// <summary>
         /// Function for adding particles to emitters
         /// </summary>
-        /// <param name="emitter"> ParticlEemmiterComponent for saving and updating particles </param>
+        /// <param name="emitter"> ParticleEmitterComponent for saving and updating particles </param>
         /// <param name="settings"> ParticleSettingsEmitter </param>
         /// <param name="tran"> transformComponent for particle </param>
         /// <param name="velocity"> velocity of new particle </param>
@@ -64,7 +63,6 @@ namespace DizGame.Source.Systems
 
             if (nextFreeParticle >= settings.MaxParticles)
                 nextFreeParticle = 0;
-
 
             if (nextFreeParticle == emitter.FirstRetiredParticle)
                 return;

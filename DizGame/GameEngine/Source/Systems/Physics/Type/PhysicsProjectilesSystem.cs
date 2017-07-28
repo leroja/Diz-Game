@@ -54,7 +54,7 @@ namespace GameEngine.Source.Systems
 
 
             ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-                += physic.Velocity * dt /** projectile.TotalTimePassed * projectile.TotalTimePassed*/;
+                += physic.Velocity * dt /* * projectile.TotalTimePassed * projectile.TotalTimePassed*/;
 
             //Vector3 pos = ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position;
 

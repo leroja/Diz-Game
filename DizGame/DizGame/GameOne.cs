@@ -61,6 +61,8 @@ namespace DizGame
 
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
+            AudioManager.Instance.AddSong("LobbySong", Content.Load<Song>("Songs/LobbySong"));
+            
             AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
             AudioManager.Instance.AddSoundEffect("MenuChange", Content.Load<SoundEffect>("SoundEffects/menu-selection-sound"));
             AudioManager.Instance.AddSoundEffect("Ammo-Pickup", Content.Load<SoundEffect>("SoundEffects/Chambering A Round"));

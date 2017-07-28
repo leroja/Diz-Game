@@ -68,25 +68,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationClip.cs" />
-    <Compile Include="BoundingBox3D.cs" />
-    <Compile Include="BoundingFrustum3D.cs" />
-    <Compile Include="BoundingSphere3D.cs" />
-    <Compile Include="BoundingVolume.cs" />
-    <Compile Include="IBounding3D.cs" />
-    <Compile Include="KeyFrame.cs" />
-    <Compile Include="ModelBoundingBoxProcessor.cs" />
-    <Compile Include="ModelBoundingSphereProcessor.cs" />
-    <Compile Include="AnimationProcessor.cs" />
-    <Compile Include="ModelBoxesAndAnimationProcessor.cs" />
-    <Compile Include="ModelSpheresAndAnimationProcessor.cs" />
+    <Compile Include="Animation\AnimationClip.cs" />
+    <Compile Include="Bounding\BoundingBox3D.cs" />
+    <Compile Include="Bounding\BoundingFrustum3D.cs" />
+    <Compile Include="Bounding\BoundingSphere3D.cs" />
+    <Compile Include="Bounding\BoundingVolume.cs" />
+    <Compile Include="Bounding\IBounding3D.cs" />
+    <Compile Include="Animation\KeyFrame.cs" />
+    <Compile Include="Processors\ModelBoundingBoxProcessor.cs" />
+    <Compile Include="Processors\ModelBoundingSphereProcessor.cs" />
+    <Compile Include="Animation\AnimationProcessor.cs" />
+    <Compile Include="Processors\ModelBoxesAndAnimationProcessor.cs" />
+    <Compile Include="Processors\ModelSpheresAndAnimationProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SkinningData.cs" />
+    <Compile Include="Animation\SkinningData.cs" />
     <Compile Include="Utils\Util.cs" />
   </ItemGroup>
   <ItemGroup>

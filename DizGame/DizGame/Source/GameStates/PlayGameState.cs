@@ -24,7 +24,6 @@ namespace DizGame.Source.GameStates
         /// List with ints representing the entity id's 'active' in this current state
         /// </summary>
         public override List<int> GameStateEntities { get; }
-        private bool multiplayerGame;
 
         private Border border = new Border()
         {
@@ -39,12 +38,9 @@ namespace DizGame.Source.GameStates
         /// <summary>
         /// Basic constructor for the PlayGame-state 
         /// </summary>
-        /// <param name="multiplayerGame">a boolean variable, should be set to true if the user 
-        /// wants to start a multiplayer game or false if he/she wants to play against AI</param>
-        public PlayGameState(bool multiplayerGame)
+        public PlayGameState()
         {
             GameStateEntities = new List<int>();
-            this.multiplayerGame = multiplayerGame;
         }
 
         /// <summary>
@@ -57,15 +53,9 @@ namespace DizGame.Source.GameStates
             EntityFactory.Instance.CreateWorldComp();
 
             GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
-
-            if (multiplayerGame)
-            {
-                CreateEntitiesForMultiplayerGame();
-            }
-            else
-            {
-                CreateEntitiesForSinglePlayerGame();
-            }
+            
+            CreateEntitiesForSinglePlayerGame();
+            
             InitializeSystems();
 
             AudioManager.Instance.PlaySong("GameSong");
@@ -256,7 +246,7 @@ namespace DizGame.Source.GameStates
             List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100, border);
             GameStateEntities.AddRange(entityIdList);
 
-            entf.CreateParticleEmitter(new Vector3(5, 39, -45), "Smoke", 15);
+            entf.CreateParticleEmitter(new Vector3(500, 30, -500), "Smoke", 15);
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
@@ -266,18 +256,7 @@ namespace DizGame.Source.GameStates
 
             entf.SpawnProtection();
         }
-
-        /// <summary>
-        /// Function for initializing all the entities which are needed for a 
-        /// multiplayer game.
-        /// </summary>
-        private void CreateEntitiesForMultiplayerGame()
-        {
-            //TODO: initziera alla entiteter som krävs för ett multiplayer game, eventuellt om vi 
-            //"Redirictar" till en lobby eftersom att vi behöver hitta alla klienter och så först, kanske borde skapa ett helt nytt state för detta ändå?
-            throw new NotImplementedException();
-        }
-
+        
         /// <summary>
         /// Function for deciding if criteria for endgame has been found.
         /// </summary>
