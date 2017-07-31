@@ -4,6 +4,7 @@ using DizGame.Source.Random_Stuff;
 using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Managers;
+using GameEngine.Source.Random_Stuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -104,10 +105,10 @@ namespace DizGame.Source.Factories
                         {
                             effect.TextureEnabled = true;
                             effect.Texture = _Texture2dDictionary["RockTexture"];
-                            effect.FogEnabled = true;
-                            effect.FogColor = Color.LightGray.ToVector3();
-                            effect.FogStart = 10;
-                            effect.FogEnd = 400;
+                            effect.FogEnabled = GlobalFogSettings.FogEnabled;
+                            effect.FogColor = GlobalFogSettings.FogColour;
+                            effect.FogStart = GlobalFogSettings.FogStart;
+                            effect.FogEnd = GlobalFogSettings.FogEnd;
                         }
                     }
                     break;
@@ -116,10 +117,10 @@ namespace DizGame.Source.Factories
                     {
                         foreach (BasicEffect effect in mesh.Effects)
                         {
-                            effect.FogEnabled = true;
-                            effect.FogColor = Color.LightGray.ToVector3();
-                            effect.FogStart = 10;
-                            effect.FogEnd = 400;
+                            effect.FogEnabled = GlobalFogSettings.FogEnabled;
+                            effect.FogColor = GlobalFogSettings.FogColour;
+                            effect.FogStart = GlobalFogSettings.FogStart;
+                            effect.FogEnd = GlobalFogSettings.FogEnd;
                         }
                     }
                     scale = new Vector3(5, 5, 5);
@@ -173,10 +174,10 @@ namespace DizGame.Source.Factories
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.FogEnabled = true;
-                    effect.FogColor = Color.LightGray.ToVector3();
-                    effect.FogStart = 10;
-                    effect.FogEnd = 400;
+                    effect.FogEnabled = GlobalFogSettings.FogEnabled;
+                    effect.FogColor = GlobalFogSettings.FogColour;
+                    effect.FogStart = GlobalFogSettings.FogStart;
+                    effect.FogEnd = GlobalFogSettings.FogEnd;
                 }
             }
             BoundingVolume volume = (BoundingVolume)house.Tag;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using GameEngine.Source.Components;
 using GameEngine.Source.RandomStuff;
+using GameEngine.Source.Random_Stuff;
 
 namespace GameEngine.Source.Factories
 {
@@ -222,10 +223,10 @@ namespace GameEngine.Source.Factories
 
             var effect = new BasicEffect(graphicsDevice)
             {
-                FogEnabled = true,
-                FogStart = 10f,
-                FogColor = Color.LightGray.ToVector3(),
-                FogEnd = 400f,
+                FogEnabled = GlobalFogSettings.FogEnabled,
+                FogColor = GlobalFogSettings.FogColour,
+                FogStart = GlobalFogSettings.FogStart,
+                FogEnd = GlobalFogSettings.FogEnd,
                 TextureEnabled = true,
                 Texture = texture
             };

@@ -196,6 +196,7 @@ namespace DizGame.Source.GameStates
             //SystemManager.Instance.AddSystem(new BoundingBoxRenderer(GameOne.Instance.GraphicsDevice));
             SystemManager.Instance.AddSystem(cSys);
             SystemManager.Instance.AddSystem(new HudSystem());
+            SystemManager.Instance.AddSystem(new StaminaSystem());
         }
 
         /// <summary>
@@ -250,7 +251,8 @@ namespace DizGame.Source.GameStates
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
-                new Vector2(0, 0), new List<Vector2>(), idC);
+                new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 100),
+                idC);
             //Add HUD id to this state
             GameStateEntities.Add(HudID);
 

@@ -89,6 +89,24 @@ namespace DizGame.Source.GameStates
                 GameStateManager.Instance.Pop();
                 GameStateManager.Instance.Push(NewMainMenu);
             }
+
+            if (StartGame())
+            {
+                var mpGame = new MPGameState(this.networkSystem);
+                GameStateManager.Instance.Pop();
+                GameStateManager.Instance.Push(mpGame);
+            }
+
+        }
+
+        // TODO: 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool StartGame()
+        {
+            return false;
         }
     }
 }

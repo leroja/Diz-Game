@@ -24,9 +24,12 @@ namespace DizGame.Source.Systems
                 var hudComp = ComponentManager.GetEntityComponent<HudComponent>(entityId);
                 var healthComp = ComponentManager.GetEntityComponent<HealthComponent>(hudComp.TrackedEntity);
                 var AmmoComp = ComponentManager.GetEntityComponent<AmmunitionComponent>(hudComp.TrackedEntity);
+                var staminaComp = ComponentManager.GetEntityComponent<StaminaComponent>(hudComp.TrackedEntity);
 
                 var textComp = ComponentManager.GetEntityComponent<TextComponent>(entityId);
                 textComp.Children.First().Value.Text = healthComp.Health.ToString();
+                textComp.Children["Stamina"].Text = ((int)staminaComp.CurrentStamina).ToString();
+                //textComp.Children["Stamina"].Text = staminaComp.CurrentStamina.ToString().Split(',')[0];
                 textComp.Children["Ammunition"].Text = AmmoComp.CurrentAmmoInMag + "/" + AmmoComp.MaxAmmoInMag + " " + " Clips left: " + AmmoComp.AmmountOfActiveMagazines;
             }
         }

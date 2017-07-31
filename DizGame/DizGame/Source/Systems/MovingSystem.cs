@@ -8,11 +8,10 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using System.Threading.Tasks;
 using DizGame.Source.Random_Stuff;
+using DizGame.Source.Components;
 
 namespace DizGame.Source.Systems
 {
-    // TODO make so that you can't move over the edge, e.g add invisible borders
-    // TODO add some form of stamina so that u can't run all the time.
     /// <summary>
     /// System handles moving of an object,
     /// using inheritance from IUpdate
@@ -48,9 +47,9 @@ namespace DizGame.Source.Systems
                 TransformComponent trans = ComponentManager.GetEntityComponent<TransformComponent>(entity.Key);
                 PhysicsComponent phys = ComponentManager.GetEntityComponent<PhysicsComponent>(entity.Key);
                 var animComp = ComponentManager.GetEntityComponent<AnimationComponent>(entity.Key);
+                var stamComp = ComponentManager.GetEntityComponent<StaminaComponent>(entity.Key);
                 Vector3 move = Vector3.Zero;
                 float gravity = 0;
-
                 switch (phys.GravityType)
                 {
                     case GravityType.Self:
@@ -69,13 +68,28 @@ namespace DizGame.Source.Systems
                 {
                     if (key.GetState("Forward") == ButtonStates.Hold && key.GetState("Sprint") == ButtonStates.Hold)
                     {
-                        move += trans.Forward * 40;
-                        animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds * 2);
+                        if ((stamComp.IsRunning && stamComp.StaminaRatio > 0) || (!stamComp.IsRunning && stamComp.StaminaRatio >= stamComp.RunThreshold))
+                        {
+                            move += trans.Forward * 40;
+                            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds * 2);
+                            stamComp.IsRunning = true;
+                        }
+                        else
+                        {
+                            stamComp.IsRunning = false;
+                            move += trans.Forward * 20;
+                            animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
+                        }
                     }
                     else if (key.GetState("Forward") == ButtonStates.Hold)
                     {
+                        stamComp.IsRunning = false;
                         move += trans.Forward * 20;
                         animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
+                    }
+                    else
+                    {
+                        stamComp.IsRunning = false;
                     }
                     if (key.GetState("Backwards") == ButtonStates.Hold)
                     {

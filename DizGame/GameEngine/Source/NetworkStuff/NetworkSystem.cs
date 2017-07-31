@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Net;
+using static GameEngine.Source.Systems.CollisionSystem;
 
 namespace GameEngine.Source.NetworkStuff
 {
@@ -19,6 +20,8 @@ namespace GameEngine.Source.NetworkStuff
     /// </summary>
     public class NetworkSystem : IUpdate, IObservable<Tuple<object, object>>, IObserver<Tuple<object, object>> // TODO: not sure what the observer/observable shall send/receive
     {
+        List<IObserver<Tuple<object, object>>> observers;
+
         private NetPeer Peer { get; set; }
         private NetPeerConfiguration Config { get; set; }
         private NetIncomingMessage message;
@@ -41,6 +44,7 @@ namespace GameEngine.Source.NetworkStuff
         /// <param name="portnumber"></param>
         public NetworkSystem(int portnumber)
         {
+            observers = new List<IObserver<Tuple<object, object>>>();
             this.localPort = portnumber;
             ConfigPeer();
             Peer = new NetPeer(Config);
@@ -147,8 +151,7 @@ namespace GameEngine.Source.NetworkStuff
         {
 
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -156,29 +159,15 @@ namespace GameEngine.Source.NetworkStuff
         /// <param name="port"></param>
         private void SendPeerInfo(IPAddress ip, int port)
         {
-            if (HavePeers())
-            {
-                Console.WriteLine(string.Format("Broadcasting {0}:{1} to all (count: {2})", ip.ToString(),
-                    port.ToString(), Peer.ConnectionsCount));
-                NetOutgoingMessage msg = Peer.CreateMessage();
-                msg.Write((int)MessageType.PeerInformation);
-                byte[] addressBytes = ip.GetAddressBytes();
-                msg.Write(addressBytes.Length);
-                msg.Write(addressBytes);
-                msg.Write(port);
-                Peer.SendMessage(msg, Peer.Connections, NetDeliveryMethod.ReliableOrdered, 0);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private bool HavePeers()
-        {
-            if (Peer.Connections != null && Peer.Connections.Count > 0)
-                return true;
-            return false;
+            Console.WriteLine(string.Format("Broadcasting {0}:{1} to all (count: {2})", ip.ToString(),
+                port.ToString(), Peer.ConnectionsCount));
+            NetOutgoingMessage msg = Peer.CreateMessage();
+            msg.Write((int)MessageType.PeerInformation);
+            byte[] addressBytes = ip.GetAddressBytes();
+            msg.Write(addressBytes.Length);
+            msg.Write(addressBytes);
+            msg.Write(port);
+            Peer.SendMessage(msg, Peer.Connections, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         /// <summary>
@@ -188,7 +177,7 @@ namespace GameEngine.Source.NetworkStuff
         {
             Peer.DiscoverLocalPeers(searchPort);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -213,7 +202,9 @@ namespace GameEngine.Source.NetworkStuff
         /// <returns></returns>
         public IDisposable Subscribe(IObserver<Tuple<object, object>> observer)
         {
-            throw new NotImplementedException();
+            if (!observers.Contains(observer))
+                observers.Add(observer);
+            return new Unsubscriber(observers, observer);
         }
 
         /// <summary>

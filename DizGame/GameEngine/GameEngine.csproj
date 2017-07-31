@@ -67,6 +67,7 @@
     <Compile Include="Source\NetworkStuff\MessageType.cs" />
     <Compile Include="Source\NetworkStuff\NetworkSystem.cs" />
     <Compile Include="Source\NetworkStuff\XNAExtensions.cs" />
+    <Compile Include="Source\RandomStuff\GlobalFogSettings.cs" />
     <Compile Include="Source\RandomStuff\ParticleVertex.cs" />
     <Compile Include="Source\RandomStuff\Flare.cs" />
     <Compile Include="Source\Systems\Render\2DSystem.cs" />

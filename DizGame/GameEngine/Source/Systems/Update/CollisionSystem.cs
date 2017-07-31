@@ -18,11 +18,19 @@ namespace GameEngine.Source.Systems
         //Holds all the observers for this class
         List<IObserver<Tuple<object, object>>> observers;
 
-        partial class Unsubscriber : IDisposable
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Unsubscriber : IDisposable
         {
             private List<IObserver<Tuple<object, object>>> _observers;
             private IObserver<Tuple<object, object>> _observer;
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="observers"></param>
+            /// <param name="observer"></param>
             public Unsubscriber(List<IObserver<Tuple<object, object>>> observers,
                 IObserver<Tuple<object, object>> observer)
             {
@@ -30,6 +38,9 @@ namespace GameEngine.Source.Systems
                 this._observer = observer;
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
             public void Dispose()
             {
                 if (_observer != null && _observers.Contains(_observer))

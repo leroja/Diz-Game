@@ -6,6 +6,7 @@ using GameEngine.Source.Components;
 using GameEngine.Source.Enums;
 using GameEngine.Source.Factories;
 using GameEngine.Source.Managers;
+using GameEngine.Source.Random_Stuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +17,6 @@ using System.Linq;
 
 namespace DizGame.Source.Factories
 {
-    // TODO refine fog effect parameters
     /// <summary>
     /// Factory for creating various entities which might be used by the game in the end.
     /// </summary>
@@ -190,6 +190,11 @@ namespace DizGame.Source.Factories
                     MaterialType = MaterialType.Skin,
                     GravityType = GravityType.World,
                     DragType = DragType.ManUpright
+                },
+                new StaminaComponent(){
+                    MaximumStamina = 100,
+                    CurrentStamina = 100,
+                    RunThreshold = 0.1f,
                 },
             };
 
@@ -526,10 +531,10 @@ namespace DizGame.Source.Factories
             {
                 foreach (SkinnedEffect effect in mesh.Effects)
                 {
-                    effect.FogEnabled = true;
-                    effect.FogColor = Color.LightGray.ToVector3();
-                    effect.FogStart = 10;
-                    effect.FogEnd = 400;
+                    effect.FogEnabled = GlobalFogSettings.FogEnabled;
+                    effect.FogColor = GlobalFogSettings.FogColour;
+                    effect.FogStart = GlobalFogSettings.FogStart;
+                    effect.FogEnd = GlobalFogSettings.FogEnd;
                 }
             }
 

@@ -3,6 +3,7 @@ using ContentProject.Utils;
 using DizGame.Source.Components;
 using GameEngine.Source.Components;
 using GameEngine.Source.Managers;
+using GameEngine.Source.Random_Stuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -48,10 +49,10 @@ namespace DizGame.Source.Factories
                 effect.EnableDefaultLighting();
                 effect.DiffuseColor = Color.DeepPink.ToVector3();
                 effect.AmbientLightColor = Color.AntiqueWhite.ToVector3();
-                effect.FogEnabled = true;
-                effect.FogColor = Color.LightGray.ToVector3();
-                effect.FogStart = 10;
-                effect.FogEnd = 400;
+                effect.FogEnabled = GlobalFogSettings.FogEnabled;
+                effect.FogColor = GlobalFogSettings.FogColour;
+                effect.FogStart = GlobalFogSettings.FogStart;
+                effect.FogEnd = GlobalFogSettings.FogEnd;
             }
             ModelComponent mcp = new ModelComponent(model)
             {
@@ -98,10 +99,10 @@ namespace DizGame.Source.Factories
             {
                 BasicEffect effect = (BasicEffect)modelpart.Effects[0];
                 effect.EnableDefaultLighting();
-                effect.FogEnabled = true;
-                effect.FogColor = Color.LightGray.ToVector3();
-                effect.FogStart = 10;
-                effect.FogEnd = 400;
+                effect.FogEnabled = GlobalFogSettings.FogEnabled;
+                effect.FogColor = GlobalFogSettings.FogColour;
+                effect.FogStart = GlobalFogSettings.FogStart;
+                effect.FogEnd = GlobalFogSettings.FogEnd;
             }
             List<IComponent> resourceCompList = new List<IComponent>
             {
