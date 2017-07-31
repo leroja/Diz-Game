@@ -29,22 +29,13 @@ namespace GameEngine.Source.Systems
         {
             //TODO: StaticSystem
             PhysicsSystem.UpdateMass(physic);
-            //TODO: StaticSystem
+            
             // Code here:
 
             //
 
         }
 
-        /// <summary>
-        /// Updates the object position using its velocity * dt
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="dt"></param>
-        private void UpdatePosition(PhysicsComponent physic, float dt)
-        {
-            ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
-                    += physic.Velocity * dt;
-        }
+
     }
 }

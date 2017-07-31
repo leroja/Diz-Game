@@ -34,10 +34,7 @@ namespace GameEngine.Source.Systems
             physicSystems = new List<IPhysicsTypeSystem>
             {
                 new PhysicsRigidBodySystem(this),
-                new PhysicsParticleSystem(this),
                 new PhysicsProjectilesSystem(this),
-                new PhysicsRagdollSystem(this),
-                new PhysicsSoftSystem(this),
                 new PhysicsStaticSystem(this)
         };
         }
@@ -74,47 +71,8 @@ namespace GameEngine.Source.Systems
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(ent);
                 physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
             });
-            //CheckCollision(dt);
         }
-
-        /// <summary>
-        /// Using Euler order -> Acceleration -> Position -> Velocity
-        /// will provide better accuracy but only when
-        /// acceleration is constant
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="dt"></param>
-        private void UpdateEulerOrder(PhysicsComponent physic, float dt)
-        {
-            UpdateMass(physic);
-            UpdateGravity(physic, dt);
-            UpdateForce(physic);
-
-            UpdateEulerAcceleration(physic);
-
-            //UpdatePhysicComponentByType(physic, dt);
-
-            UpdateVelocity(physic, dt);
-
-            UpdateDeceleration(physic);
-        }
-
-        /// <summary>
-        /// Using Non Euler order does work but with less accuracy        /// except when acceleration is not constant
-        /// </summary>
-        /// <param name="physic"></param>
-        /// <param name="dt"></param>
-        private void UpdateNonEulerOrder(PhysicsComponent physic, float dt)
-        {
-            UpdateAcceleration(physic);
-            UpdateMass(physic);
-            UpdateGravity(physic, dt);
-            UpdateForce(physic);
-            UpdateVelocity(physic, dt);
-            //UpdatePhysicComponentByType(physic, dt);
-
-            UpdateDeceleration(physic);
-        }
+        
 
         /// <summary>
         /// Updates the mass using density * volume
@@ -176,7 +134,6 @@ namespace GameEngine.Source.Systems
                 else
                     Z *= -physic.Friction;
             }
-            //Console.WriteLine(physic.Acceleration);
         }
 
         /// <summary>
@@ -235,31 +192,7 @@ namespace GameEngine.Source.Systems
 
         }
 
-        /// <summary>
-        /// Updates the objects heading depending on collision
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="hit"></param>
-        public virtual void UpdateReflection(PhysicsComponent target, PhysicsComponent hit)
-        {
-            if (target != null && hit != null)
-            {
-                if (target.PhysicsType != PhysicsType.Static && hit.PhysicsType == PhysicsType.Static)
-                {
-                    int N = 1; //dunno
-                    int e = 0; //Should be 0 or 1 (0 (totally plastic) to 1 (totally elastic)). 
 
-
-                    float ratioA = hit.Mass / (target.Mass + hit.Mass);                     // ratioa = Mb / (Ma + Mb)
-                    float ratioB = target.Mass / (target.Mass + hit.Mass);                  // ratiob = Ma / (Ma + Mb)
-                    Vector3 Vr = target.Velocity * hit.Velocity;                            // Vr = Va - Vb relativVelocity
-                    Vector3 I = (1 + e) * N * (Vr * N) / (1 / target.Mass + 1 / hit.Mass);  // I = (1+e)*N*(Vr • N) / (1/Ma + 1/Mb)
-
-                    target.Velocity -= I * 1 / target.Mass;                                 // Va - = I * 1/Ma
-                    hit.Velocity += I * 1 / hit.Mass;                                       // Vb + = I * 1/Mb
-                }
-            }
-        }
 
         private void UpdateReflection2(PhysicsComponent target, PhysicsComponent hit)
         {
