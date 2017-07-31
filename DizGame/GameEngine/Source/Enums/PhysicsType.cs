@@ -19,21 +19,9 @@ namespace GameEngine.Source.Enums
         /// </summary>
         Rigid,
         /// <summary>
-        /// Represents a small lightweight rigid body
-        /// </summary>
-        Particle,
-        /// <summary>
-        /// Used for a ragdoll like body with joints
-        /// </summary>
-        Ragdoll,
-        /// <summary>
         /// Bullets, balls etc
         /// </summary>
         Projectiles,
-        /// <summary>
-        /// Used for cloth, jelly etc
-        /// </summary>
-        Soft
     }
 
     /// <summary>

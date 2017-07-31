@@ -24,7 +24,7 @@ namespace GameEngine.Source.Systems
         private List<IPhysicsTypeSystem> physicSystems;
         /// <summary>
         /// Constructor which adds the basic physicsystems 
-        /// (Rigid, particle, projectiles, ragdoll, soft and static)
+        /// (Rigid, projectiles, and static)
         /// in to the list.
         /// The list is then looped over in the update function which then updates the corresponding 
         /// system to the current component
@@ -35,7 +35,7 @@ namespace GameEngine.Source.Systems
             {
                 new PhysicsRigidBodySystem(this),
                 new PhysicsProjectilesSystem(this),
-                new PhysicsStaticSystem(this)
+                //new PhysicsStaticSystem(this)
         };
         }
 
@@ -69,7 +69,13 @@ namespace GameEngine.Source.Systems
             Parallel.ForEach(ents, ent =>
             {
                 PhysicsComponent physic = ComponentManager.GetEntityComponent<PhysicsComponent>(ent);
-                physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
+                if (physic.PhysicsType == PhysicsType.Static)
+                    UpdateMass(physic);
+                else
+                {
+                    physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
+                }
+                
             });
         }
         

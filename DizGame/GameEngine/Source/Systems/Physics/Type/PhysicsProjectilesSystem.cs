@@ -55,7 +55,6 @@ namespace GameEngine.Source.Systems
 
             ComponentManager.GetEntityComponent<TransformComponent>(physic.ID).Position
                 += physic.Velocity * dt /* * projectile.TotalTimePassed * projectile.TotalTimePassed*/;
-
         }
     }
 }
