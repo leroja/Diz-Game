@@ -39,7 +39,7 @@ namespace DizGame
                 return instance;
             }
         }
-        
+
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -57,12 +57,12 @@ namespace DizGame
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             SystemManager.Instance.SpriteBatch = SpriteBatch;
 
-            
+
 
             AudioManager.Instance.AddSong("MenuSong", Content.Load<Song>("Songs/MenuSong"));
             AudioManager.Instance.AddSong("GameSong", Content.Load<Song>("Songs/GameSong"));
             AudioManager.Instance.AddSong("LobbySong", Content.Load<Song>("Songs/LobbySong"));
-            
+
             AudioManager.Instance.AddSoundEffect("ShotEffect", Content.Load<SoundEffect>("SoundEffects/Gun-Shot"));
             AudioManager.Instance.AddSoundEffect("MenuChange", Content.Load<SoundEffect>("SoundEffects/menu-selection-sound"));
             AudioManager.Instance.AddSoundEffect("Ammo-Pickup", Content.Load<SoundEffect>("SoundEffects/Chambering A Round"));

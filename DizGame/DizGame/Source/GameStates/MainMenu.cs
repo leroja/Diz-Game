@@ -54,7 +54,7 @@ namespace DizGame.Source.GameStates
         {
             time = 1;
             SystemManager.Instance.AddSystem(TextSystem);
-            string[] itemNames = { "Single-player", "Host Multiplayer (WIP)", "Join Multiplayer (WIP)", "Settings", "Exit" };
+            string[] itemNames = { "Single-player", "Host Multiplayer (WIP)", "Join Multiplayer (WIP)", "Settings", "'Tutorial'", "Exit" };
             ItemNames = itemNames;
 
             int y = 30;
@@ -127,43 +127,38 @@ namespace DizGame.Source.GameStates
                 GameOne.Instance.Exit();
             }
 
-            if (newState.IsKeyDown(Keys.Up))
+            if (newState.IsKeyDown(Keys.Up) && !oldState.IsKeyDown(Keys.Up))
             {
-                if (!oldState.IsKeyDown(Keys.Up))
+                int index;
+                index = GameStateEntities.ElementAt(SelectedItem);
+
+                txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
+                txc.Color = Color.LightPink;
+                SelectedItem--;
+                if (SelectedItem < 0)
                 {
-                    if (SelectedItem > 0)
-                    {
-                        int index;
-                        index = GameStateEntities.ElementAt(SelectedItem);
-
-                        txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
-                        txc.Color = Color.LightPink;
-                        SelectedItem--;
-
-                        index = GameStateEntities.ElementAt(SelectedItem);
-                        txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
-                        txc.Color = Color.DeepPink;
-
-                        AudioManager.Instance.PlaySoundEffect("MenuChange", 0, 0);
-                    }
+                    SelectedItem = ItemNames.Length - 1;
                 }
+                index = GameStateEntities.ElementAt(SelectedItem);
+                txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
+                txc.Color = Color.DeepPink;
+
+                AudioManager.Instance.PlaySoundEffect("MenuChange", 0, 0);
             }
-            if (newState.IsKeyDown(Keys.Down))
+            if (newState.IsKeyDown(Keys.Down) && !oldState.IsKeyDown(Keys.Down))
             {
-                if (!oldState.IsKeyDown(Keys.Down))
+                int index = GameStateEntities.ElementAt(SelectedItem);
+                txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
+                txc.Color = Color.LightPink;
+                SelectedItem++;
+                if (SelectedItem >= ItemNames.Length)
                 {
-                    if (SelectedItem < ItemNames.Length - 1)
-                    {
-                        int index = GameStateEntities.ElementAt(SelectedItem);
-                        txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
-                        txc.Color = Color.LightPink;
-                        SelectedItem++;
-                        index = GameStateEntities.ElementAt(SelectedItem);
-                        txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
-                        txc.Color = Color.DeepPink;
-                        AudioManager.Instance.PlaySoundEffect("MenuChange", 0, 0);
-                    }
+                    SelectedItem = 0;
                 }
+                index = GameStateEntities.ElementAt(SelectedItem);
+                txc = ComponentManager.Instance.GetEntityComponent<TextComponent>(index);
+                txc.Color = Color.DeepPink;
+                AudioManager.Instance.PlaySoundEffect("MenuChange", 0, 0);
             }
             if (newState.IsKeyDown(Keys.M) && !oldState.IsKeyDown(Keys.M))
             {
@@ -195,6 +190,8 @@ namespace DizGame.Source.GameStates
                     case 3:
                         break;
                     case 4:
+                        break;
+                    case 5:
                         GameOne.Instance.Exit();
                         break;
                 }

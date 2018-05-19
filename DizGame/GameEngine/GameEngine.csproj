@@ -62,7 +62,6 @@
     <Compile Include="Source\Factories\FlareFactory.cs" />
     <Compile Include="Source\Factories\HeightMapFactory.cs" />
     <Compile Include="Source\Managers\GameStateManager.cs" />
-    <Compile Include="Source\Managers\ThreadManager.cs" />
     <Compile Include="Source\NetworkStuff\MessageType.cs" />
     <Compile Include="Source\NetworkStuff\NetworkSystem.cs" />
     <Compile Include="Source\NetworkStuff\XNAExtensions.cs" />
@@ -156,9 +155,7 @@
       <Name>Lidgren.Network</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Source\Communication\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

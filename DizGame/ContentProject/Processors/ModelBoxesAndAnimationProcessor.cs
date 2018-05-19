@@ -16,7 +16,7 @@ namespace ContentProject
 
             ModelContent model = base.Process(input, context);
 
-            modeldict = (Dictionary < string, object > )model.Tag;
+            modeldict = (Dictionary<string, object>)model.Tag;
             modeldict.Add("BoundingVolume", ModelBoundingBoxProcessor.Loop(input, this.Scale));
             model.Tag = modeldict;
 

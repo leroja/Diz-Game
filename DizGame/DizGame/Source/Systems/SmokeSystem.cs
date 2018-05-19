@@ -35,7 +35,7 @@ namespace DizGame.Source.Systems
                     {
                         case "Smoke":
                             Vector3 pos = GetMapPositions(1).FirstOrDefault();
-                            EntityFactory.Instance.CreateParticleEmitter(pos, "Smoke", 10);
+                            EntityFactory.Instance.ParticleFactory.CreateParticleEmitter(pos, "Smoke", 10);
                             ComponentManager.RemoveEntity(id);
                             ComponentManager.RecycleID(id);
                             break;

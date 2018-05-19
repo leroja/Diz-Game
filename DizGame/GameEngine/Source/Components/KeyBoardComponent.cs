@@ -13,11 +13,11 @@ namespace GameEngine.Source.Components
         /// <summary>
         /// A dictionary containing actions and their corresponding key
         /// </summary>
-        public Dictionary<string, Keys> KeyBoardActions { get; set; }
+        internal Dictionary<string, Keys> KeyBoardActions { get; set; }
         /// <summary>
         /// A dictionary containing action and their current state
         /// </summary>
-        public Dictionary<string, ButtonStates> State { get; set; }
+        internal Dictionary<string, ButtonStates> State { get; set; }
 
         /// <summary>
         /// constructor
@@ -43,6 +43,16 @@ namespace GameEngine.Source.Components
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="state"></param>
+        public void SetState(string action, ButtonStates state)
+        {
+            State[action] = state;
+        }
+
+        /// <summary>
         /// Returns the state of an action
         /// </summary>
         /// <param name="action">
@@ -51,9 +61,49 @@ namespace GameEngine.Source.Components
         /// <returns>
         /// The keyboard state of the action
         /// </returns>
-        public ButtonStates GetState(string action)
+        internal ButtonStates GetState(string action)
         {
             return State[action];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public bool IsPressed(string action)
+        {
+            return GetState(action) == ButtonStates.Pressed;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public bool IsHold(string action)
+        {
+            return GetState(action) == ButtonStates.Hold;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public bool IsReleased(string action)
+        {
+            return GetState(action) == ButtonStates.Released;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public bool IsNotPressed(string action)
+        {
+            return GetState(action) == ButtonStates.Not_Pressed;
         }
     }
 }

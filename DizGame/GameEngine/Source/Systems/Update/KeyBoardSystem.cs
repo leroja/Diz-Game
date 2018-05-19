@@ -61,19 +61,19 @@ namespace GameEngine.Source.Systems
 
                 if (newState && !oldState)
                 {
-                    keyboardComp.State[action] = ButtonStates.Pressed;
+                    keyboardComp.SetState(action, ButtonStates.Pressed);
                 }
                 else if (newState && oldState)
                 {
-                    keyboardComp.State[action] = ButtonStates.Hold;
+                    keyboardComp.SetState(action, ButtonStates.Hold);
                 }
                 else if (!newState && oldState)
                 {
-                    keyboardComp.State[action] = ButtonStates.Released;
+                    keyboardComp.SetState(action, ButtonStates.Released);
                 }
                 else
                 {
-                    keyboardComp.State[action] = ButtonStates.Not_Pressed;
+                    keyboardComp.SetState(action, ButtonStates.Not_Pressed);
                 }
             }
         }

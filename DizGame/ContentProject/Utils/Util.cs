@@ -52,7 +52,7 @@ namespace ContentProject.Utils
                 foreach (var vol in volume.Volume)
                 {
                     GetMinMax(((BoundingBox3D)vol.Bounding).Box, scale, position, out Vector3 min2, out Vector3 max2);
-                    temp.Add(new BoundingVolume( new BoundingBox3D(new BoundingBox(min2, max2))));
+                    temp.Add(new BoundingVolume(new BoundingBox3D(new BoundingBox(min2, max2))));
                 }
                 scaled = new BoundingVolume(temp, new BoundingBox3D(new BoundingBox(min, max)));
             }
@@ -68,7 +68,7 @@ namespace ContentProject.Utils
                     sphere2.Radius = ((BoundingSphere3D)vol.Bounding).Sphere.Radius * scale;
                     sphere2.Center = position;
                     sphere2.Center.Y += sphere.Radius;
-                    temp.Add(new BoundingVolume( new BoundingSphere3D(sphere2)));
+                    temp.Add(new BoundingVolume(new BoundingSphere3D(sphere2)));
                 }
                 scaled = new BoundingVolume(temp, new BoundingSphere3D(sphere));
             }

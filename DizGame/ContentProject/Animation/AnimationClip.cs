@@ -31,7 +31,7 @@ namespace ContentProject
         /// <param name="KeyFrames">List of keyFrames for all of the bones of an animation</param>
         public AnimationClip(TimeSpan Duration, List<KeyFrame> KeyFrames)
         {
-            
+
             this.Duration = Duration;
             this.KeyFrames = KeyFrames;
         }

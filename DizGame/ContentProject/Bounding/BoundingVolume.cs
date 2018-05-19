@@ -23,12 +23,12 @@ namespace ContentProject
         //{
         //    Volume = new List<BoundingVolume>();
         //}
-        
+
         private BoundingVolume()
         {
             //Volume = new List<BoundingVolume>();
         }
-        
+
         /// <summary>
         /// 
         /// </summary>

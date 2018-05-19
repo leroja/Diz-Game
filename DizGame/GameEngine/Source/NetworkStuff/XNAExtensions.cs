@@ -336,7 +336,7 @@ namespace Lidgren.Network.Xna
             message.Write(transform.Scale);
             message.Write(transform.Up);
         }
-        
+
         /// <summary>
         /// This function reads a TransformComponent from the message.
         /// </summary>

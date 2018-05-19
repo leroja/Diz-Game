@@ -44,7 +44,7 @@ namespace DizGame.Source.Systems
                 var keyComp = ComponentManager.GetEntityComponent<KeyBoardComponent>(playerId);
                 var physicComp = ComponentManager.GetEntityComponent<PhysicsComponent>(playerId);
 
-                if (keyComp.GetState("Mute") == ButtonStates.Pressed)
+                if (keyComp.IsPressed("Mute"))
                 {
                     if (AudioManager.Instance.IsMuted())
                         AudioManager.Instance.GlobalUnMute();
@@ -77,8 +77,8 @@ namespace DizGame.Source.Systems
         /// <returns></returns>
         private bool CanFire()
         {
-            var worldTemp = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
-            var worldComp = (WorldComponent)worldTemp.Values.First();
+            var worldComps = ComponentManager.GetAllEntitiesAndComponentsWithComponentType<WorldComponent>();
+            var worldComp = (WorldComponent)worldComps.Values.First();
             return worldComp.Day % worldComp.ModulusValue == 0 && worldComp.Day != 0;
         }
 

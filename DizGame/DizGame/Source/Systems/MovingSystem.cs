@@ -66,7 +66,7 @@ namespace DizGame.Source.Systems
 
                 if (!phys.IsInAir)
                 {
-                    if (key.GetState("Forward") == ButtonStates.Hold && key.GetState("Sprint") == ButtonStates.Hold)
+                    if (key.IsHold("Forward") && key.IsHold("Sprint"))
                     {
                         if ((stamComp.IsRunning && stamComp.StaminaRatio > 0) || (!stamComp.IsRunning && stamComp.StaminaRatio >= stamComp.RunThreshold))
                         {
@@ -81,7 +81,7 @@ namespace DizGame.Source.Systems
                             animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
                         }
                     }
-                    else if (key.GetState("Forward") == ButtonStates.Hold)
+                    else if (key.IsHold("Forward"))
                     {
                         stamComp.IsRunning = false;
                         move += trans.Forward * 20;
@@ -91,22 +91,22 @@ namespace DizGame.Source.Systems
                     {
                         stamComp.IsRunning = false;
                     }
-                    if (key.GetState("Backwards") == ButtonStates.Hold)
+                    if (key.IsHold("Backwards"))
                     {
                         move += -trans.Forward * 20;
                         animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
                     }
-                    if (key.GetState("Left") == ButtonStates.Hold)
+                    if (key.IsHold("Left"))
                     {
                         move += -trans.Right * 20;
                         //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds); // TODO hur ska vi göra när man går åt sidan?
                     }
-                    if (key.GetState("Right") == ButtonStates.Hold)
+                    if (key.IsHold("Right"))
                     {
                         move += trans.Right * 20;
                         //animComp.CurrentTimeValue += TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds);
                     }
-                    if (key.GetState("Up") == ButtonStates.Hold)
+                    if (key.IsHold("Up"))
                     {
                         if (!phys.IsInAir)
                         {

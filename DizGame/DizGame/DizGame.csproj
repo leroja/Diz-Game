@@ -47,6 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Source\AI Behaviors\HoardingBehavior.cs" />
+    <Compile Include="Source\Builders\EntityBuilder.cs" />
     <Compile Include="Source\Components\SpectatingComponent.cs" />
     <Compile Include="Source\Components\StaminaComponent.cs" />
     <Compile Include="Source\Factories\EntityFactory.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Source\Components\ScoreComponent.cs" />
     <Compile Include="Source\Enums\AmmunitionType.cs" />
     <Compile Include="Source\Factories\HudFactory.cs" />
+    <Compile Include="Source\Factories\ParticleFactory.cs" />
     <Compile Include="Source\Factories\ResourceFactory.cs" />
     <Compile Include="Source\Factories\StaticGameObjectsFactory.cs" />
     <Compile Include="Source\GameStates\LobbyGameState.cs" />
@@ -81,7 +83,6 @@
     <Compile Include="Source\Random Stuff\Border.cs" />
     <Compile Include="Source\Systems\AISystem.cs" />
     <Compile Include="Source\Systems\AmmunitionSystem.cs" />
-    <Compile Include="Source\Enums\GameSettingsType.cs" />
     <Compile Include="Source\Systems\BulletSystem.cs" />
     <Compile Include="Source\Systems\HandleCollisionSystem.cs" />
     <Compile Include="Source\Systems\HealthSystem.cs" />

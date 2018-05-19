@@ -77,7 +77,7 @@ namespace ContentProject
 
             for (int i = 0; i < bones.Count; i++)
             {
-                    boneMap.Add(bones[i].Name, i);
+                boneMap.Add(bones[i].Name, i);
             }
 
             // Convert each animation in turn.
@@ -108,7 +108,7 @@ namespace ContentProject
             {
                 // Look up what bone this channel is controlling.
                 int boneIndex = boneMap[channel.Key];
-                
+
                 // Convert the keyframe data.
                 foreach (AnimationKeyframe keyframe in channel.Value)
                 {
@@ -134,7 +134,7 @@ namespace ContentProject
             return a.Time.CompareTo(b.Time);
         }
 
-    
+
 
         /// <summary>
         /// Force all the materials to use our skinned model effect.

@@ -32,7 +32,7 @@ namespace GameEngine
             Graphics = new GraphicsDeviceManager(this)
             {
                 SynchronizeWithVerticalRetrace = false
-                 
+
             };
             IsFixedTimeStep = false;
             Content.RootDirectory = "Content";

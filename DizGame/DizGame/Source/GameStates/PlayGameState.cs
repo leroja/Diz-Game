@@ -53,9 +53,9 @@ namespace DizGame.Source.GameStates
             EntityFactory.Instance.CreateWorldComp();
 
             GameStateEntities.Add(EntityFactory.Instance.CreateNewSkyBox());
-            
+
             CreateEntitiesForSinglePlayerGame();
-            
+
             InitializeSystems();
 
             AudioManager.Instance.PlaySong("GameSong");
@@ -247,7 +247,7 @@ namespace DizGame.Source.GameStates
             List<int> entityIdList = entf.SGOFactory.MakeMap(10, 100, border);
             GameStateEntities.AddRange(entityIdList);
 
-            entf.CreateParticleEmitter(new Vector3(500, 30, -500), "Smoke", 15);
+            entf.ParticleFactory.CreateParticleEmitter(new Vector3(500, 30, -500), "Smoke", 15);
 
             int HudID = entf.HudFactory.CreateHud(new Vector2(30, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
                 new Vector2(GameOne.Instance.GraphicsDevice.Viewport.Width / 10, GameOne.Instance.GraphicsDevice.Viewport.Height - 50),
@@ -258,7 +258,7 @@ namespace DizGame.Source.GameStates
 
             entf.SpawnProtection();
         }
-        
+
         /// <summary>
         /// Function for deciding if criteria for endgame has been found.
         /// </summary>

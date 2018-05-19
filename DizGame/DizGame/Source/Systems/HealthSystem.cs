@@ -150,7 +150,7 @@ namespace DizGame.Source.Systems
                         var score = ComponentManager.Instance.GetEntityComponent<ScoreComponent>(bullet.Owner);
                         var t = ComponentManager.Instance.GetEntityComponent<TransformComponent>(BulletID);
                         Vector3 pos = new Vector3(t.Position.X, t.Position.Y + 1, t.Position.Z);
-                        EntityFactory.Instance.CreateParticleEmitter(pos, "Blood", 5);
+                        EntityFactory.Instance.ParticleFactory.CreateParticleEmitter(pos, "Blood", 5);
                         score.Hits += 1;
                         score.Score += 5;
                     }

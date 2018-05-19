@@ -42,7 +42,7 @@ namespace DizGame.Source.Systems
 
                     available.AddRange(availableAis);
 
-                    if (keyboardComp.GetState("SpectateUp") == ButtonStates.Pressed)
+                    if (keyboardComp.IsPressed("SpectateUp"))
                     {
                         int index = available.FindIndex(a => a == SpecComp.SpectatedEntity);
                         if (index + 1 == available.Count)
@@ -60,7 +60,7 @@ namespace DizGame.Source.Systems
                         hudComp.TrackedEntity = SpecComp.SpectatedEntity;
                     }
 
-                    if (keyboardComp.GetState("SpectateDown") == ButtonStates.Pressed)
+                    if (keyboardComp.IsPressed("SpectateDown"))
                     {
                         int index = available.FindIndex(a => a == SpecComp.SpectatedEntity);
                         if (index == 0)

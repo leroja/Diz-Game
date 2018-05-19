@@ -24,7 +24,7 @@ namespace ContentProject
         /// <returns></returns>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            
+
             ModelContent model = base.Process(input, context);
             box = new BoundingBox();
             model.Tag = Loop(input, this.Scale);
@@ -44,7 +44,7 @@ namespace ContentProject
             var cont = content as MeshContent;
             if (cont != null)
             {
-                
+
                 foreach (GeometryContent g in cont.Geometry)
                 {
                     //System.Diagnostics.Debugger.Launch();
@@ -55,7 +55,7 @@ namespace ContentProject
             }
             else
             {
-                foreach(var n in content.Children)
+                foreach (var n in content.Children)
                 {
                     volume.Volume.Add(Loop(n, scale));
                 }

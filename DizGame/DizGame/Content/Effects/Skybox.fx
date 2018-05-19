@@ -4,15 +4,15 @@ float4x4 Projection;
 
 float3 CameraPosition;
 
-texture SkyBoxTexture; 
-samplerCUBE SkyBoxSampler = sampler_state 
-{ 
-   texture = <SkyBoxTexture>;    
-   magfilter = LINEAR; 
-   minfilter = LINEAR; 
-   mipfilter = LINEAR; 
-   AddressU = Mirror; 
-   AddressV = Mirror; 
+texture SkyBoxTexture;
+samplerCUBE SkyBoxSampler = sampler_state
+{
+    texture = <SkyBoxTexture>;
+    magfilter = LINEAR;
+    minfilter = LINEAR;
+    mipfilter = LINEAR;
+    AddressU = Mirror;
+    AddressV = Mirror;
 };
 
 struct VertexShaderInput
@@ -35,7 +35,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     output.Position = mul(viewPosition, Projection);
 
     float4 VertexPosition = mul(input.Position, World);
-    output.TextureCoordinate = (float3)VertexPosition - CameraPosition;
+    output.TextureCoordinate = (float3) VertexPosition - CameraPosition;
 
     return output;
 }

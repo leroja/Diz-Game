@@ -12,7 +12,7 @@ namespace ContentProject
     /// Abstract class IBounding3D. Used to handle all bounding volumes in the same way
     /// </summary>
     public abstract class IBounding3D
-    {        
+    {
         /// <summary>
         /// Check if this IBounding3D intersects with another IBounding3D
         /// </summary>

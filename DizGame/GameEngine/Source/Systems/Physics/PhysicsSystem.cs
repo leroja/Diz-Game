@@ -75,10 +75,10 @@ namespace GameEngine.Source.Systems
                 {
                     physicSystems.Where(x => x.PhysicsType == physic.PhysicsType).SingleOrDefault().Update(physic, dt);
                 }
-                
+
             });
         }
-        
+
 
         /// <summary>
         /// Updates the mass using density * volume

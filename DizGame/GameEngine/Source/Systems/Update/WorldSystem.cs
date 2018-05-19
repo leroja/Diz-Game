@@ -92,7 +92,7 @@ namespace GameEngine.Source.Systems
 
             text.Text = "Day: " + world.Day + "\n" + hour + ":" + minute + ":" + second;
         }
-        
+
         /// <summary>
         /// Updates the sun rotation
         /// </summary>
